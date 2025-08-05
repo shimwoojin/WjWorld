@@ -8,18 +8,22 @@ public class WjWorld : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { 
-			"Core", 
-			"CoreUObject", 
-			"Engine", 
-			"InputCore", 
-			"EnhancedInput" 
+		PublicDependencyModuleNames.AddRange(new string[] {
+            "Core",
+            "CoreUObject",
+            "Engine",
+            "InputCore",
+            "UMG",              // UI 위젯용
+            "Slate",            // UI 관련
+            "SlateCore",        // UI 관련
+            "ToolWidgets",      // Slate Brush 관련
+            "EnhancedInput",    // 입력 시스템 확장
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {
-            "Media",            // �⺻ Media ���
-            "MediaAssets",      // Media ���µ�
-            "MediaUtils"        // Media ��ƿ��Ƽ �Լ���
+            "Media",            // 기본 Media 모듈
+            "MediaAssets",      // Media 에셋들
+            "MediaUtils"        // Media 유틸리티 함수들
 		});
 
 		PublicIncludePaths.AddRange(new string[] {

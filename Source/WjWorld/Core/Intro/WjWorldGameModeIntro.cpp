@@ -2,8 +2,8 @@
 
 
 #include "Core/Intro/WjWorldGameModeIntro.h"
-
 #include "UI/Intro/IntroWindow.h"
+#include "Kismet/GameplayStatics.h"
 
 AWjWorldGameModeIntro::AWjWorldGameModeIntro()
 {
@@ -19,6 +19,25 @@ void AWjWorldGameModeIntro::BeginPlay()
 
 void AWjWorldGameModeIntro::OnVideoFinished()
 {
+    UE_LOG(LogTemp, Warning, TEXT("Intro video finished - Moving to Login"));
+
+    // UI 제거
+    if (IntroWidget)
+    {
+        IntroWidget->RemoveFromParent();
+        IntroWidget = nullptr;
+    }
+
+    // 입력 모드 복원
+    APlayerController* PC = GetWorld()->GetFirstPlayerController();
+    if (PC)
+    {
+        PC->bShowMouseCursor = false;
+        PC->SetInputMode(FInputModeGameOnly());
+    }
+
+    // Login 레벨로 이동
+    UGameplayStatics::OpenLevel(GetWorld(), TEXT("01_Login"));
 }
 
 void AWjWorldGameModeIntro::CreateAndShowIntroUI()
@@ -48,8 +67,4 @@ void AWjWorldGameModeIntro::CreateAndShowIntroUI()
             }
         }
     }
-}
-
-void AWjWorldGameModeIntro::DetermineNextLevel()
-{
 }

@@ -34,7 +34,4 @@ protected:
 private:
 	// UI 생성 및 표시
 	void CreateAndShowIntroUI();
-
-	// 유저 상태에 따른 레벨 결정
-	void DetermineNextLevel();
 };

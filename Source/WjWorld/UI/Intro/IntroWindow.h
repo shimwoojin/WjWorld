@@ -53,6 +53,8 @@ private:
     // 미디어 플레이어 이벤트 바인딩
     void BindMediaPlayerEvents();
 
+    void SetupVideoImage();
+
     // 동영상 재생 완료 시 호출
     UFUNCTION()
     void OnMediaPlaybackFinished();
