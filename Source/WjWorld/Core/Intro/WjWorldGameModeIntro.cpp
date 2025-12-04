@@ -4,6 +4,7 @@
 #include "Core/Intro/WjWorldGameModeIntro.h"
 #include "UI/Intro/IntroWindow.h"
 #include "Kismet/GameplayStatics.h"
+#include "WjWorldLogCategories.h"
 
 AWjWorldGameModeIntro::AWjWorldGameModeIntro()
 {
@@ -13,22 +14,22 @@ AWjWorldGameModeIntro::AWjWorldGameModeIntro()
 void AWjWorldGameModeIntro::BeginPlay()
 {
 	Super::BeginPlay();
-	// UI »ı¼º ¹× Ç¥½Ã
+	// UI ìƒì„± ë° í‘œì‹œ
 	CreateAndShowIntroUI();
 }
 
 void AWjWorldGameModeIntro::OnVideoFinished()
 {
-    UE_LOG(LogTemp, Warning, TEXT("Intro video finished - Moving to Login"));
+    UE_LOG(LogWjWorld, Warning, TEXT("Intro video finished - Moving to Login"));
 
-    // UI Á¦°Å
+    // UI ì œê±°
     if (IntroWidget)
     {
         IntroWidget->RemoveFromParent();
         IntroWidget = nullptr;
     }
 
-    // ÀÔ·Â ¸ğµå º¹¿ø
+    // ì…ë ¥ ëª¨ë“œ ë³µì›
     APlayerController* PC = GetWorld()->GetFirstPlayerController();
     if (PC)
     {
@@ -36,7 +37,7 @@ void AWjWorldGameModeIntro::OnVideoFinished()
         PC->SetInputMode(FInputModeGameOnly());
     }
 
-    // Login ·¹º§·Î ÀÌµ¿
+    // Login ë ˆë²¨ë¡œ ì´ë™
     UGameplayStatics::OpenLevel(GetWorld(), TEXT("01_Login"));
 }
 
@@ -44,21 +45,21 @@ void AWjWorldGameModeIntro::CreateAndShowIntroUI()
 {
     if (IntroWidgetClass)
     {
-        // À§Á¬ »ı¼º
+        // ìœ„ì ¯ ìƒì„±
         IntroWidget = CreateWidget<UIntroWindow>(GetWorld(), IntroWidgetClass);
 
         if (IntroWidget)
         {
-            // È­¸é¿¡ Ãß°¡
+            // í™”ë©´ì— ì¶”ê°€
             IntroWidget->AddToViewport();
 
-            // µ¿¿µ»ó Á¾·á ÀÌº¥Æ® ¹ÙÀÎµù
+            // ë™ì˜ìƒ ì¢…ë£Œ ì´ë²¤íŠ¸ ë°”ì¸ë”©
             IntroWidget->OnVideoCompleted.AddDynamic(this, &AWjWorldGameModeIntro::OnVideoFinished);
 
-            // µ¿¿µ»ó Àç»ı ½ÃÀÛ
+            // ë™ì˜ìƒ ì¬ìƒ ì‹œì‘
             IntroWidget->PlayIntroVideo();
 
-            // ¸¶¿ì½º Ä¿¼­ Ç¥½Ã (ÇÊ¿ä½Ã)
+            // ë§ˆìš°ìŠ¤ ì»¤ì„œ í‘œì‹œ (í•„ìš”ì‹œ)
             APlayerController* PC = GetWorld()->GetFirstPlayerController();
             if (PC)
             {

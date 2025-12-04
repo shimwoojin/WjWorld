@@ -5,6 +5,7 @@
 #include "Network/PacketDataQuest.h"
 #include "QuestFactory.h"
 #include "QuestInstance.h"
+#include "WjWorldLogCategories.h"
 
 bool UQuest::LoadQuestDataFromServer(TSharedRef<PacketQuestLoadNtf> InData)
 {
@@ -72,6 +73,6 @@ void UQuest::Update(const ActiveQuestInfo& InQuestInfo)
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Quest Update Error: Quest TID %d not found in Inactive or Active quests."), TID);
+		UE_LOG(LogWjWorld, Warning, TEXT("Quest Update Error: Quest TID %d not found in Inactive or Active quests."), TID);
 	}
 }

@@ -11,6 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/Engine.h"
 #include "UI/Interact/InteractionWidget.h"
+#include "WjWorldLogCategories.h"
 
 AInteractablePortal::AInteractablePortal()
 {
@@ -92,7 +93,7 @@ void AInteractablePortal::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedC
 
             ShowInteractionUI();
 
-            UE_LOG(LogTemp, Warning, TEXT("Player entered portal range: %s"), *PortalDisplayName);
+            UE_LOG(LogWjWorld, Warning, TEXT("Player entered portal range: %s"), *PortalDisplayName);
         }
     }
 }
@@ -110,7 +111,7 @@ void AInteractablePortal::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedCom
 
             HideInteractionUI();
 
-            UE_LOG(LogTemp, Warning, TEXT("Player left portal range: %s"), *PortalDisplayName);
+            UE_LOG(LogWjWorld, Warning, TEXT("Player left portal range: %s"), *PortalDisplayName);
         }
     }
 }
@@ -119,7 +120,7 @@ void AInteractablePortal::OnInteract()
 {
     if (bCanInteract && bPlayerInRange && InteractingPlayer)
     {
-        UE_LOG(LogTemp, Warning, TEXT("Portal interaction triggered: %s"), *PortalDisplayName);
+        UE_LOG(LogWjWorld, Warning, TEXT("Portal interaction triggered: %s"), *PortalDisplayName);
 
         // 블루프린트 이벤트 호출
         OnPortalActivated();
@@ -160,12 +161,12 @@ void AInteractablePortal::TravelToTargetLevel()
 {
     if (!TargetLevelName.IsEmpty())
     {
-        UE_LOG(LogTemp, Warning, TEXT("Traveling to level: %s"), *TargetLevelName);
+        UE_LOG(LogWjWorld, Warning, TEXT("Traveling to level: %s"), *TargetLevelName);
         UGameplayStatics::OpenLevel(GetWorld(), FName(*TargetLevelName));
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("TargetLevelName is empty for portal: %s"), *PortalDisplayName);
+        UE_LOG(LogWjWorld, Error, TEXT("TargetLevelName is empty for portal: %s"), *PortalDisplayName);
     }
 }
 

@@ -8,15 +8,16 @@
 #include "Components/Image.h"
 #include "Engine/Engine.h"
 #include "Styling/SlateBrush.h"
+#include "WjWorldLogCategories.h"
 
 void UIntroWindow::NativeConstruct()
 {
     Super::NativeConstruct();
 
-    // MediaTexture∏¶ Image ¿ß¡¨ø° ø¨∞·
+    // MediaTextureÎ•º Image ÏúÑÏ†ØÏóê Ïó∞Í≤∞
     SetupVideoImage();
 
-    // πÃµæÓ «√∑π¿ÃæÓ ¿Ã∫•∆Æ πŸ¿Œµ˘
+    // ÎØ∏ÎîîÏñ¥ ÌîåÎ†àÏù¥Ïñ¥ Ïù¥Î≤§Ìä∏ Î∞îÏù∏Îî©
     BindMediaPlayerEvents();
 }
 
@@ -26,16 +27,16 @@ void UIntroWindow::SetupVideoImage()
     {
         FSlateBrush Brush = VideoImage->GetBrush();
         Brush.SetResourceObject(MediaTexture);
-        Brush.ImageSize = FVector2D(1920, 1080); // µøøµªÛ «ÿªÛµµø° ∏¬∞‘ ¡∂¡§
+        Brush.ImageSize = FVector2D(1920, 1080); // ÎèôÏòÅÏÉÅ Ìï¥ÏÉÅÎèÑÏóê ÎßûÍ≤å Ï°∞Ï†ï
         Brush.DrawAs = ESlateBrushDrawType::Image;
 
         VideoImage->SetBrush(Brush);
 
-        UE_LOG(LogTemp, Warning, TEXT("MediaTexture connected to VideoImage"));
+        UE_LOG(LogWjWorld, Warning, TEXT("MediaTexture connected to VideoImage"));
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("VideoImage or MediaTexture is null!"));
+        UE_LOG(LogWjWorld, Error, TEXT("VideoImage or MediaTexture is null!"));
     }
 }
 
@@ -43,15 +44,15 @@ void UIntroWindow::PlayIntroVideo()
 {
     if (MediaPlayer && MediaSource)
     {
-        // πÃµæÓ º“Ω∫ º≥¡§ π◊ ¿Áª˝
+        // ÎØ∏ÎîîÏñ¥ ÏÜåÏä§ ÏÑ§Ï†ï Î∞è Ïû¨ÏÉù
         MediaPlayer->OpenSource(MediaSource);
         MediaPlayer->Play();
 
-        UE_LOG(LogTemp, Warning, TEXT("Started playing intro video"));
+        UE_LOG(LogWjWorld, Warning, TEXT("Started playing intro video"));
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("MediaPlayer or MediaSource is null!"));
+        UE_LOG(LogWjWorld, Error, TEXT("MediaPlayer or MediaSource is null!"));
     }
 }
 
@@ -59,21 +60,21 @@ void UIntroWindow::BindMediaPlayerEvents()
 {
     if (MediaPlayer)
     {
-        // ¿Áª˝ øœ∑· ¿Ã∫•∆Æ πŸ¿Œµ˘
+        // Ïû¨ÏÉù ÏôÑÎ£å Ïù¥Î≤§Ìä∏ Î∞îÏù∏Îî©
         MediaPlayer->OnEndReached.AddDynamic(this, &UIntroWindow::OnMediaPlaybackFinished);
 
-        UE_LOG(LogTemp, Warning, TEXT("MediaPlayer events bound"));
+        UE_LOG(LogWjWorld, Warning, TEXT("MediaPlayer events bound"));
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("MediaPlayer is null - cannot bind events!"));
+        UE_LOG(LogWjWorld, Error, TEXT("MediaPlayer is null - cannot bind events!"));
     }
 }
 
 void UIntroWindow::OnMediaPlaybackFinished()
 {
-    UE_LOG(LogTemp, Warning, TEXT("Media playback finished"));
+    UE_LOG(LogWjWorld, Warning, TEXT("Media playback finished"));
 
-    // ¿Ã∫•∆Æ ∫Í∑ŒµÂƒ≥Ω∫∆Æ
+    // Ïù¥Î≤§Ìä∏ Î∏åÎ°úÎìúÏ∫êÏä§Ìä∏
     OnVideoCompleted.Broadcast();
 }

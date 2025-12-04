@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
+#include "WjWorldLogCategories.h"
 
 AWjWorldGameModeLogin::AWjWorldGameModeLogin()
 {
@@ -16,7 +17,7 @@ void AWjWorldGameModeLogin::BeginPlay()
 {
     Super::BeginPlay();
 
-    // ·¹º§ ½ÃÀÛ ÈÄ Login UI »ı¼º
+    // ë ˆë²¨ ì‹œì‘ í›„ Login UI ìƒì„±
     CreateAndShowLoginUI();
 }
 
@@ -24,15 +25,15 @@ void AWjWorldGameModeLogin::CreateAndShowLoginUI()
 {
     if (LoginWidgetClass)
     {
-        // À§Á¬ »ı¼º
+        // ìœ„ì ¯ ìƒì„±
         LoginWidgetInstance = CreateWidget<ULoginWindow>(GetWorld(), LoginWidgetClass);
 
         if (LoginWidgetInstance)
         {
-            // È­¸é¿¡ Ãß°¡
+            // í™”ë©´ì— ì¶”ê°€
             LoginWidgetInstance->AddToViewport();
 
-            // ¸¶¿ì½º Ä¿¼­ Ç¥½Ã
+            // ë§ˆìš°ìŠ¤ ì»¤ì„œ í‘œì‹œ
             APlayerController* PC = GetWorld()->GetFirstPlayerController();
             if (PC)
             {
@@ -40,7 +41,7 @@ void AWjWorldGameModeLogin::CreateAndShowLoginUI()
                 PC->SetInputMode(FInputModeUIOnly());
             }
 
-            // 5ÃÊ ÈÄ ÀÚµ¿À¸·Î ·Î±×ÀÎ ¿Ï·á Ã³¸®
+            // 5ì´ˆ í›„ ìë™ìœ¼ë¡œ ë¡œê·¸ì¸ ì™„ë£Œ ì²˜ë¦¬
             GetWorld()->GetTimerManager().SetTimer(
                 LoginTimerHandle,
                 this,
@@ -49,23 +50,23 @@ void AWjWorldGameModeLogin::CreateAndShowLoginUI()
                 false
             );
 
-            UE_LOG(LogTemp, Warning, TEXT("Login UI displayed - Auto login in %.1f seconds"), LoginWaitTime);
+            UE_LOG(LogWjWorld, Warning, TEXT("Login UI displayed - Auto login in %.1f seconds"), LoginWaitTime);
         }
     }
 }
 
 void AWjWorldGameModeLogin::OnLoginCompleted()
 {
-    UE_LOG(LogTemp, Warning, TEXT("Login completed - Moving to Lobby"));
+    UE_LOG(LogWjWorld, Warning, TEXT("Login completed - Moving to Lobby"));
 
-    // UI Á¦°Å
+    // UI ì œê±°
     if (LoginWidgetInstance)
     {
         LoginWidgetInstance->RemoveFromViewport();
         LoginWidgetInstance = nullptr;
     }
 
-    // ÀÔ·Â ¸ğµå º¹¿ø
+    // ì…ë ¥ ëª¨ë“œ ë³µì›
     APlayerController* PC = GetWorld()->GetFirstPlayerController();
     if (PC)
     {
@@ -73,9 +74,9 @@ void AWjWorldGameModeLogin::OnLoginCompleted()
         PC->SetInputMode(FInputModeGameOnly());
     }
 
-    // Å¸ÀÌ¸Ó Å¬¸®¾î
+    // íƒ€ì´ë¨¸ í´ë¦¬ì–´
     GetWorld()->GetTimerManager().ClearTimer(LoginTimerHandle);
 
-    // Lobby ·¹º§·Î ÀÌµ¿
+    // Lobby ë ˆë²¨ë¡œ ì´ë™
     UGameplayStatics::OpenLevel(GetWorld(), TEXT("02-1_Lobby"));
 }

@@ -1,0 +1,363 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#include "UI/Session/CreateRoomWindow.h"
+#include "Components/EditableTextBox.h"
+#include "Components/ComboBoxString.h"
+#include "Components/Button.h"
+#include "Components/TextBlock.h"
+#include "Components/CheckBox.h"
+#include "Core/WjWorldGameInstance.h"
+#include "Core/Session/SessionManager.h"
+#include "Kismet/GameplayStatics.h"
+#include "WjWorldLogCategories.h"
+
+void UCreateRoomWindow::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	// 버튼 이벤트 바인딩
+	if (DecreasePlayersButton)
+	{
+		DecreasePlayersButton->OnClicked.AddDynamic(this, &UCreateRoomWindow::OnDecreasePlayersClicked);
+	}
+
+	if (IncreasePlayersButton)
+	{
+		IncreasePlayersButton->OnClicked.AddDynamic(this, &UCreateRoomWindow::OnIncreasePlayersClicked);
+	}
+
+	if (PrivateCheckBox)
+	{
+		PrivateCheckBox->OnCheckStateChanged.AddDynamic(this, &UCreateRoomWindow::OnPrivateCheckBoxChanged);
+	}
+
+	if (CancelButton)
+	{
+		CancelButton->OnClicked.AddDynamic(this, &UCreateRoomWindow::OnCancelClicked);
+	}
+
+	if (CreateButton)
+	{
+		CreateButton->OnClicked.AddDynamic(this, &UCreateRoomWindow::OnCreateClicked);
+	}
+
+	// 옵션 초기화
+	InitializeGameModeOptions();
+	InitializeMapOptions();
+
+	// 초기 인원 표시
+	UpdateMaxPlayersDisplay();
+
+	// 비밀번호 필드 초기 비활성화
+	if (PasswordTextBox)
+	{
+		PasswordTextBox->SetIsEnabled(false);
+	}
+
+	// SessionManager 델리게이트 바인딩
+	UWjWorldGameInstance* GameInstance = Cast<UWjWorldGameInstance>(GetGameInstance());
+	if (GameInstance && GameInstance->GetSessionManager())
+	{
+		// ⭐ 중복 바인딩 방지
+		GameInstance->GetSessionManager()->OnRoomCreatedEvent.RemoveDynamic(this, &UCreateRoomWindow::OnRoomCreated);
+		GameInstance->GetSessionManager()->OnRoomCreatedEvent.AddDynamic(this, &UCreateRoomWindow::OnRoomCreated);
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: NativeConstruct completed"));
+}
+
+void UCreateRoomWindow::ShowPopup()
+{
+	// 화면에 추가
+	AddToViewport(100); // 높은 Z-Order로 최상단 표시
+
+	// 입력 모드 변경
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	if (PC)
+	{
+		FInputModeUIOnly InputMode;
+		InputMode.SetWidgetToFocus(RoomNameTextBox->TakeWidget());
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		
+		PC->SetInputMode(InputMode);
+		PC->bShowMouseCursor = true;
+	}
+
+	// 기본값 설정
+	if (RoomNameTextBox)
+	{
+		RoomNameTextBox->SetText(FText::FromString(TEXT("New Room")));
+	}
+
+	if (AllowJoinInProgressCheckBox)
+	{
+		AllowJoinInProgressCheckBox->SetIsChecked(true);
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Popup shown"));
+}
+
+void UCreateRoomWindow::ClosePopup()
+{
+	// 화면에서 제거
+	RemoveFromParent();
+
+	// 입력 모드 복원
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	if (PC)
+	{
+		PC->SetInputMode(FInputModeGameAndUI());
+		PC->bShowMouseCursor = true;
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Popup closed"));
+}
+
+void UCreateRoomWindow::OnDecreasePlayersClicked()
+{
+	if (CurrentMaxPlayers > MIN_PLAYERS)
+	{
+		CurrentMaxPlayers--;
+		UpdateMaxPlayersDisplay();
+		UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Max players decreased to %d"), CurrentMaxPlayers);
+	}
+}
+
+void UCreateRoomWindow::OnIncreasePlayersClicked()
+{
+	if (CurrentMaxPlayers < MAX_PLAYERS)
+	{
+		CurrentMaxPlayers++;
+		UpdateMaxPlayersDisplay();
+		UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Max players increased to %d"), CurrentMaxPlayers);
+	}
+}
+
+void UCreateRoomWindow::OnPrivateCheckBoxChanged(bool bIsChecked)
+{
+	// 비공개 방이면 비밀번호 입력 활성화
+	if (PasswordTextBox)
+	{
+		PasswordTextBox->SetIsEnabled(bIsChecked);
+		
+		if (!bIsChecked)
+		{
+			PasswordTextBox->SetText(FText::GetEmpty());
+		}
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Private room %s"), bIsChecked ? TEXT("enabled") : TEXT("disabled"));
+}
+
+void UCreateRoomWindow::OnCancelClicked()
+{
+	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Cancel clicked"));
+	ClosePopup();
+}
+
+void UCreateRoomWindow::OnCreateClicked()
+{
+	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Create clicked"));
+
+	// 입력 유효성 검사
+	FString ErrorMessage;
+	if (!ValidateInput(ErrorMessage))
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("CreateRoomWindow: Validation failed - %s"), *ErrorMessage);
+		// TODO: 에러 메시지 UI 표시
+		return;
+	}
+
+	// RoomSettings 생성
+	FRoomSettings Settings = BuildRoomSettings();
+
+	// GameInstance를 통해 방 생성
+	UWjWorldGameInstance* GameInstance = Cast<UWjWorldGameInstance>(GetGameInstance());
+	if (GameInstance)
+	{
+		bool bSuccess = GameInstance->CreateRoom(Settings);
+		if (bSuccess)
+		{
+			UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Room creation initiated"));
+		}
+		else
+		{
+			UE_LOG(LogWjWorld, Error, TEXT("CreateRoomWindow: Failed to initiate room creation"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogWjWorld, Error, TEXT("CreateRoomWindow: GameInstance is null"));
+	}
+}
+
+void UCreateRoomWindow::OnRoomCreated(bool bWasSuccessful)
+{
+	if (bWasSuccessful)
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Room created successfully!"));
+		
+		// 팝업 닫기
+		ClosePopup();
+
+		UGameplayStatics::OpenLevel(GetWorld(), TEXT("/Game/Map/02-2_WaitingRoom?Listen"));
+	}
+	else
+	{
+		UE_LOG(LogWjWorld, Error, TEXT("CreateRoomWindow: Room creation failed"));
+		// TODO: 에러 메시지 UI 표시
+	}
+}
+
+void UCreateRoomWindow::UpdateMaxPlayersDisplay()
+{
+	if (MaxPlayersText)
+	{
+		FString DisplayText = FString::Printf(TEXT("%d명"), CurrentMaxPlayers);
+		MaxPlayersText->SetText(FText::FromString(DisplayText));
+	}
+}
+
+bool UCreateRoomWindow::ValidateInput(FString& OutErrorMessage)
+{
+	// 방 이름 검사
+	if (!RoomNameTextBox)
+	{
+		OutErrorMessage = TEXT("Room name field is missing");
+		return false;
+	}
+
+	FString RoomName = RoomNameTextBox->GetText().ToString();
+	if (RoomName.IsEmpty())
+	{
+		OutErrorMessage = TEXT("방 이름을 입력해주세요");
+		return false;
+	}
+
+	if (RoomName.Len() > 20)
+	{
+		OutErrorMessage = TEXT("방 이름은 20자 이내로 입력해주세요");
+		return false;
+	}
+
+	// 비공개 방인 경우 비밀번호 검사
+	if (PrivateCheckBox && PrivateCheckBox->IsChecked())
+	{
+		if (PasswordTextBox)
+		{
+			FString Password = PasswordTextBox->GetText().ToString();
+			if (Password.IsEmpty())
+			{
+				OutErrorMessage = TEXT("비공개 방은 비밀번호를 입력해주세요");
+				return false;
+			}
+
+			if (Password.Len() < 4)
+			{
+				OutErrorMessage = TEXT("비밀번호는 4자 이상 입력해주세요");
+				return false;
+			}
+		}
+	}
+
+	// 게임 모드 검사
+	if (!GameModeComboBox || GameModeComboBox->GetSelectedOption().IsEmpty())
+	{
+		OutErrorMessage = TEXT("게임 모드를 선택해주세요");
+		return false;
+	}
+
+	// 맵 검사
+	if (!MapComboBox || MapComboBox->GetSelectedOption().IsEmpty())
+	{
+		OutErrorMessage = TEXT("맵을 선택해주세요");
+		return false;
+	}
+
+	return true;
+}
+
+FRoomSettings UCreateRoomWindow::BuildRoomSettings()
+{
+	FRoomSettings Settings;
+
+	// 방 이름
+	if (RoomNameTextBox)
+	{
+		Settings.RoomName = RoomNameTextBox->GetText().ToString();
+	}
+
+	// 게임 모드
+	if (GameModeComboBox)
+	{
+		Settings.GameMode = GameModeComboBox->GetSelectedOption();
+	}
+
+	// 맵
+	if (MapComboBox)
+	{
+		Settings.MapName = MapComboBox->GetSelectedOption();
+	}
+
+	// 최대 인원
+	Settings.MaxPlayers = CurrentMaxPlayers;
+
+	// 비공개 방
+	if (PrivateCheckBox)
+	{
+		Settings.bIsPrivate = PrivateCheckBox->IsChecked();
+	}
+
+	// 비밀번호
+	if (Settings.bIsPrivate && PasswordTextBox)
+	{
+		Settings.Password = PasswordTextBox->GetText().ToString();
+	}
+
+	// 게임 중 입장 허용
+	if (AllowJoinInProgressCheckBox)
+	{
+		Settings.bAllowJoinInProgress = AllowJoinInProgressCheckBox->IsChecked();
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Built settings - Name: %s, Mode: %s, Map: %s, Players: %d"),
+		*Settings.RoomName, *Settings.GameMode, *Settings.MapName, Settings.MaxPlayers);
+
+	return Settings;
+}
+
+void UCreateRoomWindow::InitializeGameModeOptions()
+{
+	if (!GameModeComboBox)
+	{
+		return;
+	}
+
+	GameModeComboBox->ClearOptions();
+	GameModeComboBox->AddOption(TEXT("SpeedRace"));
+	GameModeComboBox->AddOption(TEXT("ItemRace"));
+	GameModeComboBox->AddOption(TEXT("Battle"));
+	
+	// 기본 선택
+	GameModeComboBox->SetSelectedOption(TEXT("SpeedRace"));
+
+	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Game mode options initialized"));
+}
+
+void UCreateRoomWindow::InitializeMapOptions()
+{
+	if (!MapComboBox)
+	{
+		return;
+	}
+
+	MapComboBox->ClearOptions();
+	MapComboBox->AddOption(TEXT("Forest"));
+	MapComboBox->AddOption(TEXT("Desert"));
+	MapComboBox->AddOption(TEXT("City"));
+	
+	// 기본 선택
+	MapComboBox->SetSelectedOption(TEXT("Forest"));
+
+	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Map options initialized"));
+}
