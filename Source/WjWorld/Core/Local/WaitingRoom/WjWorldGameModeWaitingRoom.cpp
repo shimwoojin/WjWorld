@@ -2,6 +2,8 @@
 
 #include "Core/Local/WaitingRoom/WjWorldGameModeWaitingRoom.h"
 #include "Core/Local/WaitingRoom/WjWorldHUDWaitingRoom.h"
+#include "Core/Local/WaitingRoom/WjWorldGameStateWaitingRoom.h"
+#include "Core/Base/WjWorldPlayerStateBase.h"
 #include "Core/WjWorldGameInstance.h"
 #include "Core/Session/SessionManager.h"
 #include "WjWorldLogCategories.h"
@@ -10,11 +12,14 @@ AWjWorldGameModeWaitingRoom::AWjWorldGameModeWaitingRoom()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	// ⭐ 중요: PlayerState 클래스 설정 (Base에서 설정되지만 명시적으로 재확인)
+	PlayerStateClass = AWjWorldPlayerStateBase::StaticClass();
+
 	// 기본 HUD 클래스 설정
 	HUDClass = AWjWorldHUDWaitingRoom::StaticClass();
 
-	// 초기 플레이어 수
-	PlayerCount = 0;
+	// ⭐ WaitingRoom 전용 GameState 클래스 설정
+	GameStateClass = AWjWorldGameStateWaitingRoom::StaticClass();
 }
 
 void AWjWorldGameModeWaitingRoom::BeginPlay()
@@ -29,6 +34,32 @@ void AWjWorldGameModeWaitingRoom::BeginPlay()
 		PC->SetInputMode(FInputModeGameAndUI());
 	}
 
+	// ⭐ GameState 초기화 (Server Only)
+	if (HasAuthority())
+	{
+		UWjWorldGameInstance* GameInstance = Cast<UWjWorldGameInstance>(GetGameInstance());
+		if (GameInstance && GameInstance->GetSessionManager())
+		{
+			AWjWorldGameStateWaitingRoom* WjGameState = GetGameState<AWjWorldGameStateWaitingRoom>();
+			if (WjGameState)
+			{
+				// SessionManager에서 방 설정 가져오기
+				const FRoomSettings& Settings = GameInstance->GetSessionManager()->GetLastRoomSettings();
+				WjGameState->InitializeRoomSettings(Settings);
+
+				UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameModeWaitingRoom: GameState initialized with room settings"));
+			}
+			else
+			{
+				UE_LOG(LogWjWorld, Error, TEXT("WjWorldGameModeWaitingRoom: Failed to get GameStateWaitingRoom"));
+			}
+		}
+		else
+		{
+			UE_LOG(LogWjWorld, Error, TEXT("WjWorldGameModeWaitingRoom: GameInstance or SessionManager is null"));
+		}
+	}
+
 	UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameModeWaitingRoom: BeginPlay - WaitingRoom loaded"));
 }
 
@@ -36,20 +67,39 @@ void AWjWorldGameModeWaitingRoom::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 
-	PlayerCount++;
-	UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameModeWaitingRoom: Player joined - Total: %d"), PlayerCount);
+	// ⭐ 디버깅: PlayerState 확인
+	if (NewPlayer)
+	{
+		AWjWorldPlayerStateBase* PlayerState = NewPlayer->GetPlayerState<AWjWorldPlayerStateBase>();
+		if (PlayerState)
+		{
+			UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameModeWaitingRoom: Player joined - Name: %s, ID: %d"), 
+				*PlayerState->GetPlayerName(), PlayerState->GetPlayerId());
+		}
+		else
+		{
+			UE_LOG(LogWjWorld, Error, TEXT("WjWorldGameModeWaitingRoom: PlayerState is NULL!"));
+		}
 
-	// TODO: 모든 클라이언트에게 플레이어 목록 업데이트 브로드캐스트
+		// GameState의 PlayerArray 확인
+		AWjWorldGameStateWaitingRoom* WjGameState = GetGameState<AWjWorldGameStateWaitingRoom>();
+		if (WjGameState)
+		{
+			UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameModeWaitingRoom: Total players in GameState: %d"), 
+				WjGameState->GetPlayerCount());
+		}
+	}
+	
+	// PlayerState는 GameState에서 자동으로 관리됨 (AddPlayerState)
 }
 
 void AWjWorldGameModeWaitingRoom::Logout(AController* Exiting)
 {
 	Super::Logout(Exiting);
 
-	PlayerCount--;
-	UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameModeWaitingRoom: Player left - Total: %d"), PlayerCount);
-
-	// TODO: 모든 클라이언트에게 플레이어 목록 업데이트 브로드캐스트
+	UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameModeWaitingRoom: Player left"));
+	
+	// PlayerState는 GameState에서 자동으로 관리됨 (RemovePlayerState)
 }
 
 void AWjWorldGameModeWaitingRoom::StartGame()

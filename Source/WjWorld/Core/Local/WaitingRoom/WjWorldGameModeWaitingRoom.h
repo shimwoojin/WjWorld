@@ -11,7 +11,7 @@
  * 
  * 기능:
  * - 플레이어 입장/퇴장 관리
- * - 준비 상태 관리
+ * - GameState 초기화
  * - 게임 시작 (호스트만)
  */
 UCLASS()
@@ -26,15 +26,7 @@ public:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
 
-	/** 현재 대기실 인원 수 */
-	UFUNCTION(BlueprintCallable, Category = "WaitingRoom")
-	int32 GetPlayerCount() const { return PlayerCount; }
-
 	/** 게임 시작 (호스트만 가능) */
 	UFUNCTION(BlueprintCallable, Category = "WaitingRoom")
 	void StartGame();
-
-private:
-	/** 현재 플레이어 수 */
-	int32 PlayerCount;
 };
