@@ -2,6 +2,7 @@
 
 #include "Core/Local/Lobby/WjWorldGameModeLobby.h"
 #include "Core/Local/Lobby/WjWorldHUDLobby.h"
+#include "Core/Local/Lobby/WjWorldPlayerControllerLobby.h"
 #include "UI/Session/CreateRoomWindow.h"
 #include "UI/Session/RoomListWindow.h"
 #include "Blueprint/UserWidget.h"
@@ -13,6 +14,18 @@ AWjWorldGameModeLobby::AWjWorldGameModeLobby()
 
 	// 기본 HUD 클래스 설정
 	HUDClass = AWjWorldHUDLobby::StaticClass();
+
+	// PlayerController 클래스 설정
+	PlayerControllerClass = AWjWorldPlayerControllerLobby::StaticClass();
+
+	// Character Blueprint 클래스 설정
+	static ConstructorHelpers::FClassFinder<APawn> CharacterBPClass(
+		TEXT("/Game/Core/Lobby/BP_CharacterLobby")
+	);
+	if (CharacterBPClass.Succeeded())
+	{
+		DefaultPawnClass = CharacterBPClass.Class;
+	}
 
 	// CreateRoomWindow Blueprint 클래스 자동 로드
 	static ConstructorHelpers::FClassFinder<UCreateRoomWindow> CreateRoomWindowBPClass(

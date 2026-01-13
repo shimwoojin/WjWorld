@@ -3,6 +3,7 @@
 #include "Core/Local/WaitingRoom/WjWorldGameModeWaitingRoom.h"
 #include "Core/Local/WaitingRoom/WjWorldHUDWaitingRoom.h"
 #include "Core/Local/WaitingRoom/WjWorldGameStateWaitingRoom.h"
+#include "Core/Local/WaitingRoom/WjWorldPlayerControllerWaitingRoom.h"
 #include "Core/Base/WjWorldPlayerStateBase.h"
 #include "Core/WjWorldGameInstance.h"
 #include "Core/Session/SessionManager.h"
@@ -20,6 +21,18 @@ AWjWorldGameModeWaitingRoom::AWjWorldGameModeWaitingRoom()
 
 	// ⭐ WaitingRoom 전용 GameState 클래스 설정
 	GameStateClass = AWjWorldGameStateWaitingRoom::StaticClass();
+
+	// PlayerController 클래스 설정
+	PlayerControllerClass = AWjWorldPlayerControllerWaitingRoom::StaticClass();
+
+	// Character Blueprint 클래스 설정
+	static ConstructorHelpers::FClassFinder<APawn> CharacterBPClass(
+		TEXT("/Game/Core/WaitingRoom/BP_CharacterWaitingRoom")
+	);
+	if (CharacterBPClass.Succeeded())
+	{
+		DefaultPawnClass = CharacterBPClass.Class;
+	}
 }
 
 void AWjWorldGameModeWaitingRoom::BeginPlay()

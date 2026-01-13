@@ -23,7 +23,8 @@ public class WjWorld : ModuleRules
             "GameplayTasks",      // 태스크 시스템
             "CommonUI",         // 공통 UI 컴포넌트
             "OnlineSubsystem",
-            "OnlineSubsystemUtils"
+            "OnlineSubsystemUtils",
+            "GamePlayCameras"   // 카메라 관련 기능
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {
