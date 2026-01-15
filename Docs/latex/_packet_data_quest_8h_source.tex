@@ -1,0 +1,25 @@
+\doxysection{Packet\+Data\+Quest.\+h}
+\hypertarget{_packet_data_quest_8h_source}{}\label{_packet_data_quest_8h_source}\index{Source/WjWorld/Network/PacketDataQuest.h@{Source/WjWorld/Network/PacketDataQuest.h}}
+\doxymbox{\hyperlink{_packet_data_quest_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_packet_data_8h}{PacketData.h}}"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{struct\ }WJWORLD\_API\ \doxymbox{\hyperlink{struct_active_quest_info}{ActiveQuestInfo}}}
+\DoxyCodeLine{00009\ \{}
+\DoxyCodeLine{00010\ \ \ \ \ \doxymbox{\hyperlink{_wj_types_8h_a8bd59a76bc16d369b75f3e08ed8976e9}{tid}}\ \doxymbox{\hyperlink{struct_active_quest_info_ad926597e8c792bf83b77873e019f1621}{QuestTID}};}
+\DoxyCodeLine{00011\ \};}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }WJWORLD\_API\ \doxymbox{\hyperlink{class_packet_quest_load_ntf}{PacketQuestLoadNtf}}\ :\ \textcolor{keyword}{public}\ \doxymbox{\hyperlink{class_packet_data_a6784b30e98d716bc3b6051d8ca44e1d3}{PacketData}}}
+\DoxyCodeLine{00014\ \{}
+\DoxyCodeLine{00015\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00016\ \ \ \ \ TArray<tid>\ \doxymbox{\hyperlink{class_packet_quest_load_ntf_ab91ccdb19b3002ae4fc5f78e696feee3}{InactiveQuestTIDs}};}
+\DoxyCodeLine{00017\ \ \ \ \ TArray<tid>\ \doxymbox{\hyperlink{class_packet_quest_load_ntf_ae6fb5c59eeab4c10c6efb520794c754c}{CompletedQuestTIDs}};}
+\DoxyCodeLine{00018\ \ \ \ \ TArray<ActiveQuestInfo>\ \doxymbox{\hyperlink{class_packet_quest_load_ntf_acce4348831fef152026b8215324f2400}{ActiveQuests}};}
+\DoxyCodeLine{00019\ \};}
+
+\end{DoxyCode}

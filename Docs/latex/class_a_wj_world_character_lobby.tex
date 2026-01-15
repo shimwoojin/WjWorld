@@ -1,0 +1,133 @@
+\doxysection{AWj\+World\+Character\+Lobby Class Reference}
+\hypertarget{class_a_wj_world_character_lobby}{}\label{class_a_wj_world_character_lobby}\index{AWjWorldCharacterLobby@{AWjWorldCharacterLobby}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Character\+Lobby.\+h$>$}
+
+Inheritance diagram for AWj\+World\+Character\+Lobby:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_a_wj_world_character_lobby}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_character_lobby_aefa0c8e69b4e5f1c2f28efa4508575fe}{AWj\+World\+Character\+Lobby}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_character_lobby_aeed3735b1c7c2e60e2cb905a04cf608a}{Update\+Character\+Appearance}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_a_wj_world_character_base}{AWj\+World\+Character\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_character_base_a89132c9b76acde3a302c706d1931769a}{AWj\+World\+Character\+Base}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_character_base_a10d3770bc59c61b53da2682a7faae57b}{Set\+Character\+View\+Mode}} (\doxymbox{\hyperlink{_wj_world_character_base_8h_aac1445d872a9eeaf8933fc54f5a955ab}{ECharacter\+View\+Mode}} New\+View\+Mode)
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a645d77e1ca3055c7b4450aa4d5eb111b}{Tick}} (float Delta\+Time) override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a8db3fd1326b0c7b43a2918902d3ffd1c}{Setup\+Player\+Input\+Component}} (class UInput\+Component \texorpdfstring{$\ast$}{*}Player\+Input\+Component) override
+\item 
+TObject\+Ptr$<$ UGameplay\+Camera\+Component $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a37598085f9ad1a4c22117c219844d7d9}{Get\+Game\+Play\+Camera}} ()
+\item 
+TObject\+Ptr$<$ UInput\+Mapping\+Context $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a948532d6c1431ced08d67cf65ecf419a}{Get\+Default\+Mapping\+Context}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_lobby_aa0aaf6d3b4e2574bab312e9644668dfd}{Begin\+Play}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_lobby_a3e292ed03197408d834e75f3316ec62e}{Initialize\+Character}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_lobby_ab405006578fda529eb2f38c358271a48}{Setup\+Input\+Bindings}} (class UInput\+Component \texorpdfstring{$\ast$}{*}Player\+Input\+Component) override
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_character_lobby_a943c39483e2e90fcdf53160b8513af9f}{Initialize\+Lobby\+Character}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \doxymbox{\hyperlink{class_a_wj_world_character_base}{AWj\+World\+Character\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_ae0763ed841b7861571568921978c477e}{Move}} (const FInput\+Action\+Value \&Value)
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a91d6696a44335c36fa3dcd8dd5d94395}{Interact}} (const FInput\+Action\+Value \&Value)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_a_wj_world_character_base}{AWj\+World\+Character\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UGameplay\+Camera\+Component $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a1e0d571d583e75bdfacbb250be2eb13f}{Game\+Play\+Camera}}
+\item 
+TObject\+Ptr$<$ UInput\+Mapping\+Context $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_ab6f878f0b06d53b21dd251f45f69e545}{Default\+Mapping\+Context}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+로비 캐릭터 클래스
+
+역할:\+
+\begin{DoxyItemize}
+\item 로비 화면에서 사용되는 캐릭터
+\item 로비 전용 기능 제공 (캐릭터 커스터마이징 등) 
+\end{DoxyItemize}
+
+\label{doc-constructors}
+\Hypertarget{class_a_wj_world_character_lobby_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_a_wj_world_character_lobby_aefa0c8e69b4e5f1c2f28efa4508575fe}\index{AWjWorldCharacterLobby@{AWjWorldCharacterLobby}!AWjWorldCharacterLobby@{AWjWorldCharacterLobby}}
+\index{AWjWorldCharacterLobby@{AWjWorldCharacterLobby}!AWjWorldCharacterLobby@{AWjWorldCharacterLobby}}
+\doxysubsubsection{\texorpdfstring{AWjWorldCharacterLobby()}{AWjWorldCharacterLobby()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_lobby_aefa0c8e69b4e5f1c2f28efa4508575fe} 
+AWj\+World\+Character\+Lobby::\+\+AWj\+World\+Character\+Lobby (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_a_wj_world_character_lobby_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_a_wj_world_character_lobby_aa0aaf6d3b4e2574bab312e9644668dfd}\index{AWjWorldCharacterLobby@{AWjWorldCharacterLobby}!BeginPlay@{BeginPlay}}
+\index{BeginPlay@{BeginPlay}!AWjWorldCharacterLobby@{AWjWorldCharacterLobby}}
+\doxysubsubsection{\texorpdfstring{BeginPlay()}{BeginPlay()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_lobby_aa0aaf6d3b4e2574bab312e9644668dfd} 
+void AWj\+World\+Character\+Lobby::\+\+Begin\+Play (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_a_wj_world_character_base_a38194801545a2d8433deb48ce36300d9}{AWj\+World\+Character\+Base}}.
+
+\Hypertarget{class_a_wj_world_character_lobby_a3e292ed03197408d834e75f3316ec62e}\index{AWjWorldCharacterLobby@{AWjWorldCharacterLobby}!InitializeCharacter@{InitializeCharacter}}
+\index{InitializeCharacter@{InitializeCharacter}!AWjWorldCharacterLobby@{AWjWorldCharacterLobby}}
+\doxysubsubsection{\texorpdfstring{InitializeCharacter()}{InitializeCharacter()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_lobby_a3e292ed03197408d834e75f3316ec62e} 
+void AWj\+World\+Character\+Lobby::\+\+Initialize\+Character (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+캐릭터 초기화 
+
+Reimplemented from \doxymbox{\hyperlink{class_a_wj_world_character_base_a6970818ef125ea9ce78baa7ae4247fca}{AWj\+World\+Character\+Base}}.
+
+\Hypertarget{class_a_wj_world_character_lobby_a943c39483e2e90fcdf53160b8513af9f}\index{AWjWorldCharacterLobby@{AWjWorldCharacterLobby}!InitializeLobbyCharacter@{InitializeLobbyCharacter}}
+\index{InitializeLobbyCharacter@{InitializeLobbyCharacter}!AWjWorldCharacterLobby@{AWjWorldCharacterLobby}}
+\doxysubsubsection{\texorpdfstring{InitializeLobbyCharacter()}{InitializeLobbyCharacter()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_lobby_a943c39483e2e90fcdf53160b8513af9f} 
+void AWj\+World\+Character\+Lobby::\+\+Initialize\+Lobby\+Character (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+로비 전용 초기화 \Hypertarget{class_a_wj_world_character_lobby_ab405006578fda529eb2f38c358271a48}\index{AWjWorldCharacterLobby@{AWjWorldCharacterLobby}!SetupInputBindings@{SetupInputBindings}}
+\index{SetupInputBindings@{SetupInputBindings}!AWjWorldCharacterLobby@{AWjWorldCharacterLobby}}
+\doxysubsubsection{\texorpdfstring{SetupInputBindings()}{SetupInputBindings()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_lobby_ab405006578fda529eb2f38c358271a48} 
+void AWj\+World\+Character\+Lobby::\+\+Setup\+Input\+Bindings (\begin{DoxyParamCaption}\item[{class UInput\+Component \texorpdfstring{$\ast$}{*}}]{Player\+Input\+Component}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+입력 바인딩 설정 
+
+Reimplemented from \doxymbox{\hyperlink{class_a_wj_world_character_base_accfb44f05f97b60c21c14ca7c07c8104}{AWj\+World\+Character\+Base}}.
+
+\Hypertarget{class_a_wj_world_character_lobby_aeed3735b1c7c2e60e2cb905a04cf608a}\index{AWjWorldCharacterLobby@{AWjWorldCharacterLobby}!UpdateCharacterAppearance@{UpdateCharacterAppearance}}
+\index{UpdateCharacterAppearance@{UpdateCharacterAppearance}!AWjWorldCharacterLobby@{AWjWorldCharacterLobby}}
+\doxysubsubsection{\texorpdfstring{UpdateCharacterAppearance()}{UpdateCharacterAppearance()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_lobby_aeed3735b1c7c2e60e2cb905a04cf608a} 
+void AWj\+World\+Character\+Lobby::\+\+Update\+Character\+Appearance (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+캐릭터 외형 변경 
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Local/\+\+Lobby/\+\doxymbox{\hyperlink{_wj_world_character_lobby_8h}{Wj\+World\+Character\+Lobby.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Local/\+\+Lobby/\+\doxymbox{\hyperlink{_wj_world_character_lobby_8cpp}{Wj\+World\+Character\+Lobby.\+cpp}}\end{DoxyCompactItemize}

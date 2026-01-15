@@ -1,0 +1,113 @@
+\doxysection{Create\+Room\+Window.\+h}
+\hypertarget{_create_room_window_8h_source}{}\label{_create_room_window_8h_source}\index{Source/WjWorld/UI/Session/CreateRoomWindow.h@{Source/WjWorld/UI/Session/CreateRoomWindow.h}}
+\doxymbox{\hyperlink{_create_room_window_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_user_widget_base_8h}{UI/WjWorldUserWidgetBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_session_types_8h}{Network/SessionTypes.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}CreateRoomWindow.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }UEditableTextBox;}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }UComboBoxString;}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }UButton;}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }UTextBlock;}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }UCheckBox;}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00024\ UCLASS()}
+\DoxyCodeLine{00025\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_create_room_window}{UCreateRoomWindow}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}}
+\DoxyCodeLine{00026\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00028\ \ \ \ \ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_create_room_window_afb2a8d42d4b4fc991b31a740abf956df}{NativeConstruct}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00033\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}UI"{}})}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_create_room_window_a0d96241b8eb758652a10399f31553bcb}{ShowPopup}}();}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00037\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}UI"{}})}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_create_room_window_a56a28d1a861dd58c04ad8f5fb17f8820}{ClosePopup}}();}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{comment}{//\string~\ UI\ 위젯\ 바인딩\ (Blueprint에서\ 설정)}}
+\DoxyCodeLine{00042\ \ \ \ \ }
+\DoxyCodeLine{00044\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00045\ \ \ \ \ TObjectPtr<UEditableTextBox>\ \doxymbox{\hyperlink{class_u_create_room_window_a49f1deee79bf0a2c3caa47742f27d4b4}{RoomNameTextBox}};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00048\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00049\ \ \ \ \ TObjectPtr<UComboBoxString>\ \doxymbox{\hyperlink{class_u_create_room_window_a3c878bcd7993554fede493d4a9990314}{GameModeComboBox}};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00052\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00053\ \ \ \ \ TObjectPtr<UComboBoxString>\ \doxymbox{\hyperlink{class_u_create_room_window_af63cb818e709fb587c8c7c33745fcfaf}{MapComboBox}};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00056\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00057\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_create_room_window_ac52492efb51816bfa23f744d3a0e4956}{MaxPlayersText}};}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00060\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00061\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_create_room_window_ac15b0040033b26c79edef628d91510d4}{DecreasePlayersButton}};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00064\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00065\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_create_room_window_a2e981b8ffda98d2402623f7ed3e9c35c}{IncreasePlayersButton}};}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00068\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00069\ \ \ \ \ TObjectPtr<UCheckBox>\ \doxymbox{\hyperlink{class_u_create_room_window_ac5a08a98a3c080627418125a2819b7dc}{PrivateCheckBox}};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00072\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00073\ \ \ \ \ TObjectPtr<UEditableTextBox>\ \doxymbox{\hyperlink{class_u_create_room_window_ab65b42146840e07e7c2e475c5f81d118}{PasswordTextBox}};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00076\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00077\ \ \ \ \ TObjectPtr<UCheckBox>\ \doxymbox{\hyperlink{class_u_create_room_window_a4b4928da710c70c20b183c61b23287e1}{AllowJoinInProgressCheckBox}};}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00080\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00081\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_create_room_window_aa9f31333935c2c4e70928ac937ef0fe3}{CancelButton}};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00084\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00085\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_create_room_window_a05c57219d41c09ca931e4583d83ababf}{CreateButton}};}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ protected:}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{comment}{//\string~\ 버튼\ 클릭\ 이벤트}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_create_room_window_aa00f195627ac45f75a8b130a49878fb7}{OnDecreasePlayersClicked}}();}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_create_room_window_a6dee420d89dbb49ec100efb241f238e6}{OnIncreasePlayersClicked}}();}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_create_room_window_a7bdee353da78d24ab338df3ad0819d11}{OnPrivateCheckBoxChanged}}(\textcolor{keywordtype}{bool}\ bIsChecked);}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_create_room_window_a6ae13c407e281de805418264497f3d72}{OnCancelClicked}}();}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_create_room_window_afe0673466defaaffd5db623cde361a80}{OnCreateClicked}}();}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{comment}{//\string~\ SessionManager\ 콜백}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_create_room_window_afa7ef3ca9f2dc3cec0594b65514ddda4}{OnRoomCreated}}(\textcolor{keywordtype}{bool}\ bWasSuccessful);}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ private:}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateMaxPlayersDisplay();}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordtype}{bool}\ ValidateInput(FString\&\ OutErrorMessage);}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00118\ \ \ \ \ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\ BuildRoomSettings();}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{void}\ InitializeGameModeOptions();}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordtype}{void}\ InitializeMapOptions();}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ private:}
+\DoxyCodeLine{00128\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00129\ \ \ \ \ int32\ CurrentMaxPlayers\ =\ 8;}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00132\ \ \ \ \ static\ constexpr\ int32\ MIN\_PLAYERS\ =\ 2;}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00135\ \ \ \ \ static\ constexpr\ int32\ MAX\_PLAYERS\ =\ 8;}
+\DoxyCodeLine{00136\ \};}
+
+\end{DoxyCode}

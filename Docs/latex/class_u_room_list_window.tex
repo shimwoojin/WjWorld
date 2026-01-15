@@ -1,0 +1,127 @@
+\doxysection{URoom\+List\+Window Class Reference}
+\hypertarget{class_u_room_list_window}{}\label{class_u_room_list_window}\index{URoomListWindow@{URoomListWindow}}
+
+
+{\ttfamily \+\#include $<$Room\+List\+Window.\+h$>$}
+
+Inheritance diagram for URoom\+List\+Window:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_u_room_list_window}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_room_list_window_a29f3364fc601c7857e21de6d40873bc6}{Native\+Construct}} () override
+\item 
+void \doxymbox{\hyperlink{class_u_room_list_window_a9daffd62c2d5771e3607a8cd28be3df3}{Show\+Popup}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_room_list_window_a1767984f39102ff2caf2eb7cb320cc4e}{Close\+Popup}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{class_u_room_list_window_a05027280b80c30cf1f8f6a1dd96be427}{On\+Refresh\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_room_list_window_a99dd356c244142c43d9cc15beb2458d2}{On\+Close\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_room_list_window_a9d338f23c45e816a6903e66ddcd66de5}{On\+Rooms\+Found}} (bool b\+Was\+Successful, const TArray$<$ \doxymbox{\hyperlink{struct_f_room_info}{FRoom\+Info}} $>$ \&Rooms)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UScroll\+Box $>$ \doxymbox{\hyperlink{class_u_room_list_window_aff4a2d142c6d66ea21e7953698b4b3ba}{Room\+List\+Scroll\+Box}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_room_list_window_af8e1bcefb15f0884e5cbe442964e50d1}{Refresh\+Button}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_room_list_window_a84f2d9472c86351e2a98eedb7fd0dcc6}{Close\+Button}}
+\item 
+TSubclass\+Of$<$ \doxymbox{\hyperlink{class_u_room_list_entry_widget}{URoom\+List\+Entry\+Widget}} $>$ \doxymbox{\hyperlink{class_u_room_list_window_ad885bb485fcb7372a15b7f4bce6b7142}{Room\+List\+Entry\+Widget\+Class}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+방 목록 UI
+
+기능:\+
+\begin{DoxyItemize}
+\item 방 검색
+\item 방 목록 표시
+\item 방 입장 
+\end{DoxyItemize}
+
+\label{doc-func-members}
+\Hypertarget{class_u_room_list_window_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_room_list_window_a1767984f39102ff2caf2eb7cb320cc4e}\index{URoomListWindow@{URoomListWindow}!ClosePopup@{ClosePopup}}
+\index{ClosePopup@{ClosePopup}!URoomListWindow@{URoomListWindow}}
+\doxysubsubsection{\texorpdfstring{ClosePopup()}{ClosePopup()}}
+{\footnotesize\ttfamily \label{class_u_room_list_window_a1767984f39102ff2caf2eb7cb320cc4e} 
+void URoom\+List\+Window::\+\+Close\+Popup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+팝업 닫기 \Hypertarget{class_u_room_list_window_a29f3364fc601c7857e21de6d40873bc6}\index{URoomListWindow@{URoomListWindow}!NativeConstruct@{NativeConstruct}}
+\index{NativeConstruct@{NativeConstruct}!URoomListWindow@{URoomListWindow}}
+\doxysubsubsection{\texorpdfstring{NativeConstruct()}{NativeConstruct()}}
+{\footnotesize\ttfamily \label{class_u_room_list_window_a29f3364fc601c7857e21de6d40873bc6} 
+void URoom\+List\+Window::\+\+Native\+Construct (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_room_list_window_a99dd356c244142c43d9cc15beb2458d2}\index{URoomListWindow@{URoomListWindow}!OnCloseClicked@{OnCloseClicked}}
+\index{OnCloseClicked@{OnCloseClicked}!URoomListWindow@{URoomListWindow}}
+\doxysubsubsection{\texorpdfstring{OnCloseClicked()}{OnCloseClicked()}}
+{\footnotesize\ttfamily \label{class_u_room_list_window_a99dd356c244142c43d9cc15beb2458d2} 
+void URoom\+List\+Window::\+\+On\+Close\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_room_list_window_a05027280b80c30cf1f8f6a1dd96be427}\index{URoomListWindow@{URoomListWindow}!OnRefreshClicked@{OnRefreshClicked}}
+\index{OnRefreshClicked@{OnRefreshClicked}!URoomListWindow@{URoomListWindow}}
+\doxysubsubsection{\texorpdfstring{OnRefreshClicked()}{OnRefreshClicked()}}
+{\footnotesize\ttfamily \label{class_u_room_list_window_a05027280b80c30cf1f8f6a1dd96be427} 
+void URoom\+List\+Window::\+\+On\+Refresh\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_room_list_window_a9d338f23c45e816a6903e66ddcd66de5}\index{URoomListWindow@{URoomListWindow}!OnRoomsFound@{OnRoomsFound}}
+\index{OnRoomsFound@{OnRoomsFound}!URoomListWindow@{URoomListWindow}}
+\doxysubsubsection{\texorpdfstring{OnRoomsFound()}{OnRoomsFound()}}
+{\footnotesize\ttfamily \label{class_u_room_list_window_a9d338f23c45e816a6903e66ddcd66de5} 
+void URoom\+List\+Window::\+\+On\+Rooms\+Found (\begin{DoxyParamCaption}\item[{bool}]{b\+Was\+Successful}{, }\item[{const TArray$<$ \doxymbox{\hyperlink{struct_f_room_info}{FRoom\+Info}} $>$ \&}]{Rooms}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_room_list_window_a9daffd62c2d5771e3607a8cd28be3df3}\index{URoomListWindow@{URoomListWindow}!ShowPopup@{ShowPopup}}
+\index{ShowPopup@{ShowPopup}!URoomListWindow@{URoomListWindow}}
+\doxysubsubsection{\texorpdfstring{ShowPopup()}{ShowPopup()}}
+{\footnotesize\ttfamily \label{class_u_room_list_window_a9daffd62c2d5771e3607a8cd28be3df3} 
+void URoom\+List\+Window::\+\+Show\+Popup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+팝업 표시 
+
+\label{doc-variable-members}
+\Hypertarget{class_u_room_list_window_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_room_list_window_a84f2d9472c86351e2a98eedb7fd0dcc6}\index{URoomListWindow@{URoomListWindow}!CloseButton@{CloseButton}}
+\index{CloseButton@{CloseButton}!URoomListWindow@{URoomListWindow}}
+\doxysubsubsection{\texorpdfstring{CloseButton}{CloseButton}}
+{\footnotesize\ttfamily \label{class_u_room_list_window_a84f2d9472c86351e2a98eedb7fd0dcc6} 
+TObject\+Ptr$<$UButton$>$ URoom\+List\+Window::\+\+Close\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+닫기 버튼 \Hypertarget{class_u_room_list_window_af8e1bcefb15f0884e5cbe442964e50d1}\index{URoomListWindow@{URoomListWindow}!RefreshButton@{RefreshButton}}
+\index{RefreshButton@{RefreshButton}!URoomListWindow@{URoomListWindow}}
+\doxysubsubsection{\texorpdfstring{RefreshButton}{RefreshButton}}
+{\footnotesize\ttfamily \label{class_u_room_list_window_af8e1bcefb15f0884e5cbe442964e50d1} 
+TObject\+Ptr$<$UButton$>$ URoom\+List\+Window::\+\+Refresh\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+새로고침 버튼 \Hypertarget{class_u_room_list_window_ad885bb485fcb7372a15b7f4bce6b7142}\index{URoomListWindow@{URoomListWindow}!RoomListEntryWidgetClass@{RoomListEntryWidgetClass}}
+\index{RoomListEntryWidgetClass@{RoomListEntryWidgetClass}!URoomListWindow@{URoomListWindow}}
+\doxysubsubsection{\texorpdfstring{RoomListEntryWidgetClass}{RoomListEntryWidgetClass}}
+{\footnotesize\ttfamily \label{class_u_room_list_window_ad885bb485fcb7372a15b7f4bce6b7142} 
+TSubclass\+Of$<$\doxymbox{\hyperlink{class_u_room_list_entry_widget}{URoom\+List\+Entry\+Widget}}$>$ URoom\+List\+Window::\+\+Room\+List\+Entry\+Widget\+Class\hspace{0.3cm}{\ttfamily [protected]}}
+
+방 목록 엔트리 위젯 클래스 \Hypertarget{class_u_room_list_window_aff4a2d142c6d66ea21e7953698b4b3ba}\index{URoomListWindow@{URoomListWindow}!RoomListScrollBox@{RoomListScrollBox}}
+\index{RoomListScrollBox@{RoomListScrollBox}!URoomListWindow@{URoomListWindow}}
+\doxysubsubsection{\texorpdfstring{RoomListScrollBox}{RoomListScrollBox}}
+{\footnotesize\ttfamily \label{class_u_room_list_window_aff4a2d142c6d66ea21e7953698b4b3ba} 
+TObject\+Ptr$<$UScroll\+Box$>$ URoom\+List\+Window::\+\+Room\+List\+Scroll\+Box\hspace{0.3cm}{\ttfamily [protected]}}
+
+방 목록 스크롤박스 
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Session/\+\doxymbox{\hyperlink{_room_list_window_8h}{Room\+List\+Window.\+h}}\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Session/\+\doxymbox{\hyperlink{_room_list_window_8cpp}{Room\+List\+Window.\+cpp}}\end{DoxyCompactItemize}

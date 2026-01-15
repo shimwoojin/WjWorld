@@ -1,0 +1,153 @@
+\doxysection{AWj\+World\+Player\+Controller\+Waiting\+Room Class Reference}
+\hypertarget{class_a_wj_world_player_controller_waiting_room}{}\label{class_a_wj_world_player_controller_waiting_room}\index{AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Player\+Controller\+Waiting\+Room.\+h$>$}
+
+Inheritance diagram for AWj\+World\+Player\+Controller\+Waiting\+Room:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_a_wj_world_player_controller_waiting_room}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_a5b4ea1aa01d55628021c10957a79b7d8}{AWj\+World\+Player\+Controller\+Waiting\+Room}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_ab729ceb9e18fedcf886774114e475cfa}{Toggle\+Ready}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_a6c8913daf80cebbfad204e244786c744}{Request\+Change\+Team}} (int32 New\+Team\+ID)
+\item 
+bool \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_a98cca4eb7f48584e5e5bb6496c64c929}{Can\+Start\+Game}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_a_wj_world_player_controller_base}{AWj\+World\+Player\+Controller\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a8f14af55142a1ba5c59962e72119036b}{AWj\+World\+Player\+Controller\+Base}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a9f54609e2389a05ceecfda4d692b6e11}{Check\+Input\+Mode}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_aa497bc09d850e10891a40ef9fb7a9016}{Change\+Character\+View\+Mode}} (int32 In\+View\+Mode)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_ac239e1209df571f463216f7f2bf99277}{Begin\+Play}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_ab7c41ee52e7a933c6562996826ec10a5}{Initialize\+Controller}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_a5994cdea8794b3076a81561c4e427817}{Initialize\+UI}} () override
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_a5d6ec35ad1f05cf80492694032e9bea0}{Initialize\+Waiting\+Room\+Controller}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_afdecafb1dc98dc643e408d65b612e76d}{Create\+Waiting\+Room\+UI}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_a5238667721c9b177c26d8bb17ac0c70f}{Server\+Toggle\+Ready}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_aa8f85195e65418178885736b6465d907}{Server\+Request\+Change\+Team}} (int32 New\+Team\+ID)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+대기실 플레이어 컨트롤러 클래스
+
+역할:\+
+\begin{DoxyItemize}
+\item 대기실 화면의 입력 처리
+\item 대기실 UI 관리
+\item 준비 상태 및 팀 선택 관리 
+\end{DoxyItemize}
+
+\label{doc-constructors}
+\Hypertarget{class_a_wj_world_player_controller_waiting_room_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_a_wj_world_player_controller_waiting_room_a5b4ea1aa01d55628021c10957a79b7d8}\index{AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}!AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}}
+\index{AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}!AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{AWjWorldPlayerControllerWaitingRoom()}{AWjWorldPlayerControllerWaitingRoom()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_waiting_room_a5b4ea1aa01d55628021c10957a79b7d8} 
+AWj\+World\+Player\+Controller\+Waiting\+Room::\+\+AWj\+World\+Player\+Controller\+Waiting\+Room (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_a_wj_world_player_controller_waiting_room_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_a_wj_world_player_controller_waiting_room_ac239e1209df571f463216f7f2bf99277}\index{AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}!BeginPlay@{BeginPlay}}
+\index{BeginPlay@{BeginPlay}!AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{BeginPlay()}{BeginPlay()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_waiting_room_ac239e1209df571f463216f7f2bf99277} 
+void AWj\+World\+Player\+Controller\+Waiting\+Room::\+\+Begin\+Play (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a346d46bedb16e608ca07ae3d568ffbf3}{AWj\+World\+Player\+Controller\+Base}}.
+
+\Hypertarget{class_a_wj_world_player_controller_waiting_room_a98cca4eb7f48584e5e5bb6496c64c929}\index{AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}!CanStartGame@{CanStartGame}}
+\index{CanStartGame@{CanStartGame}!AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{CanStartGame()}{CanStartGame()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_waiting_room_a98cca4eb7f48584e5e5bb6496c64c929} 
+bool AWj\+World\+Player\+Controller\+Waiting\+Room::\+\+Can\+Start\+Game (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+게임 시작 준비 완료 확인 \Hypertarget{class_a_wj_world_player_controller_waiting_room_afdecafb1dc98dc643e408d65b612e76d}\index{AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}!CreateWaitingRoomUI@{CreateWaitingRoomUI}}
+\index{CreateWaitingRoomUI@{CreateWaitingRoomUI}!AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{CreateWaitingRoomUI()}{CreateWaitingRoomUI()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_waiting_room_afdecafb1dc98dc643e408d65b612e76d} 
+void AWj\+World\+Player\+Controller\+Waiting\+Room::\+\+Create\+Waiting\+Room\+UI (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+대기실 UI 생성 \Hypertarget{class_a_wj_world_player_controller_waiting_room_ab7c41ee52e7a933c6562996826ec10a5}\index{AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}!InitializeController@{InitializeController}}
+\index{InitializeController@{InitializeController}!AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{InitializeController()}{InitializeController()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_waiting_room_ab7c41ee52e7a933c6562996826ec10a5} 
+void AWj\+World\+Player\+Controller\+Waiting\+Room::\+\+Initialize\+Controller (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+컨트롤러 초기화 
+
+Reimplemented from \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a6d65e79630d3a58f0b941f6099170969}{AWj\+World\+Player\+Controller\+Base}}.
+
+\Hypertarget{class_a_wj_world_player_controller_waiting_room_a5994cdea8794b3076a81561c4e427817}\index{AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}!InitializeUI@{InitializeUI}}
+\index{InitializeUI@{InitializeUI}!AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{InitializeUI()}{InitializeUI()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_waiting_room_a5994cdea8794b3076a81561c4e427817} 
+void AWj\+World\+Player\+Controller\+Waiting\+Room::\+\+Initialize\+UI (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+UI 초기화 
+
+Reimplemented from \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_aaed34d3d42fac574934d7923eb8fec0c}{AWj\+World\+Player\+Controller\+Base}}.
+
+\Hypertarget{class_a_wj_world_player_controller_waiting_room_a5d6ec35ad1f05cf80492694032e9bea0}\index{AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}!InitializeWaitingRoomController@{InitializeWaitingRoomController}}
+\index{InitializeWaitingRoomController@{InitializeWaitingRoomController}!AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{InitializeWaitingRoomController()}{InitializeWaitingRoomController()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_waiting_room_a5d6ec35ad1f05cf80492694032e9bea0} 
+void AWj\+World\+Player\+Controller\+Waiting\+Room::\+\+Initialize\+Waiting\+Room\+Controller (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+대기실 전용 초기화 \Hypertarget{class_a_wj_world_player_controller_waiting_room_a6c8913daf80cebbfad204e244786c744}\index{AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}!RequestChangeTeam@{RequestChangeTeam}}
+\index{RequestChangeTeam@{RequestChangeTeam}!AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{RequestChangeTeam()}{RequestChangeTeam()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_waiting_room_a6c8913daf80cebbfad204e244786c744} 
+void AWj\+World\+Player\+Controller\+Waiting\+Room::\+\+Request\+Change\+Team (\begin{DoxyParamCaption}\item[{int32}]{New\+Team\+ID}{}\end{DoxyParamCaption})}
+
+팀 변경 요청 \Hypertarget{class_a_wj_world_player_controller_waiting_room_aa8f85195e65418178885736b6465d907}\index{AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}!ServerRequestChangeTeam@{ServerRequestChangeTeam}}
+\index{ServerRequestChangeTeam@{ServerRequestChangeTeam}!AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{ServerRequestChangeTeam()}{ServerRequestChangeTeam()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_waiting_room_aa8f85195e65418178885736b6465d907} 
+void AWj\+World\+Player\+Controller\+Waiting\+Room::\+\+Server\+Request\+Change\+Team (\begin{DoxyParamCaption}\item[{int32}]{New\+Team\+ID}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+팀 변경 요청 처리 \Hypertarget{class_a_wj_world_player_controller_waiting_room_a5238667721c9b177c26d8bb17ac0c70f}\index{AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}!ServerToggleReady@{ServerToggleReady}}
+\index{ServerToggleReady@{ServerToggleReady}!AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{ServerToggleReady()}{ServerToggleReady()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_waiting_room_a5238667721c9b177c26d8bb17ac0c70f} 
+void AWj\+World\+Player\+Controller\+Waiting\+Room::\+\+Server\+Toggle\+Ready (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+준비 상태 변경 처리 \Hypertarget{class_a_wj_world_player_controller_waiting_room_ab729ceb9e18fedcf886774114e475cfa}\index{AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}!ToggleReady@{ToggleReady}}
+\index{ToggleReady@{ToggleReady}!AWjWorldPlayerControllerWaitingRoom@{AWjWorldPlayerControllerWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{ToggleReady()}{ToggleReady()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_waiting_room_ab729ceb9e18fedcf886774114e475cfa} 
+void AWj\+World\+Player\+Controller\+Waiting\+Room::\+\+Toggle\+Ready (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+준비 상태 토글 
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Local/\+\+Waiting\+Room/\+\doxymbox{\hyperlink{_wj_world_player_controller_waiting_room_8h}{Wj\+World\+Player\+Controller\+Waiting\+Room.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Local/\+\+Waiting\+Room/\+\doxymbox{\hyperlink{_wj_world_player_controller_waiting_room_8cpp}{Wj\+World\+Player\+Controller\+Waiting\+Room.\+cpp}}\end{DoxyCompactItemize}

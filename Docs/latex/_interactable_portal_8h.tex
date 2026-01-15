@@ -1,0 +1,60 @@
+\doxysection{Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Interact/\+\+Interactable\+Portal.h File Reference}
+\hypertarget{_interactable_portal_8h}{}\label{_interactable_portal_8h}\index{Source/WjWorld/GamePlay/Interact/InteractablePortal.h@{Source/WjWorld/GamePlay/Interact/InteractablePortal.h}}
+{\ttfamily \+\#include "{}Core\+Minimal.\+h"{}}\newline
+{\ttfamily \+\#include "{}Game\+Framework/\+\+Actor.\+h"{}}\newline
+{\ttfamily \+\#include "{}Components/\+\+Box\+Component.\+h"{}}\newline
+{\ttfamily \+\#include "{}Components/\+\+Static\+Mesh\+Component.\+h"{}}\newline
+{\ttfamily \+\#include "{}Components/\+\+Widget\+Component.\+h"{}}\newline
+{\ttfamily \+\#include "{}Engine/\+\+Trigger\+Box.\+h"{}}\newline
+{\ttfamily \+\#include "{}Interactable\+Portal.\+generated.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \doxymbox{\hyperlink{class_a_interactable_portal}{AInteractable\+Portal}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \doxymbox{\hyperlink{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680b}{EPortal\+Type}} :\+ uint8 \{ \doxymbox{\hyperlink{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680baa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = "{}\+Mini Game"{})
+, \doxymbox{\hyperlink{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680baa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = "{}\+Multiplayer"{})
+, \doxymbox{\hyperlink{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680baa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = "{}\+Tutorial"{})
+, \doxymbox{\hyperlink{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680baa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = "{}\+Custom"{})
+ \}
+\end{DoxyCompactItemize}
+
+
+\label{doc-enum-members}
+\Hypertarget{_interactable_portal_8h_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680b}\index{InteractablePortal.h@{InteractablePortal.h}!EPortalType@{EPortalType}}
+\index{EPortalType@{EPortalType}!InteractablePortal.h@{InteractablePortal.h}}
+\doxysubsubsection{\texorpdfstring{EPortalType}{EPortalType}}
+{\footnotesize\ttfamily \label{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680b} 
+enum class \doxymbox{\hyperlink{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680b}{EPortal\+Type}} :\+ uint8\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!InteractablePortal.h@{InteractablePortal.h}}
+\index{InteractablePortal.h@{InteractablePortal.h}!UMETA@{UMETA}}
+}\Hypertarget{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680baa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680baa3f80d8f0f1b4ffa8c475f5d60ea5635} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!InteractablePortal.h@{InteractablePortal.h}}
+\index{InteractablePortal.h@{InteractablePortal.h}!UMETA@{UMETA}}
+}\Hypertarget{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680baa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680baa3f80d8f0f1b4ffa8c475f5d60ea5635} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!InteractablePortal.h@{InteractablePortal.h}}
+\index{InteractablePortal.h@{InteractablePortal.h}!UMETA@{UMETA}}
+}\Hypertarget{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680baa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680baa3f80d8f0f1b4ffa8c475f5d60ea5635} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!InteractablePortal.h@{InteractablePortal.h}}
+\index{InteractablePortal.h@{InteractablePortal.h}!UMETA@{UMETA}}
+}\Hypertarget{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680baa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680baa3f80d8f0f1b4ffa8c475f5d60ea5635} 
+UMETA&\\
+\hline
+
+\end{DoxyEnumFields}

@@ -1,0 +1,49 @@
+\doxysection{Wj\+World\+Player\+Controller\+Waiting\+Room.\+h}
+\hypertarget{_wj_world_player_controller_waiting_room_8h_source}{}\label{_wj_world_player_controller_waiting_room_8h_source}\index{Source/WjWorld/Core/Local/WaitingRoom/WjWorldPlayerControllerWaitingRoom.h@{Source/WjWorld/Core/Local/WaitingRoom/WjWorldPlayerControllerWaitingRoom.h}}
+\doxymbox{\hyperlink{_wj_world_player_controller_waiting_room_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_player_controller_base_8h}{Core/Base/WjWorldPlayerControllerBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldPlayerControllerWaitingRoom.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00017\ UCLASS()}
+\DoxyCodeLine{00018\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_a5b4ea1aa01d55628021c10957a79b7d8}{AWjWorldPlayerControllerWaitingRoom}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a8f14af55142a1ba5c59962e72119036b}{AWjWorldPlayerControllerBase}}}
+\DoxyCodeLine{00019\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_a5b4ea1aa01d55628021c10957a79b7d8}{AWjWorldPlayerControllerWaitingRoom}}();}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_ac239e1209df571f463216f7f2bf99277}{BeginPlay}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_ab7c41ee52e7a933c6562996826ec10a5}{InitializeController}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_a5994cdea8794b3076a81561c4e427817}{InitializeUI}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00035\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}WaitingRoom"{}})}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_ab729ceb9e18fedcf886774114e475cfa}{ToggleReady}}();}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00041\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}WaitingRoom"{}})}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_a6c8913daf80cebbfad204e244786c744}{RequestChangeTeam}}(int32\ NewTeamID);}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00047\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}WaitingRoom"{}})}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_a98cca4eb7f48584e5e5bb6496c64c929}{CanStartGame}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_a5d6ec35ad1f05cf80492694032e9bea0}{InitializeWaitingRoomController}}();}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_afdecafb1dc98dc643e408d65b612e76d}{CreateWaitingRoomUI}}();}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00064\ \ \ \ \ UFUNCTION(Server,\ Reliable)}
+\DoxyCodeLine{00065\ \ \ \ \ void\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_a5238667721c9b177c26d8bb17ac0c70f}{ServerToggleReady}}();}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00070\ \ \ \ \ UFUNCTION(Server,\ Reliable)}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_aa8f85195e65418178885736b6465d907}{ServerRequestChangeTeam}}(int32\ NewTeamID);}
+\DoxyCodeLine{00072\ \};}
+
+\end{DoxyCode}

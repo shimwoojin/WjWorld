@@ -1,0 +1,31 @@
+\doxysection{Quest\+Instance.\+h}
+\hypertarget{_quest_instance_8h_source}{}\label{_quest_instance_8h_source}\index{Source/WjWorld/GamePlay/Quest/QuestInstance.h@{Source/WjWorld/GamePlay/Quest/QuestInstance.h}}
+\doxymbox{\hyperlink{_quest_instance_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}UObject/NoExportTypes.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_quest_state_8h}{QuestState.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_packet_data_quest_8h}{Network/PacketDataQuest.h}}"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}QuestInstance.generated.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ UCLASS()}
+\DoxyCodeLine{00012\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_quest_instance}{UQuestInstance}}\ :\ public\ UObject}
+\DoxyCodeLine{00013\ \{}
+\DoxyCodeLine{00014\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00015\ \ \ \ \ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ \ \ TObjectPtr<UQuestInstance>\ \doxymbox{\hyperlink{class_u_quest_instance_a7dcbe0347cd88b1869c382d0338718a7}{FillFromQuestInfo}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_active_quest_info}{ActiveQuestInfo}}\&\ InQuestInfo);}
+\DoxyCodeLine{00018\ \ \ \ \ \doxymbox{\hyperlink{_quest_state_8h_a2326cda0ed986c3f7620f923b6c73144}{EQuestState}}\ \doxymbox{\hyperlink{class_u_quest_instance_ac662406f381f597b7442faf701a17009}{Update}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_active_quest_info}{ActiveQuestInfo}}\&\ InQuestInfo);}
+\DoxyCodeLine{00019\ \ \ \ \ \doxymbox{\hyperlink{_quest_state_8h_a2326cda0ed986c3f7620f923b6c73144}{EQuestState}}\ \doxymbox{\hyperlink{class_u_quest_instance_ac662406f381f597b7442faf701a17009}{Update}}();}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_quest_instance_a98db6a0086bfee6a487b257a9a7f324f}{CanAutoCompleted}}();}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00023\ \ \ \ \ \doxymbox{\hyperlink{_quest_state_8h_a2326cda0ed986c3f7620f923b6c73144}{EQuestState}}\ QuestState;}
+\DoxyCodeLine{00024\ \ \ \ \ \doxymbox{\hyperlink{struct_active_quest_info}{ActiveQuestInfo}}\ QuestInfo;}
+\DoxyCodeLine{00025\ \};}
+
+\end{DoxyCode}

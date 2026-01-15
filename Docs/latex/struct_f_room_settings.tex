@@ -1,0 +1,78 @@
+\doxysection{FRoom\+Settings Struct Reference}
+\hypertarget{struct_f_room_settings}{}\label{struct_f_room_settings}\index{FRoomSettings@{FRoomSettings}}
+
+
+{\ttfamily \+\#include $<$Session\+Types.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FString \doxymbox{\hyperlink{struct_f_room_settings_aea3c222f30b1ea0d2202edb8a4ee39ff}{Room\+Name}} = TEXT("{}Default Room"{})
+\item 
+int32 \doxymbox{\hyperlink{struct_f_room_settings_a628a89f4015c780a15b106b9f4937aa9}{Max\+Players}} = 8
+\item 
+bool \doxymbox{\hyperlink{struct_f_room_settings_a275b576d8cddeaff6326fa172bc50458}{b\+Is\+Private}} = false
+\item 
+FString \doxymbox{\hyperlink{struct_f_room_settings_a4f3b162a5ec1b681bbc5339eb0c31c49}{Game\+Mode}} = TEXT("{}Default"{})
+\item 
+FString \doxymbox{\hyperlink{struct_f_room_settings_ac8f9db9d62cf3e681f5c4f0554f8bccd}{Map\+Name}} = TEXT("{}Default\+Map"{})
+\item 
+bool \doxymbox{\hyperlink{struct_f_room_settings_aa459d06f762bd1647f85b0db9ade83b0}{b\+Allow\+Join\+In\+Progress}} = true
+\item 
+FString \doxymbox{\hyperlink{struct_f_room_settings_a358d9cb232687b7ec817dde204f117bb}{Password}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+방 생성 설정 
+
+\label{doc-variable-members}
+\Hypertarget{struct_f_room_settings_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_f_room_settings_aa459d06f762bd1647f85b0db9ade83b0}\index{FRoomSettings@{FRoomSettings}!bAllowJoinInProgress@{bAllowJoinInProgress}}
+\index{bAllowJoinInProgress@{bAllowJoinInProgress}!FRoomSettings@{FRoomSettings}}
+\doxysubsubsection{\texorpdfstring{bAllowJoinInProgress}{bAllowJoinInProgress}}
+{\footnotesize\ttfamily \label{struct_f_room_settings_aa459d06f762bd1647f85b0db9ade83b0} 
+bool FRoom\+Settings::\+b\+Allow\+Join\+In\+Progress = true}
+
+게임 중 입장 허용 여부 \Hypertarget{struct_f_room_settings_a275b576d8cddeaff6326fa172bc50458}\index{FRoomSettings@{FRoomSettings}!bIsPrivate@{bIsPrivate}}
+\index{bIsPrivate@{bIsPrivate}!FRoomSettings@{FRoomSettings}}
+\doxysubsubsection{\texorpdfstring{bIsPrivate}{bIsPrivate}}
+{\footnotesize\ttfamily \label{struct_f_room_settings_a275b576d8cddeaff6326fa172bc50458} 
+bool FRoom\+Settings::\+b\+Is\+Private = false}
+
+비공개 방 여부 \Hypertarget{struct_f_room_settings_a4f3b162a5ec1b681bbc5339eb0c31c49}\index{FRoomSettings@{FRoomSettings}!GameMode@{GameMode}}
+\index{GameMode@{GameMode}!FRoomSettings@{FRoomSettings}}
+\doxysubsubsection{\texorpdfstring{GameMode}{GameMode}}
+{\footnotesize\ttfamily \label{struct_f_room_settings_a4f3b162a5ec1b681bbc5339eb0c31c49} 
+FString FRoom\+Settings::\+\+Game\+Mode = TEXT("{}Default"{})}
+
+게임 모드 (예:\+ Speed\+Race, Item\+Race 등) \Hypertarget{struct_f_room_settings_ac8f9db9d62cf3e681f5c4f0554f8bccd}\index{FRoomSettings@{FRoomSettings}!MapName@{MapName}}
+\index{MapName@{MapName}!FRoomSettings@{FRoomSettings}}
+\doxysubsubsection{\texorpdfstring{MapName}{MapName}}
+{\footnotesize\ttfamily \label{struct_f_room_settings_ac8f9db9d62cf3e681f5c4f0554f8bccd} 
+FString FRoom\+Settings::\+\+Map\+Name = TEXT("{}Default\+Map"{})}
+
+맵 이름 \Hypertarget{struct_f_room_settings_a628a89f4015c780a15b106b9f4937aa9}\index{FRoomSettings@{FRoomSettings}!MaxPlayers@{MaxPlayers}}
+\index{MaxPlayers@{MaxPlayers}!FRoomSettings@{FRoomSettings}}
+\doxysubsubsection{\texorpdfstring{MaxPlayers}{MaxPlayers}}
+{\footnotesize\ttfamily \label{struct_f_room_settings_a628a89f4015c780a15b106b9f4937aa9} 
+int32 FRoom\+Settings::\+\+Max\+Players = 8}
+
+최대 플레이어 수 \Hypertarget{struct_f_room_settings_a358d9cb232687b7ec817dde204f117bb}\index{FRoomSettings@{FRoomSettings}!Password@{Password}}
+\index{Password@{Password}!FRoomSettings@{FRoomSettings}}
+\doxysubsubsection{\texorpdfstring{Password}{Password}}
+{\footnotesize\ttfamily \label{struct_f_room_settings_a358d9cb232687b7ec817dde204f117bb} 
+FString FRoom\+Settings::\+\+Password}
+
+비밀번호 (비공개 방용) \Hypertarget{struct_f_room_settings_aea3c222f30b1ea0d2202edb8a4ee39ff}\index{FRoomSettings@{FRoomSettings}!RoomName@{RoomName}}
+\index{RoomName@{RoomName}!FRoomSettings@{FRoomSettings}}
+\doxysubsubsection{\texorpdfstring{RoomName}{RoomName}}
+{\footnotesize\ttfamily \label{struct_f_room_settings_aea3c222f30b1ea0d2202edb8a4ee39ff} 
+FString FRoom\+Settings::\+\+Room\+Name = TEXT("{}Default Room"{})}
+
+방 이름 
+
+The documentation for this struct was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Network/\+\doxymbox{\hyperlink{_session_types_8h}{Session\+Types.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,38 @@
+\doxysection{Wj\+World\+HUDWaiting\+Room.\+h}
+\hypertarget{_wj_world_h_u_d_waiting_room_8h_source}{}\label{_wj_world_h_u_d_waiting_room_8h_source}\index{Source/WjWorld/Core/Local/WaitingRoom/WjWorldHUDWaitingRoom.h@{Source/WjWorld/Core/Local/WaitingRoom/WjWorldHUDWaitingRoom.h}}
+\doxymbox{\hyperlink{_wj_world_h_u_d_waiting_room_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_h_u_d_base_8h}{Core/Base/WjWorldHUDBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldHUDWaitingRoom.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget}{UWaitingRoomHUDWidget}};}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00020\ UCLASS()}
+\DoxyCodeLine{00021\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_waiting_room_ab44a30d4c01e73b2d4c8cb5be0cf80f7}{AWjWorldHUDWaitingRoom}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_base}{AWjWorldHUDBase}}}
+\DoxyCodeLine{00022\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00024\ \ \ \ \ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_waiting_room_ab44a30d4c01e73b2d4c8cb5be0cf80f7}{AWjWorldHUDWaitingRoom}}();}
+\DoxyCodeLine{00027\ \ \ \ \ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_waiting_room_aa6bc92078a34af8799652c79e98318d4}{BeginPlay}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_waiting_room_a60129cf85bfc592985ee19e1979341b9}{ShowWaitingRoomHUD}}();}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_waiting_room_ad25501bf49130df611ebd09f6a0c8d81}{HideWaitingRoomHUD}}();}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00038\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}UI"{}})}
+\DoxyCodeLine{00039\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget}{UWaitingRoomHUDWidget}}>\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_waiting_room_ac06dc60454f00352cd6b696f7c1c3c04}{WaitingRoomHUDWidgetClass}};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ private:}
+\DoxyCodeLine{00043\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00044\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget}{UWaitingRoomHUDWidget}}>\ WaitingRoomHUDWidgetInstance;}
+\DoxyCodeLine{00045\ \};}
+
+\end{DoxyCode}

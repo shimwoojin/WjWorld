@@ -1,0 +1,78 @@
+\doxysection{Quest\+State Class Reference}
+\hypertarget{class_quest_state}{}\label{class_quest_state}\index{QuestState@{QuestState}}
+
+
+{\ttfamily \+\#include $<$Quest\+State.\+h$>$}
+
+Inheritance diagram for Quest\+State:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.521739cm]{class_quest_state}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \doxymbox{\hyperlink{class_quest_state_a832460b8ca8429552d7f91e28c8a6935}{\texorpdfstring{$\sim$}{\string~}\+Quest\+State}} ()=default
+\item 
+virtual void \doxymbox{\hyperlink{class_quest_state_a296526d4cf1814f1795d15b8cfbd0c42}{Enter}} (\doxymbox{\hyperlink{class_u_quest_instance}{UQuest\+Instance}} \texorpdfstring{$\ast$}{*}Quest)=0
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static TMap$<$ \doxymbox{\hyperlink{_quest_state_8h_a2326cda0ed986c3f7620f923b6c73144}{EQuest\+State}}, \doxymbox{\hyperlink{class_quest_state}{Quest\+State}} \texorpdfstring{$\ast$}{*} $>$ \doxymbox{\hyperlink{class_quest_state_a3c10282d192c92589e916a12d1d86c6d}{State\+Map}}
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{class_quest_state_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_quest_state_a832460b8ca8429552d7f91e28c8a6935}\index{QuestState@{QuestState}!````~QuestState@{\texorpdfstring{$\sim$}{\string~}QuestState}}
+\index{````~QuestState@{\texorpdfstring{$\sim$}{\string~}QuestState}!QuestState@{QuestState}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}QuestState()}{\string~QuestState()}}
+{\footnotesize\ttfamily \label{class_quest_state_a832460b8ca8429552d7f91e28c8a6935} 
+virtual Quest\+State::\+\texorpdfstring{$\sim$}{\string~}\+Quest\+State (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_quest_state_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_quest_state_a296526d4cf1814f1795d15b8cfbd0c42}\index{QuestState@{QuestState}!Enter@{Enter}}
+\index{Enter@{Enter}!QuestState@{QuestState}}
+\doxysubsubsection{\texorpdfstring{Enter()}{Enter()}}
+{\footnotesize\ttfamily \label{class_quest_state_a296526d4cf1814f1795d15b8cfbd0c42} 
+virtual void Quest\+State::\+\+Enter (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_u_quest_instance}{UQuest\+Instance}} \texorpdfstring{$\ast$}{*}}]{Quest}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \doxymbox{\hyperlink{class_quest_state_done_but_not_ended_ae1dad161ece8c53e39bf02907f3040d3}{Quest\+State\+Done\+But\+Not\+Ended}}, \doxymbox{\hyperlink{class_quest_state_ended_a778a922cf58f7f9eb20938aabe998b04}{Quest\+State\+Ended}}, \doxymbox{\hyperlink{class_quest_state_in_progress_afe42da5e4e9c0f361728985b98453d2e}{Quest\+State\+In\+Progress}}, and \doxymbox{\hyperlink{class_quest_state_none_a46ba8988a068d19f04f0762bbe7754d3}{Quest\+State\+None}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{class_quest_state_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_quest_state_a3c10282d192c92589e916a12d1d86c6d}\index{QuestState@{QuestState}!StateMap@{StateMap}}
+\index{StateMap@{StateMap}!QuestState@{QuestState}}
+\doxysubsubsection{\texorpdfstring{StateMap}{StateMap}}
+{\footnotesize\ttfamily \label{class_quest_state_a3c10282d192c92589e916a12d1d86c6d} 
+TMap$<$ \doxymbox{\hyperlink{_quest_state_8h_a2326cda0ed986c3f7620f923b6c73144}{EQuest\+State}}, \doxymbox{\hyperlink{class_quest_state}{Quest\+State}} \texorpdfstring{$\ast$}{*} $>$ Quest\+State::\+\+State\+Map\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value:\+}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \{\ \doxymbox{\hyperlink{_quest_state_8h_a2326cda0ed986c3f7620f923b6c73144a6adf97f83acf6453d4a6a4b1070f3754}{EQuestState::None}},\ \textcolor{keyword}{new}\ \doxymbox{\hyperlink{class_quest_state_none}{QuestStateNone}}()\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ \doxymbox{\hyperlink{_quest_state_8h_a2326cda0ed986c3f7620f923b6c73144a12d868c18cb29bf58f02b504be9033fd}{EQuestState::InProgress}},\ \textcolor{keyword}{new}\ \doxymbox{\hyperlink{class_quest_state_in_progress}{QuestStateInProgress}}()\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ \doxymbox{\hyperlink{_quest_state_8h_a2326cda0ed986c3f7620f923b6c73144a0f37c2c75a41cecefe6416d1fe684b64}{EQuestState::DoneButNotEnded}},\ \textcolor{keyword}{new}\ \doxymbox{\hyperlink{class_quest_state_done_but_not_ended}{QuestStateDoneButNotEnded}}()\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ \doxymbox{\hyperlink{_quest_state_8h_a2326cda0ed986c3f7620f923b6c73144a0157fbb99be9622bdaa6e544270c0622}{EQuestState::Ended}},\ \textcolor{keyword}{new}\ QuestStateEnded()\ \},}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Quest/\+\doxymbox{\hyperlink{_quest_state_8h}{Quest\+State.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Quest/\+\doxymbox{\hyperlink{_quest_state_8cpp}{Quest\+State.\+cpp}}\end{DoxyCompactItemize}

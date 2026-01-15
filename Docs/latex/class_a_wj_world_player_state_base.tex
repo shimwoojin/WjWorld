@@ -1,0 +1,142 @@
+\doxysection{AWj\+World\+Player\+State\+Base Class Reference}
+\hypertarget{class_a_wj_world_player_state_base}{}\label{class_a_wj_world_player_state_base}\index{AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Player\+State\+Base.\+h$>$}
+
+Inheritance diagram for AWj\+World\+Player\+State\+Base:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_a_wj_world_player_state_base}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_player_state_base_a5877bdc9ae35b3f744973f85073dce11}{AWj\+World\+Player\+State\+Base}} ()
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a27214a1a235bd4bcf1cf8c8cd7ce855c}{Get\+Lifetime\+Replicated\+Props}} (TArray$<$ FLifetime\+Property $>$ \&Out\+Lifetime\+Props) const override
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a520d555bb723e97cd2c033018febb4d7}{Toggle\+Ready}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_state_base_aaead30ca588790b0eb5e047b25e22c31}{Set\+Ready}} (bool b\+New\+Ready)
+\item 
+bool \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a629b859c75b31cfa4d1e42fe244522d9}{Is\+Ready}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FOn\+Player\+Ready\+State\+Changed \doxymbox{\hyperlink{class_a_wj_world_player_state_base_ac28b924004207626f57decfb8169a707}{On\+Ready\+State\+Changed}}
+\item 
+FOn\+Player\+Name\+Updated \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a5d5177e59d8ee1c8972c83c8d281c442}{On\+Player\+Name\+Updated}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_state_base_ab100f8b6fe343ca4eedc6bc27cf0952d}{On\+Rep\+\_\+\+Is\+Ready}} ()
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a7dda8d62160253f30fd5b183769f3761}{On\+Rep\+\_\+\+Player\+Name}} () override
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a7f70150be5d2584e8215608ab7e9779a}{Server\+Set\+Ready}} (bool b\+New\+Ready)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a3559a140fa4222a1ff157bbe96088996}{b\+Is\+Ready}} = false
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+기본 플레이어 상태 클래스
+
+역할:\+
+\begin{DoxyItemize}
+\item 플레이어 준비 상태 관리 (Replicated)
+\item 플레이어 정보 저장 
+\end{DoxyItemize}
+
+\label{doc-constructors}
+\Hypertarget{class_a_wj_world_player_state_base_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_a_wj_world_player_state_base_a5877bdc9ae35b3f744973f85073dce11}\index{AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}!AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}}
+\index{AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}!AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}}
+\doxysubsubsection{\texorpdfstring{AWjWorldPlayerStateBase()}{AWjWorldPlayerStateBase()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_state_base_a5877bdc9ae35b3f744973f85073dce11} 
+AWj\+World\+Player\+State\+Base::\+\+AWj\+World\+Player\+State\+Base (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_a_wj_world_player_state_base_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_a_wj_world_player_state_base_a27214a1a235bd4bcf1cf8c8cd7ce855c}\index{AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}!GetLifetimeReplicatedProps@{GetLifetimeReplicatedProps}}
+\index{GetLifetimeReplicatedProps@{GetLifetimeReplicatedProps}!AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}}
+\doxysubsubsection{\texorpdfstring{GetLifetimeReplicatedProps()}{GetLifetimeReplicatedProps()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_state_base_a27214a1a235bd4bcf1cf8c8cd7ce855c} 
+void AWj\+World\+Player\+State\+Base::\+\+Get\+Lifetime\+Replicated\+Props (\begin{DoxyParamCaption}\item[{TArray$<$ FLifetime\+Property $>$ \&}]{Out\+Lifetime\+Props}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_player_state_base_a629b859c75b31cfa4d1e42fe244522d9}\index{AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}!IsReady@{IsReady}}
+\index{IsReady@{IsReady}!AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}}
+\doxysubsubsection{\texorpdfstring{IsReady()}{IsReady()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_state_base_a629b859c75b31cfa4d1e42fe244522d9} 
+bool AWj\+World\+Player\+State\+Base::\+\+Is\+Ready (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+준비 상태 가져오기 \Hypertarget{class_a_wj_world_player_state_base_ab100f8b6fe343ca4eedc6bc27cf0952d}\index{AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}!OnRep\_IsReady@{OnRep\_IsReady}}
+\index{OnRep\_IsReady@{OnRep\_IsReady}!AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}}
+\doxysubsubsection{\texorpdfstring{OnRep\_IsReady()}{OnRep\_IsReady()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_state_base_ab100f8b6fe343ca4eedc6bc27cf0952d} 
+void AWj\+World\+Player\+State\+Base::\+\+On\+Rep\+\_\+\+Is\+Ready (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_player_state_base_a7dda8d62160253f30fd5b183769f3761}\index{AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}!OnRep\_PlayerName@{OnRep\_PlayerName}}
+\index{OnRep\_PlayerName@{OnRep\_PlayerName}!AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}}
+\doxysubsubsection{\texorpdfstring{OnRep\_PlayerName()}{OnRep\_PlayerName()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_state_base_a7dda8d62160253f30fd5b183769f3761} 
+void AWj\+World\+Player\+State\+Base::\+\+On\+Rep\+\_\+\+Player\+Name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_player_state_base_a7f70150be5d2584e8215608ab7e9779a}\index{AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}!ServerSetReady@{ServerSetReady}}
+\index{ServerSetReady@{ServerSetReady}!AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}}
+\doxysubsubsection{\texorpdfstring{ServerSetReady()}{ServerSetReady()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_state_base_a7f70150be5d2584e8215608ab7e9779a} 
+void AWj\+World\+Player\+State\+Base::\+\+Server\+Set\+Ready (\begin{DoxyParamCaption}\item[{bool}]{b\+New\+Ready}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_player_state_base_aaead30ca588790b0eb5e047b25e22c31}\index{AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}!SetReady@{SetReady}}
+\index{SetReady@{SetReady}!AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}}
+\doxysubsubsection{\texorpdfstring{SetReady()}{SetReady()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_state_base_aaead30ca588790b0eb5e047b25e22c31} 
+void AWj\+World\+Player\+State\+Base::\+\+Set\+Ready (\begin{DoxyParamCaption}\item[{bool}]{b\+New\+Ready}{}\end{DoxyParamCaption})}
+
+준비 상태 설정 (Server Only) \Hypertarget{class_a_wj_world_player_state_base_a520d555bb723e97cd2c033018febb4d7}\index{AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}!ToggleReady@{ToggleReady}}
+\index{ToggleReady@{ToggleReady}!AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}}
+\doxysubsubsection{\texorpdfstring{ToggleReady()}{ToggleReady()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_state_base_a520d555bb723e97cd2c033018febb4d7} 
+void AWj\+World\+Player\+State\+Base::\+\+Toggle\+Ready (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+준비 상태 토글 (Client → Server RPC) 
+
+\label{doc-variable-members}
+\Hypertarget{class_a_wj_world_player_state_base_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_a_wj_world_player_state_base_a3559a140fa4222a1ff157bbe96088996}\index{AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}!bIsReady@{bIsReady}}
+\index{bIsReady@{bIsReady}!AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}}
+\doxysubsubsection{\texorpdfstring{bIsReady}{bIsReady}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_state_base_a3559a140fa4222a1ff157bbe96088996} 
+bool AWj\+World\+Player\+State\+Base::\+b\+Is\+Ready = false\hspace{0.3cm}{\ttfamily [protected]}}
+
+준비 상태 (Server → All Clients) \Hypertarget{class_a_wj_world_player_state_base_a5d5177e59d8ee1c8972c83c8d281c442}\index{AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}!OnPlayerNameUpdated@{OnPlayerNameUpdated}}
+\index{OnPlayerNameUpdated@{OnPlayerNameUpdated}!AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}}
+\doxysubsubsection{\texorpdfstring{OnPlayerNameUpdated}{OnPlayerNameUpdated}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_state_base_a5d5177e59d8ee1c8972c83c8d281c442} 
+FOn\+Player\+Name\+Updated AWj\+World\+Player\+State\+Base::\+\+On\+Player\+Name\+Updated}
+
+\Hypertarget{class_a_wj_world_player_state_base_ac28b924004207626f57decfb8169a707}\index{AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}!OnReadyStateChanged@{OnReadyStateChanged}}
+\index{OnReadyStateChanged@{OnReadyStateChanged}!AWjWorldPlayerStateBase@{AWjWorldPlayerStateBase}}
+\doxysubsubsection{\texorpdfstring{OnReadyStateChanged}{OnReadyStateChanged}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_state_base_ac28b924004207626f57decfb8169a707} 
+FOn\+Player\+Ready\+State\+Changed AWj\+World\+Player\+State\+Base::\+\+On\+Ready\+State\+Changed}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Base/\+\doxymbox{\hyperlink{_wj_world_player_state_base_8h}{Wj\+World\+Player\+State\+Base.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Base/\+\doxymbox{\hyperlink{_wj_world_player_state_base_8cpp}{Wj\+World\+Player\+State\+Base.\+cpp}}\end{DoxyCompactItemize}

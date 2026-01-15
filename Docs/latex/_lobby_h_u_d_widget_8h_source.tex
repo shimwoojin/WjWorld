@@ -1,0 +1,54 @@
+\doxysection{Lobby\+HUDWidget.\+h}
+\hypertarget{_lobby_h_u_d_widget_8h_source}{}\label{_lobby_h_u_d_widget_8h_source}\index{Source/WjWorld/UI/Lobby/LobbyHUDWidget.h@{Source/WjWorld/UI/Lobby/LobbyHUDWidget.h}}
+\doxymbox{\hyperlink{_lobby_h_u_d_widget_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_user_widget_base_8h}{UI/WjWorldUserWidgetBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}LobbyHUDWidget.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }UButton;}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00020\ UCLASS()}
+\DoxyCodeLine{00021\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget}{ULobbyHUDWidget}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}}
+\DoxyCodeLine{00022\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00024\ \ \ \ \ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a828bde5e15431d48ce0cdf9506b82c75}{NativeConstruct}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{comment}{//\string~\ UI\ 위젯\ 바인딩\ (Blueprint에서\ 설정)}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00032\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00033\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a5a239c793542e14e2b9301eabc578f1d}{CreateRoomButton}};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00036\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00037\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a09fca02b055e19887df25961e7b1a55f}{FindRoomButton}};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00040\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00041\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a5da82689672aab9464bc2e9956d049bc}{DirectConnectButton}};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00044\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00045\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a787a9949d541379d9d6ff3bc5ee0fe47}{SettingsButton}};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ protected:}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{//\string~\ 버튼\ 클릭\ 이벤트}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a81e19792628edf395ac8f09dfa771f81}{OnCreateRoomClicked}}();}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_ae0ce111cd6335b8627821038680865ab}{OnFindRoomClicked}}();}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_aa0aaca101acda5a9c87ed62f6fbb30c2}{OnDirectConnectClicked}}();}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a292eaefd6d13a117b72c524663daa687}{OnSettingsClicked}}();}
+\DoxyCodeLine{00061\ \};}
+
+\end{DoxyCode}

@@ -1,0 +1,114 @@
+\doxysection{URoom\+List\+Entry\+Widget Class Reference}
+\hypertarget{class_u_room_list_entry_widget}{}\label{class_u_room_list_entry_widget}\index{URoomListEntryWidget@{URoomListEntryWidget}}
+
+
+{\ttfamily \+\#include $<$Room\+List\+Entry\+Widget.\+h$>$}
+
+Inheritance diagram for URoom\+List\+Entry\+Widget:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_u_room_list_entry_widget}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_room_list_entry_widget_adf05c9fa8fabe1d58305a60bf1796409}{Native\+Construct}} () override
+\item 
+void \doxymbox{\hyperlink{class_u_room_list_entry_widget_affafcbbd9087a92f0b99ea078a6bbd96}{Set\+Room\+Info}} (const \doxymbox{\hyperlink{struct_f_room_info}{FRoom\+Info}} \&In\+Room\+Info)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{class_u_room_list_entry_widget_a11975f0baa4c0d17e661696371f39a84}{On\+Join\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_room_list_entry_widget_a7ba269478f59d39a9cacc5dc963d3208}{On\+Room\+Joined}} (bool b\+Was\+Successful)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_room_list_entry_widget_a06112a73a67e7f150687bf249238a98e}{Room\+Name\+Text}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_room_list_entry_widget_ab91b61776c85d988e42afbbd4f213366}{Game\+Mode\+Text}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_room_list_entry_widget_ad0256220824dce4f396767eb08bd8a46}{Player\+Count\+Text}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_room_list_entry_widget_aedbeb8249151849f2137cdb51a4c08dd}{Ping\+Text}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_room_list_entry_widget_ac4c36035f7c1c92e1629d060f648b586}{Join\+Button}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+방 목록 엔트리 위젯
+
+각 방의 정보를 표시하고 입장 버튼 제공 
+
+\label{doc-func-members}
+\Hypertarget{class_u_room_list_entry_widget_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_room_list_entry_widget_adf05c9fa8fabe1d58305a60bf1796409}\index{URoomListEntryWidget@{URoomListEntryWidget}!NativeConstruct@{NativeConstruct}}
+\index{NativeConstruct@{NativeConstruct}!URoomListEntryWidget@{URoomListEntryWidget}}
+\doxysubsubsection{\texorpdfstring{NativeConstruct()}{NativeConstruct()}}
+{\footnotesize\ttfamily \label{class_u_room_list_entry_widget_adf05c9fa8fabe1d58305a60bf1796409} 
+void URoom\+List\+Entry\+Widget::\+\+Native\+Construct (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_room_list_entry_widget_a11975f0baa4c0d17e661696371f39a84}\index{URoomListEntryWidget@{URoomListEntryWidget}!OnJoinClicked@{OnJoinClicked}}
+\index{OnJoinClicked@{OnJoinClicked}!URoomListEntryWidget@{URoomListEntryWidget}}
+\doxysubsubsection{\texorpdfstring{OnJoinClicked()}{OnJoinClicked()}}
+{\footnotesize\ttfamily \label{class_u_room_list_entry_widget_a11975f0baa4c0d17e661696371f39a84} 
+void URoom\+List\+Entry\+Widget::\+\+On\+Join\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_room_list_entry_widget_a7ba269478f59d39a9cacc5dc963d3208}\index{URoomListEntryWidget@{URoomListEntryWidget}!OnRoomJoined@{OnRoomJoined}}
+\index{OnRoomJoined@{OnRoomJoined}!URoomListEntryWidget@{URoomListEntryWidget}}
+\doxysubsubsection{\texorpdfstring{OnRoomJoined()}{OnRoomJoined()}}
+{\footnotesize\ttfamily \label{class_u_room_list_entry_widget_a7ba269478f59d39a9cacc5dc963d3208} 
+void URoom\+List\+Entry\+Widget::\+\+On\+Room\+Joined (\begin{DoxyParamCaption}\item[{bool}]{b\+Was\+Successful}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_room_list_entry_widget_affafcbbd9087a92f0b99ea078a6bbd96}\index{URoomListEntryWidget@{URoomListEntryWidget}!SetRoomInfo@{SetRoomInfo}}
+\index{SetRoomInfo@{SetRoomInfo}!URoomListEntryWidget@{URoomListEntryWidget}}
+\doxysubsubsection{\texorpdfstring{SetRoomInfo()}{SetRoomInfo()}}
+{\footnotesize\ttfamily \label{class_u_room_list_entry_widget_affafcbbd9087a92f0b99ea078a6bbd96} 
+void URoom\+List\+Entry\+Widget::\+\+Set\+Room\+Info (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{struct_f_room_info}{FRoom\+Info}} \&}]{In\+Room\+Info}{}\end{DoxyParamCaption})}
+
+방 정보 설정 
+
+\label{doc-variable-members}
+\Hypertarget{class_u_room_list_entry_widget_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_room_list_entry_widget_ab91b61776c85d988e42afbbd4f213366}\index{URoomListEntryWidget@{URoomListEntryWidget}!GameModeText@{GameModeText}}
+\index{GameModeText@{GameModeText}!URoomListEntryWidget@{URoomListEntryWidget}}
+\doxysubsubsection{\texorpdfstring{GameModeText}{GameModeText}}
+{\footnotesize\ttfamily \label{class_u_room_list_entry_widget_ab91b61776c85d988e42afbbd4f213366} 
+TObject\+Ptr$<$UText\+Block$>$ URoom\+List\+Entry\+Widget::\+\+Game\+Mode\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+게임 모드 \Hypertarget{class_u_room_list_entry_widget_ac4c36035f7c1c92e1629d060f648b586}\index{URoomListEntryWidget@{URoomListEntryWidget}!JoinButton@{JoinButton}}
+\index{JoinButton@{JoinButton}!URoomListEntryWidget@{URoomListEntryWidget}}
+\doxysubsubsection{\texorpdfstring{JoinButton}{JoinButton}}
+{\footnotesize\ttfamily \label{class_u_room_list_entry_widget_ac4c36035f7c1c92e1629d060f648b586} 
+TObject\+Ptr$<$UButton$>$ URoom\+List\+Entry\+Widget::\+\+Join\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+입장 버튼 \Hypertarget{class_u_room_list_entry_widget_aedbeb8249151849f2137cdb51a4c08dd}\index{URoomListEntryWidget@{URoomListEntryWidget}!PingText@{PingText}}
+\index{PingText@{PingText}!URoomListEntryWidget@{URoomListEntryWidget}}
+\doxysubsubsection{\texorpdfstring{PingText}{PingText}}
+{\footnotesize\ttfamily \label{class_u_room_list_entry_widget_aedbeb8249151849f2137cdb51a4c08dd} 
+TObject\+Ptr$<$UText\+Block$>$ URoom\+List\+Entry\+Widget::\+\+Ping\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+핑 \Hypertarget{class_u_room_list_entry_widget_ad0256220824dce4f396767eb08bd8a46}\index{URoomListEntryWidget@{URoomListEntryWidget}!PlayerCountText@{PlayerCountText}}
+\index{PlayerCountText@{PlayerCountText}!URoomListEntryWidget@{URoomListEntryWidget}}
+\doxysubsubsection{\texorpdfstring{PlayerCountText}{PlayerCountText}}
+{\footnotesize\ttfamily \label{class_u_room_list_entry_widget_ad0256220824dce4f396767eb08bd8a46} 
+TObject\+Ptr$<$UText\+Block$>$ URoom\+List\+Entry\+Widget::\+\+Player\+Count\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+플레이어 수 \Hypertarget{class_u_room_list_entry_widget_a06112a73a67e7f150687bf249238a98e}\index{URoomListEntryWidget@{URoomListEntryWidget}!RoomNameText@{RoomNameText}}
+\index{RoomNameText@{RoomNameText}!URoomListEntryWidget@{URoomListEntryWidget}}
+\doxysubsubsection{\texorpdfstring{RoomNameText}{RoomNameText}}
+{\footnotesize\ttfamily \label{class_u_room_list_entry_widget_a06112a73a67e7f150687bf249238a98e} 
+TObject\+Ptr$<$UText\+Block$>$ URoom\+List\+Entry\+Widget::\+\+Room\+Name\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+방 이름 
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Session/\+\doxymbox{\hyperlink{_room_list_entry_widget_8h}{Room\+List\+Entry\+Widget.\+h}}\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Session/\+\doxymbox{\hyperlink{_room_list_entry_widget_8cpp}{Room\+List\+Entry\+Widget.\+cpp}}\end{DoxyCompactItemize}

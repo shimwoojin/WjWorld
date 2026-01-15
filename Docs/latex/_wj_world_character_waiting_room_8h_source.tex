@@ -1,0 +1,44 @@
+\doxysection{Wj\+World\+Character\+Waiting\+Room.\+h}
+\hypertarget{_wj_world_character_waiting_room_8h_source}{}\label{_wj_world_character_waiting_room_8h_source}\index{Source/WjWorld/Core/Local/WaitingRoom/WjWorldCharacterWaitingRoom.h@{Source/WjWorld/Core/Local/WaitingRoom/WjWorldCharacterWaitingRoom.h}}
+\doxymbox{\hyperlink{_wj_world_character_waiting_room_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_character_base_8h}{Core/Base/WjWorldCharacterBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldCharacterWaitingRoom.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00016\ UCLASS()}
+\DoxyCodeLine{00017\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_af34e8ea34727a3098698c6f02d14d516}{AWjWorldCharacterWaitingRoom}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a89132c9b76acde3a302c706d1931769a}{AWjWorldCharacterBase}}}
+\DoxyCodeLine{00018\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_af34e8ea34727a3098698c6f02d14d516}{AWjWorldCharacterWaitingRoom}}();}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_a701ff71943ea12dcb62049ffc49e6258}{BeginPlay}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_a9df6fe0b2b9975dfbf5e88f694ab2d7c}{InitializeCharacter}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_ad0bd058c882e0acea548fa2e680aac25}{SetupInputBindings}}(\textcolor{keyword}{class}\ UInputComponent*\ PlayerInputComponent)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00034\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}WaitingRoom|Character"{}})}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_a368bf7fd43dcaddf8891f6d56c02f726}{UpdateReadyState}}(\textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_a4c0fbf43fd602a4a162775879e7651b2}{bIsReady}});}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00040\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}WaitingRoom|Character"{}})}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_a2bd6dd327064d7e2d26c5fd0d8605010}{UpdateTeamAppearance}}(int32\ TeamID);}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_a5eee8b143ef926027be2152c74823b52}{InitializeWaitingRoomCharacter}}();}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00052\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}WaitingRoom"{}})}
+\DoxyCodeLine{00053\ \ \ \ \ bool\ \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_a4c0fbf43fd602a4a162775879e7651b2}{bIsReady}}\ =\ false;}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00058\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}WaitingRoom"{}})}
+\DoxyCodeLine{00059\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_ae0e062253f4ef56277e1fb908e6b1b76}{CurrentTeamID}}\ =\ 0;}
+\DoxyCodeLine{00060\ \};}
+
+\end{DoxyCode}

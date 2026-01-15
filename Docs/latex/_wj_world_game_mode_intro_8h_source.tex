@@ -1,0 +1,40 @@
+\doxysection{Wj\+World\+Game\+Mode\+Intro.\+h}
+\hypertarget{_wj_world_game_mode_intro_8h_source}{}\label{_wj_world_game_mode_intro_8h_source}\index{Source/WjWorld/Core/Intro/WjWorldGameModeIntro.h@{Source/WjWorld/Core/Intro/WjWorldGameModeIntro.h}}
+\doxymbox{\hyperlink{_wj_world_game_mode_intro_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_game_mode_base_8h}{Core/Base/WjWorldGameModeBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldGameModeIntro.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_intro_window}{UIntroWindow}};}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00014\ UCLASS()}
+\DoxyCodeLine{00015\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_intro_acbf098cb4c60a3cfeb74e5c5069e1b9d}{AWjWorldGameModeIntro}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_base_a490046ce96deebf80d8f351c4831b6f9}{AWjWorldGameModeBase}}}
+\DoxyCodeLine{00016\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00018\ \ \ \ \ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_game_mode_intro_acbf098cb4c60a3cfeb74e5c5069e1b9d}{AWjWorldGameModeIntro}}();}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_intro_aef2edb6ba58908dcbfe60bce53682759}{BeginPlay}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}UI"{}})}
+\DoxyCodeLine{00026\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_u_intro_window}{UIntroWindow}}>\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_intro_aef675daa9fb5a3334a0fb670168c501a}{IntroWidgetClass}};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00029\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_intro_window}{UIntroWindow}}>\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_intro_a84a27f02971f9fe93504dc69ae196d77}{IntroWidget}};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_intro_a20595e30e1c7541ae7ca81c65d18e183}{OnVideoFinished}}();}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ private:}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//\ UI\ 생성 및\ 표시}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ CreateAndShowIntroUI();}
+\DoxyCodeLine{00037\ \};}
+
+\end{DoxyCode}

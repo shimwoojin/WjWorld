@@ -1,0 +1,59 @@
+\doxysection{Source/\+\+Wj\+World/\+\+Network/\+\+Session\+Types.h File Reference}
+\hypertarget{_session_types_8h}{}\label{_session_types_8h}\index{Source/WjWorld/Network/SessionTypes.h@{Source/WjWorld/Network/SessionTypes.h}}
+{\ttfamily \+\#include "{}Core\+Minimal.\+h"{}}\newline
+{\ttfamily \+\#include "{}Session\+Types.\+generated.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}}
+\item 
+struct \doxymbox{\hyperlink{struct_f_room_info}{FRoom\+Info}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{_session_types_8h_a2037544477cc8dcf21ea9f6f181da102}{DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param}} (FOn\+Room\+Created, bool, b\+Was\+Successful)
+\item 
+\doxymbox{\hyperlink{_session_types_8h_a5db4189d1b36056be7241bc2789c4137}{DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+Two\+Params}} (FOn\+Rooms\+Found, bool, b\+Was\+Successful, const TArray$<$ \doxymbox{\hyperlink{struct_f_room_info}{FRoom\+Info}} $>$ \&, Rooms)
+\item 
+\doxymbox{\hyperlink{_session_types_8h_af7b44db9cb0599bbd264977d5f537ca0}{DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param}} (FOn\+Room\+Joined, bool, b\+Was\+Successful)
+\item 
+\doxymbox{\hyperlink{_session_types_8h_af41241c66b2d7ce02dccf1563e97ce9a}{DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param}} (FOn\+Room\+Destroyed, bool, b\+Was\+Successful)
+\item 
+\doxymbox{\hyperlink{_session_types_8h_af5ed7f574d69732ea5bf509a4a11d98b}{DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param}} (FOn\+Room\+Started, bool, b\+Was\+Successful)
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{_session_types_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{_session_types_8h_a2037544477cc8dcf21ea9f6f181da102}\index{SessionTypes.h@{SessionTypes.h}!DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}
+\index{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}!SessionTypes.h@{SessionTypes.h}}
+\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{_session_types_8h_a2037544477cc8dcf21ea9f6f181da102} 
+DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param (\begin{DoxyParamCaption}\item[{FOn\+Room\+Created}]{}{, }\item[{bool}]{}{, }\item[{b\+Was\+Successful}]{}{}\end{DoxyParamCaption})}
+
+Session 델리게이트 타입 주의:\+ 이름에 "{}\+Room"{}을 붙여서 Online\+Subsystem 델리게이트와 충돌 방지 \Hypertarget{_session_types_8h_af41241c66b2d7ce02dccf1563e97ce9a}\index{SessionTypes.h@{SessionTypes.h}!DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}
+\index{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}!SessionTypes.h@{SessionTypes.h}}
+\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{_session_types_8h_af41241c66b2d7ce02dccf1563e97ce9a} 
+DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param (\begin{DoxyParamCaption}\item[{FOn\+Room\+Destroyed}]{}{, }\item[{bool}]{}{, }\item[{b\+Was\+Successful}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{_session_types_8h_af7b44db9cb0599bbd264977d5f537ca0}\index{SessionTypes.h@{SessionTypes.h}!DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}
+\index{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}!SessionTypes.h@{SessionTypes.h}}
+\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{_session_types_8h_af7b44db9cb0599bbd264977d5f537ca0} 
+DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param (\begin{DoxyParamCaption}\item[{FOn\+Room\+Joined}]{}{, }\item[{bool}]{}{, }\item[{b\+Was\+Successful}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{_session_types_8h_af5ed7f574d69732ea5bf509a4a11d98b}\index{SessionTypes.h@{SessionTypes.h}!DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}
+\index{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}!SessionTypes.h@{SessionTypes.h}}
+\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{_session_types_8h_af5ed7f574d69732ea5bf509a4a11d98b} 
+DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param (\begin{DoxyParamCaption}\item[{FOn\+Room\+Started}]{}{, }\item[{bool}]{}{, }\item[{b\+Was\+Successful}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{_session_types_8h_a5db4189d1b36056be7241bc2789c4137}\index{SessionTypes.h@{SessionTypes.h}!DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams}}
+\index{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams}!SessionTypes.h@{SessionTypes.h}}
+\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams()}}
+{\footnotesize\ttfamily \label{_session_types_8h_a5db4189d1b36056be7241bc2789c4137} 
+DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+Two\+Params (\begin{DoxyParamCaption}\item[{FOn\+Rooms\+Found}]{}{, }\item[{bool}]{}{, }\item[{b\+Was\+Successful}]{}{, }\item[{const TArray$<$ \doxymbox{\hyperlink{struct_f_room_info}{FRoom\+Info}} $>$ \&}]{}{, }\item[{Rooms}]{}{}\end{DoxyParamCaption})}
+

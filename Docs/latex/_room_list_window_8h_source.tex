@@ -1,0 +1,65 @@
+\doxysection{Room\+List\+Window.\+h}
+\hypertarget{_room_list_window_8h_source}{}\label{_room_list_window_8h_source}\index{Source/WjWorld/UI/Session/RoomListWindow.h@{Source/WjWorld/UI/Session/RoomListWindow.h}}
+\doxymbox{\hyperlink{_room_list_window_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_user_widget_base_8h}{UI/WjWorldUserWidgetBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_session_types_8h}{Network/SessionTypes.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}RoomListWindow.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }UButton;}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }UScrollBox;}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_room_list_entry_widget}{URoomListEntryWidget}};}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00022\ UCLASS()}
+\DoxyCodeLine{00023\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_room_list_window}{URoomListWindow}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}}
+\DoxyCodeLine{00024\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00026\ \ \ \ \ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_room_list_entry_widget_adf05c9fa8fabe1d58305a60bf1796409}{NativeConstruct}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_room_list_window_a9daffd62c2d5771e3607a8cd28be3df3}{ShowPopup}}();}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_room_list_window_a1767984f39102ff2caf2eb7cb320cc4e}{ClosePopup}}();}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{comment}{//\string~\ UI\ 위젯\ 바인딩}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00040\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00041\ \ \ \ \ TObjectPtr<UScrollBox>\ \doxymbox{\hyperlink{class_u_room_list_window_aff4a2d142c6d66ea21e7953698b4b3ba}{RoomListScrollBox}};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00044\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00045\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_room_list_window_af8e1bcefb15f0884e5cbe442964e50d1}{RefreshButton}};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00048\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00049\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_room_list_window_a84f2d9472c86351e2a98eedb7fd0dcc6}{CloseButton}};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00052\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}UI"{}})}
+\DoxyCodeLine{00053\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_u_room_list_entry_widget}{URoomListEntryWidget}}>\ \doxymbox{\hyperlink{class_u_room_list_window_ad885bb485fcb7372a15b7f4bce6b7142}{RoomListEntryWidgetClass}};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ protected:}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{comment}{//\string~\ 버튼\ 이벤트}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_room_list_window_a05027280b80c30cf1f8f6a1dd96be427}{OnRefreshClicked}}();}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_room_list_window_a99dd356c244142c43d9cc15beb2458d2}{OnCloseClicked}}();}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{comment}{//\string~\ SessionManager\ 콜백}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_room_list_window_a9d338f23c45e816a6903e66ddcd66de5}{OnRoomsFound}}(\textcolor{keywordtype}{bool}\ bWasSuccessful,\ const\ TArray<\doxymbox{\hyperlink{struct_f_room_info}{FRoomInfo}}>\&\ Rooms);}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ private:}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateRoomList(const\ TArray<\doxymbox{\hyperlink{struct_f_room_info}{FRoomInfo}}>\&\ Rooms);}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{void}\ StartSearching();}
+\DoxyCodeLine{00075\ \};}
+
+\end{DoxyCode}

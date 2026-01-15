@@ -1,0 +1,207 @@
+\doxysection{USession\+Manager Class Reference}
+\hypertarget{class_u_session_manager}{}\label{class_u_session_manager}\index{USessionManager@{USessionManager}}
+
+
+{\ttfamily \+\#include $<$Session\+Manager.\+h$>$}
+
+Inheritance diagram for USession\+Manager:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_u_session_manager}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_u_session_manager_adea5edce56a77fea563063b27815c265}{USession\+Manager}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_session_manager_a856b23e2d8d48a15d4b32ccf0aebbde3}{Initialize}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_session_manager_a9d8be892168a95f0e7779d3992797a0c}{Shutdown}} ()
+\item 
+bool \doxymbox{\hyperlink{class_u_session_manager_ab58ff48bccaf5249d196d9768264a68e}{Create\+Session}} (const \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} \&Settings)
+\item 
+bool \doxymbox{\hyperlink{class_u_session_manager_affd4b1b4610f2e965bac95582ec04f78}{Find\+Sessions}} (int32 Max\+Search\+Results=100)
+\item 
+bool \doxymbox{\hyperlink{class_u_session_manager_a32f197f8374246ca5cf86e1605456d49}{Join\+Session}} (int32 Room\+Index)
+\item 
+bool \doxymbox{\hyperlink{class_u_session_manager_ab3cfbbaeeb116fb2fccbb1e29306bca1}{Start\+Session}} ()
+\item 
+bool \doxymbox{\hyperlink{class_u_session_manager_a4fbecb2c4677b89c93da574ba4a3a880}{Destroy\+Session}} ()
+\item 
+bool \doxymbox{\hyperlink{class_u_session_manager_a31b432b8faf2bd085d9cd7bcac99009f}{Is\+In\+Session}} () const
+\item 
+bool \doxymbox{\hyperlink{class_u_session_manager_adc285ffe581170aa4cf4ee0a18c50c0f}{Is\+Host}} () const
+\item 
+const \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} \& \doxymbox{\hyperlink{class_u_session_manager_a21352ba694d12881b0c39a28446c2d96}{Get\+Last\+Room\+Settings}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FOn\+Room\+Created \doxymbox{\hyperlink{class_u_session_manager_af477be02acf9e72845562079bd27df9d}{On\+Room\+Created\+Event}}
+\item 
+FOn\+Rooms\+Found \doxymbox{\hyperlink{class_u_session_manager_a63c5fff350643973e65553e92c8ad96a}{On\+Rooms\+Found\+Event}}
+\item 
+FOn\+Room\+Joined \doxymbox{\hyperlink{class_u_session_manager_aabc4f41d007cfc1d6004275c5db20608}{On\+Room\+Joined\+Event}}
+\item 
+FOn\+Room\+Destroyed \doxymbox{\hyperlink{class_u_session_manager_ab1155f138e56a4feebd8041aeb478ead}{On\+Room\+Destroyed\+Event}}
+\item 
+FOn\+Room\+Started \doxymbox{\hyperlink{class_u_session_manager_a47cced85a2e73327b1c279f32603d5e2}{On\+Room\+Started\+Event}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Online Subsystem Session 관리 클래스
+
+역할:\+
+\begin{DoxyItemize}
+\item 세션(방) 생성, 검색, 참가, 종료
+\item Online Subsystem과의 통신 담당
+\item UI와 네트워크 로직 분리 
+\end{DoxyItemize}
+
+\label{doc-constructors}
+\Hypertarget{class_u_session_manager_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_u_session_manager_adea5edce56a77fea563063b27815c265}\index{USessionManager@{USessionManager}!USessionManager@{USessionManager}}
+\index{USessionManager@{USessionManager}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{USessionManager()}{USessionManager()}}
+{\footnotesize\ttfamily \label{class_u_session_manager_adea5edce56a77fea563063b27815c265} 
+USession\+Manager::\+\+USession\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_u_session_manager_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_session_manager_ab58ff48bccaf5249d196d9768264a68e}\index{USessionManager@{USessionManager}!CreateSession@{CreateSession}}
+\index{CreateSession@{CreateSession}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{CreateSession()}{CreateSession()}}
+{\footnotesize\ttfamily \label{class_u_session_manager_ab58ff48bccaf5249d196d9768264a68e} 
+bool USession\+Manager::\+\+Create\+Session (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} \&}]{Settings}{}\end{DoxyParamCaption})}
+
+세션(방) 생성 
+\begin{DoxyParams}{Parameters}
+{\em Settings} & 방 설정 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+성공 여부 
+\end{DoxyReturn}
+\Hypertarget{class_u_session_manager_a4fbecb2c4677b89c93da574ba4a3a880}\index{USessionManager@{USessionManager}!DestroySession@{DestroySession}}
+\index{DestroySession@{DestroySession}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{DestroySession()}{DestroySession()}}
+{\footnotesize\ttfamily \label{class_u_session_manager_a4fbecb2c4677b89c93da574ba4a3a880} 
+bool USession\+Manager::\+\+Destroy\+Session (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+세션 나가기/\+방 파괴 \begin{DoxyReturn}{Returns}
+성공 여부 
+\end{DoxyReturn}
+\Hypertarget{class_u_session_manager_affd4b1b4610f2e965bac95582ec04f78}\index{USessionManager@{USessionManager}!FindSessions@{FindSessions}}
+\index{FindSessions@{FindSessions}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{FindSessions()}{FindSessions()}}
+{\footnotesize\ttfamily \label{class_u_session_manager_affd4b1b4610f2e965bac95582ec04f78} 
+bool USession\+Manager::\+\+Find\+Sessions (\begin{DoxyParamCaption}\item[{int32}]{Max\+Search\+Results}{ = {\ttfamily 100}}\end{DoxyParamCaption})}
+
+세션(방) 검색 
+\begin{DoxyParams}{Parameters}
+{\em Max\+Search\+Results} & 최대 검색 결과 수 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+성공 여부 
+\end{DoxyReturn}
+\Hypertarget{class_u_session_manager_a21352ba694d12881b0c39a28446c2d96}\index{USessionManager@{USessionManager}!GetLastRoomSettings@{GetLastRoomSettings}}
+\index{GetLastRoomSettings@{GetLastRoomSettings}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{GetLastRoomSettings()}{GetLastRoomSettings()}}
+{\footnotesize\ttfamily \label{class_u_session_manager_a21352ba694d12881b0c39a28446c2d96} 
+const \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} \& USession\+Manager::\+\+Get\+Last\+Room\+Settings (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+마지막 방 설정 가져오기 \Hypertarget{class_u_session_manager_a856b23e2d8d48a15d4b32ccf0aebbde3}\index{USessionManager@{USessionManager}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily \label{class_u_session_manager_a856b23e2d8d48a15d4b32ccf0aebbde3} 
+void USession\+Manager::\+\+Initialize (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+초기화 (Game\+Instance에서 호출) \Hypertarget{class_u_session_manager_adc285ffe581170aa4cf4ee0a18c50c0f}\index{USessionManager@{USessionManager}!IsHost@{IsHost}}
+\index{IsHost@{IsHost}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{IsHost()}{IsHost()}}
+{\footnotesize\ttfamily \label{class_u_session_manager_adc285ffe581170aa4cf4ee0a18c50c0f} 
+bool USession\+Manager::\+\+Is\+Host (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+호스트인지 확인 \Hypertarget{class_u_session_manager_a31b432b8faf2bd085d9cd7bcac99009f}\index{USessionManager@{USessionManager}!IsInSession@{IsInSession}}
+\index{IsInSession@{IsInSession}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{IsInSession()}{IsInSession()}}
+{\footnotesize\ttfamily \label{class_u_session_manager_a31b432b8faf2bd085d9cd7bcac99009f} 
+bool USession\+Manager::\+\+Is\+In\+Session (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+현재 세션에 있는지 확인 \Hypertarget{class_u_session_manager_a32f197f8374246ca5cf86e1605456d49}\index{USessionManager@{USessionManager}!JoinSession@{JoinSession}}
+\index{JoinSession@{JoinSession}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{JoinSession()}{JoinSession()}}
+{\footnotesize\ttfamily \label{class_u_session_manager_a32f197f8374246ca5cf86e1605456d49} 
+bool USession\+Manager::\+\+Join\+Session (\begin{DoxyParamCaption}\item[{int32}]{Room\+Index}{}\end{DoxyParamCaption})}
+
+세션(방) 참가 
+\begin{DoxyParams}{Parameters}
+{\em Room\+Index} & 검색 결과에서의 인덱스 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+성공 여부 
+\end{DoxyReturn}
+\Hypertarget{class_u_session_manager_a9d8be892168a95f0e7779d3992797a0c}\index{USessionManager@{USessionManager}!Shutdown@{Shutdown}}
+\index{Shutdown@{Shutdown}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{Shutdown()}{Shutdown()}}
+{\footnotesize\ttfamily \label{class_u_session_manager_a9d8be892168a95f0e7779d3992797a0c} 
+void USession\+Manager::\+\+Shutdown (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+정리 \Hypertarget{class_u_session_manager_ab3cfbbaeeb116fb2fccbb1e29306bca1}\index{USessionManager@{USessionManager}!StartSession@{StartSession}}
+\index{StartSession@{StartSession}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{StartSession()}{StartSession()}}
+{\footnotesize\ttfamily \label{class_u_session_manager_ab3cfbbaeeb116fb2fccbb1e29306bca1} 
+bool USession\+Manager::\+\+Start\+Session (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+세션 시작 (방장만 가능) \begin{DoxyReturn}{Returns}
+성공 여부 
+\end{DoxyReturn}
+
+
+\label{doc-variable-members}
+\Hypertarget{class_u_session_manager_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_session_manager_af477be02acf9e72845562079bd27df9d}\index{USessionManager@{USessionManager}!OnRoomCreatedEvent@{OnRoomCreatedEvent}}
+\index{OnRoomCreatedEvent@{OnRoomCreatedEvent}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{OnRoomCreatedEvent}{OnRoomCreatedEvent}}
+{\footnotesize\ttfamily \label{class_u_session_manager_af477be02acf9e72845562079bd27df9d} 
+FOn\+Room\+Created USession\+Manager::\+\+On\+Room\+Created\+Event}
+
+\Hypertarget{class_u_session_manager_ab1155f138e56a4feebd8041aeb478ead}\index{USessionManager@{USessionManager}!OnRoomDestroyedEvent@{OnRoomDestroyedEvent}}
+\index{OnRoomDestroyedEvent@{OnRoomDestroyedEvent}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{OnRoomDestroyedEvent}{OnRoomDestroyedEvent}}
+{\footnotesize\ttfamily \label{class_u_session_manager_ab1155f138e56a4feebd8041aeb478ead} 
+FOn\+Room\+Destroyed USession\+Manager::\+\+On\+Room\+Destroyed\+Event}
+
+\Hypertarget{class_u_session_manager_aabc4f41d007cfc1d6004275c5db20608}\index{USessionManager@{USessionManager}!OnRoomJoinedEvent@{OnRoomJoinedEvent}}
+\index{OnRoomJoinedEvent@{OnRoomJoinedEvent}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{OnRoomJoinedEvent}{OnRoomJoinedEvent}}
+{\footnotesize\ttfamily \label{class_u_session_manager_aabc4f41d007cfc1d6004275c5db20608} 
+FOn\+Room\+Joined USession\+Manager::\+\+On\+Room\+Joined\+Event}
+
+\Hypertarget{class_u_session_manager_a63c5fff350643973e65553e92c8ad96a}\index{USessionManager@{USessionManager}!OnRoomsFoundEvent@{OnRoomsFoundEvent}}
+\index{OnRoomsFoundEvent@{OnRoomsFoundEvent}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{OnRoomsFoundEvent}{OnRoomsFoundEvent}}
+{\footnotesize\ttfamily \label{class_u_session_manager_a63c5fff350643973e65553e92c8ad96a} 
+FOn\+Rooms\+Found USession\+Manager::\+\+On\+Rooms\+Found\+Event}
+
+\Hypertarget{class_u_session_manager_a47cced85a2e73327b1c279f32603d5e2}\index{USessionManager@{USessionManager}!OnRoomStartedEvent@{OnRoomStartedEvent}}
+\index{OnRoomStartedEvent@{OnRoomStartedEvent}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{OnRoomStartedEvent}{OnRoomStartedEvent}}
+{\footnotesize\ttfamily \label{class_u_session_manager_a47cced85a2e73327b1c279f32603d5e2} 
+FOn\+Room\+Started USession\+Manager::\+\+On\+Room\+Started\+Event}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Session/\+\doxymbox{\hyperlink{_session_manager_8h}{Session\+Manager.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Session/\+\doxymbox{\hyperlink{_session_manager_8cpp}{Session\+Manager.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,79 @@
+\doxysection{Session\+Types.\+h}
+\hypertarget{_session_types_8h_source}{}\label{_session_types_8h_source}\index{Source/WjWorld/Network/SessionTypes.h@{Source/WjWorld/Network/SessionTypes.h}}
+\doxymbox{\hyperlink{_session_types_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}SessionTypes.generated.h"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00011\ USTRUCT(BlueprintType)}
+\DoxyCodeLine{00012\ struct\ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}}
+\DoxyCodeLine{00013\ \{}
+\DoxyCodeLine{00014\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \ \ \ \ }
+\DoxyCodeLine{00017\ \ \ \ \ UPROPERTY(BlueprintReadWrite,\ Category\ =\ \textcolor{stringliteral}{"{}Room"{}})}
+\DoxyCodeLine{00018\ \ \ \ \ FString\ \doxymbox{\hyperlink{struct_f_room_settings_aea3c222f30b1ea0d2202edb8a4ee39ff}{RoomName}}\ =\ TEXT(\textcolor{stringliteral}{"{}Default\ Room"{}});}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00021\ \ \ \ \ UPROPERTY(BlueprintReadWrite,\ Category\ =\ \textcolor{stringliteral}{"{}Room"{}})}
+\DoxyCodeLine{00022\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_room_settings_a628a89f4015c780a15b106b9f4937aa9}{MaxPlayers}}\ =\ 8;}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00025\ \ \ \ \ UPROPERTY(BlueprintReadWrite,\ Category\ =\ \textcolor{stringliteral}{"{}Room"{}})}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_room_settings_a275b576d8cddeaff6326fa172bc50458}{bIsPrivate}}\ =\ false;}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00029\ \ \ \ \ UPROPERTY(BlueprintReadWrite,\ Category\ =\ \textcolor{stringliteral}{"{}Room"{}})}
+\DoxyCodeLine{00030\ \ \ \ \ FString\ \doxymbox{\hyperlink{struct_f_room_settings_a4f3b162a5ec1b681bbc5339eb0c31c49}{GameMode}}\ =\ TEXT(\textcolor{stringliteral}{"{}Default"{}});}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00033\ \ \ \ \ UPROPERTY(BlueprintReadWrite,\ Category\ =\ \textcolor{stringliteral}{"{}Room"{}})}
+\DoxyCodeLine{00034\ \ \ \ \ FString\ \doxymbox{\hyperlink{struct_f_room_settings_ac8f9db9d62cf3e681f5c4f0554f8bccd}{MapName}}\ =\ TEXT(\textcolor{stringliteral}{"{}DefaultMap"{}});}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00037\ \ \ \ \ UPROPERTY(BlueprintReadWrite,\ Category\ =\ \textcolor{stringliteral}{"{}Room"{}})}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_room_settings_aa459d06f762bd1647f85b0db9ade83b0}{bAllowJoinInProgress}}\ =\ true;}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00041\ \ \ \ \ UPROPERTY(BlueprintReadWrite,\ Category\ =\ \textcolor{stringliteral}{"{}Room"{}})}
+\DoxyCodeLine{00042\ \ \ \ \ FString\ \doxymbox{\hyperlink{struct_f_room_settings_a358d9cb232687b7ec817dde204f117bb}{Password}};}
+\DoxyCodeLine{00043\ \};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00048\ USTRUCT(BlueprintType)}
+\DoxyCodeLine{00049\ struct\ \doxymbox{\hyperlink{struct_f_room_info}{FRoomInfo}}}
+\DoxyCodeLine{00050\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ }
+\DoxyCodeLine{00054\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Room"{}})}
+\DoxyCodeLine{00055\ \ \ \ \ FString\ \doxymbox{\hyperlink{struct_f_room_info_a4192099c991f1997115408521c9d2b4a}{RoomName}};}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00058\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Room"{}})}
+\DoxyCodeLine{00059\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_room_info_a1ea975e03b3db141a53ec378b89f7d03}{CurrentPlayers}}\ =\ 0;}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00062\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Room"{}})}
+\DoxyCodeLine{00063\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_room_info_a9a824c6e9a0df3c328ea5e16e6cae9ae}{MaxPlayers}}\ =\ 0;}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00066\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Room"{}})}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_room_info_ae3f5b22fb03fa565ef8ca25e71106e3d}{bIsPrivate}}\ =\ false;}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00070\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Room"{}})}
+\DoxyCodeLine{00071\ \ \ \ \ FString\ \doxymbox{\hyperlink{struct_f_room_info_acdef56e3a1192c7a97c05c29d1787c1d}{GameMode}};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00074\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Room"{}})}
+\DoxyCodeLine{00075\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_room_info_a851e3474b30569def72987619d77397f}{Ping}}\ =\ 0;}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00078\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Room"{}})}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_room_info_a33b4f73f2ed4847248d077dfb3ec663a}{bInProgress}}\ =\ false;}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00082\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Room"{}})}
+\DoxyCodeLine{00083\ \ \ \ \ FString\ \doxymbox{\hyperlink{struct_f_room_info_ac1fabc8ecea39c1306539e2fb58fafb7}{HostName}};}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00086\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_room_info_a2c5e86f5a2c89765f7f1058b95cafc4f}{SearchResultIndex}}\ =\ -\/1;}
+\DoxyCodeLine{00087\ \};}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00093\ \doxymbox{\hyperlink{_wj_world_player_state_base_8h_ae41b0718845c3c0f70c12e6680f154dc}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnRoomCreated,\ \textcolor{keywordtype}{bool},\ bWasSuccessful);}
+\DoxyCodeLine{00094\ \doxymbox{\hyperlink{_wj_world_player_state_base_8h_a755c5209b42c1f7030a7f02b70da39b8}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams}}(FOnRoomsFound,\ \textcolor{keywordtype}{bool},\ bWasSuccessful,\ const\ TArray<\doxymbox{\hyperlink{struct_f_room_info}{FRoomInfo}}>\&,\ Rooms);}
+\DoxyCodeLine{00095\ \doxymbox{\hyperlink{_wj_world_player_state_base_8h_ae41b0718845c3c0f70c12e6680f154dc}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnRoomJoined,\ \textcolor{keywordtype}{bool},\ bWasSuccessful);}
+\DoxyCodeLine{00096\ \doxymbox{\hyperlink{_wj_world_player_state_base_8h_ae41b0718845c3c0f70c12e6680f154dc}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnRoomDestroyed,\ \textcolor{keywordtype}{bool},\ bWasSuccessful);}
+\DoxyCodeLine{00097\ \doxymbox{\hyperlink{_wj_world_player_state_base_8h_ae41b0718845c3c0f70c12e6680f154dc}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnRoomStarted,\ \textcolor{keywordtype}{bool},\ bWasSuccessful);}
+
+\end{DoxyCode}

@@ -1,0 +1,100 @@
+\doxysection{Session\+Manager.\+h}
+\hypertarget{_session_manager_8h_source}{}\label{_session_manager_8h_source}\index{Source/WjWorld/Core/Session/SessionManager.h@{Source/WjWorld/Core/Session/SessionManager.h}}
+\doxymbox{\hyperlink{_session_manager_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}UObject/NoExportTypes.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}Interfaces/OnlineSessionInterface.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_session_types_8h}{Network/SessionTypes.h}}"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}SessionManager.generated.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00019\ UCLASS()}
+\DoxyCodeLine{00020\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_session_manager_adea5edce56a77fea563063b27815c265}{USessionManager}}\ :\ public\ UObject}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00023\ \ \ \ \ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ \doxymbox{\hyperlink{class_u_session_manager_adea5edce56a77fea563063b27815c265}{USessionManager}}();}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_session_manager_a856b23e2d8d48a15d4b32ccf0aebbde3}{Initialize}}();}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_session_manager_a9d8be892168a95f0e7779d3992797a0c}{Shutdown}}();}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{comment}{//\string~\ Session\ 생성}}
+\DoxyCodeLine{00039\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_session_manager_ab58ff48bccaf5249d196d9768264a68e}{CreateSession}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\&\ Settings);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{comment}{//\string~\ Session\ 검색}}
+\DoxyCodeLine{00048\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_session_manager_affd4b1b4610f2e965bac95582ec04f78}{FindSessions}}(int32\ MaxSearchResults\ =\ 100);}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{comment}{//\string~\ Session\ 참가}}
+\DoxyCodeLine{00057\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_session_manager_a32f197f8374246ca5cf86e1605456d49}{JoinSession}}(int32\ RoomIndex);}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{comment}{//\string~\ Session\ 시작}}
+\DoxyCodeLine{00065\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_session_manager_ab3cfbbaeeb116fb2fccbb1e29306bca1}{StartSession}}();}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{comment}{//\string~\ Session\ 종료}}
+\DoxyCodeLine{00073\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_session_manager_a4fbecb2c4677b89c93da574ba4a3a880}{DestroySession}}();}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{comment}{//\string~\ 유틸리티}}
+\DoxyCodeLine{00080\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
+\DoxyCodeLine{00081\ \ \ \ \ bool\ \doxymbox{\hyperlink{class_u_session_manager_a31b432b8faf2bd085d9cd7bcac99009f}{IsInSession}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ bIsInSession;\ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00086\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
+\DoxyCodeLine{00087\ \ \ \ \ bool\ \doxymbox{\hyperlink{class_u_session_manager_adc285ffe581170aa4cf4ee0a18c50c0f}{IsHost}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ bIsHost;\ \}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00092\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
+\DoxyCodeLine{00093\ \ \ \ \ const\ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\&\ \doxymbox{\hyperlink{class_u_session_manager_a21352ba694d12881b0c39a28446c2d96}{GetLastRoomSettings}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ LastRoomSettings;\ \}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{comment}{//\string~\ 델리게이트\ (UI에서\ 바인딩)}}
+\DoxyCodeLine{00097\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}Session|Events"{}})}
+\DoxyCodeLine{00098\ \ \ \ \ FOnRoomCreated\ \doxymbox{\hyperlink{class_u_session_manager_af477be02acf9e72845562079bd27df9d}{OnRoomCreatedEvent}};}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}Session|Events"{}})}
+\DoxyCodeLine{00101\ \ \ \ \ FOnRoomsFound\ \doxymbox{\hyperlink{class_u_session_manager_a63c5fff350643973e65553e92c8ad96a}{OnRoomsFoundEvent}};}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}Session|Events"{}})}
+\DoxyCodeLine{00104\ \ \ \ \ FOnRoomJoined\ \doxymbox{\hyperlink{class_u_session_manager_aabc4f41d007cfc1d6004275c5db20608}{OnRoomJoinedEvent}};}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}Session|Events"{}})}
+\DoxyCodeLine{00107\ \ \ \ \ FOnRoomDestroyed\ \doxymbox{\hyperlink{class_u_session_manager_ab1155f138e56a4feebd8041aeb478ead}{OnRoomDestroyedEvent}};}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}Session|Events"{}})}
+\DoxyCodeLine{00110\ \ \ \ \ FOnRoomStarted\ \doxymbox{\hyperlink{class_u_session_manager_a47cced85a2e73327b1c279f32603d5e2}{OnRoomStartedEvent}};}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ private:}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{comment}{//\string~\ Online\ Subsystem\ 콜백}}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordtype}{void}\ OnCreateSessionComplete(FName\ SessionName,\ \textcolor{keywordtype}{bool}\ bWasSuccessful);}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordtype}{void}\ OnFindSessionsComplete(\textcolor{keywordtype}{bool}\ bWasSuccessful);}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordtype}{void}\ OnJoinSessionComplete(FName\ SessionName,\ EOnJoinSessionCompleteResult::Type\ Result);}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordtype}{void}\ OnDestroySessionComplete(FName\ SessionName,\ \textcolor{keywordtype}{bool}\ bWasSuccessful);}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordtype}{void}\ OnStartSessionComplete(FName\ SessionName,\ \textcolor{keywordtype}{bool}\ bWasSuccessful);}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{comment}{//\string~\ 헬퍼\ 함수}}
+\DoxyCodeLine{00122\ \ \ \ \ \doxymbox{\hyperlink{struct_f_room_info}{FRoomInfo}}\ ConvertSearchResultToRoomInfo(const\ FOnlineSessionSearchResult\&\ SearchResult,\ int32\ Index);}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ private:}
+\DoxyCodeLine{00126\ \ \ \ \ IOnlineSessionPtr\ SessionInterface;}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00129\ \ \ \ \ TSharedPtr<FOnlineSessionSearch>\ SessionSearch;}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00132\ \ \ \ \ static\ constexpr\ const\ TCHAR*\ SESSION\_NAME\ =\ TEXT(\textcolor{stringliteral}{"{}WjWorldSession"{}});}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordtype}{bool}\ bIsInSession\ =\ false;}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordtype}{bool}\ bIsHost\ =\ false;}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00139\ \ \ \ \ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\ LastRoomSettings;}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00142\ \ \ \ \ int32\ LastJoinedRoomIndex\ =\ -\/1;}
+\DoxyCodeLine{00143\ \};}
+
+\end{DoxyCode}

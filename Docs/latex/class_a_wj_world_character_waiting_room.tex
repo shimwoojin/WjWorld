@@ -1,0 +1,164 @@
+\doxysection{AWj\+World\+Character\+Waiting\+Room Class Reference}
+\hypertarget{class_a_wj_world_character_waiting_room}{}\label{class_a_wj_world_character_waiting_room}\index{AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Character\+Waiting\+Room.\+h$>$}
+
+Inheritance diagram for AWj\+World\+Character\+Waiting\+Room:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_a_wj_world_character_waiting_room}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_af34e8ea34727a3098698c6f02d14d516}{AWj\+World\+Character\+Waiting\+Room}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_a368bf7fd43dcaddf8891f6d56c02f726}{Update\+Ready\+State}} (bool \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_a4c0fbf43fd602a4a162775879e7651b2}{b\+Is\+Ready}})
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_a2bd6dd327064d7e2d26c5fd0d8605010}{Update\+Team\+Appearance}} (int32 Team\+ID)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_a_wj_world_character_base}{AWj\+World\+Character\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_character_base_a89132c9b76acde3a302c706d1931769a}{AWj\+World\+Character\+Base}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_character_base_a10d3770bc59c61b53da2682a7faae57b}{Set\+Character\+View\+Mode}} (\doxymbox{\hyperlink{_wj_world_character_base_8h_aac1445d872a9eeaf8933fc54f5a955ab}{ECharacter\+View\+Mode}} New\+View\+Mode)
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a645d77e1ca3055c7b4450aa4d5eb111b}{Tick}} (float Delta\+Time) override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a8db3fd1326b0c7b43a2918902d3ffd1c}{Setup\+Player\+Input\+Component}} (class UInput\+Component \texorpdfstring{$\ast$}{*}Player\+Input\+Component) override
+\item 
+TObject\+Ptr$<$ UGameplay\+Camera\+Component $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a37598085f9ad1a4c22117c219844d7d9}{Get\+Game\+Play\+Camera}} ()
+\item 
+TObject\+Ptr$<$ UInput\+Mapping\+Context $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a948532d6c1431ced08d67cf65ecf419a}{Get\+Default\+Mapping\+Context}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_a701ff71943ea12dcb62049ffc49e6258}{Begin\+Play}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_a9df6fe0b2b9975dfbf5e88f694ab2d7c}{Initialize\+Character}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_ad0bd058c882e0acea548fa2e680aac25}{Setup\+Input\+Bindings}} (class UInput\+Component \texorpdfstring{$\ast$}{*}Player\+Input\+Component) override
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_a5eee8b143ef926027be2152c74823b52}{Initialize\+Waiting\+Room\+Character}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \doxymbox{\hyperlink{class_a_wj_world_character_base}{AWj\+World\+Character\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_ae0763ed841b7861571568921978c477e}{Move}} (const FInput\+Action\+Value \&Value)
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a91d6696a44335c36fa3dcd8dd5d94395}{Interact}} (const FInput\+Action\+Value \&Value)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_a4c0fbf43fd602a4a162775879e7651b2}{b\+Is\+Ready}} = false
+\item 
+int32 \doxymbox{\hyperlink{class_a_wj_world_character_waiting_room_ae0e062253f4ef56277e1fb908e6b1b76}{Current\+Team\+ID}} = 0
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_a_wj_world_character_base}{AWj\+World\+Character\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UGameplay\+Camera\+Component $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a1e0d571d583e75bdfacbb250be2eb13f}{Game\+Play\+Camera}}
+\item 
+TObject\+Ptr$<$ UInput\+Mapping\+Context $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_ab6f878f0b06d53b21dd251f45f69e545}{Default\+Mapping\+Context}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+대기실 캐릭터 클래스
+
+역할:\+
+\begin{DoxyItemize}
+\item 대기실 화면에서 사용되는 캐릭터
+\item 팀 선택 및 준비 상태 표현 
+\end{DoxyItemize}
+
+\label{doc-constructors}
+\Hypertarget{class_a_wj_world_character_waiting_room_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_a_wj_world_character_waiting_room_af34e8ea34727a3098698c6f02d14d516}\index{AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}!AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}}
+\index{AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}!AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{AWjWorldCharacterWaitingRoom()}{AWjWorldCharacterWaitingRoom()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_waiting_room_af34e8ea34727a3098698c6f02d14d516} 
+AWj\+World\+Character\+Waiting\+Room::\+\+AWj\+World\+Character\+Waiting\+Room (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_a_wj_world_character_waiting_room_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_a_wj_world_character_waiting_room_a701ff71943ea12dcb62049ffc49e6258}\index{AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}!BeginPlay@{BeginPlay}}
+\index{BeginPlay@{BeginPlay}!AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{BeginPlay()}{BeginPlay()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_waiting_room_a701ff71943ea12dcb62049ffc49e6258} 
+void AWj\+World\+Character\+Waiting\+Room::\+\+Begin\+Play (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_a_wj_world_character_base_a38194801545a2d8433deb48ce36300d9}{AWj\+World\+Character\+Base}}.
+
+\Hypertarget{class_a_wj_world_character_waiting_room_a9df6fe0b2b9975dfbf5e88f694ab2d7c}\index{AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}!InitializeCharacter@{InitializeCharacter}}
+\index{InitializeCharacter@{InitializeCharacter}!AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{InitializeCharacter()}{InitializeCharacter()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_waiting_room_a9df6fe0b2b9975dfbf5e88f694ab2d7c} 
+void AWj\+World\+Character\+Waiting\+Room::\+\+Initialize\+Character (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+캐릭터 초기화 
+
+Reimplemented from \doxymbox{\hyperlink{class_a_wj_world_character_base_a6970818ef125ea9ce78baa7ae4247fca}{AWj\+World\+Character\+Base}}.
+
+\Hypertarget{class_a_wj_world_character_waiting_room_a5eee8b143ef926027be2152c74823b52}\index{AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}!InitializeWaitingRoomCharacter@{InitializeWaitingRoomCharacter}}
+\index{InitializeWaitingRoomCharacter@{InitializeWaitingRoomCharacter}!AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{InitializeWaitingRoomCharacter()}{InitializeWaitingRoomCharacter()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_waiting_room_a5eee8b143ef926027be2152c74823b52} 
+void AWj\+World\+Character\+Waiting\+Room::\+\+Initialize\+Waiting\+Room\+Character (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+대기실 전용 초기화 \Hypertarget{class_a_wj_world_character_waiting_room_ad0bd058c882e0acea548fa2e680aac25}\index{AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}!SetupInputBindings@{SetupInputBindings}}
+\index{SetupInputBindings@{SetupInputBindings}!AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{SetupInputBindings()}{SetupInputBindings()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_waiting_room_ad0bd058c882e0acea548fa2e680aac25} 
+void AWj\+World\+Character\+Waiting\+Room::\+\+Setup\+Input\+Bindings (\begin{DoxyParamCaption}\item[{class UInput\+Component \texorpdfstring{$\ast$}{*}}]{Player\+Input\+Component}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+입력 바인딩 설정 
+
+Reimplemented from \doxymbox{\hyperlink{class_a_wj_world_character_base_accfb44f05f97b60c21c14ca7c07c8104}{AWj\+World\+Character\+Base}}.
+
+\Hypertarget{class_a_wj_world_character_waiting_room_a368bf7fd43dcaddf8891f6d56c02f726}\index{AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}!UpdateReadyState@{UpdateReadyState}}
+\index{UpdateReadyState@{UpdateReadyState}!AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{UpdateReadyState()}{UpdateReadyState()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_waiting_room_a368bf7fd43dcaddf8891f6d56c02f726} 
+void AWj\+World\+Character\+Waiting\+Room::\+\+Update\+Ready\+State (\begin{DoxyParamCaption}\item[{bool}]{b\+Is\+Ready}{}\end{DoxyParamCaption})}
+
+준비 상태에 따른 외형 변경 \Hypertarget{class_a_wj_world_character_waiting_room_a2bd6dd327064d7e2d26c5fd0d8605010}\index{AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}!UpdateTeamAppearance@{UpdateTeamAppearance}}
+\index{UpdateTeamAppearance@{UpdateTeamAppearance}!AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{UpdateTeamAppearance()}{UpdateTeamAppearance()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_waiting_room_a2bd6dd327064d7e2d26c5fd0d8605010} 
+void AWj\+World\+Character\+Waiting\+Room::\+\+Update\+Team\+Appearance (\begin{DoxyParamCaption}\item[{int32}]{Team\+ID}{}\end{DoxyParamCaption})}
+
+팀 변경에 따른 외형 업데이트 
+
+\label{doc-variable-members}
+\Hypertarget{class_a_wj_world_character_waiting_room_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_a_wj_world_character_waiting_room_a4c0fbf43fd602a4a162775879e7651b2}\index{AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}!bIsReady@{bIsReady}}
+\index{bIsReady@{bIsReady}!AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{bIsReady}{bIsReady}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_waiting_room_a4c0fbf43fd602a4a162775879e7651b2} 
+bool AWj\+World\+Character\+Waiting\+Room::\+b\+Is\+Ready = false\hspace{0.3cm}{\ttfamily [protected]}}
+
+현재 준비 상태 \Hypertarget{class_a_wj_world_character_waiting_room_ae0e062253f4ef56277e1fb908e6b1b76}\index{AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}!CurrentTeamID@{CurrentTeamID}}
+\index{CurrentTeamID@{CurrentTeamID}!AWjWorldCharacterWaitingRoom@{AWjWorldCharacterWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{CurrentTeamID}{CurrentTeamID}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_waiting_room_ae0e062253f4ef56277e1fb908e6b1b76} 
+int32 AWj\+World\+Character\+Waiting\+Room::\+\+Current\+Team\+ID = 0\hspace{0.3cm}{\ttfamily [protected]}}
+
+현재 팀 ID 
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Local/\+\+Waiting\+Room/\+\doxymbox{\hyperlink{_wj_world_character_waiting_room_8h}{Wj\+World\+Character\+Waiting\+Room.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Local/\+\+Waiting\+Room/\+\doxymbox{\hyperlink{_wj_world_character_waiting_room_8cpp}{Wj\+World\+Character\+Waiting\+Room.\+cpp}}\end{DoxyCompactItemize}

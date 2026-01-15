@@ -1,0 +1,177 @@
+\doxysection{UWaiting\+Room\+HUDWidget Class Reference}
+\hypertarget{class_u_waiting_room_h_u_d_widget}{}\label{class_u_waiting_room_h_u_d_widget}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+
+
+{\ttfamily \+\#include $<$Waiting\+Room\+HUDWidget.\+h$>$}
+
+Inheritance diagram for UWaiting\+Room\+HUDWidget:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_u_waiting_room_h_u_d_widget}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a01c9def79ee8b643ea6416acc0c57d7e}{Native\+Construct}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_af0d95849dc8b6e678787f79b81493d0f}{Native\+Destruct}} () override
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a5ec18ac92f832d128bcf5ce025b1c005}{On\+Ready\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a9494017fca4346cfba44731bc7945791}{On\+Start\+Game\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a4c67522300bbe7a56e2f4c2359b10094}{On\+Leave\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a7d2620771c99441fee6d5c84b550dbde}{On\+Room\+Info\+Changed}} (const \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} \&Room\+Settings)
+\item 
+void \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_aee635ddf4143ec903629e0e8206f48a5}{On\+Player\+List\+Changed}} (const TArray$<$ \doxymbox{\hyperlink{struct_f_player_display_info}{FPlayer\+Display\+Info}} $>$ \&Player\+List)
+\item 
+void \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a67dbd17f66ef948e3c69488b3caabd5a}{On\+Player\+Ready\+State\+Changed}} (int32 Player\+ID, bool b\+Is\+Ready)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a7aa064d6cd051ef7b8c708d051ed2eea}{Room\+Name\+Text}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_ad468d2bc62c9ffe449b9c0a2ef7d3bdf}{Game\+Mode\+Text}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a4a17126c6a594000b9d0705620393700}{Player\+Count\+Text}}
+\item 
+TObject\+Ptr$<$ UVertical\+Box $>$ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a90cbbb5f781432b66160bc4a760a2222}{Player\+List\+Container}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_ac41ff74540551276855a46122e70ba46}{Ready\+Button}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_ae7ddcefe7617f4dbc1b4e13583ada0c2}{Ready\+Button\+Text}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a5bedbfc5277cee3f4957fe7cb7597549}{Start\+Game\+Button}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a04a3362d6ba4b1c18c00bbc1dbda00ee}{Leave\+Button}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+대기실 HUD 위젯
+
+기능:\+
+\begin{DoxyItemize}
+\item 플레이어 목록 표시 (Game\+State 동기화)
+\item 방 정보 표시 (Game\+State 동기화)
+\item 준비 버튼
+\item 게임 시작 버튼 (호스트만)
+\item 나가기 버튼 
+\end{DoxyItemize}
+
+\label{doc-func-members}
+\Hypertarget{class_u_waiting_room_h_u_d_widget_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_waiting_room_h_u_d_widget_a01c9def79ee8b643ea6416acc0c57d7e}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!NativeConstruct@{NativeConstruct}}
+\index{NativeConstruct@{NativeConstruct}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{NativeConstruct()}{NativeConstruct()}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_a01c9def79ee8b643ea6416acc0c57d7e} 
+void UWaiting\+Room\+HUDWidget::\+\+Native\+Construct (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_waiting_room_h_u_d_widget_af0d95849dc8b6e678787f79b81493d0f}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!NativeDestruct@{NativeDestruct}}
+\index{NativeDestruct@{NativeDestruct}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{NativeDestruct()}{NativeDestruct()}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_af0d95849dc8b6e678787f79b81493d0f} 
+void UWaiting\+Room\+HUDWidget::\+\+Native\+Destruct (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_waiting_room_h_u_d_widget_a4c67522300bbe7a56e2f4c2359b10094}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!OnLeaveClicked@{OnLeaveClicked}}
+\index{OnLeaveClicked@{OnLeaveClicked}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{OnLeaveClicked()}{OnLeaveClicked()}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_a4c67522300bbe7a56e2f4c2359b10094} 
+void UWaiting\+Room\+HUDWidget::\+\+On\+Leave\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_waiting_room_h_u_d_widget_aee635ddf4143ec903629e0e8206f48a5}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!OnPlayerListChanged@{OnPlayerListChanged}}
+\index{OnPlayerListChanged@{OnPlayerListChanged}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{OnPlayerListChanged()}{OnPlayerListChanged()}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_aee635ddf4143ec903629e0e8206f48a5} 
+void UWaiting\+Room\+HUDWidget::\+\+On\+Player\+List\+Changed (\begin{DoxyParamCaption}\item[{const TArray$<$ \doxymbox{\hyperlink{struct_f_player_display_info}{FPlayer\+Display\+Info}} $>$ \&}]{Player\+List}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_waiting_room_h_u_d_widget_a67dbd17f66ef948e3c69488b3caabd5a}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!OnPlayerReadyStateChanged@{OnPlayerReadyStateChanged}}
+\index{OnPlayerReadyStateChanged@{OnPlayerReadyStateChanged}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{OnPlayerReadyStateChanged()}{OnPlayerReadyStateChanged()}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_a67dbd17f66ef948e3c69488b3caabd5a} 
+void UWaiting\+Room\+HUDWidget::\+\+On\+Player\+Ready\+State\+Changed (\begin{DoxyParamCaption}\item[{int32}]{Player\+ID}{, }\item[{bool}]{b\+Is\+Ready}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_waiting_room_h_u_d_widget_a5ec18ac92f832d128bcf5ce025b1c005}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!OnReadyClicked@{OnReadyClicked}}
+\index{OnReadyClicked@{OnReadyClicked}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{OnReadyClicked()}{OnReadyClicked()}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_a5ec18ac92f832d128bcf5ce025b1c005} 
+void UWaiting\+Room\+HUDWidget::\+\+On\+Ready\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_waiting_room_h_u_d_widget_a7d2620771c99441fee6d5c84b550dbde}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!OnRoomInfoChanged@{OnRoomInfoChanged}}
+\index{OnRoomInfoChanged@{OnRoomInfoChanged}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{OnRoomInfoChanged()}{OnRoomInfoChanged()}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_a7d2620771c99441fee6d5c84b550dbde} 
+void UWaiting\+Room\+HUDWidget::\+\+On\+Room\+Info\+Changed (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} \&}]{Room\+Settings}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_waiting_room_h_u_d_widget_a9494017fca4346cfba44731bc7945791}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!OnStartGameClicked@{OnStartGameClicked}}
+\index{OnStartGameClicked@{OnStartGameClicked}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{OnStartGameClicked()}{OnStartGameClicked()}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_a9494017fca4346cfba44731bc7945791} 
+void UWaiting\+Room\+HUDWidget::\+\+On\+Start\+Game\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{class_u_waiting_room_h_u_d_widget_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_waiting_room_h_u_d_widget_ad468d2bc62c9ffe449b9c0a2ef7d3bdf}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!GameModeText@{GameModeText}}
+\index{GameModeText@{GameModeText}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{GameModeText}{GameModeText}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_ad468d2bc62c9ffe449b9c0a2ef7d3bdf} 
+TObject\+Ptr$<$UText\+Block$>$ UWaiting\+Room\+HUDWidget::\+\+Game\+Mode\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+게임 모드 텍스트 \Hypertarget{class_u_waiting_room_h_u_d_widget_a04a3362d6ba4b1c18c00bbc1dbda00ee}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!LeaveButton@{LeaveButton}}
+\index{LeaveButton@{LeaveButton}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{LeaveButton}{LeaveButton}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_a04a3362d6ba4b1c18c00bbc1dbda00ee} 
+TObject\+Ptr$<$UButton$>$ UWaiting\+Room\+HUDWidget::\+\+Leave\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+나가기 버튼 \Hypertarget{class_u_waiting_room_h_u_d_widget_a4a17126c6a594000b9d0705620393700}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!PlayerCountText@{PlayerCountText}}
+\index{PlayerCountText@{PlayerCountText}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{PlayerCountText}{PlayerCountText}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_a4a17126c6a594000b9d0705620393700} 
+TObject\+Ptr$<$UText\+Block$>$ UWaiting\+Room\+HUDWidget::\+\+Player\+Count\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+플레이어 수 텍스트 \Hypertarget{class_u_waiting_room_h_u_d_widget_a90cbbb5f781432b66160bc4a760a2222}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!PlayerListContainer@{PlayerListContainer}}
+\index{PlayerListContainer@{PlayerListContainer}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{PlayerListContainer}{PlayerListContainer}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_a90cbbb5f781432b66160bc4a760a2222} 
+TObject\+Ptr$<$UVertical\+Box$>$ UWaiting\+Room\+HUDWidget::\+\+Player\+List\+Container\hspace{0.3cm}{\ttfamily [protected]}}
+
+플레이어 목록 컨테이너 \Hypertarget{class_u_waiting_room_h_u_d_widget_ac41ff74540551276855a46122e70ba46}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!ReadyButton@{ReadyButton}}
+\index{ReadyButton@{ReadyButton}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{ReadyButton}{ReadyButton}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_ac41ff74540551276855a46122e70ba46} 
+TObject\+Ptr$<$UButton$>$ UWaiting\+Room\+HUDWidget::\+\+Ready\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+준비 버튼 \Hypertarget{class_u_waiting_room_h_u_d_widget_ae7ddcefe7617f4dbc1b4e13583ada0c2}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!ReadyButtonText@{ReadyButtonText}}
+\index{ReadyButtonText@{ReadyButtonText}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{ReadyButtonText}{ReadyButtonText}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_ae7ddcefe7617f4dbc1b4e13583ada0c2} 
+TObject\+Ptr$<$UText\+Block$>$ UWaiting\+Room\+HUDWidget::\+\+Ready\+Button\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+준비 버튼 텍스트 \Hypertarget{class_u_waiting_room_h_u_d_widget_a7aa064d6cd051ef7b8c708d051ed2eea}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!RoomNameText@{RoomNameText}}
+\index{RoomNameText@{RoomNameText}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{RoomNameText}{RoomNameText}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_a7aa064d6cd051ef7b8c708d051ed2eea} 
+TObject\+Ptr$<$UText\+Block$>$ UWaiting\+Room\+HUDWidget::\+\+Room\+Name\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+방 이름 텍스트 \Hypertarget{class_u_waiting_room_h_u_d_widget_a5bedbfc5277cee3f4957fe7cb7597549}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!StartGameButton@{StartGameButton}}
+\index{StartGameButton@{StartGameButton}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{StartGameButton}{StartGameButton}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_a5bedbfc5277cee3f4957fe7cb7597549} 
+TObject\+Ptr$<$UButton$>$ UWaiting\+Room\+HUDWidget::\+\+Start\+Game\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+게임 시작 버튼 (호스트만) 
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Waiting\+Room/\+\doxymbox{\hyperlink{_waiting_room_h_u_d_widget_8h}{Waiting\+Room\+HUDWidget.\+h}}\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Waiting\+Room/\+\doxymbox{\hyperlink{_waiting_room_h_u_d_widget_8cpp}{Waiting\+Room\+HUDWidget.\+cpp}}\end{DoxyCompactItemize}

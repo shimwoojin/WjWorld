@@ -1,0 +1,40 @@
+\doxysection{Wj\+World\+Player\+Controller\+Base.\+h}
+\hypertarget{_wj_world_player_controller_base_8h_source}{}\label{_wj_world_player_controller_base_8h_source}\index{Source/WjWorld/Core/Base/WjWorldPlayerControllerBase.h@{Source/WjWorld/Core/Base/WjWorldPlayerControllerBase.h}}
+\doxymbox{\hyperlink{_wj_world_player_controller_base_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}GameFramework/PlayerController.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldPlayerControllerBase.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }UInputMappingContext;}
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }UEnhancedInputComponent;}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00019\ UCLASS(abstract)}
+\DoxyCodeLine{00020\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a8f14af55142a1ba5c59962e72119036b}{AWjWorldPlayerControllerBase}}\ :\ public\ APlayerController}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a8f14af55142a1ba5c59962e72119036b}{AWjWorldPlayerControllerBase}}();}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a346d46bedb16e608ca07ae3d568ffbf3}{BeginPlay}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a6d65e79630d3a58f0b941f6099170969}{InitializeController}}();}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_aaed34d3d42fac574934d7923eb8fec0c}{InitializeUI}}();}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00042\ \ \ \ \ UFUNCTION(Exec)}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a9f54609e2389a05ceecfda4d692b6e11}{CheckInputMode}}();}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ UFUNCTION(Exec)}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_aa497bc09d850e10891a40ef9fb7a9016}{ChangeCharacterViewMode}}(int32\ InViewMode);}
+\DoxyCodeLine{00047\ \};}
+
+\end{DoxyCode}

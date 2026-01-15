@@ -1,0 +1,162 @@
+\doxysection{AInteractable\+Portal Class Reference}
+\hypertarget{class_a_interactable_portal}{}\label{class_a_interactable_portal}\index{AInteractablePortal@{AInteractablePortal}}
+
+
+{\ttfamily \+\#include $<$Interactable\+Portal.\+h$>$}
+
+Inheritance diagram for AInteractable\+Portal:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_a_interactable_portal}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_interactable_portal_a7300909b4bcb061e21bd8f0652cb100e}{AInteractable\+Portal}} ()
+\item 
+bool \doxymbox{\hyperlink{class_a_interactable_portal_a4ff420b56fc992ab6b8e881e5d02c22f}{Is\+Player\+In\+Range}} () const
+\item 
+FString \doxymbox{\hyperlink{class_a_interactable_portal_ac9f6bf62c6dd2f309b8659aa924b861e}{Get\+Portal\+Display\+Name}} () const
+\item 
+\doxymbox{\hyperlink{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680b}{EPortal\+Type}} \doxymbox{\hyperlink{class_a_interactable_portal_aec327853bed29fb357c31002128b3076}{Get\+Portal\+Type}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_a_interactable_portal_ac3918e14ba484f19d6467cac134becab}{Begin\+Play}} () override
+\item 
+void \doxymbox{\hyperlink{class_a_interactable_portal_a7af171f209b62e78a583da50299e3801}{On\+Portal\+Activated}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+UStatic\+Mesh\+Component \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_interactable_portal_a2894af6acbbe3f6645f1b00a562f0ab7}{Portal\+Mesh}}
+\item 
+UBox\+Component \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_interactable_portal_afaff89ddc03d4974d61df425305b8931}{Interaction\+Trigger}}
+\item 
+UWidget\+Component \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_interactable_portal_a8d581390df62066b6a6be58411b2ec44}{Interaction\+Widget\+Component}}
+\item 
+\doxymbox{\hyperlink{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680b}{EPortal\+Type}} \doxymbox{\hyperlink{class_a_interactable_portal_af959e3f86e2fb010db96eacd46813919}{Portal\+Type}}
+\item 
+FString \doxymbox{\hyperlink{class_a_interactable_portal_aa0fe7813d09b91c74be40de7417623c9}{Target\+Level\+Name}}
+\item 
+FString \doxymbox{\hyperlink{class_a_interactable_portal_a87da9adc04d52aaaece14d8dc66164df}{Portal\+Display\+Name}}
+\item 
+FString \doxymbox{\hyperlink{class_a_interactable_portal_a33e91b9de8155138d93046fa25639302}{Interaction\+Key}} = TEXT("{}F"{})
+\item 
+TSubclass\+Of$<$ \doxymbox{\hyperlink{class_u_interaction_widget}{UInteraction\+Widget}} $>$ \doxymbox{\hyperlink{class_a_interactable_portal_af3081ad0a2bb884b53137383f7dbf0ce}{Interaction\+Widget\+Class}}
+\item 
+class UInput\+Action \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_interactable_portal_ad580773070dad64f531d4b7e9c55bf5c}{Interact\+Action}}
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{class_a_interactable_portal_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_a_interactable_portal_a7300909b4bcb061e21bd8f0652cb100e}\index{AInteractablePortal@{AInteractablePortal}!AInteractablePortal@{AInteractablePortal}}
+\index{AInteractablePortal@{AInteractablePortal}!AInteractablePortal@{AInteractablePortal}}
+\doxysubsubsection{\texorpdfstring{AInteractablePortal()}{AInteractablePortal()}}
+{\footnotesize\ttfamily \label{class_a_interactable_portal_a7300909b4bcb061e21bd8f0652cb100e} 
+AInteractable\+Portal::\+\+AInteractable\+Portal (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_a_interactable_portal_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_a_interactable_portal_ac3918e14ba484f19d6467cac134becab}\index{AInteractablePortal@{AInteractablePortal}!BeginPlay@{BeginPlay}}
+\index{BeginPlay@{BeginPlay}!AInteractablePortal@{AInteractablePortal}}
+\doxysubsubsection{\texorpdfstring{BeginPlay()}{BeginPlay()}}
+{\footnotesize\ttfamily \label{class_a_interactable_portal_ac3918e14ba484f19d6467cac134becab} 
+void AInteractable\+Portal::\+\+Begin\+Play (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_interactable_portal_ac9f6bf62c6dd2f309b8659aa924b861e}\index{AInteractablePortal@{AInteractablePortal}!GetPortalDisplayName@{GetPortalDisplayName}}
+\index{GetPortalDisplayName@{GetPortalDisplayName}!AInteractablePortal@{AInteractablePortal}}
+\doxysubsubsection{\texorpdfstring{GetPortalDisplayName()}{GetPortalDisplayName()}}
+{\footnotesize\ttfamily \label{class_a_interactable_portal_ac9f6bf62c6dd2f309b8659aa924b861e} 
+FString AInteractable\+Portal::\+\+Get\+Portal\+Display\+Name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_a_interactable_portal_aec327853bed29fb357c31002128b3076}\index{AInteractablePortal@{AInteractablePortal}!GetPortalType@{GetPortalType}}
+\index{GetPortalType@{GetPortalType}!AInteractablePortal@{AInteractablePortal}}
+\doxysubsubsection{\texorpdfstring{GetPortalType()}{GetPortalType()}}
+{\footnotesize\ttfamily \label{class_a_interactable_portal_aec327853bed29fb357c31002128b3076} 
+\doxymbox{\hyperlink{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680b}{EPortal\+Type}} AInteractable\+Portal::\+\+Get\+Portal\+Type (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_a_interactable_portal_a4ff420b56fc992ab6b8e881e5d02c22f}\index{AInteractablePortal@{AInteractablePortal}!IsPlayerInRange@{IsPlayerInRange}}
+\index{IsPlayerInRange@{IsPlayerInRange}!AInteractablePortal@{AInteractablePortal}}
+\doxysubsubsection{\texorpdfstring{IsPlayerInRange()}{IsPlayerInRange()}}
+{\footnotesize\ttfamily \label{class_a_interactable_portal_a4ff420b56fc992ab6b8e881e5d02c22f} 
+bool AInteractable\+Portal::\+\+Is\+Player\+In\+Range (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_a_interactable_portal_a7af171f209b62e78a583da50299e3801}\index{AInteractablePortal@{AInteractablePortal}!OnPortalActivated@{OnPortalActivated}}
+\index{OnPortalActivated@{OnPortalActivated}!AInteractablePortal@{AInteractablePortal}}
+\doxysubsubsection{\texorpdfstring{OnPortalActivated()}{OnPortalActivated()}}
+{\footnotesize\ttfamily \label{class_a_interactable_portal_a7af171f209b62e78a583da50299e3801} 
+void AInteractable\+Portal::\+\+On\+Portal\+Activated (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{class_a_interactable_portal_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_a_interactable_portal_ad580773070dad64f531d4b7e9c55bf5c}\index{AInteractablePortal@{AInteractablePortal}!InteractAction@{InteractAction}}
+\index{InteractAction@{InteractAction}!AInteractablePortal@{AInteractablePortal}}
+\doxysubsubsection{\texorpdfstring{InteractAction}{InteractAction}}
+{\footnotesize\ttfamily \label{class_a_interactable_portal_ad580773070dad64f531d4b7e9c55bf5c} 
+class UInput\+Action\texorpdfstring{$\ast$}{*} AInteractable\+Portal::\+\+Interact\+Action\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_interactable_portal_a33e91b9de8155138d93046fa25639302}\index{AInteractablePortal@{AInteractablePortal}!InteractionKey@{InteractionKey}}
+\index{InteractionKey@{InteractionKey}!AInteractablePortal@{AInteractablePortal}}
+\doxysubsubsection{\texorpdfstring{InteractionKey}{InteractionKey}}
+{\footnotesize\ttfamily \label{class_a_interactable_portal_a33e91b9de8155138d93046fa25639302} 
+FString AInteractable\+Portal::\+\+Interaction\+Key = TEXT("{}F"{})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_interactable_portal_afaff89ddc03d4974d61df425305b8931}\index{AInteractablePortal@{AInteractablePortal}!InteractionTrigger@{InteractionTrigger}}
+\index{InteractionTrigger@{InteractionTrigger}!AInteractablePortal@{AInteractablePortal}}
+\doxysubsubsection{\texorpdfstring{InteractionTrigger}{InteractionTrigger}}
+{\footnotesize\ttfamily \label{class_a_interactable_portal_afaff89ddc03d4974d61df425305b8931} 
+UBox\+Component\texorpdfstring{$\ast$}{*} AInteractable\+Portal::\+\+Interaction\+Trigger\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_interactable_portal_af3081ad0a2bb884b53137383f7dbf0ce}\index{AInteractablePortal@{AInteractablePortal}!InteractionWidgetClass@{InteractionWidgetClass}}
+\index{InteractionWidgetClass@{InteractionWidgetClass}!AInteractablePortal@{AInteractablePortal}}
+\doxysubsubsection{\texorpdfstring{InteractionWidgetClass}{InteractionWidgetClass}}
+{\footnotesize\ttfamily \label{class_a_interactable_portal_af3081ad0a2bb884b53137383f7dbf0ce} 
+TSubclass\+Of$<$\doxymbox{\hyperlink{class_u_interaction_widget}{UInteraction\+Widget}}$>$ AInteractable\+Portal::\+\+Interaction\+Widget\+Class\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_interactable_portal_a8d581390df62066b6a6be58411b2ec44}\index{AInteractablePortal@{AInteractablePortal}!InteractionWidgetComponent@{InteractionWidgetComponent}}
+\index{InteractionWidgetComponent@{InteractionWidgetComponent}!AInteractablePortal@{AInteractablePortal}}
+\doxysubsubsection{\texorpdfstring{InteractionWidgetComponent}{InteractionWidgetComponent}}
+{\footnotesize\ttfamily \label{class_a_interactable_portal_a8d581390df62066b6a6be58411b2ec44} 
+UWidget\+Component\texorpdfstring{$\ast$}{*} AInteractable\+Portal::\+\+Interaction\+Widget\+Component\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_interactable_portal_a87da9adc04d52aaaece14d8dc66164df}\index{AInteractablePortal@{AInteractablePortal}!PortalDisplayName@{PortalDisplayName}}
+\index{PortalDisplayName@{PortalDisplayName}!AInteractablePortal@{AInteractablePortal}}
+\doxysubsubsection{\texorpdfstring{PortalDisplayName}{PortalDisplayName}}
+{\footnotesize\ttfamily \label{class_a_interactable_portal_a87da9adc04d52aaaece14d8dc66164df} 
+FString AInteractable\+Portal::\+\+Portal\+Display\+Name\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_interactable_portal_a2894af6acbbe3f6645f1b00a562f0ab7}\index{AInteractablePortal@{AInteractablePortal}!PortalMesh@{PortalMesh}}
+\index{PortalMesh@{PortalMesh}!AInteractablePortal@{AInteractablePortal}}
+\doxysubsubsection{\texorpdfstring{PortalMesh}{PortalMesh}}
+{\footnotesize\ttfamily \label{class_a_interactable_portal_a2894af6acbbe3f6645f1b00a562f0ab7} 
+UStatic\+Mesh\+Component\texorpdfstring{$\ast$}{*} AInteractable\+Portal::\+\+Portal\+Mesh\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_interactable_portal_af959e3f86e2fb010db96eacd46813919}\index{AInteractablePortal@{AInteractablePortal}!PortalType@{PortalType}}
+\index{PortalType@{PortalType}!AInteractablePortal@{AInteractablePortal}}
+\doxysubsubsection{\texorpdfstring{PortalType}{PortalType}}
+{\footnotesize\ttfamily \label{class_a_interactable_portal_af959e3f86e2fb010db96eacd46813919} 
+\doxymbox{\hyperlink{_interactable_portal_8h_a2ac3a9ae106524e2490c72473d1f680b}{EPortal\+Type}} AInteractable\+Portal::\+\+Portal\+Type\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_interactable_portal_aa0fe7813d09b91c74be40de7417623c9}\index{AInteractablePortal@{AInteractablePortal}!TargetLevelName@{TargetLevelName}}
+\index{TargetLevelName@{TargetLevelName}!AInteractablePortal@{AInteractablePortal}}
+\doxysubsubsection{\texorpdfstring{TargetLevelName}{TargetLevelName}}
+{\footnotesize\ttfamily \label{class_a_interactable_portal_aa0fe7813d09b91c74be40de7417623c9} 
+FString AInteractable\+Portal::\+\+Target\+Level\+Name\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Interact/\+\doxymbox{\hyperlink{_interactable_portal_8h}{Interactable\+Portal.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Interact/\+\doxymbox{\hyperlink{_interactable_portal_8cpp}{Interactable\+Portal.\+cpp}}\end{DoxyCompactItemize}

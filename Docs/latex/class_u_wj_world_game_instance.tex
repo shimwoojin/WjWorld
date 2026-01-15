@@ -1,0 +1,100 @@
+\doxysection{UWj\+World\+Game\+Instance Class Reference}
+\hypertarget{class_u_wj_world_game_instance}{}\label{class_u_wj_world_game_instance}\index{UWjWorldGameInstance@{UWjWorldGameInstance}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Game\+Instance.\+h$>$}
+
+Inheritance diagram for UWj\+World\+Game\+Instance:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_u_wj_world_game_instance}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_instance_a1d4d1b588c7fdc9990268930bb3eb8fb}{Init}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_instance_aaca0eb2176f39a9b3b3a45664d3e33eb}{Shutdown}} () override
+\item 
+\doxymbox{\hyperlink{class_u_session_manager}{USession\+Manager}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_u_wj_world_game_instance_ac2613d2e0482c2e2a39d4614e2bdf315}{Get\+Session\+Manager}} () const
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_game_instance_a325364952578abd0bff3788a09a0279b}{Create\+Room}} (const \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} \&Settings)
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_game_instance_a4f3514320f6aa5de29c0718f1b536015}{Find\+Rooms}} (int32 Max\+Results=100)
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_game_instance_a28ee05ff3fc5c9a122a41014478c9507}{Join\+Room}} (int32 Room\+Index)
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_game_instance_a5fd413aba23065c36389db78a31843f3}{Start\+Game}} ()
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_game_instance_ae73cafba9b06d6f43a7ad5a356366ddf}{Leave\+Room}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{class_wj_world}{Wj\+World} 게임 인스턴스
+
+역할:\+
+\begin{DoxyItemize}
+\item 게임 전역 데이터 관리
+\item Session\+Manager 소유 및 접근 제공
+\item 레벨 간 데이터 유지 
+\end{DoxyItemize}
+
+\label{doc-func-members}
+\Hypertarget{class_u_wj_world_game_instance_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_wj_world_game_instance_a325364952578abd0bff3788a09a0279b}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!CreateRoom@{CreateRoom}}
+\index{CreateRoom@{CreateRoom}!UWjWorldGameInstance@{UWjWorldGameInstance}}
+\doxysubsubsection{\texorpdfstring{CreateRoom()}{CreateRoom()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_instance_a325364952578abd0bff3788a09a0279b} 
+bool UWj\+World\+Game\+Instance::\+\+Create\+Room (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} \&}]{Settings}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_wj_world_game_instance_a4f3514320f6aa5de29c0718f1b536015}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!FindRooms@{FindRooms}}
+\index{FindRooms@{FindRooms}!UWjWorldGameInstance@{UWjWorldGameInstance}}
+\doxysubsubsection{\texorpdfstring{FindRooms()}{FindRooms()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_instance_a4f3514320f6aa5de29c0718f1b536015} 
+bool UWj\+World\+Game\+Instance::\+\+Find\+Rooms (\begin{DoxyParamCaption}\item[{int32}]{Max\+Results}{ = {\ttfamily 100}}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_wj_world_game_instance_ac2613d2e0482c2e2a39d4614e2bdf315}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!GetSessionManager@{GetSessionManager}}
+\index{GetSessionManager@{GetSessionManager}!UWjWorldGameInstance@{UWjWorldGameInstance}}
+\doxysubsubsection{\texorpdfstring{GetSessionManager()}{GetSessionManager()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_instance_ac2613d2e0482c2e2a39d4614e2bdf315} 
+\doxymbox{\hyperlink{class_u_session_manager}{USession\+Manager}} \texorpdfstring{$\ast$}{*} UWj\+World\+Game\+Instance::\+\+Get\+Session\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Session\+Manager 가져오기 (블루프린트/\+\+C++ 모두 접근 가능) \Hypertarget{class_u_wj_world_game_instance_a1d4d1b588c7fdc9990268930bb3eb8fb}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!Init@{Init}}
+\index{Init@{Init}!UWjWorldGameInstance@{UWjWorldGameInstance}}
+\doxysubsubsection{\texorpdfstring{Init()}{Init()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_instance_a1d4d1b588c7fdc9990268930bb3eb8fb} 
+void UWj\+World\+Game\+Instance::\+\+Init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_game_instance_a28ee05ff3fc5c9a122a41014478c9507}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!JoinRoom@{JoinRoom}}
+\index{JoinRoom@{JoinRoom}!UWjWorldGameInstance@{UWjWorldGameInstance}}
+\doxysubsubsection{\texorpdfstring{JoinRoom()}{JoinRoom()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_instance_a28ee05ff3fc5c9a122a41014478c9507} 
+bool UWj\+World\+Game\+Instance::\+\+Join\+Room (\begin{DoxyParamCaption}\item[{int32}]{Room\+Index}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_wj_world_game_instance_ae73cafba9b06d6f43a7ad5a356366ddf}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!LeaveRoom@{LeaveRoom}}
+\index{LeaveRoom@{LeaveRoom}!UWjWorldGameInstance@{UWjWorldGameInstance}}
+\doxysubsubsection{\texorpdfstring{LeaveRoom()}{LeaveRoom()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_instance_ae73cafba9b06d6f43a7ad5a356366ddf} 
+bool UWj\+World\+Game\+Instance::\+\+Leave\+Room (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_wj_world_game_instance_aaca0eb2176f39a9b3b3a45664d3e33eb}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!Shutdown@{Shutdown}}
+\index{Shutdown@{Shutdown}!UWjWorldGameInstance@{UWjWorldGameInstance}}
+\doxysubsubsection{\texorpdfstring{Shutdown()}{Shutdown()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_instance_aaca0eb2176f39a9b3b3a45664d3e33eb} 
+void UWj\+World\+Game\+Instance::\+\+Shutdown (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_game_instance_a5fd413aba23065c36389db78a31843f3}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!StartGame@{StartGame}}
+\index{StartGame@{StartGame}!UWjWorldGameInstance@{UWjWorldGameInstance}}
+\doxysubsubsection{\texorpdfstring{StartGame()}{StartGame()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_instance_a5fd413aba23065c36389db78a31843f3} 
+bool UWj\+World\+Game\+Instance::\+\+Start\+Game (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Core/\+\doxymbox{\hyperlink{_wj_world_game_instance_8h}{Wj\+World\+Game\+Instance.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Core/\+\doxymbox{\hyperlink{_wj_world_game_instance_8cpp}{Wj\+World\+Game\+Instance.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,50 @@
+\doxysection{Login\+Window.\+h}
+\hypertarget{_login_window_8h_source}{}\label{_login_window_8h_source}\index{Source/WjWorld/UI/Login/LoginWindow.h@{Source/WjWorld/UI/Login/LoginWindow.h}}
+\doxymbox{\hyperlink{_login_window_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_user_widget_base_8h}{UI/WjWorldUserWidgetBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}LoginWindow.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }UTextBlock;}
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }UProgressBar;}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00015\ UCLASS()}
+\DoxyCodeLine{00016\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_login_window}{ULoginWindow}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}}
+\DoxyCodeLine{00017\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00019\ \ \ \ \ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{comment}{//\ 로그인 진행\ 상태 업데이트}}
+\DoxyCodeLine{00022\ \ \ \ \ UFUNCTION(BlueprintCallable)}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_login_window_a1ce0f6fa7ccfd07881b67575a1578b23}{UpdateLoginProgress}}(\textcolor{keywordtype}{float}\ Progress);}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{comment}{//\ 로그인 상태 텍스트\ 업데이트}}
+\DoxyCodeLine{00026\ \ \ \ \ UFUNCTION(BlueprintCallable)}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_login_window_a89462845b193735419d36b1cf3bbbb84}{UpdateLoginStatusText}}(\textcolor{keyword}{const}\ FString\&\ StatusText);}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_login_window_af55edfaadc0d6b428979846c232a527d}{NativeConstruct}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\ 로그인 상태 텍스트}}
+\DoxyCodeLine{00033\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00034\ \ \ \ \ UTextBlock*\ \doxymbox{\hyperlink{class_u_login_window_a85dc1c58deb61e01fda11ca7a3d45302}{LoginStatusText}};}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{comment}{//\ 로그인 진행\ 바 (선택사항)}}
+\DoxyCodeLine{00037\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00038\ \ \ \ \ UProgressBar*\ \doxymbox{\hyperlink{class_u_login_window_aeed989957ec259d5b0c193ae758768dc}{LoginProgressBar}};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ private:}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{comment}{//\ 진행\ 상태 애니메이션용 타이머}}
+\DoxyCodeLine{00042\ \ \ \ \ FTimerHandle\ ProgressTimerHandle;}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{float}\ CurrentProgress\ =\ 0.0f;}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{comment}{//\ 진행\ 바 업데이트}}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateProgressBar();}
+\DoxyCodeLine{00047\ \};}
+
+\end{DoxyCode}

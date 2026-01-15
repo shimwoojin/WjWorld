@@ -1,0 +1,38 @@
+\doxysection{Wj\+World\+HUDLobby.\+h}
+\hypertarget{_wj_world_h_u_d_lobby_8h_source}{}\label{_wj_world_h_u_d_lobby_8h_source}\index{Source/WjWorld/Core/Local/Lobby/WjWorldHUDLobby.h@{Source/WjWorld/Core/Local/Lobby/WjWorldHUDLobby.h}}
+\doxymbox{\hyperlink{_wj_world_h_u_d_lobby_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_h_u_d_base_8h}{Core/Base/WjWorldHUDBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldHUDLobby.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_lobby_h_u_d_widget}{ULobbyHUDWidget}};}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00019\ UCLASS()}
+\DoxyCodeLine{00020\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_lobby_a6f9269f6cce22fbf13a4ed6f5ee91876}{AWjWorldHUDLobby}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_base}{AWjWorldHUDBase}}}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00023\ \ \ \ \ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_lobby_a6f9269f6cce22fbf13a4ed6f5ee91876}{AWjWorldHUDLobby}}();}
+\DoxyCodeLine{00026\ \ \ \ \ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_lobby_a0a8d32a10b0e29c5f1420ccc72763ec6}{BeginPlay}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_lobby_a22f2e313a38667cf7faf2cd3679163af}{ShowLobbyHUD}}();}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_lobby_ad3e48c5e733801b7590813f03ce2667b}{HideLobbyHUD}}();}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00037\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}UI"{}})}
+\DoxyCodeLine{00038\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_u_lobby_h_u_d_widget}{ULobbyHUDWidget}}>\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_lobby_aa91c0396a87408b98de42c63c784ba72}{LobbyHUDWidgetClass}};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ private:}
+\DoxyCodeLine{00042\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00043\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_lobby_h_u_d_widget}{ULobbyHUDWidget}}>\ LobbyHUDWidgetInstance;}
+\DoxyCodeLine{00044\ \};}
+
+\end{DoxyCode}

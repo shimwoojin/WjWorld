@@ -1,0 +1,207 @@
+\doxysection{UCreate\+Room\+Window Class Reference}
+\hypertarget{class_u_create_room_window}{}\label{class_u_create_room_window}\index{UCreateRoomWindow@{UCreateRoomWindow}}
+
+
+{\ttfamily \+\#include $<$Create\+Room\+Window.\+h$>$}
+
+Inheritance diagram for UCreate\+Room\+Window:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_u_create_room_window}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_create_room_window_afb2a8d42d4b4fc991b31a740abf956df}{Native\+Construct}} () override
+\item 
+void \doxymbox{\hyperlink{class_u_create_room_window_a0d96241b8eb758652a10399f31553bcb}{Show\+Popup}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_create_room_window_a56a28d1a861dd58c04ad8f5fb17f8820}{Close\+Popup}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{class_u_create_room_window_aa00f195627ac45f75a8b130a49878fb7}{On\+Decrease\+Players\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_create_room_window_a6dee420d89dbb49ec100efb241f238e6}{On\+Increase\+Players\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_create_room_window_a7bdee353da78d24ab338df3ad0819d11}{On\+Private\+Check\+Box\+Changed}} (bool b\+Is\+Checked)
+\item 
+void \doxymbox{\hyperlink{class_u_create_room_window_a6ae13c407e281de805418264497f3d72}{On\+Cancel\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_create_room_window_afe0673466defaaffd5db623cde361a80}{On\+Create\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_create_room_window_afa7ef3ca9f2dc3cec0594b65514ddda4}{On\+Room\+Created}} (bool b\+Was\+Successful)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UEditable\+Text\+Box $>$ \doxymbox{\hyperlink{class_u_create_room_window_a49f1deee79bf0a2c3caa47742f27d4b4}{Room\+Name\+Text\+Box}}
+\item 
+TObject\+Ptr$<$ UCombo\+Box\+String $>$ \doxymbox{\hyperlink{class_u_create_room_window_a3c878bcd7993554fede493d4a9990314}{Game\+Mode\+Combo\+Box}}
+\item 
+TObject\+Ptr$<$ UCombo\+Box\+String $>$ \doxymbox{\hyperlink{class_u_create_room_window_af63cb818e709fb587c8c7c33745fcfaf}{Map\+Combo\+Box}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_create_room_window_ac52492efb51816bfa23f744d3a0e4956}{Max\+Players\+Text}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_create_room_window_ac15b0040033b26c79edef628d91510d4}{Decrease\+Players\+Button}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_create_room_window_a2e981b8ffda98d2402623f7ed3e9c35c}{Increase\+Players\+Button}}
+\item 
+TObject\+Ptr$<$ UCheck\+Box $>$ \doxymbox{\hyperlink{class_u_create_room_window_ac5a08a98a3c080627418125a2819b7dc}{Private\+Check\+Box}}
+\item 
+TObject\+Ptr$<$ UEditable\+Text\+Box $>$ \doxymbox{\hyperlink{class_u_create_room_window_ab65b42146840e07e7c2e475c5f81d118}{Password\+Text\+Box}}
+\item 
+TObject\+Ptr$<$ UCheck\+Box $>$ \doxymbox{\hyperlink{class_u_create_room_window_a4b4928da710c70c20b183c61b23287e1}{Allow\+Join\+In\+Progress\+Check\+Box}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_create_room_window_aa9f31333935c2c4e70928ac937ef0fe3}{Cancel\+Button}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_create_room_window_a05c57219d41c09ca931e4583d83ababf}{Create\+Button}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+방 생성 UI 위젯
+
+기능:\+
+\begin{DoxyItemize}
+\item 방 이름, 게임 모드, 맵, 최대 인원 등 설정
+\item Session\+Manager를 통한 세션 생성
+\item 입력 유효성 검사 
+\end{DoxyItemize}
+
+\label{doc-func-members}
+\Hypertarget{class_u_create_room_window_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_create_room_window_a56a28d1a861dd58c04ad8f5fb17f8820}\index{UCreateRoomWindow@{UCreateRoomWindow}!ClosePopup@{ClosePopup}}
+\index{ClosePopup@{ClosePopup}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{ClosePopup()}{ClosePopup()}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_a56a28d1a861dd58c04ad8f5fb17f8820} 
+void UCreate\+Room\+Window::\+\+Close\+Popup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+팝업 닫기 \Hypertarget{class_u_create_room_window_afb2a8d42d4b4fc991b31a740abf956df}\index{UCreateRoomWindow@{UCreateRoomWindow}!NativeConstruct@{NativeConstruct}}
+\index{NativeConstruct@{NativeConstruct}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{NativeConstruct()}{NativeConstruct()}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_afb2a8d42d4b4fc991b31a740abf956df} 
+void UCreate\+Room\+Window::\+\+Native\+Construct (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_create_room_window_a6ae13c407e281de805418264497f3d72}\index{UCreateRoomWindow@{UCreateRoomWindow}!OnCancelClicked@{OnCancelClicked}}
+\index{OnCancelClicked@{OnCancelClicked}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{OnCancelClicked()}{OnCancelClicked()}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_a6ae13c407e281de805418264497f3d72} 
+void UCreate\+Room\+Window::\+\+On\+Cancel\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_create_room_window_afe0673466defaaffd5db623cde361a80}\index{UCreateRoomWindow@{UCreateRoomWindow}!OnCreateClicked@{OnCreateClicked}}
+\index{OnCreateClicked@{OnCreateClicked}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{OnCreateClicked()}{OnCreateClicked()}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_afe0673466defaaffd5db623cde361a80} 
+void UCreate\+Room\+Window::\+\+On\+Create\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_create_room_window_aa00f195627ac45f75a8b130a49878fb7}\index{UCreateRoomWindow@{UCreateRoomWindow}!OnDecreasePlayersClicked@{OnDecreasePlayersClicked}}
+\index{OnDecreasePlayersClicked@{OnDecreasePlayersClicked}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{OnDecreasePlayersClicked()}{OnDecreasePlayersClicked()}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_aa00f195627ac45f75a8b130a49878fb7} 
+void UCreate\+Room\+Window::\+\+On\+Decrease\+Players\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_create_room_window_a6dee420d89dbb49ec100efb241f238e6}\index{UCreateRoomWindow@{UCreateRoomWindow}!OnIncreasePlayersClicked@{OnIncreasePlayersClicked}}
+\index{OnIncreasePlayersClicked@{OnIncreasePlayersClicked}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{OnIncreasePlayersClicked()}{OnIncreasePlayersClicked()}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_a6dee420d89dbb49ec100efb241f238e6} 
+void UCreate\+Room\+Window::\+\+On\+Increase\+Players\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_create_room_window_a7bdee353da78d24ab338df3ad0819d11}\index{UCreateRoomWindow@{UCreateRoomWindow}!OnPrivateCheckBoxChanged@{OnPrivateCheckBoxChanged}}
+\index{OnPrivateCheckBoxChanged@{OnPrivateCheckBoxChanged}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{OnPrivateCheckBoxChanged()}{OnPrivateCheckBoxChanged()}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_a7bdee353da78d24ab338df3ad0819d11} 
+void UCreate\+Room\+Window::\+\+On\+Private\+Check\+Box\+Changed (\begin{DoxyParamCaption}\item[{bool}]{b\+Is\+Checked}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_create_room_window_afa7ef3ca9f2dc3cec0594b65514ddda4}\index{UCreateRoomWindow@{UCreateRoomWindow}!OnRoomCreated@{OnRoomCreated}}
+\index{OnRoomCreated@{OnRoomCreated}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{OnRoomCreated()}{OnRoomCreated()}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_afa7ef3ca9f2dc3cec0594b65514ddda4} 
+void UCreate\+Room\+Window::\+\+On\+Room\+Created (\begin{DoxyParamCaption}\item[{bool}]{b\+Was\+Successful}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_create_room_window_a0d96241b8eb758652a10399f31553bcb}\index{UCreateRoomWindow@{UCreateRoomWindow}!ShowPopup@{ShowPopup}}
+\index{ShowPopup@{ShowPopup}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{ShowPopup()}{ShowPopup()}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_a0d96241b8eb758652a10399f31553bcb} 
+void UCreate\+Room\+Window::\+\+Show\+Popup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+팝업 표시 
+
+\label{doc-variable-members}
+\Hypertarget{class_u_create_room_window_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_create_room_window_a4b4928da710c70c20b183c61b23287e1}\index{UCreateRoomWindow@{UCreateRoomWindow}!AllowJoinInProgressCheckBox@{AllowJoinInProgressCheckBox}}
+\index{AllowJoinInProgressCheckBox@{AllowJoinInProgressCheckBox}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{AllowJoinInProgressCheckBox}{AllowJoinInProgressCheckBox}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_a4b4928da710c70c20b183c61b23287e1} 
+TObject\+Ptr$<$UCheck\+Box$>$ UCreate\+Room\+Window::\+\+Allow\+Join\+In\+Progress\+Check\+Box\hspace{0.3cm}{\ttfamily [protected]}}
+
+게임 중 입장 허용 체크박스 \Hypertarget{class_u_create_room_window_aa9f31333935c2c4e70928ac937ef0fe3}\index{UCreateRoomWindow@{UCreateRoomWindow}!CancelButton@{CancelButton}}
+\index{CancelButton@{CancelButton}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{CancelButton}{CancelButton}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_aa9f31333935c2c4e70928ac937ef0fe3} 
+TObject\+Ptr$<$UButton$>$ UCreate\+Room\+Window::\+\+Cancel\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+취소 버튼 \Hypertarget{class_u_create_room_window_a05c57219d41c09ca931e4583d83ababf}\index{UCreateRoomWindow@{UCreateRoomWindow}!CreateButton@{CreateButton}}
+\index{CreateButton@{CreateButton}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{CreateButton}{CreateButton}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_a05c57219d41c09ca931e4583d83ababf} 
+TObject\+Ptr$<$UButton$>$ UCreate\+Room\+Window::\+\+Create\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+방 만들기 버튼 \Hypertarget{class_u_create_room_window_ac15b0040033b26c79edef628d91510d4}\index{UCreateRoomWindow@{UCreateRoomWindow}!DecreasePlayersButton@{DecreasePlayersButton}}
+\index{DecreasePlayersButton@{DecreasePlayersButton}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{DecreasePlayersButton}{DecreasePlayersButton}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_ac15b0040033b26c79edef628d91510d4} 
+TObject\+Ptr$<$UButton$>$ UCreate\+Room\+Window::\+\+Decrease\+Players\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+최대 인원 감소 버튼 \Hypertarget{class_u_create_room_window_a3c878bcd7993554fede493d4a9990314}\index{UCreateRoomWindow@{UCreateRoomWindow}!GameModeComboBox@{GameModeComboBox}}
+\index{GameModeComboBox@{GameModeComboBox}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{GameModeComboBox}{GameModeComboBox}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_a3c878bcd7993554fede493d4a9990314} 
+TObject\+Ptr$<$UCombo\+Box\+String$>$ UCreate\+Room\+Window::\+\+Game\+Mode\+Combo\+Box\hspace{0.3cm}{\ttfamily [protected]}}
+
+게임 모드 선택 \Hypertarget{class_u_create_room_window_a2e981b8ffda98d2402623f7ed3e9c35c}\index{UCreateRoomWindow@{UCreateRoomWindow}!IncreasePlayersButton@{IncreasePlayersButton}}
+\index{IncreasePlayersButton@{IncreasePlayersButton}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{IncreasePlayersButton}{IncreasePlayersButton}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_a2e981b8ffda98d2402623f7ed3e9c35c} 
+TObject\+Ptr$<$UButton$>$ UCreate\+Room\+Window::\+\+Increase\+Players\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+최대 인원 증가 버튼 \Hypertarget{class_u_create_room_window_af63cb818e709fb587c8c7c33745fcfaf}\index{UCreateRoomWindow@{UCreateRoomWindow}!MapComboBox@{MapComboBox}}
+\index{MapComboBox@{MapComboBox}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{MapComboBox}{MapComboBox}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_af63cb818e709fb587c8c7c33745fcfaf} 
+TObject\+Ptr$<$UCombo\+Box\+String$>$ UCreate\+Room\+Window::\+\+Map\+Combo\+Box\hspace{0.3cm}{\ttfamily [protected]}}
+
+맵 선택 \Hypertarget{class_u_create_room_window_ac52492efb51816bfa23f744d3a0e4956}\index{UCreateRoomWindow@{UCreateRoomWindow}!MaxPlayersText@{MaxPlayersText}}
+\index{MaxPlayersText@{MaxPlayersText}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{MaxPlayersText}{MaxPlayersText}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_ac52492efb51816bfa23f744d3a0e4956} 
+TObject\+Ptr$<$UText\+Block$>$ UCreate\+Room\+Window::\+\+Max\+Players\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+최대 인원 표시 텍스트 \Hypertarget{class_u_create_room_window_ab65b42146840e07e7c2e475c5f81d118}\index{UCreateRoomWindow@{UCreateRoomWindow}!PasswordTextBox@{PasswordTextBox}}
+\index{PasswordTextBox@{PasswordTextBox}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{PasswordTextBox}{PasswordTextBox}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_ab65b42146840e07e7c2e475c5f81d118} 
+TObject\+Ptr$<$UEditable\+Text\+Box$>$ UCreate\+Room\+Window::\+\+Password\+Text\+Box\hspace{0.3cm}{\ttfamily [protected]}}
+
+비밀번호 입력 필드 \Hypertarget{class_u_create_room_window_ac5a08a98a3c080627418125a2819b7dc}\index{UCreateRoomWindow@{UCreateRoomWindow}!PrivateCheckBox@{PrivateCheckBox}}
+\index{PrivateCheckBox@{PrivateCheckBox}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{PrivateCheckBox}{PrivateCheckBox}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_ac5a08a98a3c080627418125a2819b7dc} 
+TObject\+Ptr$<$UCheck\+Box$>$ UCreate\+Room\+Window::\+\+Private\+Check\+Box\hspace{0.3cm}{\ttfamily [protected]}}
+
+비공개 방 체크박스 \Hypertarget{class_u_create_room_window_a49f1deee79bf0a2c3caa47742f27d4b4}\index{UCreateRoomWindow@{UCreateRoomWindow}!RoomNameTextBox@{RoomNameTextBox}}
+\index{RoomNameTextBox@{RoomNameTextBox}!UCreateRoomWindow@{UCreateRoomWindow}}
+\doxysubsubsection{\texorpdfstring{RoomNameTextBox}{RoomNameTextBox}}
+{\footnotesize\ttfamily \label{class_u_create_room_window_a49f1deee79bf0a2c3caa47742f27d4b4} 
+TObject\+Ptr$<$UEditable\+Text\+Box$>$ UCreate\+Room\+Window::\+\+Room\+Name\+Text\+Box\hspace{0.3cm}{\ttfamily [protected]}}
+
+방 이름 입력 필드 
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Session/\+\doxymbox{\hyperlink{_create_room_window_8h}{Create\+Room\+Window.\+h}}\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Session/\+\doxymbox{\hyperlink{_create_room_window_8cpp}{Create\+Room\+Window.\+cpp}}\end{DoxyCompactItemize}

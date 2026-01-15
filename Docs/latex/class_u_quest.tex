@@ -1,0 +1,82 @@
+\doxysection{UQuest Class Reference}
+\hypertarget{class_u_quest}{}\label{class_u_quest}\index{UQuest@{UQuest}}
+
+
+{\ttfamily \+\#include $<$Quest.\+h$>$}
+
+Inheritance diagram for UQuest:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_u_quest}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \doxymbox{\hyperlink{class_u_quest_a20667d6a2303b02c23f6e0de0c88000b}{Load\+Quest\+Data\+From\+Server}} (TShared\+Ref$<$ \doxymbox{\hyperlink{class_packet_quest_load_ntf}{Packet\+Quest\+Load\+Ntf}} $>$ In\+Data)
+\item 
+void \doxymbox{\hyperlink{class_u_quest_aa4a7293e55ab6a22be941c1fd0d8cf8e}{Update}} (const \doxymbox{\hyperlink{struct_active_quest_info}{Active\+Quest\+Info}} \&In\+Quest\+Info)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FQuest\+Active\+Signature \doxymbox{\hyperlink{class_u_quest_a6d2ba82504b13bd43c795f879355b470}{On\+Quest\+Active}}
+\item 
+FQuest\+Update\+Signature \doxymbox{\hyperlink{class_u_quest_a03fb56715fc5de1203a2ef739638488e}{On\+Quest\+Update}}
+\item 
+FQuest\+Complete\+Alert\+Signature \doxymbox{\hyperlink{class_u_quest_a2616a555c50d78335131b32ecd80e795}{On\+Quest\+Complete\+Alert}}
+\item 
+FQuest\+Complete\+Signature \doxymbox{\hyperlink{class_u_quest_ab853dcd22289cc3435cc3aaf414917b3}{On\+Quest\+Complete}}
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{class_u_quest_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_quest_a20667d6a2303b02c23f6e0de0c88000b}\index{UQuest@{UQuest}!LoadQuestDataFromServer@{LoadQuestDataFromServer}}
+\index{LoadQuestDataFromServer@{LoadQuestDataFromServer}!UQuest@{UQuest}}
+\doxysubsubsection{\texorpdfstring{LoadQuestDataFromServer()}{LoadQuestDataFromServer()}}
+{\footnotesize\ttfamily \label{class_u_quest_a20667d6a2303b02c23f6e0de0c88000b} 
+bool UQuest::\+\+Load\+Quest\+Data\+From\+Server (\begin{DoxyParamCaption}\item[{TShared\+Ref$<$ \doxymbox{\hyperlink{class_packet_quest_load_ntf}{Packet\+Quest\+Load\+Ntf}} $>$}]{In\+Data}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_quest_aa4a7293e55ab6a22be941c1fd0d8cf8e}\index{UQuest@{UQuest}!Update@{Update}}
+\index{Update@{Update}!UQuest@{UQuest}}
+\doxysubsubsection{\texorpdfstring{Update()}{Update()}}
+{\footnotesize\ttfamily \label{class_u_quest_aa4a7293e55ab6a22be941c1fd0d8cf8e} 
+void UQuest::\+\+Update (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{struct_active_quest_info}{Active\+Quest\+Info}} \&}]{In\+Quest\+Info}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{class_u_quest_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_quest_a6d2ba82504b13bd43c795f879355b470}\index{UQuest@{UQuest}!OnQuestActive@{OnQuestActive}}
+\index{OnQuestActive@{OnQuestActive}!UQuest@{UQuest}}
+\doxysubsubsection{\texorpdfstring{OnQuestActive}{OnQuestActive}}
+{\footnotesize\ttfamily \label{class_u_quest_a6d2ba82504b13bd43c795f879355b470} 
+FQuest\+Active\+Signature UQuest::\+\+On\+Quest\+Active}
+
+\Hypertarget{class_u_quest_ab853dcd22289cc3435cc3aaf414917b3}\index{UQuest@{UQuest}!OnQuestComplete@{OnQuestComplete}}
+\index{OnQuestComplete@{OnQuestComplete}!UQuest@{UQuest}}
+\doxysubsubsection{\texorpdfstring{OnQuestComplete}{OnQuestComplete}}
+{\footnotesize\ttfamily \label{class_u_quest_ab853dcd22289cc3435cc3aaf414917b3} 
+FQuest\+Complete\+Signature UQuest::\+\+On\+Quest\+Complete}
+
+\Hypertarget{class_u_quest_a2616a555c50d78335131b32ecd80e795}\index{UQuest@{UQuest}!OnQuestCompleteAlert@{OnQuestCompleteAlert}}
+\index{OnQuestCompleteAlert@{OnQuestCompleteAlert}!UQuest@{UQuest}}
+\doxysubsubsection{\texorpdfstring{OnQuestCompleteAlert}{OnQuestCompleteAlert}}
+{\footnotesize\ttfamily \label{class_u_quest_a2616a555c50d78335131b32ecd80e795} 
+FQuest\+Complete\+Alert\+Signature UQuest::\+\+On\+Quest\+Complete\+Alert}
+
+\Hypertarget{class_u_quest_a03fb56715fc5de1203a2ef739638488e}\index{UQuest@{UQuest}!OnQuestUpdate@{OnQuestUpdate}}
+\index{OnQuestUpdate@{OnQuestUpdate}!UQuest@{UQuest}}
+\doxysubsubsection{\texorpdfstring{OnQuestUpdate}{OnQuestUpdate}}
+{\footnotesize\ttfamily \label{class_u_quest_a03fb56715fc5de1203a2ef739638488e} 
+FQuest\+Update\+Signature UQuest::\+\+On\+Quest\+Update}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Quest/\+\doxymbox{\hyperlink{_quest_8h}{Quest.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Quest/\+\doxymbox{\hyperlink{_quest_8cpp}{Quest.\+cpp}}\end{DoxyCompactItemize}

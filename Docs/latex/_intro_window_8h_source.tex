@@ -1,0 +1,64 @@
+\doxysection{Intro\+Window.\+h}
+\hypertarget{_intro_window_8h_source}{}\label{_intro_window_8h_source}\index{Source/WjWorld/UI/Intro/IntroWindow.h@{Source/WjWorld/UI/Intro/IntroWindow.h}}
+\doxymbox{\hyperlink{_intro_window_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_user_widget_base_8h}{UI/WjWorldUserWidgetBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}IntroWindow.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \doxymbox{\hyperlink{_intro_window_8h_a5795a445a660ce8d9915b1ee516cd758}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE}}(FOnVideoCompleted);}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }UMediaPlayer;}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }UMediaTexture;}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }UMediaSource;}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }UImage;}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00019\ UCLASS()}
+\DoxyCodeLine{00020\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_intro_window}{UIntroWindow}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00023\ \ \ \ \ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{comment}{//\ 동영상 완료 이벤트}}
+\DoxyCodeLine{00026\ \ \ \ \ UPROPERTY(BlueprintAssignable)}
+\DoxyCodeLine{00027\ \ \ \ \ FOnVideoCompleted\ \doxymbox{\hyperlink{class_u_intro_window_a9316353e0d8dd3834a15cd2409b187fa}{OnVideoCompleted}};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{comment}{//\ 동영상 재생 시작}}
+\DoxyCodeLine{00030\ \ \ \ \ UFUNCTION(BlueprintCallable)}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_intro_window_a3ed56ac146f15e6cf0bcec423ed4fe4f}{PlayIntroVideo}}();}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ protected:}
+\DoxyCodeLine{00034\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_intro_window_a80ea2a6daa7815e068103067154449c0}{NativeConstruct}}()\ override;}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{comment}{//\ 미디어 플레이어}}
+\DoxyCodeLine{00037\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Media"{}})}
+\DoxyCodeLine{00038\ \ \ \ \ UMediaPlayer*\ \doxymbox{\hyperlink{class_u_intro_window_adca387381899693c384f4519b2977950}{MediaPlayer}};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{comment}{//\ 미디어 텍스처}}
+\DoxyCodeLine{00041\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Media"{}})}
+\DoxyCodeLine{00042\ \ \ \ \ UMediaTexture*\ \doxymbox{\hyperlink{class_u_intro_window_a3643d4f265f599086a13a3e265cc802b}{MediaTexture}};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{comment}{//\ 미디어 소스}}
+\DoxyCodeLine{00045\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Media"{}})}
+\DoxyCodeLine{00046\ \ \ \ \ UMediaSource*\ \doxymbox{\hyperlink{class_u_intro_window_adbc1b60d13ef97dbcfbb247b9f056dcf}{MediaSource}};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{//\ 동영상을 표시할 이미지 위젯}}
+\DoxyCodeLine{00049\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00050\ \ \ \ \ UImage*\ \doxymbox{\hyperlink{class_u_intro_window_a9e6d042539cbe3975b9244b1ad7a818e}{VideoImage}};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ private:}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{comment}{//\ 미디어 플레이어 이벤트\ 바인딩}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ BindMediaPlayerEvents();}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{void}\ SetupVideoImage();}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{comment}{//\ 동영상 재생 완료\ 시 호출}}
+\DoxyCodeLine{00059\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{void}\ OnMediaPlaybackFinished();}
+\DoxyCodeLine{00061\ \};}
+
+\end{DoxyCode}

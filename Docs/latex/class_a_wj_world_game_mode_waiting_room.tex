@@ -1,0 +1,86 @@
+\doxysection{AWj\+World\+Game\+Mode\+Waiting\+Room Class Reference}
+\hypertarget{class_a_wj_world_game_mode_waiting_room}{}\label{class_a_wj_world_game_mode_waiting_room}\index{AWjWorldGameModeWaitingRoom@{AWjWorldGameModeWaitingRoom}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Game\+Mode\+Waiting\+Room.\+h$>$}
+
+Inheritance diagram for AWj\+World\+Game\+Mode\+Waiting\+Room:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_a_wj_world_game_mode_waiting_room}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_game_mode_waiting_room_a79d4f97af9d92e412af5e9446423984a}{AWj\+World\+Game\+Mode\+Waiting\+Room}} ()
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_game_mode_waiting_room_a41ccbd5f6d37b90e707ed1117da51bb0}{Begin\+Play}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_game_mode_waiting_room_a16d533019c2eb65adbb29d36713e3064}{Post\+Login}} (APlayer\+Controller \texorpdfstring{$\ast$}{*}New\+Player) override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_game_mode_waiting_room_af86f634f07902056a4ddb4316468e7ad}{Logout}} (AController \texorpdfstring{$\ast$}{*}Exiting) override
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_mode_waiting_room_ad37968927d0c301357b1639a3c8dedee}{Start\+Game}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_a_wj_world_game_mode_base}{AWj\+World\+Game\+Mode\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_game_mode_base_a490046ce96deebf80d8f351c4831b6f9}{AWj\+World\+Game\+Mode\+Base}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+대기실 게임 모드
+
+기능:\+
+\begin{DoxyItemize}
+\item 플레이어 입장/\+퇴장 관리
+\item Game\+State 초기화
+\item 게임 시작 (호스트만) 
+\end{DoxyItemize}
+
+\label{doc-constructors}
+\Hypertarget{class_a_wj_world_game_mode_waiting_room_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_a_wj_world_game_mode_waiting_room_a79d4f97af9d92e412af5e9446423984a}\index{AWjWorldGameModeWaitingRoom@{AWjWorldGameModeWaitingRoom}!AWjWorldGameModeWaitingRoom@{AWjWorldGameModeWaitingRoom}}
+\index{AWjWorldGameModeWaitingRoom@{AWjWorldGameModeWaitingRoom}!AWjWorldGameModeWaitingRoom@{AWjWorldGameModeWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{AWjWorldGameModeWaitingRoom()}{AWjWorldGameModeWaitingRoom()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_waiting_room_a79d4f97af9d92e412af5e9446423984a} 
+AWj\+World\+Game\+Mode\+Waiting\+Room::\+\+AWj\+World\+Game\+Mode\+Waiting\+Room (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_a_wj_world_game_mode_waiting_room_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_a_wj_world_game_mode_waiting_room_a41ccbd5f6d37b90e707ed1117da51bb0}\index{AWjWorldGameModeWaitingRoom@{AWjWorldGameModeWaitingRoom}!BeginPlay@{BeginPlay}}
+\index{BeginPlay@{BeginPlay}!AWjWorldGameModeWaitingRoom@{AWjWorldGameModeWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{BeginPlay()}{BeginPlay()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_waiting_room_a41ccbd5f6d37b90e707ed1117da51bb0} 
+void AWj\+World\+Game\+Mode\+Waiting\+Room::\+\+Begin\+Play (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_game_mode_waiting_room_af86f634f07902056a4ddb4316468e7ad}\index{AWjWorldGameModeWaitingRoom@{AWjWorldGameModeWaitingRoom}!Logout@{Logout}}
+\index{Logout@{Logout}!AWjWorldGameModeWaitingRoom@{AWjWorldGameModeWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{Logout()}{Logout()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_waiting_room_af86f634f07902056a4ddb4316468e7ad} 
+void AWj\+World\+Game\+Mode\+Waiting\+Room::\+\+Logout (\begin{DoxyParamCaption}\item[{AController \texorpdfstring{$\ast$}{*}}]{Exiting}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_game_mode_waiting_room_a16d533019c2eb65adbb29d36713e3064}\index{AWjWorldGameModeWaitingRoom@{AWjWorldGameModeWaitingRoom}!PostLogin@{PostLogin}}
+\index{PostLogin@{PostLogin}!AWjWorldGameModeWaitingRoom@{AWjWorldGameModeWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{PostLogin()}{PostLogin()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_waiting_room_a16d533019c2eb65adbb29d36713e3064} 
+void AWj\+World\+Game\+Mode\+Waiting\+Room::\+\+Post\+Login (\begin{DoxyParamCaption}\item[{APlayer\+Controller \texorpdfstring{$\ast$}{*}}]{New\+Player}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_game_mode_waiting_room_ad37968927d0c301357b1639a3c8dedee}\index{AWjWorldGameModeWaitingRoom@{AWjWorldGameModeWaitingRoom}!StartGame@{StartGame}}
+\index{StartGame@{StartGame}!AWjWorldGameModeWaitingRoom@{AWjWorldGameModeWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{StartGame()}{StartGame()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_waiting_room_ad37968927d0c301357b1639a3c8dedee} 
+void AWj\+World\+Game\+Mode\+Waiting\+Room::\+\+Start\+Game (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+게임 시작 (호스트만 가능) 
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Local/\+\+Waiting\+Room/\+\doxymbox{\hyperlink{_wj_world_game_mode_waiting_room_8h}{Wj\+World\+Game\+Mode\+Waiting\+Room.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Local/\+\+Waiting\+Room/\+\doxymbox{\hyperlink{_wj_world_game_mode_waiting_room_8cpp}{Wj\+World\+Game\+Mode\+Waiting\+Room.\+cpp}}\end{DoxyCompactItemize}

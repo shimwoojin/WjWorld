@@ -1,0 +1,49 @@
+\doxysection{Wj\+World\+Game\+Mode\+Login.\+h}
+\hypertarget{_wj_world_game_mode_login_8h_source}{}\label{_wj_world_game_mode_login_8h_source}\index{Source/WjWorld/Core/Login/WjWorldGameModeLogin.h@{Source/WjWorld/Core/Login/WjWorldGameModeLogin.h}}
+\doxymbox{\hyperlink{_wj_world_game_mode_login_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_game_mode_base_8h}{Core/Base/WjWorldGameModeBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldGameModeLogin.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_login_window}{ULoginWindow}};}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00014\ UCLASS()}
+\DoxyCodeLine{00015\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_login_a35a4d1c95afb195c7e381e05b86a2446}{AWjWorldGameModeLogin}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_base_a490046ce96deebf80d8f351c4831b6f9}{AWjWorldGameModeBase}}}
+\DoxyCodeLine{00016\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00018\ \ \ \ \ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_game_mode_login_a35a4d1c95afb195c7e381e05b86a2446}{AWjWorldGameModeLogin}}();}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_login_aed2717550db884d5a2909e43a75aaf89}{BeginPlay}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{comment}{//\ Login\ UI\ 위젯\ 클래스}}
+\DoxyCodeLine{00026\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}UI"{}})}
+\DoxyCodeLine{00027\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_u_login_window}{ULoginWindow}}>\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_login_a4a2fca79dbba52bc27c1cc3016869b96}{LoginWidgetClass}};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{comment}{//\ 생성된 위젯\ 인스턴스}}
+\DoxyCodeLine{00030\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00031\ \ \ \ \ \doxymbox{\hyperlink{class_u_login_window}{ULoginWindow}}*\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_login_a510d9ef2fcf99546068e805722877cde}{LoginWidgetInstance}};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{comment}{//\ 로그인 대기\ 시간\ (초)}}
+\DoxyCodeLine{00034\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Login"{}})}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_login_a6b1687cb35816bedd409591dd8c4348f}{LoginWaitTime}}\ =\ 5.0f;}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ private:}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{comment}{//\ UI\ 생성 및\ 표시}}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{void}\ CreateAndShowLoginUI();}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{comment}{//\ 로그인 완료 후 호출될 함수}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ OnLoginCompleted();}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{comment}{//\ 타이머 핸들}}
+\DoxyCodeLine{00045\ \ \ \ \ FTimerHandle\ LoginTimerHandle;}
+\DoxyCodeLine{00046\ \};}
+
+\end{DoxyCode}

@@ -1,0 +1,94 @@
+\doxysection{FRoom\+Info Struct Reference}
+\hypertarget{struct_f_room_info}{}\label{struct_f_room_info}\index{FRoomInfo@{FRoomInfo}}
+
+
+{\ttfamily \+\#include $<$Session\+Types.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FString \doxymbox{\hyperlink{struct_f_room_info_a4192099c991f1997115408521c9d2b4a}{Room\+Name}}
+\item 
+int32 \doxymbox{\hyperlink{struct_f_room_info_a1ea975e03b3db141a53ec378b89f7d03}{Current\+Players}} = 0
+\item 
+int32 \doxymbox{\hyperlink{struct_f_room_info_a9a824c6e9a0df3c328ea5e16e6cae9ae}{Max\+Players}} = 0
+\item 
+bool \doxymbox{\hyperlink{struct_f_room_info_ae3f5b22fb03fa565ef8ca25e71106e3d}{b\+Is\+Private}} = false
+\item 
+FString \doxymbox{\hyperlink{struct_f_room_info_acdef56e3a1192c7a97c05c29d1787c1d}{Game\+Mode}}
+\item 
+int32 \doxymbox{\hyperlink{struct_f_room_info_a851e3474b30569def72987619d77397f}{Ping}} = 0
+\item 
+bool \doxymbox{\hyperlink{struct_f_room_info_a33b4f73f2ed4847248d077dfb3ec663a}{b\+In\+Progress}} = false
+\item 
+FString \doxymbox{\hyperlink{struct_f_room_info_ac1fabc8ecea39c1306539e2fb58fafb7}{Host\+Name}}
+\item 
+int32 \doxymbox{\hyperlink{struct_f_room_info_a2c5e86f5a2c89765f7f1058b95cafc4f}{Search\+Result\+Index}} = -\/1
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+검색된 방 정보 (UI 표시용) 
+
+\label{doc-variable-members}
+\Hypertarget{struct_f_room_info_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_f_room_info_a33b4f73f2ed4847248d077dfb3ec663a}\index{FRoomInfo@{FRoomInfo}!bInProgress@{bInProgress}}
+\index{bInProgress@{bInProgress}!FRoomInfo@{FRoomInfo}}
+\doxysubsubsection{\texorpdfstring{bInProgress}{bInProgress}}
+{\footnotesize\ttfamily \label{struct_f_room_info_a33b4f73f2ed4847248d077dfb3ec663a} 
+bool FRoom\+Info::\+b\+In\+Progress = false}
+
+게임 진행 중 여부 \Hypertarget{struct_f_room_info_ae3f5b22fb03fa565ef8ca25e71106e3d}\index{FRoomInfo@{FRoomInfo}!bIsPrivate@{bIsPrivate}}
+\index{bIsPrivate@{bIsPrivate}!FRoomInfo@{FRoomInfo}}
+\doxysubsubsection{\texorpdfstring{bIsPrivate}{bIsPrivate}}
+{\footnotesize\ttfamily \label{struct_f_room_info_ae3f5b22fb03fa565ef8ca25e71106e3d} 
+bool FRoom\+Info::\+b\+Is\+Private = false}
+
+비공개 방 여부 \Hypertarget{struct_f_room_info_a1ea975e03b3db141a53ec378b89f7d03}\index{FRoomInfo@{FRoomInfo}!CurrentPlayers@{CurrentPlayers}}
+\index{CurrentPlayers@{CurrentPlayers}!FRoomInfo@{FRoomInfo}}
+\doxysubsubsection{\texorpdfstring{CurrentPlayers}{CurrentPlayers}}
+{\footnotesize\ttfamily \label{struct_f_room_info_a1ea975e03b3db141a53ec378b89f7d03} 
+int32 FRoom\+Info::\+\+Current\+Players = 0}
+
+현재 플레이어 수 \Hypertarget{struct_f_room_info_acdef56e3a1192c7a97c05c29d1787c1d}\index{FRoomInfo@{FRoomInfo}!GameMode@{GameMode}}
+\index{GameMode@{GameMode}!FRoomInfo@{FRoomInfo}}
+\doxysubsubsection{\texorpdfstring{GameMode}{GameMode}}
+{\footnotesize\ttfamily \label{struct_f_room_info_acdef56e3a1192c7a97c05c29d1787c1d} 
+FString FRoom\+Info::\+\+Game\+Mode}
+
+게임 모드 \Hypertarget{struct_f_room_info_ac1fabc8ecea39c1306539e2fb58fafb7}\index{FRoomInfo@{FRoomInfo}!HostName@{HostName}}
+\index{HostName@{HostName}!FRoomInfo@{FRoomInfo}}
+\doxysubsubsection{\texorpdfstring{HostName}{HostName}}
+{\footnotesize\ttfamily \label{struct_f_room_info_ac1fabc8ecea39c1306539e2fb58fafb7} 
+FString FRoom\+Info::\+\+Host\+Name}
+
+방장 이름 \Hypertarget{struct_f_room_info_a9a824c6e9a0df3c328ea5e16e6cae9ae}\index{FRoomInfo@{FRoomInfo}!MaxPlayers@{MaxPlayers}}
+\index{MaxPlayers@{MaxPlayers}!FRoomInfo@{FRoomInfo}}
+\doxysubsubsection{\texorpdfstring{MaxPlayers}{MaxPlayers}}
+{\footnotesize\ttfamily \label{struct_f_room_info_a9a824c6e9a0df3c328ea5e16e6cae9ae} 
+int32 FRoom\+Info::\+\+Max\+Players = 0}
+
+최대 플레이어 수 \Hypertarget{struct_f_room_info_a851e3474b30569def72987619d77397f}\index{FRoomInfo@{FRoomInfo}!Ping@{Ping}}
+\index{Ping@{Ping}!FRoomInfo@{FRoomInfo}}
+\doxysubsubsection{\texorpdfstring{Ping}{Ping}}
+{\footnotesize\ttfamily \label{struct_f_room_info_a851e3474b30569def72987619d77397f} 
+int32 FRoom\+Info::\+\+Ping = 0}
+
+핑 \Hypertarget{struct_f_room_info_a4192099c991f1997115408521c9d2b4a}\index{FRoomInfo@{FRoomInfo}!RoomName@{RoomName}}
+\index{RoomName@{RoomName}!FRoomInfo@{FRoomInfo}}
+\doxysubsubsection{\texorpdfstring{RoomName}{RoomName}}
+{\footnotesize\ttfamily \label{struct_f_room_info_a4192099c991f1997115408521c9d2b4a} 
+FString FRoom\+Info::\+\+Room\+Name}
+
+방 이름 \Hypertarget{struct_f_room_info_a2c5e86f5a2c89765f7f1058b95cafc4f}\index{FRoomInfo@{FRoomInfo}!SearchResultIndex@{SearchResultIndex}}
+\index{SearchResultIndex@{SearchResultIndex}!FRoomInfo@{FRoomInfo}}
+\doxysubsubsection{\texorpdfstring{SearchResultIndex}{SearchResultIndex}}
+{\footnotesize\ttfamily \label{struct_f_room_info_a2c5e86f5a2c89765f7f1058b95cafc4f} 
+int32 FRoom\+Info::\+\+Search\+Result\+Index = -\/1}
+
+검색 결과 인덱스 (내부 사용) 
+
+The documentation for this struct was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Network/\+\doxymbox{\hyperlink{_session_types_8h}{Session\+Types.\+h}}\end{DoxyCompactItemize}
