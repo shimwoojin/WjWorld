@@ -139,7 +139,7 @@ bool USessionManager::FindSessions(int32 MaxSearchResults)
 	SessionSearch = MakeShareable(new FOnlineSessionSearch());
 	SessionSearch->MaxSearchResults = MaxSearchResults;
 	SessionSearch->bIsLanQuery = true;
-	SessionSearch->QuerySettings.Set(SEARCH_PRESENCE, false, EOnlineComparisonOp::Equals);
+	SessionSearch->QuerySettings.Set(SEARCH_LOBBIES, false, EOnlineComparisonOp::Equals);
 
 	// 검색 시작
 	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
