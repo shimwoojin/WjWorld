@@ -3,7 +3,7 @@ REM DebugGame Editor로 언리얼 프로젝트 열기
 REM 프로젝트 경로와 엔진 경로를 수정하세요
 
 REM === 설정 부분 (본인 환경에 맞게 수정) ===
-set UNREAL_ENGINE_PATH=C:\Program Files\Epic Games\UE_5.6\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe
+set UNREAL_ENGINE_PATH=C:\Program Files\Epic Games\UE_5.7\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe
 set PROJECT_PATH=%~dp0..\WjWorld.uproject
 
 REM === 실행 ===

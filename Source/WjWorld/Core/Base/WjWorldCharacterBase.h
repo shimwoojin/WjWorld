@@ -5,18 +5,12 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "GamePlay/Camera/WJCameraTypes.h"
+#include "GameplayTagContainer.h"
 #include "WjWorldCharacterBase.generated.h"
 
 class UGameplayCameraComponent;
 class UInputMappingContext;
-
-UENUM()
-enum class ECharacterViewMode : uint8
-{
-	TopDown,
-	ThirdPerson,
-	FirstPerson
-};
 
 /**
  * 기본 캐릭터 클래스
@@ -34,7 +28,8 @@ public:
 	AWjWorldCharacterBase();
 
 public:
-	void SetCharacterViewMode(ECharacterViewMode NewViewMode);
+	void SetCharacterViewMode(ECharacterCameraMode NewViewMode);
+	void SetCharacterViewMode(const FGameplayTag& NewViewMode);
 
 protected:
 	virtual void BeginPlay() override;
@@ -85,6 +80,4 @@ public:
 	TObjectPtr<UGameplayCameraComponent> GetGamePlayCamera() { return GamePlayCamera; }
 	TObjectPtr<UInputMappingContext> GetDefaultMappingContext() { return DefaultMappingContext; }
 
-private:
-	ECharacterViewMode CurrentViewMode;
 };

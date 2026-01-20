@@ -24,7 +24,7 @@ public class WjWorld : ModuleRules
             "CommonUI",         // 공통 UI 컴포넌트
             "OnlineSubsystem",
             "OnlineSubsystemUtils",
-            "GamePlayCameras"   // 카메라 관련 기능
+            "GameplayCameras"   // 카메라 관련 기능
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {

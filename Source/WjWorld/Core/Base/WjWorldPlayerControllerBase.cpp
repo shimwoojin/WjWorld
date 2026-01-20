@@ -50,17 +50,17 @@ void AWjWorldPlayerControllerBase::ChangeCharacterViewMode(int32 InViewMode)
 	{
 	case 0:
 	{
-		WjCharacter->SetCharacterViewMode(ECharacterViewMode::TopDown);
+		WjCharacter->SetCharacterViewMode(ECharacterCameraMode::TopDown);
 		break;
 	}
 	case 1:
 	{
-		WjCharacter->SetCharacterViewMode(ECharacterViewMode::ThirdPerson);
+		WjCharacter->SetCharacterViewMode(ECharacterCameraMode::ThirdPerson);
 		break;
 	}
 	case 2:
 	{
-		WjCharacter->SetCharacterViewMode(ECharacterViewMode::FirstPerson);
+		WjCharacter->SetCharacterViewMode(ECharacterCameraMode::FirstPerson);
 		break;
 	}
 	}

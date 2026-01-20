@@ -7,6 +7,8 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
+#include "WjWorldGameplayTag.h"
+#include "Core/CameraAsset.h"
 
 AWjWorldCharacterBase::AWjWorldCharacterBase()
 {
@@ -49,88 +51,53 @@ AWjWorldCharacterBase::AWjWorldCharacterBase()
 	// GamePlay 카메라 컴포넌트 생성
 	GamePlayCamera = CreateDefaultSubobject<UGameplayCameraComponent>(TEXT("GamePlayCamera"));
 	GamePlayCamera->SetupAttachment(RootComponent);
-	
-	SetCharacterViewMode(ECharacterViewMode::TopDown);
+	//GamePlayCamera->bSetControlRotationWhenViewTarget = true;
+
+	SetCharacterViewMode(ECharacterCameraMode::ThirdPerson);
 }
 
-void AWjWorldCharacterBase::SetCharacterViewMode(ECharacterViewMode NewViewMode)
+void AWjWorldCharacterBase::SetCharacterViewMode(ECharacterCameraMode NewViewMode)
 {
+	FGameplayTag NewCameraMode = FGameplayTag::EmptyTag;
+
 	switch (NewViewMode)
 	{
-	case ECharacterViewMode::TopDown:
+	case ECharacterCameraMode::TopDown:
 	{
-		if (GamePlayCamera)
-		{
-			// Absolute 좌표 사용 (캐릭터 회전에 영향받지 않음)
-			GamePlayCamera->SetUsingAbsoluteLocation(true);
-			GamePlayCamera->SetUsingAbsoluteRotation(true);
-
-			// 캐릭터 위치 기준으로 절대 좌표 설정
-			FVector CharacterLocation = GetActorLocation();
-			GamePlayCamera->SetWorldLocation(CharacterLocation + FVector(-800.0f, 0.0f, 800.0f));
-			GamePlayCamera->SetWorldRotation(FRotator(-45.0f, 0.0f, 0.0f));
-		}
-
-		// CharacterMovement 설정 (TopDown에서 이동 방향으로 회전)
-		if (UCharacterMovementComponent* CharMoveComp = GetCharacterMovement())
-		{
-			CharMoveComp->bOrientRotationToMovement = true;
-			CharMoveComp->bUseControllerDesiredRotation = false;
-			CharMoveComp->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
-		}
-
-		// Controller 회전 사용하지 않음
-		bUseControllerRotationPitch = false;
-		bUseControllerRotationYaw = false;
-		bUseControllerRotationRoll = false;
+		NewCameraMode = WjWorldGameplayTag::Camera_TopDown();
 		break;
 	}
-	case ECharacterViewMode::ThirdPerson:
+	case ECharacterCameraMode::ThirdPerson:
 	{
-		// ThirdPerson 설정 예시
-		if (GamePlayCamera)
-		{
-			GamePlayCamera->SetRelativeLocation(FVector(-400.0f, 0.0f, 200.0f));
-			GamePlayCamera->SetRelativeRotation(FRotator(-20.0f, 0.0f, 0.0f));
-		}
-
-		if (UCharacterMovementComponent* CharMoveComp = GetCharacterMovement())
-		{
-			CharMoveComp->bOrientRotationToMovement = true;
-			CharMoveComp->bUseControllerDesiredRotation = false;
-			CharMoveComp->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
-		}
-
-		bUseControllerRotationPitch = false;
-		bUseControllerRotationYaw = false;
-		bUseControllerRotationRoll = false;
+		NewCameraMode = WjWorldGameplayTag::Camera_ThirdPerson();
 		break;
 	}
-	case ECharacterViewMode::FirstPerson:
+	case ECharacterCameraMode::FirstPerson:
 	{
-		// FirstPerson 설정 예시
-		if (GamePlayCamera)
-		{
-			GamePlayCamera->SetRelativeLocation(FVector(0.0f, 0.0f, 60.0f));
-			GamePlayCamera->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
-		}
-
-		if (UCharacterMovementComponent* CharMoveComp = GetCharacterMovement())
-		{
-			CharMoveComp->bOrientRotationToMovement = false;
-			CharMoveComp->bUseControllerDesiredRotation = true;
-			CharMoveComp->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
-		}
-
-		// FirstPerson에서는 Controller 회전 사용
-		bUseControllerRotationPitch = true;
-		bUseControllerRotationYaw = true;
-		bUseControllerRotationRoll = false;
+		NewCameraMode = WjWorldGameplayTag::Camera_FirstPerson();
 		break;
 	}
 	}
 
-	CurrentViewMode = NewViewMode;
+	SetCharacterViewMode(NewCameraMode);
+}
+
+void AWjWorldCharacterBase::SetCharacterViewMode(const FGameplayTag& NewViewMode)
+{
+	if (GamePlayCamera)
+	{
+		UCameraAsset* CameraAsset = GamePlayCamera->CameraReference.GetCameraAsset();
+		if (CameraAsset)
+		{
+			FInstancedPropertyBag& DefaultParams = CameraAsset->GetDefaultParameters();
+			auto Result = DefaultParams.GetValueStruct<FGameplayTag>(TEXT("CameraMode"));
+			if (Result.HasError() == false)
+			{
+				FGameplayTag*& CameraModePtrRef = Result.GetValue();
+				*CameraModePtrRef = NewViewMode;
+			}
+		}
+	}
 }
 
 void AWjWorldCharacterBase::BeginPlay()
@@ -225,49 +192,44 @@ void AWjWorldCharacterBase::Move(const FInputActionValue& Value)
 		return;
 	}
 	
-	switch (CurrentViewMode)
-	{
-	case ECharacterViewMode::TopDown:
-	{
-		// TopDown: 월드 좌표계 기준으로 이동
-		// 카메라가 회전해도 WASD는 항상 월드 방향 기준
-		const FRotator YawRotation(0.0f, 0.0f, 0.0f); // 월드 좌표계
-		
-		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X); // (1, 0, 0)
-		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);   // (0, 1, 0)
-		
-		AddMovementInput(ForwardDirection, MoveVector.Y); // W/S
-		AddMovementInput(RightDirection, MoveVector.X);   // D/A
-		break;
-	}
-	
-	case ECharacterViewMode::ThirdPerson:
+	//const FGameplayTag& CameraMode = GamePlayCamera->GetCurrentCameraMode();
+	const FGameplayTag CameraMode = FGameplayTag::EmptyTag;
+
+	if (CameraMode == WjWorldGameplayTag::Camera_ThirdPerson())
 	{
 		// ThirdPerson: 카메라의 Yaw 회전 기준으로 이동
 		const FRotator CameraRotation = GamePlayCamera->GetComponentRotation();
 		const FRotator YawRotation(0.0f, CameraRotation.Yaw, 0.0f);
-		
+
 		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-		
+
 		AddMovementInput(ForwardDirection, MoveVector.Y);
 		AddMovementInput(RightDirection, MoveVector.X);
-		break;
 	}
-	
-	case ECharacterViewMode::FirstPerson:
+	else if (CameraMode == WjWorldGameplayTag::Camera_FirstPerson())
 	{
 		// FirstPerson: 컴트롤러 회전 기준으로 이동
 		const FRotator ControlRotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0.0f, ControlRotation.Yaw, 0.0f);
-		
+
 		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-		
+
 		AddMovementInput(ForwardDirection, MoveVector.Y);
 		AddMovementInput(RightDirection, MoveVector.X);
-		break;
 	}
+	else if (CameraMode == WjWorldGameplayTag::Camera_TopDown())
+	{
+		// TopDown: 월드 좌표계 기준으로 이동
+		// 카메라가 회전해도 WASD는 항상 월드 방향 기준
+		const FRotator YawRotation(0.0f, 0.0f, 0.0f); // 월드 좌표계
+
+		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X); // (1, 0, 0)
+		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);   // (0, 1, 0)
+
+		AddMovementInput(ForwardDirection, MoveVector.Y); // W/S
+		AddMovementInput(RightDirection, MoveVector.X);   // D/A
 	}
 }
 
