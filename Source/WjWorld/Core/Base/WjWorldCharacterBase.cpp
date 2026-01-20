@@ -9,6 +9,7 @@
 #include "InputMappingContext.h"
 #include "WjWorldGameplayTag.h"
 #include "Core/CameraAsset.h"
+#include "Directors/StateTreeCameraDirector.h"
 
 AWjWorldCharacterBase::AWjWorldCharacterBase()
 {
@@ -52,8 +53,6 @@ AWjWorldCharacterBase::AWjWorldCharacterBase()
 	GamePlayCamera = CreateDefaultSubobject<UGameplayCameraComponent>(TEXT("GamePlayCamera"));
 	GamePlayCamera->SetupAttachment(RootComponent);
 	//GamePlayCamera->bSetControlRotationWhenViewTarget = true;
-
-	SetCharacterViewMode(ECharacterCameraMode::ThirdPerson);
 }
 
 void AWjWorldCharacterBase::SetCharacterViewMode(ECharacterCameraMode NewViewMode)
@@ -84,20 +83,8 @@ void AWjWorldCharacterBase::SetCharacterViewMode(ECharacterCameraMode NewViewMod
 
 void AWjWorldCharacterBase::SetCharacterViewMode(const FGameplayTag& NewViewMode)
 {
-	if (GamePlayCamera)
-	{
-		UCameraAsset* CameraAsset = GamePlayCamera->CameraReference.GetCameraAsset();
-		if (CameraAsset)
-		{
-			FInstancedPropertyBag& DefaultParams = CameraAsset->GetDefaultParameters();
-			auto Result = DefaultParams.GetValueStruct<FGameplayTag>(TEXT("CameraMode"));
-			if (Result.HasError() == false)
-			{
-				FGameplayTag*& CameraModePtrRef = Result.GetValue();
-				*CameraModePtrRef = NewViewMode;
-			}
-		}
-	}
+	CameraMode = NewViewMode;
+	OnCharacterViewModeChanged.Broadcast(NewViewMode);
 }
 
 void AWjWorldCharacterBase::BeginPlay()
@@ -132,7 +119,7 @@ void AWjWorldCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 void AWjWorldCharacterBase::InitializeCharacter()
 {
-	// Base implementation - override in derived classes
+	SetCharacterViewMode(StartCameraMode);
 }
 
 void AWjWorldCharacterBase::SetupInputBindings(UInputComponent* PlayerInputComponent)
@@ -192,25 +179,26 @@ void AWjWorldCharacterBase::Move(const FInputActionValue& Value)
 		return;
 	}
 	
-	//const FGameplayTag& CameraMode = GamePlayCamera->GetCurrentCameraMode();
-	const FGameplayTag CameraMode = FGameplayTag::EmptyTag;
-
 	if (CameraMode == WjWorldGameplayTag::Camera_ThirdPerson())
 	{
-		// ThirdPerson: 카메라의 Yaw 회전 기준으로 이동
-		const FRotator CameraRotation = GamePlayCamera->GetComponentRotation();
-		const FRotator YawRotation(0.0f, CameraRotation.Yaw, 0.0f);
+		APlayerController* PC = GetController<APlayerController>();
+		if (PC && PC->PlayerCameraManager)
+		{
+			//FRotator CameraRotation = PC->PlayerCameraManager->GetCameraRotation();
+			FRotator CameraRotation = GamePlayCamera->GetEvaluatedCameraRotation();
 
-		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+			const FRotator YawRotation(0.0f, CameraRotation.Yaw, 0.0f);
 
-		AddMovementInput(ForwardDirection, MoveVector.Y);
-		AddMovementInput(RightDirection, MoveVector.X);
+			const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+			const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+			AddMovementInput(ForwardDirection, MoveVector.Y);
+			AddMovementInput(RightDirection, MoveVector.X);
+		}
 	}
 	else if (CameraMode == WjWorldGameplayTag::Camera_FirstPerson())
 	{
-		// FirstPerson: 컴트롤러 회전 기준으로 이동
-		const FRotator ControlRotation = Controller->GetControlRotation();
+		const FRotator ControlRotation = GetActorRotation();
 		const FRotator YawRotation(0.0f, ControlRotation.Yaw, 0.0f);
 
 		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);

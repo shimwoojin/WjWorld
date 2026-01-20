@@ -12,6 +12,8 @@
 class UGameplayCameraComponent;
 class UInputMappingContext;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterViewModeChanged, FGameplayTag, CameraMode);
+
 /**
  * 기본 캐릭터 클래스
  * 
@@ -63,6 +65,10 @@ protected:
 	UFUNCTION()
 	virtual void Interact(const FInputActionValue& Value);
 
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnCharacterViewModeChanged OnCharacterViewModeChanged;
+
 protected:
 	/**
 	 * GamePlay 카메라 컴포넌트
@@ -80,4 +86,10 @@ public:
 	TObjectPtr<UGameplayCameraComponent> GetGamePlayCamera() { return GamePlayCamera; }
 	TObjectPtr<UInputMappingContext> GetDefaultMappingContext() { return DefaultMappingContext; }
 
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
+	ECharacterCameraMode StartCameraMode = ECharacterCameraMode::ThirdPerson;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	FGameplayTag CameraMode;
 };
