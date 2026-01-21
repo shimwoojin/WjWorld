@@ -30,7 +30,7 @@ public class WjWorld : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new string[] {
             "Media",            // 기본 Media 모듈
             "MediaAssets",      // Media 에셋들
-            "MediaUtils"        // Media 유틸리티 함수들
+            "MediaUtils",        // Media 유틸리티 함수들
 		});
 
 		PublicIncludePaths.AddRange(new string[] {

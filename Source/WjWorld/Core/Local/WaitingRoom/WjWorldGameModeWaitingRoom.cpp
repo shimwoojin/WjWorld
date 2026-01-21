@@ -129,7 +129,7 @@ void AWjWorldGameModeWaitingRoom::StartGame()
 			UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameModeWaitingRoom: Session start initiated"));
 			
 			// TODO: 게임 맵으로 이동
-			// GetWorld()->ServerTravel("/Game/Maps/GameMap");
+			GetWorld()->ServerTravel("/Game/Map/03-1_ApproachingWall");
 		}
 		else
 		{

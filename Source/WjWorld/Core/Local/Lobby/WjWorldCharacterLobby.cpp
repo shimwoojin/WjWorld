@@ -34,5 +34,4 @@ void AWjWorldCharacterLobby::UpdateCharacterAppearance()
 
 void AWjWorldCharacterLobby::InitializeLobbyCharacter()
 {
-	// 로비 전용 초기화 로직
 }

@@ -1,7 +1,7 @@
 @echo off
 REM WjWorld Standalone Client Launcher
 
-set UE_EDITOR="C:\Program Files\Epic Games\UE_5.6\Engine\Binaries\Win64\UnrealEditor.exe"
+set UE_EDITOR="C:\Program Files\Epic Games\UE_5.7\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe"
 set PROJECT="C:\UEProjects\WjWorld\WjWorld.uproject"
 
 echo ================================

@@ -44,4 +44,7 @@ public:
 
 	UFUNCTION(Exec)
 	void ChangeCharacterViewMode(int32 InViewMode);
+
+	UFUNCTION(Exec)
+	void ServerTravelWaitingRoom();
 };

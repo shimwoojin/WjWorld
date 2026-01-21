@@ -65,3 +65,8 @@ void AWjWorldPlayerControllerBase::ChangeCharacterViewMode(int32 InViewMode)
 	}
 	}
 }
+
+void AWjWorldPlayerControllerBase::ServerTravelWaitingRoom()
+{
+	GetWorld()->ServerTravel("/Game/Map/02-2_WaitingRoom");
+}

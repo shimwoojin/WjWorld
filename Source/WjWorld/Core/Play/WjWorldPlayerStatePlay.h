@@ -8,6 +8,7 @@
 #include "WjWorldPlayerStatePlay.generated.h"
 
 class UWjWorldAbilitySystemComponent;
+class UWjWorldGameDataComponent;
 
 /**
  * 
@@ -24,7 +25,16 @@ public:
 	UWjWorldAbilitySystemComponent* GetWJAbilitySystemComponent() const;
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 
+    // 게임별 데이터는 컴포넌트로
+    template<typename T>
+    T* GetGameData() const { return FindComponentByClass<T>(); }
+
+	void AddGameDataComponent(TSubclassOf<UWjWorldGameDataComponent> InDataComponentClass);
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	TObjectPtr<UWjWorldAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY(Replicated)
+	TObjectPtr<UWjWorldGameDataComponent> PlayerDataComponent;
 };

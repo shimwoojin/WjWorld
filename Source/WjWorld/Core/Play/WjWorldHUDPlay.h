@@ -6,6 +6,8 @@
 #include "Core/Base/WjWorldHUDBase.h"
 #include "WjWorldHUDPlay.generated.h"
 
+class UGameplayGlobalHUDWidget;
+
 /**
  * 
  */
@@ -14,4 +16,16 @@ class WJWORLD_API AWjWorldHUDPlay : public AWjWorldHUDBase
 {
 	GENERATED_BODY()
 	
+public:
+	void StartGameStartCountDown(float CountDown);
+
+protected:
+	virtual void BeginPlay() override;
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UGameplayGlobalHUDWidget> GlobalHUDWidgetClass;
+
+	UPROPERTY()
+	TObjectPtr<UGameplayGlobalHUDWidget> GlobalHUDWidget;
 };

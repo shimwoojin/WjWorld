@@ -2,12 +2,15 @@
 
 
 #include "Core/Play/WjWorldPlayerStatePlay.h"
+#include "Core/GameData/WjWorldGameDataComponent.h"
 #include "AbilitySystem/WjWorldAbilitySystemComponent.h"
 
 AWjWorldPlayerStatePlay::AWjWorldPlayerStatePlay()
 {
 	AbilitySystemComponent = CreateDefaultSubobject<UWjWorldAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
+
+	bReplicates = true;
 }
 
 UAbilitySystemComponent* AWjWorldPlayerStatePlay::GetAbilitySystemComponent() const
@@ -25,4 +28,15 @@ void AWjWorldPlayerStatePlay::GetLifetimeReplicatedProps(TArray<FLifetimePropert
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	//DOREPLIFETIME(AWjWorldPlayerStatePlay, AttributeSet);
+}
+
+void AWjWorldPlayerStatePlay::AddGameDataComponent(TSubclassOf<UWjWorldGameDataComponent> InDataComponentClass)
+{
+	if (InDataComponentClass)
+	{
+		PlayerDataComponent = NewObject<UWjWorldGameDataComponent>(this, InDataComponentClass);
+		AddInstanceComponent(PlayerDataComponent);
+		PlayerDataComponent->RegisterComponent();
+		PlayerDataComponent->SetIsReplicated(true);
+	}
 }

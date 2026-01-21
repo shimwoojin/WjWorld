@@ -39,6 +39,7 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void PossessedBy(AController* NewController) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
@@ -88,7 +89,7 @@ public:
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
-	ECharacterCameraMode StartCameraMode = ECharacterCameraMode::ThirdPerson;
+	ECharacterCameraMode StartCameraMode = ECharacterCameraMode::TopDown;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	FGameplayTag CameraMode;

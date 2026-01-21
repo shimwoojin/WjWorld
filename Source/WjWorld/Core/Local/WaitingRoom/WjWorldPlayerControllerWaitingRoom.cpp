@@ -23,7 +23,7 @@ void AWjWorldPlayerControllerWaitingRoom::InitializeController()
 	Super::InitializeController();
 	
 	// 대기실 컨트롤러 초기화
-	SetInputMode(FInputModeUIOnly());
+	SetInputMode(FInputModeGameAndUI());
 }
 
 void AWjWorldPlayerControllerWaitingRoom::InitializeUI()

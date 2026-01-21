@@ -91,6 +91,15 @@ void AWjWorldCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (PC)
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+		}
+	}
+
 	InitializeCharacter();
 }
 
@@ -99,21 +108,15 @@ void AWjWorldCharacterBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void AWjWorldCharacterBase::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+}
+
 void AWjWorldCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	
-	APlayerController* PC = Cast<APlayerController>(GetController());
-	if(PC == nullptr)
-	{
-		return;
-	}
-
-	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
-	{
-		Subsystem->AddMappingContext(DefaultMappingContext, 0);
-	}
-
 	SetupInputBindings(PlayerInputComponent);
 }
 
