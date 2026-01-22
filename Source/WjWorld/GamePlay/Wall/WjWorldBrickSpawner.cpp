@@ -62,9 +62,14 @@ FVector UWjWorldBrickSpawner::CalculateBrickPosition(int32 BrickColIndex, int32 
 	return WallOrigin + FVector(WorldOffsetX, WorldOffsetY, BrickSize.Z / 2.0);
 }
 
+const TArray<FIntPoint>& UWjWorldBrickSpawner::GetStartSafeZonePoints()
+{
+	return StartSafeZonePoints;
+}
+
 void UWjWorldBrickSpawner::Tick(float DeltaTime)
 {
-	if (bTickable == false) return;
+	//if (bTickable == false) return;
 
 	UWorld* World = GetWorld();
 	if (World == nullptr) return;
@@ -98,6 +103,11 @@ void UWjWorldBrickSpawner::Tick(float DeltaTime)
 				BrickProperties.BrickMoveType = EWjWorldBrickMoveType::Standard;
 				BrickProperties.Size = TargetDesc.BrickSize;
 				BrickProperties.Color = FColor::White;
+				BrickProperties.SpawnedGridPosition = FIntPoint(CurrentLoadingBrickColIndex, CurrentLoadingBrickRowIndex);
+				BrickProperties.CenterOffset = TargetDesc.CenterOffset;
+				BrickProperties.ColumnNum = TargetDesc.ColumnNum;
+				BrickProperties.RowNum = TargetDesc.RowNum;
+
 				if (UWjWorldBrickComponent* BrickComponent = BrickActor->GetBrickComponent())
 				{
 					BrickComponent->InitializeBrick(BrickProperties);
@@ -140,6 +150,8 @@ void UWjWorldBrickSpawner::Tick(float DeltaTime)
 		TArray<FIntPoint> RandomSafeZonePoints;
 		TargetDesc.GetRandomSafeZones(RandomSafeZonePoints);
 
+		StartSafeZonePoints = TargetDesc.SafeZones;
+
 		TArray<FVector> RandomSafeZoneLocations;
 		for(const FIntPoint& SafeZonePoint : RandomSafeZonePoints)
 		{
@@ -176,6 +188,11 @@ UWorld* UWjWorldBrickSpawner::GetTickableGameObjectWorld() const
 TStatId UWjWorldBrickSpawner::GetStatId() const
 {
 	RETURN_QUICK_DECLARE_CYCLE_STAT(UWjWorldBrickSpawner, STATGROUP_Tickables);
+}
+
+bool UWjWorldBrickSpawner::IsTickable() const
+{
+	return bTickable;
 }
 
 void UWjWorldBrickSpawner::SetTickable(bool bInTickable)

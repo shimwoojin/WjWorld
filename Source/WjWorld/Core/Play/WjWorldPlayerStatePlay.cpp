@@ -2,8 +2,11 @@
 
 
 #include "Core/Play/WjWorldPlayerStatePlay.h"
+#include "Core/Play/WjWorldHUDPlay.h"
 #include "Core/GameData/WjWorldGameDataComponent.h"
 #include "AbilitySystem/WjWorldAbilitySystemComponent.h"
+
+#include "Net/UnrealNetwork.h"
 
 AWjWorldPlayerStatePlay::AWjWorldPlayerStatePlay()
 {
@@ -27,7 +30,7 @@ void AWjWorldPlayerStatePlay::GetLifetimeReplicatedProps(TArray<FLifetimePropert
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	//DOREPLIFETIME(AWjWorldPlayerStatePlay, AttributeSet);
+	//DOREPLIFETIME(AWjWorldPlayerStatePlay, GameResultText);
 }
 
 void AWjWorldPlayerStatePlay::AddGameDataComponent(TSubclassOf<UWjWorldGameDataComponent> InDataComponentClass)

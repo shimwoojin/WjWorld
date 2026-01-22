@@ -37,4 +37,5 @@ private:
 
 	UPROPERTY(Replicated)
 	TObjectPtr<UWjWorldGameDataComponent> PlayerDataComponent;
+
 };

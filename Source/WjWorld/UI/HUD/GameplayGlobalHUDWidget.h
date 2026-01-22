@@ -22,11 +22,21 @@ protected:
 
 public:
 	void StartCountDown(float CountDown);
+	void EndCountDown(float CountDown);
+	void ShowGameResultText(const FString& ResultText, float Duration = 3.0f);
 
 protected:
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr <UTextBlock> GameStartCountText;
+	TObjectPtr<UTextBlock> GameStartCountText;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> GameEndCountText;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> GameResultText;
 
 private:
-	float CountDownTime = 0.0f;
+	float GameStartCountDownTime = 0.0f;
+	float GameEndCountDownTime = 0.0f;
+	float ResultTextDisplayTime = 0.0f;
 };

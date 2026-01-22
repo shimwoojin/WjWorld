@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git pull:*)",
+      "Bash(git restore:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nUpdate documentation for UE 5.7 and current project structure\n\n- Update engine version from 5.6 to 5.7\n- Revise folder structure with actual class names\n- Add completed features section\n- Update class hierarchy documentation\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)"
+    ]
+  }
+}

@@ -18,6 +18,7 @@ class WJWORLD_API AWjWorldHUDPlay : public AWjWorldHUDBase
 	
 public:
 	void StartGameStartCountDown(float CountDown);
+	void ShowGameResultText(const FString& ResultText, float Duration = 3.0f);
 
 protected:
 	virtual void BeginPlay() override;

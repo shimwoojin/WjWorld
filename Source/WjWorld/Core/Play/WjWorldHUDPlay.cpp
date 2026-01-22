@@ -13,6 +13,14 @@ void AWjWorldHUDPlay::StartGameStartCountDown(float CountDown)
 	}
 }
 
+void AWjWorldHUDPlay::ShowGameResultText(const FString& ResultText, float Duration)
+{
+    if (GlobalHUDWidget)
+    {
+        GlobalHUDWidget->ShowGameResultText(ResultText, Duration);
+    }
+}
+
 void AWjWorldHUDPlay::BeginPlay()
 {
 	Super::BeginPlay();

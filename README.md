@@ -8,7 +8,7 @@
 
 ### 개발 목표
 1. **허브 공간** - 플레이어가 컨텐츠로 진입할 수 있는 로컬 공간
-2. **미니게임** - 다양한 장르의 미니게임 구현
+2. **미니게임** - 다양한 장르의 미니게임 구현 (GameRule 시스템 기반)
 3. **멀티플레이어** - 기본적인 네트워킹 기능 구현
 4. **융합 컨텐츠** - 로컬과 멀티플레이어 요소 결합
 
@@ -24,62 +24,31 @@
 
 ```
 Source/WjWorld/
-├── Core/                           # 핵심 게임 로직
-│   ├── Base/                       # 베이스 클래스들
-│   │   ├── WjWorldGameModeBase
-│   │   ├── WjWorldCharacterBase
-│   │   ├── WjWorldPlayerControllerBase
-│   │   ├── WjWorldGameStateBase
-│   │   ├── WjWorldPlayerStateBase
-│   │   └── WjWorldHUDBase
-│   ├── Intro/                      # 인트로 화면
-│   │   └── WjWorldGameModeIntro
-│   ├── Login/                      # 로그인
-│   │   └── WjWorldGameModeLogin
-│   ├── Local/                      # 로컬 게임모드
-│   │   ├── Lobby/                  # 로비/허브
-│   │   │   ├── WjWorldGameModeLobby
-│   │   │   ├── WjWorldCharacterLobby
-│   │   │   ├── WjWorldPlayerControllerLobby
-│   │   │   └── WjWorldHUDLobby
-│   │   └── WaitingRoom/            # 대기실
-│   │       ├── WjWorldGameModeWaitingRoom
-│   │       ├── WjWorldCharacterWaitingRoom
-│   │       ├── WjWorldPlayerControllerWaitingRoom
-│   │       ├── WjWorldGameStateWaitingRoom
-│   │       └── WjWorldHUDWaitingRoom
-│   ├── Session/                    # 세션 관리
-│   │   └── SessionManager
+├── AbilitySystem/                     # Gameplay Ability System
+│   ├── Abilities/                     # 어빌리티 클래스들
+│   ├── AttributeSets/                 # 어트리뷰트 셋
+│   └── WjWorldAbilitySystemComponent  # ASC 컴포넌트
+├── Core/                              # 핵심 게임 로직
+│   ├── Base/                          # 베이스 클래스들
+│   ├── Intro/                         # 인트로 화면
+│   ├── Login/                         # 로그인
+│   ├── Local/                         # 로컬 게임모드
+│   │   ├── Lobby/                     # 로비/허브
+│   │   └── WaitingRoom/               # 대기실
+│   ├── Play/                          # 게임플레이 모드 (미니게임 공통)
+│   ├── GameRule/                      # 미니게임 규칙 시스템
+│   ├── GameData/                      # 게임 데이터 컴포넌트
+│   ├── Components/                    # 게임플레이 헬퍼 컴포넌트
+│   ├── Session/                       # 세션 관리
 │   └── WjWorldGameInstance
-├── GamePlay/                       # 게임플레이 시스템
-│   ├── Interact/                   # 상호작용
-│   │   └── InteractablePortal
-│   └── Quest/                      # 퀘스트 시스템
-│       ├── Quest
-│       ├── QuestInstance
-│       ├── QuestState
-│       ├── QuestFactory
-│       └── QuestSubsystem
-├── Network/                        # 네트워크/패킷 관련
-│   ├── PacketData
-│   ├── PacketDataQuest
-│   └── SessionTypes
-└── UI/                             # UI 위젯들
-    ├── WjWorldUserWidgetBase       # UI 베이스 클래스
-    ├── Intro/
-    │   └── IntroWindow
-    ├── Login/
-    │   └── LoginWindow
-    ├── Lobby/
-    │   └── LobbyHUDWidget
-    ├── Session/
-    │   ├── CreateRoomWindow
-    │   ├── RoomListWindow
-    │   └── RoomListEntryWidget
-    ├── WaitingRoom/
-    │   └── WaitingRoomHUDWidget
-    └── Interact/
-        └── InteractionWidget
+├── DataAsset/                         # 데이터 에셋
+├── GamePlay/                          # 게임플레이 시스템
+│   ├── Camera/                        # 카메라 시스템
+│   ├── Interact/                      # 상호작용
+│   ├── Quest/                         # 퀘스트 시스템
+│   └── Wall/                          # Approaching Wall 미니게임
+├── Network/                           # 네트워크/패킷 관련
+└── UI/                                # UI 위젯들
 ```
 
 ## 주요 클래스 계층
@@ -90,21 +59,30 @@ AWjWorldGameModeBase
 ├── AWjWorldGameModeIntro          # 인트로 화면
 ├── AWjWorldGameModeLogin          # 로그인
 ├── AWjWorldGameModeLobby          # 로비/허브
-└── AWjWorldGameModeWaitingRoom    # 대기실
+├── AWjWorldGameModeWaitingRoom    # 대기실
+└── AWjWorldGameModePlay           # 게임플레이 (미니게임)
 ```
 
 ### Character
 ```
 AWjWorldCharacterBase
 ├── AWjWorldCharacterLobby
-└── AWjWorldCharacterWaitingRoom
+├── AWjWorldCharacterWaitingRoom
+└── AWjWorldCharacterPlay          # 게임플레이 캐릭터 (ASC 지원)
 ```
 
 ### PlayerController
 ```
 AWjWorldPlayerControllerBase
 ├── AWjWorldPlayerControllerLobby
-└── AWjWorldPlayerControllerWaitingRoom
+├── AWjWorldPlayerControllerWaitingRoom
+└── AWjWorldPlayerControllerPlay
+```
+
+### GameRule (미니게임 규칙)
+```
+UWjWorldGameRuleBase
+└── UWjWorldGameRuleApproachingWall   # Approaching Wall 미니게임
 ```
 
 ### UI Widget
@@ -114,10 +92,47 @@ UWjWorldUserWidgetBase
 ├── ULoginWindow
 ├── ULobbyHUDWidget
 ├── UWaitingRoomHUDWidget
+├── UGameplayGlobalHUDWidget        # 게임플레이 HUD
 ├── UCreateRoomWindow
 ├── URoomListWindow
 └── UInteractionWidget
 ```
+
+## 핵심 시스템
+
+### GameRule 시스템
+미니게임을 정의하기 위한 규칙 시스템. 각 미니게임은 `UWjWorldGameRuleBase`를 상속받아 구현합니다.
+
+**라이프사이클:**
+```
+Initialize() → OnGameReady() → OnGameStart() → Tick() → OnGameEndPredict() → OnGameEnd()
+```
+
+**주요 기능:**
+- 플레이어 이벤트 (`OnPlayerJoined`, `OnPlayerLeft`)
+- 승리 조건 (`CheckWinCondition`, `GetWinner`)
+- 프레임별 업데이트 (`FTickableGameObject`)
+
+### GameData 컴포넌트 시스템
+GameplayTag 기반 타입 세이프 데이터 저장 시스템.
+- `GameStatePlay`에 게임 전체 데이터
+- `PlayerStatePlay`에 플레이어별 데이터
+- 리플리케이션 지원
+
+### Approaching Wall 미니게임
+첫 번째 미니게임. 벽이 점진적으로 다가오며 플레이어들이 안전 구역으로 이동해야 하는 PvP 서바이벌 게임.
+
+**게임 규칙:**
+- 데이터 에셋 기반 벽돌 맵 생성
+- 12초마다 레벨업, 벽이 안쪽으로 이동
+- 이동 시간: 5초 → 1초 (10레벨 동안 점진적 감소)
+- Flood Fill 알고리즘으로 안전 구역 계산
+
+**주요 클래스:**
+- `WjWorldBrickSpawner` - 비동기 벽돌 스폰 (8개/틱)
+- `WjWorldBrickMovement` - 개별 벽돌 이동 로직
+- `WjWorldWallManager` - 벽 이동 진행 관리
+- `WjWorldWallDescriptionDataAsset` - 벽 레이아웃 데이터
 
 ## 빌드 방법
 
@@ -151,9 +166,15 @@ cd WjWorld
     ↓
 방 생성/참가 → 대기실
     ↓
-게임 시작 → 컨텐츠 플레이
+게임 시작 → GameModePlay 진입
     ↓
-결과 → 로비 복귀
+GameRule 초기화 → 카운트다운 → 게임 시작
+    ↓
+게임 진행 (레벨업, 벽 이동)
+    ↓
+승리 조건 체크 → 결과 표시
+    ↓
+대기실 복귀
 ```
 
 ## 개발 진행 상황
@@ -169,10 +190,27 @@ cd WjWorld
 - [x] 포탈 상호작용
 - [x] 퀘스트 시스템 기본 구조
 - [x] 네트워크 패킷 구조
+- [x] **게임플레이 모드 프레임워크** (Play 클래스 세트)
+- [x] **GameRule 시스템** (미니게임 규칙 정의)
+- [x] **GameData 컴포넌트 시스템** (게임/플레이어 데이터)
+- [x] **Ability System Component 통합**
+- [x] **Approaching Wall 기본 구조**
+  - [x] 데이터 에셋 기반 벽돌 맵 스폰
+  - [x] 벽돌 이동 로직 (경로 탐색)
+  - [x] 레벨 시스템 (12초 간격, 10레벨)
+  - [x] 안전 구역 축소 알고리즘
+  - [x] 게임플레이 HUD (카운트다운)
 
 ### 진행 중
-- [ ] 미니게임 구현
-- [ ] 멀티플레이어 동기화
+- [ ] **Approaching Wall 완성**
+  - [ ] 승리 조건 (최후 생존자)
+  - [ ] 플레이어 사망/제거 로직
+  - [ ] 플레이어 어빌리티 (이동, 공격)
+  - [ ] 게임 결과 처리 및 대기실 복귀
+
+### 예정
+- [ ] 추가 미니게임 구현
+- [ ] 멀티플레이어 동기화 개선
 
 ## 문서화
 

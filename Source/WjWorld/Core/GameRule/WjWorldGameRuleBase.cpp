@@ -14,14 +14,14 @@ void UWjWorldGameRuleBase::Initialize(AWjWorldGameModePlay* InGameMode)
 	if (InGameMode)
 	{
 		GameMode = InGameMode;
-		GameState = InGameMode->GetGameState<AWjWorldGameStatePlay>();
-
-		UE_LOG(LogWjWorld, Log, TEXT("GameState Valid ? : %d"), (int32)GameState.IsValid());
-
-		if (GameState.IsValid() && GameDataComponentClass)
-		{
-			GameState->AddGameDataComponent(GameDataComponentClass);
-		}
+		//GameState = InGameMode->GetGameState<AWjWorldGameStatePlay>();
+		//
+		//UE_LOG(LogWjWorld, Log, TEXT("GameState Valid ? : %d"), (int32)GameState.IsValid());
+		//
+		//if (GameState.IsValid() && GameDataComponentClass)
+		//{
+		//	GameState->AddGameDataComponent(GameDataComponentClass);
+		//}
 	}
 
 	UE_LOG(LogWjWorld, Log, TEXT("GameRuleBase: Initialized"));
@@ -29,6 +29,8 @@ void UWjWorldGameRuleBase::Initialize(AWjWorldGameModePlay* InGameMode)
 
 void UWjWorldGameRuleBase::OnGameReady()
 {
+	if (!HasAuthority()) return;
+
 	UWorld* World = GetWorld();
 	if (World)
 	{
@@ -47,18 +49,42 @@ void UWjWorldGameRuleBase::OnGameReady()
 
 void UWjWorldGameRuleBase::OnGameStart()
 {
+	if (!HasAuthority()) return;
+
 	ChangeGamePhase(EGamePhase::Playing);
 	UE_LOG(LogWjWorld, Log, TEXT("GameRuleBase: Game Started"));
 }
 
+void UWjWorldGameRuleBase::OnGameEndPredict(float Seconds)
+{
+	if (!HasAuthority()) return;
+	if (GameMode.IsValid())
+	{
+		GameMode->EndGamePredict(Seconds);
+	}
+}
+
 void UWjWorldGameRuleBase::OnGameEnd()
 {
-	ChangeGamePhase(EGamePhase::Finished);
+	if (!HasAuthority()) return;
+
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		World->GetTimerManager().SetTimer(GotoWaitingRoomHandle, FTimerDelegate::CreateLambda([this]() {
+			GetWorld()->ServerTravel(TEXT("/Game/Map/02-2_WaitingRoom"));
+			}), SecondsForGotoWaitingRoom, false);
+
+		ChangeGamePhase(EGamePhase::Finished);
+	}
+
 	UE_LOG(LogWjWorld, Log, TEXT("GameRuleBase: Game Ended"));
 }
 
 void UWjWorldGameRuleBase::OnPlayerJoined(AWjWorldPlayerStatePlay* Player)
 {
+	if (!HasAuthority()) return;
+
 	if (Player && PlayerDataComponentClass)
 	{
 		Player->AddGameDataComponent(PlayerDataComponentClass);
@@ -69,6 +95,7 @@ void UWjWorldGameRuleBase::OnPlayerJoined(AWjWorldPlayerStatePlay* Player)
 
 void UWjWorldGameRuleBase::OnPlayerLeft(AWjWorldPlayerStatePlay* Player)
 {
+	if (!HasAuthority()) return;
 }
 
 bool UWjWorldGameRuleBase::CheckWinCondition() const
@@ -108,18 +135,50 @@ void UWjWorldGameRuleBase::BeginDestroy()
 	if (World)
 	{
 		World->GetTimerManager().ClearTimer(DelayStartHandle);
+		World->GetTimerManager().ClearTimer(GotoWaitingRoomHandle);
 	}
 }
 
-void UWjWorldGameRuleBase::ChangeGamePhase(EGamePhase GamePhase)
+AWjWorldGameModePlay* UWjWorldGameRuleBase::GetGameModePlay() const
 {
 	UWorld* World = GetWorld();
 	if (World)
 	{
-		if (AWjWorldGameStatePlay* GameStatePlay = World->GetGameState<AWjWorldGameStatePlay>())
-		{
-			GameStatePlay->CurrentPhase = GamePhase;
-			UE_LOG(LogWjWorld, Log, TEXT("GameRuleBase: Game Phase changed to %d"), static_cast<int32>(GamePhase));
-		}
+		return World->GetAuthGameMode<AWjWorldGameModePlay>();
+	}
+	return nullptr;
+}
+
+AWjWorldGameStatePlay* UWjWorldGameRuleBase::GetGameStatePlay() const
+{
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		return World->GetGameState<AWjWorldGameStatePlay>();
+	}
+	return nullptr;
+}
+
+void UWjWorldGameRuleBase::GameLevelUp(int32 NewLevel)
+{
+	if (!HasAuthority()) return;
+
+	AWjWorldGameModePlay* GameModePlay = GetGameModePlay();
+	if (GameModePlay)
+	{
+		GameModePlay->OnGameLevelUp(NewLevel);
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("GameRuleBase: Game Level Up to %d"), NewLevel);
+}
+
+void UWjWorldGameRuleBase::ChangeGamePhase(EGamePhase GamePhase)
+{
+	if (!HasAuthority()) return;
+
+	if (AWjWorldGameStatePlay* GameStatePlay = GetGameStatePlay())
+	{
+		GameStatePlay->SetGamePhase(GamePhase);
+		UE_LOG(LogWjWorld, Log, TEXT("GameRuleBase: Game Phase changed to %d"), static_cast<int32>(GamePhase));
 	}
 }

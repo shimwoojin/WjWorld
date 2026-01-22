@@ -64,6 +64,8 @@ void AWjWorldGameModePlay::PostLogin(APlayerController* NewPlayer)
 
 void AWjWorldGameModePlay::StartGame(float SecondsForStartCount)
 {
+	GetGameState<AWjWorldGameStatePlay>()->GameStartWithCountdown(SecondsForStartCount);
+
 	if(GetWorld() && CurrentGameRule)
 	{
 		GetWorld()->GetTimerManager().SetTimer(StartGameHandle, FTimerDelegate::CreateLambda([this, SecondsForStartCount]()
@@ -74,6 +76,18 @@ void AWjWorldGameModePlay::StartGame(float SecondsForStartCount)
 	}
 
 	UE_LOG(LogWjWorld, Log, TEXT("GameModePlay: StartGame scheduled in %f seconds"), SecondsForStartCount);
+}
+
+void AWjWorldGameModePlay::EndGamePredict(float SecondsForEndCount)
+{
+	GetGameState<AWjWorldGameStatePlay>()->GameEndWithCountdown(SecondsForEndCount);
+	UE_LOG(LogWjWorld, Log, TEXT("GameModePlay: EndGame scheduled in %f seconds"), SecondsForEndCount);
+}
+
+void AWjWorldGameModePlay::OnGameLevelUp(int32 NewLevel)
+{
+	OnGameLevelChange.Broadcast(NewLevel);
+	UE_LOG(LogWjWorld, Log, TEXT("GameModePlay: Game Level Up to %d"), NewLevel);
 }
 
 void AWjWorldGameModePlay::BeginDestroy()

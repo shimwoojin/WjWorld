@@ -10,6 +10,8 @@ class UWjWorldGameRuleBase;
 
 DECLARE_MULTICAST_DELEGATE(FOnGameStartDelegate);
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnGameLevelChangeSignature, int32 /*Level*/);
+
 /**
  * 
  */
@@ -26,12 +28,20 @@ public:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 
 	void StartGame(float SecondsForStartCount);
+	void EndGamePredict(float SecondsForEndCount);
+
+	TObjectPtr<UWjWorldGameRuleBase> GetCurrentGameRule() const { return CurrentGameRule; }
+
+	void OnGameLevelUp(int32 NewLevel);
 
 protected:
 	virtual void BeginDestroy() override;
 
 public:
 	FOnGameStartDelegate OnGameStart;
+
+public:
+	FOnGameLevelChangeSignature OnGameLevelChange;
 
 private:
 	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true))

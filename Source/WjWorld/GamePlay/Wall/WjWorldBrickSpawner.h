@@ -27,12 +27,15 @@ public:
 public:
 	void SpawnBricksRandomMapAsync();
 	void SpawnBricksFromWallNameAsync(const FString& WallName);
-	FVector CalculateBrickPosition(int32 BrickColIndex, int32 BrickRowIndex, int32 ColNum, int32 RowNum, const FVector& WallOrigin, const FVector& BrickSize);
+	static FVector CalculateBrickPosition(int32 BrickColIndex, int32 BrickRowIndex, int32 ColNum, int32 RowNum, const FVector& WallOrigin, const FVector& BrickSize);
+
+	const TArray<FIntPoint>& GetStartSafeZonePoints();
 
 	// FTickableGameObject Interface
 	virtual void Tick(float DeltaTime) override;
 	virtual UWorld* GetTickableGameObjectWorld() const;
 	virtual TStatId GetStatId() const override;
+	virtual bool IsTickable() const override;
 	void SetTickable(bool bInTickable);
 	// ~FTickableGameObject Interface
 
@@ -64,4 +67,7 @@ private:
 
 	UPROPERTY()
 	bool bTickable = false;
+
+	UPROPERTY()
+	TArray<FIntPoint> StartSafeZonePoints;
 };
