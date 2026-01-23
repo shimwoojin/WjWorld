@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Core/GameRule/WjWorldGameRuleBase.h"
+#include "GamePlay/Wall/WjWorldWallDescriptionDataAsset.h"
 #include "WjWorldGameRuleApproachingWall.generated.h"
 
 class UWjWorldBrickSpawner;
@@ -41,6 +42,7 @@ public:
 	const TSet<FIntPoint>& GetFloodFillPoints() const { return FloodFillPoints; }
 	TObjectPtr<UWjWorldWallManager> GetWallManager() const { return WallManager; }
 
+	const FWjWorldWallDescription& GetWallDesc() const { return WallDesc; }
 
 protected:
 	virtual void Tick(float DeltaTime) override;
@@ -50,7 +52,7 @@ private:
 	void InternalGameStartProcess();
 
 	UFUNCTION()
-	void OnWallSpawnFinished(const TArray<FVector>& InSafeZones);
+	void OnWallSpawnFinished(const TArray<FVector>& InSafeZones, const FWjWorldWallDescription& Desc);
 
 	void ShrinkSafeZones(bool& bAnySafeZoneExist);
 	virtual bool PredictNextLevelIsLast() override;;
@@ -58,8 +60,13 @@ private:
 protected:
 	UPROPERTY()
 	TObjectPtr<UWjWorldWallManager> WallManager;
+
 	UPROPERTY()
 	TObjectPtr<UWjWorldBrickSpawner> BrickSpawner;
+
+	UPROPERTY()
+	FWjWorldWallDescription WallDesc;
+
 	TSet<FIntPoint> CurrentSafeZonePoints;
 	TSet<FIntPoint> FloodFillPoints;
 	TArray<FVector> SpawnSafeZones;

@@ -190,6 +190,8 @@ bool FWjWorldWallDescription::IsAreaEnclosedByWalls(int32 StartX, int32 StartY)
     SafeZones.Empty();
     SafeZones.Append(Visited.Array());  
 
+    SafeZonesSet = Visited;
+
     // 끝까지 못 나갔으면 완전히 둘러싸임
     return true;
 }

@@ -30,6 +30,7 @@ public:
 	void GameStartWithCountdown(float CountdownTime);
 	void GameEndWithCountdown(float CountdownTime);
 
+    EGamePhase GetGamePhase() const { return CurrentPhase; }
 	void SetGamePhase(EGamePhase NewPhase);
 
 	// 게임 결과 설정 (서버에서 호출)

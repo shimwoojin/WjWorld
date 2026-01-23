@@ -17,7 +17,7 @@ if exist "C:\UEProjects\WjWorld\Saved\Logs" rmdir /s /q "C:\UEProjects\WjWorld\S
 
 echo.
 echo Generating Visual Studio files...
-"C:\Program Files\Epic Games\UE_5.6\Engine\Build\BatchFiles\Build.bat" ^
+"C:\Program Files\Epic Games\UE_5.7\Engine\Build\BatchFiles\Build.bat" ^
 -projectfiles ^
 -project="C:\UEProjects\WjWorld\WjWorld.uproject" ^
 -game -engine

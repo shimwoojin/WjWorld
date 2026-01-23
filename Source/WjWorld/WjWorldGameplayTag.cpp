@@ -25,3 +25,13 @@ FGameplayTag WjWorldGameplayTag::Camera_TopDown()
 {
 	return FGameplayTag::RequestGameplayTag(TEXT("Camera.TopDown"));
 }
+
+FGameplayTag WjWorldGameplayTag::Ability_NormalAttack()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("Ability.NormalAttack"));
+}
+
+FGameplayTag WjWorldGameplayTag::State_SpawnBrickPreview()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("State.SpawnBrickPreview"));
+}

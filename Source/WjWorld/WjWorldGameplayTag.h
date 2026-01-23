@@ -18,4 +18,10 @@ public:
 	static FGameplayTag Camera_ThirdPerson();
 	static FGameplayTag Camera_FirstPerson();
 	static FGameplayTag Camera_TopDown();
+
+	//Ability
+	static FGameplayTag Ability_NormalAttack();
+
+	//State
+	static FGameplayTag State_SpawnBrickPreview();
 };

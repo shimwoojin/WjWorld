@@ -21,7 +21,7 @@ void UWjWorldGameRuleApproachingWall::Initialize(AWjWorldGameModePlay* InGameMod
 		UE_LOG(LogWjWorld, Error, TEXT("Failed to create BrickSpawner in GameRuleApporachingWall"));
 	}
 
-	BrickSpawner->OnWallSpawnFinished.AddLambda([this](const TArray<FVector>& SpawnedBrickPositions) {
+	BrickSpawner->OnWallSpawnFinished.AddLambda([this](const TArray<FVector>& SpawnedBrickPositions, const FWjWorldWallDescription& Desc) {
 		if (!HasAuthority()) return;
 		UE_LOG(LogWjWorld, Log, TEXT("Bricks Spawned. Total Bricks: %d"), SpawnedBrickPositions.Num());
 		bIsWallSpawned = true;
@@ -293,13 +293,15 @@ void UWjWorldGameRuleApproachingWall::InternalGameStartProcess()
 	}
 }
 
-void UWjWorldGameRuleApproachingWall::OnWallSpawnFinished(const TArray<FVector>& InSafeZones)
+void UWjWorldGameRuleApproachingWall::OnWallSpawnFinished(const TArray<FVector>& InSafeZones, const FWjWorldWallDescription& Desc)
 {
 	if (!HasAuthority()) return;
 
 	bIsWallSpawned = true;
 	SpawnSafeZones.Empty();
 	SpawnSafeZones.Append(InSafeZones);
+
+	WallDesc = Desc;
 
 	InternalGameReadyProcess();
 

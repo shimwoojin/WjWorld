@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
 #include "Core/Components/WjWorldGameplaySceneComponent.h"
+#include "WjTypes.h"
 #include "WjWorldBrickComponent.generated.h"
 
 class UWjWorldBrickMovement;
@@ -24,6 +25,7 @@ enum class EWjWorldBrickMoveType : uint8
 {
 	Standard,
 };
+
 
 USTRUCT(BlueprintType)
 struct FWjWorldBrickProperties
@@ -60,7 +62,8 @@ class WJWORLD_API UWjWorldBrickComponent : public UWjWorldGameplaySceneComponent
 {
 	GENERATED_BODY()
 
-	const TCHAR* BrickMeshPath = TEXT("/Game/GamePlay/Wall/Mesh/Cube");
+public:
+	static const TCHAR* BrickMeshPath;
 
 public:	
 	// Sets default values for this component's properties
@@ -83,18 +86,9 @@ public:
 private:
 	void OnBrickMovementSignal(int32 BrickMoveSignalCount);
 
-	// 충돌 이벤트 핸들러
-	UFUNCTION()
-	void OnBrickOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
 private:
 	UPROPERTY()
 	TObjectPtr<UStaticMeshComponent> BrickMeshComponent;
-
-	// 충돌 감지용 박스 컴포넌트
-	UPROPERTY()
-	TObjectPtr<UBoxComponent> BrickCollisionComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	FWjWorldBrickProperties BrickProperties;

@@ -11,6 +11,8 @@ class UWjWorldAbilitySystemComponent;
 class UCharacterPlaySetupDataAsset;
 class UBoxComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeadStackCounthanged, int32, NewDeadStackCount);
+
 /**
  * 
  */
@@ -45,9 +47,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Death")
 	bool IsEliminated() const { return bIsEliminated; }
 
-	// 히트박스 컴포넌트 (벽돌과 충돌 감지용)
-	UFUNCTION(BlueprintCallable, Category = "Collision")
-	UBoxComponent* GetHitBox() const { return HitBoxComponent; }
+	UFUNCTION(BlueprintCallable, Category = "Death")
+	int32 GetDeadStackCount() const { return DeadStackCount; }
+
+	UFUNCTION(BlueprintCallable, Category = "Death")
+	void AddDeadStackCount(int32 InCount);
+
+	UFUNCTION(BlueprintCallable, Category = "Death")
+	void RemoveDeadStackCount(int32 InCount);
 
 protected:
 	virtual void OnRep_PlayerState() override;
@@ -56,20 +63,32 @@ protected:
 	UFUNCTION()
 	void OnRep_IsEliminated();
 
+	UFUNCTION()
+	void OnRep_DeadStackCountChanged();
+
 	// 사망 시 클라이언트에서 호출되는 로직
 	void HandleEliminationEffects();
 
 private:
+	UFUNCTION()
+	void OnSetupDataAssetLoaded(const FSoftObjectPath& Path, UObject* Object);
+
+	virtual void GasInputPressed(int32 InputID) override;
+	virtual void GasInputReleased(int32 InputID) override;
+
+public:
+	FOnDeadStackCounthanged OnDeadStackCountChanged;
+
+private:
 	TWeakObjectPtr<UWjWorldAbilitySystemComponent> AbilitySystemComponent;
 
-	UPROPERTY(EditDefaultsOnly, category = "DataAsset")
+	UPROPERTY(EditDefaultsOnly, category = "DataAsset", meta = (AllowPrivateAccess = true))
 	TSoftObjectPtr<UCharacterPlaySetupDataAsset> SetupDataAsset;
-
-	// 히트박스 (벽돌과 충돌 감지)
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UBoxComponent> HitBoxComponent;
 
 	// 사망 상태 (리플리케이션)
 	UPROPERTY(ReplicatedUsing = OnRep_IsEliminated)
 	bool bIsEliminated = false;
+
+	UPROPERTY(ReplicatedUsing = OnRep_DeadStackCountChanged)
+	int32 DeadStackCount;
 };

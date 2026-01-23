@@ -32,6 +32,9 @@ public:
 
 	TObjectPtr<UWjWorldGameRuleBase> GetCurrentGameRule() const { return CurrentGameRule; }
 
+	template<typename T>
+	TObjectPtr<T> GetCurrentGameRule() const { return Cast<T>(CurrentGameRule); }
+
 	void OnGameLevelUp(int32 NewLevel);
 
 protected:

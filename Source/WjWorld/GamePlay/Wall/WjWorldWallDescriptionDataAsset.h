@@ -70,6 +70,7 @@ struct FWjWorldWallDescription
 	int32 ColumnNum = 0;
 
 	TArray<FIntPoint> SafeZones;
+	TSet<FIntPoint> SafeZonesSet;
 
 private:
 	bool ParseWallLayout(const FString& FileContent);

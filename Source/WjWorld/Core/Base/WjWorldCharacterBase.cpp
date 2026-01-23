@@ -11,6 +11,8 @@
 #include "Core/CameraAsset.h"
 #include "Directors/StateTreeCameraDirector.h"
 
+#include "WjWorldLogCategories.h"
+
 AWjWorldCharacterBase::AWjWorldCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -128,6 +130,7 @@ void AWjWorldCharacterBase::InitializeCharacter()
 void AWjWorldCharacterBase::SetupInputBindings(UInputComponent* PlayerInputComponent)
 {
 	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	const FString AbilityInputAction = TEXT("Ability");
 
 	if (EnhancedInputComponent && DefaultMappingContext)
 	{
@@ -153,24 +156,45 @@ void AWjWorldCharacterBase::SetupInputBindings(UInputComponent* PlayerInputCompo
 				{ETriggerEvent::Triggered, TEXT("")} // 기본 (접미사 없음)
 			};
 
-			for (const auto& EventSuffix : EventSuffixes)
+			if (ActionName.Contains(AbilityInputAction))
 			{
-				FString FunctionName = ActionName + EventSuffix.Value;
+				ActionName.RemoveFromStart(AbilityInputAction);
+				int32 Param1 = FCString::Atoi(*ActionName);
 
-				if (AlreadyBoundActions.Contains(FunctionName))
+				EnhancedInputComponent->BindAction(Mapping.Action, ETriggerEvent::Started, this, &AWjWorldCharacterBase::GasInputPressed, Param1);
+				EnhancedInputComponent->BindAction(Mapping.Action, ETriggerEvent::Completed, this, &AWjWorldCharacterBase::GasInputReleased, Param1);
+			}
+			else
+			{
+				for (const auto& EventSuffix : EventSuffixes)
 				{
-					continue;
-				}
+					FString FunctionName = ActionName + EventSuffix.Value;
 
-				UFunction* Function = FindFunction(FName(*FunctionName));
-				if (Function)
-				{
-					EnhancedInputComponent->BindAction(Mapping.Action, EventSuffix.Key, this, FName(*FunctionName));
-					AlreadyBoundActions.Add(FunctionName);
+					if (AlreadyBoundActions.Contains(FunctionName))
+					{
+						continue;
+					}
+
+					UFunction* Function = FindFunction(FName(*FunctionName));
+					if (Function)
+					{
+						EnhancedInputComponent->BindAction(Mapping.Action, EventSuffix.Key, this, FName(*FunctionName));
+						AlreadyBoundActions.Add(FunctionName);
+					}
 				}
 			}
 		}
 	}
+}
+
+void AWjWorldCharacterBase::GasInputPressed(int32 InputID)
+{
+	UE_LOG(LogWjWorldAbilities, Log, TEXT("GasInputPressed InputID : %d"), InputID);
+}
+
+void AWjWorldCharacterBase::GasInputReleased(int32 InputID)
+{
+	UE_LOG(LogWjWorldAbilities, Log, TEXT("GasInputReleased InputID : %d"), InputID);
 }
 
 void AWjWorldCharacterBase::Move(const FInputActionValue& Value)

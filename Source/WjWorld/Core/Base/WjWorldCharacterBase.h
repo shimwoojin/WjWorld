@@ -53,6 +53,9 @@ protected:
 	 */
 	virtual void SetupInputBindings(class UInputComponent* PlayerInputComponent);
 
+	virtual void GasInputPressed(int32 InputID);
+	virtual void GasInputReleased(int32 InputID);
+
 	//~ Input Handlers
 	/**
 	 * 이동 입력 처리

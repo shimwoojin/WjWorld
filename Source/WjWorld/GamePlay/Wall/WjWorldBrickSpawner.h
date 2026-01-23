@@ -8,9 +8,12 @@
 #include "WjWorldBrickSpawner.generated.h"
 
 class UWjWorldWallDescriptionDataAsset;
-struct FWjWorldWallDescription;
+class AWjWorldBrickActor;
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnWallSpawnFinished, const TArray<FVector>&);
+struct FWjWorldWallDescription;
+struct FWjWorldBrickProperties;
+
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnWallSpawnFinished, const TArray<FVector>&, const FWjWorldWallDescription&);
 
 /**
  * 
@@ -22,12 +25,13 @@ class WJWORLD_API UWjWorldBrickSpawner : public UObject, public FTickableGameObj
 	
 public:
 	static UWjWorldBrickSpawner* CreateBrickSpawner(UObject* Outer, TSoftObjectPtr<UWjWorldWallDescriptionDataAsset> WallDescDataAsset);
-	
+	static AWjWorldBrickActor* SpawnBrickActor(UWorld* World, const FWjWorldBrickProperties& BrickProperties, int32 ColumnIndex, int32 RowIndex);
 
 public:
 	void SpawnBricksRandomMapAsync();
 	void SpawnBricksFromWallNameAsync(const FString& WallName);
 	static FVector CalculateBrickPosition(int32 BrickColIndex, int32 BrickRowIndex, int32 ColNum, int32 RowNum, const FVector& WallOrigin, const FVector& BrickSize);
+	static FIntPoint CalculateBrickGridIndex(const FVector& WorldLocation, int32 ColNum, int32 RowNum, const FVector& WallOrigin, const FVector& BrickSize);
 
 	const TArray<FIntPoint>& GetStartSafeZonePoints();
 

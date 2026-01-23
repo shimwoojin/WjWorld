@@ -5,6 +5,7 @@
 #include "GamePlay/Wall/WjWorldWallDescriptionDataAsset.h"
 #include "GamePlay/Wall/WjWorldBrickActor.h"
 #include "GamePlay/Wall/WjWorldBrickComponent.h"
+#include "GamePlay/Wall/WjWorldTileActor.h"
 
 #include "WjWorldLogCategories.h"
 
@@ -22,6 +23,35 @@ UWjWorldBrickSpawner* UWjWorldBrickSpawner::CreateBrickSpawner(UObject* Outer, T
 	}
 
 	return nullptr;
+}
+
+AWjWorldBrickActor* UWjWorldBrickSpawner::SpawnBrickActor(UWorld* World, const FWjWorldBrickProperties& BrickProperties, int32 ColumnIndex, int32 RowIndex)
+{
+	if (!World) return nullptr;
+
+	AWjWorldBrickActor* BrickActor = World->SpawnActor<AWjWorldBrickActor>(AWjWorldBrickActor::StaticClass());
+	if (BrickActor)
+	{
+		if (UWjWorldBrickComponent* BrickComponent = BrickActor->GetBrickComponent())
+		{
+			BrickComponent->InitializeBrick(BrickProperties);
+		}
+
+		FVector BrickPosition = CalculateBrickPosition(
+			ColumnIndex,
+			RowIndex,
+			BrickProperties.ColumnNum,
+			BrickProperties.RowNum,
+			BrickProperties.CenterOffset,
+			BrickProperties.Size);
+
+		BrickActor->SetActorLocation(BrickPosition);
+
+		UE_LOG(LogWjWorld, Log, TEXT("Spawned Brick at Row: %d, Col: %d, Type: %d, Position : %s"),
+			RowIndex, ColumnIndex, (int32)BrickProperties.BrickType, *BrickPosition.ToString());
+	}
+
+	return BrickActor;
 }
 
 void UWjWorldBrickSpawner::SpawnBricksRandomMapAsync()
@@ -62,6 +92,27 @@ FVector UWjWorldBrickSpawner::CalculateBrickPosition(int32 BrickColIndex, int32 
 	return WallOrigin + FVector(WorldOffsetX, WorldOffsetY, BrickSize.Z / 2.0);
 }
 
+FIntPoint UWjWorldBrickSpawner::CalculateBrickGridIndex(const FVector& WorldLocation, int32 ColNum, int32 RowNum, const FVector& WallOrigin, const FVector& BrickSize)
+{
+	// 그리드 중심 인덱스 (정중앙 기준)
+	const float CenterCol = (ColNum - 1) * 0.5f;
+	const float CenterRow = (RowNum - 1) * 0.5f;
+
+	// 월드 오프셋 계산
+	const float WorldOffsetX = WorldLocation.X - WallOrigin.X;
+	const float WorldOffsetY = WorldLocation.Y - WallOrigin.Y;
+
+	// 그리드 오프셋 계산
+	const float ColOffset = WorldOffsetX / BrickSize.X;
+	const float RowOffset = WorldOffsetY / BrickSize.Y;
+
+	// 그리드 인덱스 계산 (반올림하여 가장 가까운 셀로)
+	const int32 ColIndex = FMath::RoundToInt32(ColOffset + CenterCol);
+	const int32 RowIndex = FMath::RoundToInt32(RowOffset + CenterRow);
+
+	return FIntPoint(ColIndex, RowIndex);
+}
+
 const TArray<FIntPoint>& UWjWorldBrickSpawner::GetStartSafeZonePoints()
 {
 	return StartSafeZonePoints;
@@ -95,25 +146,25 @@ void UWjWorldBrickSpawner::Tick(float DeltaTime)
 
 		if (BrickType >= (int32)EWjWorldBrickType::Standard)
 		{
-			AWjWorldBrickActor* BrickActor = World->SpawnActor<AWjWorldBrickActor>(AWjWorldBrickActor::StaticClass());
-			if(BrickActor)
+			FWjWorldBrickProperties BrickProperties;
+			BrickProperties.BrickType = static_cast<EWjWorldBrickType>(BrickType);
+			BrickProperties.BrickMoveType = EWjWorldBrickMoveType::Standard;
+			BrickProperties.Size = TargetDesc.BrickSize;
+			BrickProperties.Color = FColor::White;
+			BrickProperties.SpawnedGridPosition = FIntPoint(CurrentLoadingBrickColIndex, CurrentLoadingBrickRowIndex);
+			BrickProperties.CenterOffset = TargetDesc.CenterOffset;
+			BrickProperties.ColumnNum = TargetDesc.ColumnNum;
+			BrickProperties.RowNum = TargetDesc.RowNum;
+
+			SpawnBrickActor(World, BrickProperties, CurrentLoadingBrickColIndex, CurrentLoadingBrickRowIndex);
+		}
+		else if (BrickType < (int32)EWjWorldBrickType::Standard
+			&& TargetDesc.SafeZonesSet.Contains(FIntPoint(CurrentLoadingBrickColIndex, CurrentLoadingBrickRowIndex)))
+		{
+			AWjWorldTileActor* TileActor = World->SpawnActor<AWjWorldTileActor>(AWjWorldTileActor::StaticClass());
+			if (TileActor)
 			{
-				FWjWorldBrickProperties BrickProperties;
-				BrickProperties.BrickType = static_cast<EWjWorldBrickType>(BrickType);
-				BrickProperties.BrickMoveType = EWjWorldBrickMoveType::Standard;
-				BrickProperties.Size = TargetDesc.BrickSize;
-				BrickProperties.Color = FColor::White;
-				BrickProperties.SpawnedGridPosition = FIntPoint(CurrentLoadingBrickColIndex, CurrentLoadingBrickRowIndex);
-				BrickProperties.CenterOffset = TargetDesc.CenterOffset;
-				BrickProperties.ColumnNum = TargetDesc.ColumnNum;
-				BrickProperties.RowNum = TargetDesc.RowNum;
-
-				if (UWjWorldBrickComponent* BrickComponent = BrickActor->GetBrickComponent())
-				{
-					BrickComponent->InitializeBrick(BrickProperties);
-				}
-
-				FVector BrickPosition = CalculateBrickPosition(
+				FVector TilePosition = CalculateBrickPosition(
 					CurrentLoadingBrickColIndex,
 					CurrentLoadingBrickRowIndex,
 					TargetDesc.ColumnNum,
@@ -121,10 +172,7 @@ void UWjWorldBrickSpawner::Tick(float DeltaTime)
 					TargetDesc.CenterOffset,
 					TargetDesc.BrickSize);
 
-				BrickActor->SetActorLocation(BrickPosition);
-
-				UE_LOG(LogWjWorld, Log, TEXT("Spawned Brick at Row: %d, Col: %d, Type: %d, Position : %s"), 
-					CurrentLoadingBrickRowIndex, CurrentLoadingBrickColIndex, BrickType, *BrickPosition.ToString());
+				TileActor->InitializeTile(TargetDesc.BrickSize, TilePosition);
 			}
 		}
 
@@ -165,7 +213,7 @@ void UWjWorldBrickSpawner::Tick(float DeltaTime)
 			RandomSafeZoneLocations.Add(SafeZoneLocation);
 		}
 
-		OnWallSpawnFinished.Broadcast(RandomSafeZoneLocations);
+		OnWallSpawnFinished.Broadcast(RandomSafeZoneLocations, TargetDesc);
 		TargetDesc.Reset();
 	}
 

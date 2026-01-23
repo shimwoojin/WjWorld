@@ -11,26 +11,17 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
 
+#include "WjWorldLogCategories.h"
+#include "WjTypes.h"
+
 AWjWorldCharacterPlay::AWjWorldCharacterPlay()
 {
-	// 히트박스 컴포넌트 생성
-	HitBoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("HitBoxComponent"));
-	HitBoxComponent->SetupAttachment(GetCapsuleComponent());
-	HitBoxComponent->SetBoxExtent(FVector(40.0f, 40.0f, 88.0f)); // 캡슐 크기에 맞게 조정
-	HitBoxComponent->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
-	HitBoxComponent->SetGenerateOverlapEvents(true);
+
 }
 
 void AWjWorldCharacterPlay::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-
-	if (SetupDataAsset)
-	{
-		FString ErrorMsg;
-		SetupDataAsset->Initialize(this, ErrorMsg);
-		ensureMsgf(ErrorMsg.Len() == 0, TEXT("ErrorMsg : %s") ,*ErrorMsg);
-	}
 }
 
 UAbilitySystemComponent* AWjWorldCharacterPlay::GetAbilitySystemComponent() const
@@ -48,6 +39,7 @@ void AWjWorldCharacterPlay::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AWjWorldCharacterPlay, bIsEliminated);
+	DOREPLIFETIME(AWjWorldCharacterPlay, DeadStackCount);
 }
 
 void AWjWorldCharacterPlay::OnEliminated()
@@ -74,12 +66,37 @@ void AWjWorldCharacterPlay::OnEliminated()
 	HandleEliminationEffects();
 }
 
+void AWjWorldCharacterPlay::AddDeadStackCount(int32 InCount)
+{
+	DeadStackCount += InCount;
+
+	if (HasAuthority())
+	{
+		OnRep_DeadStackCountChanged();
+	}
+}
+
+void AWjWorldCharacterPlay::RemoveDeadStackCount(int32 InCount)
+{
+	DeadStackCount = FMath::Max(0, DeadStackCount - InCount);
+
+	if (HasAuthority())
+	{
+		OnRep_DeadStackCountChanged();
+	}
+}
+
 void AWjWorldCharacterPlay::OnRep_IsEliminated()
 {
 	if (bIsEliminated)
 	{
 		HandleEliminationEffects();
 	}
+}
+
+void AWjWorldCharacterPlay::OnRep_DeadStackCountChanged()
+{
+	OnDeadStackCountChanged.Broadcast(DeadStackCount);
 }
 
 void AWjWorldCharacterPlay::HandleEliminationEffects()
@@ -97,12 +114,6 @@ void AWjWorldCharacterPlay::HandleEliminationEffects()
 		DisableInput(PC);
 	}
 
-	// 충돌 비활성화 (다른 벽돌과 더 이상 충돌하지 않도록)
-	if (HitBoxComponent)
-	{
-		HitBoxComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	}
-
 	// TODO: 사망 이펙트, 애니메이션 등 추가 가능
 }
 
@@ -115,6 +126,20 @@ void AWjWorldCharacterPlay::OnRep_PlayerState()
 	if (AbilitySystemInterface)
 	{
 		AbilitySystemComponent = Cast<UWjWorldAbilitySystemComponent>(AbilitySystemInterface->GetAbilitySystemComponent());
+		if (AbilitySystemComponent.IsValid())
+		{
+			// 클라이언트에서도 ActorInfo 초기화 필요 (어빌리티 입력 처리를 위해)
+			AbilitySystemComponent->InitAbilityActorInfo(WJPlayerState, this);
+
+			// Confirm/Cancel InputID 설정
+			AbilitySystemComponent->GenericConfirmInputID = static_cast<int32>(EWjWorldAbilityInputID::Confirm);
+			AbilitySystemComponent->GenericCancelInputID = static_cast<int32>(EWjWorldAbilityInputID::Cancel);
+
+			// 클라이언트 공통 초기화 (어빌리티 부여는 Initialize 내부에서 Authority 체크)
+			FLoadSoftObjectPathAsyncDelegate SetupDataLoadDel;
+			SetupDataLoadDel.BindUObject(this, &ThisClass::OnSetupDataAssetLoaded);
+			SetupDataAsset.LoadAsync(SetupDataLoadDel);
+		}
 	}
 }
 
@@ -130,5 +155,63 @@ void AWjWorldCharacterPlay::PossessedBy(AController* NewController)
 		check(AbilitySystemComponent.IsValid());
 		AbilitySystemComponent->InitAbilityActorInfo(WJPlayerState, this);
 		AbilitySystemComponent->SetOwnerActor(NewController);
+
+		// Confirm/Cancel InputID 설정
+		AbilitySystemComponent->GenericConfirmInputID = static_cast<int32>(EWjWorldAbilityInputID::Confirm);
+		AbilitySystemComponent->GenericCancelInputID = static_cast<int32>(EWjWorldAbilityInputID::Cancel);
+
+		FLoadSoftObjectPathAsyncDelegate SetupDataLoadDel;
+		SetupDataLoadDel.BindUObject(this, &ThisClass::OnSetupDataAssetLoaded);
+		SetupDataAsset.LoadAsync(SetupDataLoadDel);
+	}
+}
+
+void AWjWorldCharacterPlay::OnSetupDataAssetLoaded(const FSoftObjectPath& Path, UObject* Object)
+{
+	UE_LOG(LogWjWorld, Log, TEXT("AWjWorldCharacterPlay::OnSetupDataAssetLoaded"));
+	if (!::IsValid(this)) return;
+
+	UCharacterPlaySetupDataAsset* SetupDA = Cast<UCharacterPlaySetupDataAsset>(Object);
+	if (SetupDA)
+	{
+		FString ErrorMsg;
+		SetupDA->Initialize(this, ErrorMsg);
+
+		if (ErrorMsg.Len() > 0)
+		{
+			ensureMsgf(false, TEXT("ErrorMsg : %s"), *ErrorMsg);
+		}
+		else
+		{
+			UE_LOG(LogWjWorld, Log, TEXT("SetupDataAsset->Initialize Success"));
+		}
+	}
+}
+
+void AWjWorldCharacterPlay::GasInputPressed(int32 InputID)
+{
+	Super::GasInputPressed(InputID);
+	if (AbilitySystemComponent.IsValid())
+	{
+		AbilitySystemComponent->PressInputID(InputID);
+
+		// Confirm/Cancel 입력 처리 (WaitConfirmCancel Task용)
+		if (InputID == AbilitySystemComponent->GenericConfirmInputID)
+		{
+			AbilitySystemComponent->LocalInputConfirm();
+		}
+		else if (InputID == AbilitySystemComponent->GenericCancelInputID)
+		{
+			AbilitySystemComponent->LocalInputCancel();
+		}
+	}
+}
+
+void AWjWorldCharacterPlay::GasInputReleased(int32 InputID)
+{
+	Super::GasInputReleased(InputID);
+	if (AbilitySystemComponent.IsValid())
+	{
+		AbilitySystemComponent->ReleaseInputID(InputID);
 	}
 }
