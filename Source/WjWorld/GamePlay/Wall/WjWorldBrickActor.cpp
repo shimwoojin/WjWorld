@@ -24,6 +24,11 @@ void AWjWorldBrickActor::BeginPlay()
 	
 }
 
+void AWjWorldBrickActor::PostNetInit()
+{
+	Super::PostNetInit();
+}
+
 // Called every frame
 void AWjWorldBrickActor::Tick(float DeltaTime)
 {

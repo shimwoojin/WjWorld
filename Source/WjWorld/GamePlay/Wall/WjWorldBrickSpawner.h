@@ -9,9 +9,11 @@
 
 class UWjWorldWallDescriptionDataAsset;
 class AWjWorldBrickActor;
+class AWjWorldTileActor;
 
 struct FWjWorldWallDescription;
 struct FWjWorldBrickProperties;
+
 
 DECLARE_MULTICAST_DELEGATE_TwoParams(FOnWallSpawnFinished, const TArray<FVector>&, const FWjWorldWallDescription&);
 
@@ -22,7 +24,7 @@ UCLASS()
 class WJWORLD_API UWjWorldBrickSpawner : public UObject, public FTickableGameObject
 {
 	GENERATED_BODY()
-	
+
 public:
 	static UWjWorldBrickSpawner* CreateBrickSpawner(UObject* Outer, TSoftObjectPtr<UWjWorldWallDescriptionDataAsset> WallDescDataAsset);
 	static AWjWorldBrickActor* SpawnBrickActor(UWorld* World, const FWjWorldBrickProperties& BrickProperties, int32 ColumnIndex, int32 RowIndex);
@@ -53,6 +55,9 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UWjWorldWallDescriptionDataAsset> LoadedWallDescriptionDataAsset;
+
+	UPROPERTY()
+	TSubclassOf<AWjWorldTileActor> TileActorClass;
 
 	UPROPERTY()
 	FWjWorldWallDescription TargetDesc;

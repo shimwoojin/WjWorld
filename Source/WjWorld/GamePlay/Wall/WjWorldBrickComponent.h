@@ -10,6 +10,9 @@
 
 class UWjWorldBrickMovement;
 class UBoxComponent;
+class AWjWorldBrickActor;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnWallCollision, UWjWorldBrickComponent*, CollidedBrick, const FVector&, WallDirection);
 
 UENUM()
 enum class EWjWorldBrickType : uint8
@@ -31,6 +34,23 @@ USTRUCT(BlueprintType)
 struct FWjWorldBrickProperties
 {
 	GENERATED_BODY()
+
+	FColor GetColorWithBrickType() const
+	{
+		switch (BrickType)
+		{
+		case EWjWorldBrickType::Standard:
+			return FColor::White;
+		case EWjWorldBrickType::Explosive:
+			return FColor::Red;
+		case EWjWorldBrickType::Moving:
+			return FColor::Blue;
+		case EWjWorldBrickType::Destructible:
+			return FColor::Black;
+		default:
+			return FColor::White;
+		}
+	}
 
 	UPROPERTY(EditAnywhere)
 	EWjWorldBrickType BrickType = EWjWorldBrickType::Standard;
@@ -73,11 +93,24 @@ public:
 	const FWjWorldBrickProperties& GetBrickProperties() const { return BrickProperties; }
 	void ReserveDestroyBrick(float AfterSeconds);
 
+	// 충돌 처리
+	void HandleWallCollision(const FVector& WallDirection);
+	void PushInDirection(const FVector& Direction, float MoveTime);
+
+	// 델리게이트
+	UPROPERTY(BlueprintAssignable)
+	FOnWallCollision OnWallCollision;
+
+	UWjWorldBrickMovement* GetBrickMovement() const { return BrickMovement; }
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	virtual void EndPlay(EEndPlayReason::Type Reason) override;
 	virtual void OnRegister() override;
+
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
+	
 
 public:	
 	// Called every frame
@@ -85,12 +118,14 @@ public:
 		
 private:
 	void OnBrickMovementSignal(int32 BrickMoveSignalCount);
+	void Explode();
+	void DestroyBrick();
 
 private:
 	UPROPERTY()
 	TObjectPtr<UStaticMeshComponent> BrickMeshComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	FWjWorldBrickProperties BrickProperties;
 
 	UPROPERTY()

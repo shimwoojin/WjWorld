@@ -114,6 +114,15 @@ void AWjWorldCharacterPlay::HandleEliminationEffects()
 		DisableInput(PC);
 	}
 
+	// Temp
+	if (GetWorld())
+	{
+		FTimerHandle DestoryHandle;
+		GetWorld()->GetTimerManager().SetTimer(DestoryHandle, [this]()
+		{
+			Destroy();
+		}, 1.0f, false);
+	}
 	// TODO: 사망 이펙트, 애니메이션 등 추가 가능
 }
 

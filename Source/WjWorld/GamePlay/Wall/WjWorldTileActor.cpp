@@ -6,6 +6,7 @@
 #include "GamePlay/Wall/WjWorldBrickComponent.h"
 #include "GamePlay/WjWorldGameplayUtils.h"
 #include "Components/BoxComponent.h"
+#include "Materials/MaterialInstanceDynamic.h"
 
 #include "Core/Play/WjWorldCharacterPlay.h"
 #include "Core/Play/WjWorldGameModePlay.h"
@@ -16,13 +17,19 @@
 
 #include "WjWorldLogCategories.h"
 
+#include "Net/UnrealNetwork.h"
+
+const  FColor AWjWorldTileActor::BombSignalOnColorWarning = FColor::Yellow;
+const  FColor AWjWorldTileActor::BombSignalOnColorDanger = FColor::Red;
+const TCHAR* AWjWorldTileActor::TileMeshPath = TEXT("/Game/GamePlay/Wall/Mesh/Floor");
+
 AWjWorldTileActor::AWjWorldTileActor()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
 
 	CenterHitBoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("CenterHitBoxComponent"));
-	CenterHitBoxComponent->SetupAttachment(RootComponent);
+	SetRootComponent(CenterHitBoxComponent);
 	CenterHitBoxComponent->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 	CenterHitBoxComponent->SetBoxExtent(FVector(HitBoxSize, HitBoxSize, HitBoxSize));
 
@@ -33,11 +40,30 @@ AWjWorldTileActor::AWjWorldTileActor()
 		HitBoxComponents[DirectionIndex]->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 		HitBoxComponents[DirectionIndex]->SetBoxExtent(FVector(HitBoxSize, HitBoxSize, HitBoxSize));
 	}
+
+	TileMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TileMeshComponent"));
+	TileMeshComponent->SetupAttachment(RootComponent);
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> TileMesh(TileMeshPath);
+	if(TileMesh.Succeeded())
+	{
+		TileMeshComponent->SetStaticMesh(TileMesh.Object);
+	}
+
+	bIsBombSignalOn = false;
 }
 
-void AWjWorldTileActor::InitializeTile(const FVector& InSize, const FVector& InCenterOffset)
+void AWjWorldTileActor::InitializeTile(const FVector& InSize, const FVector& InCenterOffset, bool bInIsWhiteTile)
 {
-	SetActorLocation(InCenterOffset);
+	if (!HasAuthority()) return;
+
+	FVector TileLocation = InCenterOffset;
+	TileLocation.Z -= InSize.Z * 0.5f; // 타일이 바닥에 위치하도록 Z 오프셋 조정
+	SetActorLocation(TileLocation);
+	UE_LOG(LogWjWorld, Log, TEXT("Tile Initialized at Location: %s"), *InCenterOffset.ToString());
+
+	// FinishSpawning 전에 설정하여 Initial Bunch에 포함
+	bIsWhiteTile = bInIsWhiteTile;
 
 	float Offset = HitBoxSize + 2.0f;
 
@@ -82,6 +108,22 @@ void AWjWorldTileActor::InitializeTile(const FVector& InSize, const FVector& InC
 	CenterHitBoxComponent->SetBoxExtent(InSize);
 	CenterHitBoxComponent->OnComponentBeginOverlap.AddDynamic(this, &AWjWorldTileActor::OnBrickOverlapBegin);
 	CenterHitBoxComponent->OnComponentEndOverlap.AddDynamic(this, &AWjWorldTileActor::OnBrickOverlapEnd);
+
+	if (TileMeshComponent)
+	{
+		TileMeshComponent->SetWorldScale3D(InSize / 100.0f); // 기본 메시 크기가 100이므로 스케일 조정
+	}
+}
+
+void AWjWorldTileActor::PostNetInit()
+{
+	Super::PostNetInit();
+
+	// 클라이언트에서 첫 리플리케이션 후 색상 적용
+	DefaultBaseColor = bIsWhiteTile ? FLinearColor::White : FLinearColor::Black;
+	ApplyTileColor();
+
+	UE_LOG(LogWjWorld, Log, TEXT("Tile PostNetInit on Client: IsWhiteTile=%s"), bIsWhiteTile ? TEXT("True") : TEXT("False"));
 }
 
 // Called when the game starts or when spawned
@@ -97,6 +139,24 @@ void AWjWorldTileActor::BeginPlay()
 			GameRule = GameModePlay->GetCurrentGameRule<UWjWorldGameRuleApproachingWall>();
 		}
 	}
+
+	// 동적 머티리얼 인스턴스 생성
+	if (!DynamicMaterial && TileMeshComponent)
+	{
+		UMaterialInterface* BaseMaterial = TileMeshComponent->GetMaterial(0);
+		if (BaseMaterial)
+		{
+			DynamicMaterial = UMaterialInstanceDynamic::Create(BaseMaterial, this);
+			TileMeshComponent->SetMaterial(0, DynamicMaterial);
+		}
+	}
+
+	// 서버에서 색상 적용
+	if (HasAuthority())
+	{
+		DefaultBaseColor = bIsWhiteTile ? FLinearColor::White : FLinearColor::Black;
+		ApplyTileColor();
+	}
 }
 
 // Called every frame
@@ -104,17 +164,38 @@ void AWjWorldTileActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (!HasAuthority()) return;
 	if (bIsBombSignalOn == false) return;
 
 	ElapsedBombingTime += DeltaTime;
 
+	// Warning -> Danger 색상 보간
+	if (DynamicMaterial)
+	{
+		const float Alpha = FMath::Clamp(ElapsedBombingTime / BombChargingTime, 0.0f, 1.0f);
+		const FLinearColor WarningColor = FLinearColor(BombSignalOnColorWarning);
+		const FLinearColor DangerColor = FLinearColor(BombSignalOnColorDanger);
+		const FLinearColor LerpedColor = FMath::Lerp(WarningColor, DangerColor, Alpha);
+		DynamicMaterial->SetVectorParameterValue(TEXT("BaseColor"), FVector(LerpedColor.R, LerpedColor.G, LerpedColor.B));
+	}
+
 	if (ElapsedBombingTime >= BombChargingTime)
 	{
-		Bomb();
+		if (HasAuthority())
+		{
+			Bomb();
+			bIsBombSignalOn = false;
+			OnRep_IsBombSignalOn();
+		}
+
 		ElapsedBombingTime = 0.0f;
-		bIsBombSignalOn = false;
 	}
+}
+
+void AWjWorldTileActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AWjWorldTileActor, bIsBombSignalOn);
+	DOREPLIFETIME_CONDITION(AWjWorldTileActor, bIsWhiteTile, COND_InitialOnly);
 }
 
 void AWjWorldTileActor::OnBrickOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -139,7 +220,7 @@ void AWjWorldTileActor::OnBrickOverlapBegin(UPrimitiveComponent* OverlappedCompo
 		if (bIsBombSignalOn == false && CheckBombSignalOn())
 		{
 			bIsBombSignalOn = true;
-			ElapsedBombingTime = 0.0f;
+			OnRep_IsBombSignalOn();
 		}
 	}
 }
@@ -177,7 +258,7 @@ void AWjWorldTileActor::OnBrickOverlapEnd(UPrimitiveComponent* OverlappedCompone
 		if (bIsBombSignalOn && !CheckBombSignalOn())
 		{
 			bIsBombSignalOn = false;
-			ElapsedBombingTime = 0.0f;
+			OnRep_IsBombSignalOn();
 		}
 	}
 }
@@ -217,6 +298,19 @@ void AWjWorldTileActor::Bomb()
 	SpawnBombEffect();
 }
 
+void AWjWorldTileActor::OnRep_IsBombSignalOn()
+{
+	ElapsedBombingTime = 0.0f;
+
+	// 폭탄 신호가 꺼지면 기본 색상으로 복원
+	if (!bIsBombSignalOn && DynamicMaterial)
+	{
+		DynamicMaterial->SetVectorParameterValue(TEXT("BaseColor"), DefaultBaseColor);
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("AWjWorldTileActor::OnRep_IsBombSignalOn: %d"), bIsBombSignalOn);
+}
+
 void AWjWorldTileActor::SpawnBombEffect_Implementation()
 {
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(
@@ -231,4 +325,23 @@ void AWjWorldTileActor::SpawnBombEffect_Implementation()
 	);
 
 	UE_LOG(LogWjWorld, Log, TEXT("AWjWorldTileActor::SpawnBombEffect_Implementation"));
+}
+
+void AWjWorldTileActor::ApplyTileColor()
+{
+	// DynamicMaterial이 아직 없으면 생성 (BeginPlay 전에 RPC가 도착한 경우)
+	if (!DynamicMaterial && TileMeshComponent)
+	{
+		UMaterialInterface* BaseMaterial = TileMeshComponent->GetMaterial(0);
+		if (BaseMaterial)
+		{
+			DynamicMaterial = UMaterialInstanceDynamic::Create(BaseMaterial, this);
+			TileMeshComponent->SetMaterial(0, DynamicMaterial);
+		}
+	}
+
+	if (DynamicMaterial)
+	{
+		DynamicMaterial->SetVectorParameterValue(TEXT("BaseColor"), DefaultBaseColor);
+	}
 }

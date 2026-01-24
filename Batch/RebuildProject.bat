@@ -10,16 +10,16 @@ pause
 
 echo.
 echo Cleaning binaries...
-if exist "C:\UEProjects\WjWorld\Binaries" rmdir /s /q "C:\UEProjects\WjWorld\Binaries"
-if exist "C:\UEProjects\WjWorld\Intermediate" rmdir /s /q "C:\UEProjects\WjWorld\Intermediate"
-if exist "C:\UEProjects\WjWorld\Saved\Crashes" rmdir /s /q "C:\UEProjects\WjWorld\Saved\Crashes"
-if exist "C:\UEProjects\WjWorld\Saved\Logs" rmdir /s /q "C:\UEProjects\WjWorld\Saved\Logs"
+if exist "%WJWORLD_ROOT%\Binaries" rmdir /s /q "%WJWORLD_ROOT%\Binaries"
+if exist "%WJWORLD_ROOT%\Intermediate" rmdir /s /q "%WJWORLD_ROOT%\Intermediate"
+if exist "%WJWORLD_ROOT%\Saved\Crashes" rmdir /s /q "%WJWORLD_ROOT%\Saved\Crashes"
+if exist "%WJWORLD_ROOT%\Saved\Logs" rmdir /s /q "%WJWORLD_ROOT%\Saved\Logs"
 
 echo.
 echo Generating Visual Studio files...
 "C:\Program Files\Epic Games\UE_5.7\Engine\Build\BatchFiles\Build.bat" ^
 -projectfiles ^
--project="C:\UEProjects\WjWorld\WjWorld.uproject" ^
+-project="%WJWORLD_ROOT%\WjWorld.uproject" ^
 -game -engine
 
 echo.

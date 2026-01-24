@@ -210,10 +210,10 @@ void UGA_SpawnBrick::SpawnBrickAtPreviewLocation()
 	);
 
 	FWjWorldBrickProperties BrickProperties;
-	BrickProperties.BrickType = EWjWorldBrickType::Destructible;
+	BrickProperties.BrickType = FMath::RandBool() ? EWjWorldBrickType::Moving : EWjWorldBrickType::Destructible;
 	BrickProperties.BrickMoveType = EWjWorldBrickMoveType::Standard;
 	BrickProperties.Size = CachedWallDesc.BrickSize;
-	BrickProperties.Color = FColor::Black;
+	BrickProperties.Color = BrickProperties.GetColorWithBrickType();
 	BrickProperties.SpawnedGridPosition = SpawnIndexPoint;
 	BrickProperties.CenterOffset = CachedWallDesc.CenterOffset;
 	BrickProperties.ColumnNum = CachedWallDesc.ColumnNum;

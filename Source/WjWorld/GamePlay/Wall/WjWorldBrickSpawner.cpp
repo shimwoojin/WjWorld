@@ -9,6 +9,8 @@
 
 #include "WjWorldLogCategories.h"
 
+#include "Setting/WjWorldDeveloperSettings.h"
+
 UWjWorldBrickSpawner* UWjWorldBrickSpawner::CreateBrickSpawner(UObject* Outer, TSoftObjectPtr<UWjWorldWallDescriptionDataAsset> WallDescDataAsset)
 {
 	if (Outer)
@@ -18,6 +20,7 @@ UWjWorldBrickSpawner* UWjWorldBrickSpawner::CreateBrickSpawner(UObject* Outer, T
 		{
 			BrickSpawner->WallDescriptionDataAsset = WallDescDataAsset;
 			BrickSpawner->LoadedWallDescriptionDataAsset = LoadObject<UWjWorldWallDescriptionDataAsset>(Outer, *WallDescDataAsset.ToString());
+			BrickSpawner->TileActorClass = GetDefault<UWjWorldDeveloperSettings>()->TileActorClass.LoadSynchronous();
 			return BrickSpawner;
 		}
 	}
@@ -29,7 +32,7 @@ AWjWorldBrickActor* UWjWorldBrickSpawner::SpawnBrickActor(UWorld* World, const F
 {
 	if (!World) return nullptr;
 
-	AWjWorldBrickActor* BrickActor = World->SpawnActor<AWjWorldBrickActor>(AWjWorldBrickActor::StaticClass());
+	AWjWorldBrickActor* BrickActor = World->SpawnActorDeferred<AWjWorldBrickActor>(AWjWorldBrickActor::StaticClass(), FTransform());
 	if (BrickActor)
 	{
 		if (UWjWorldBrickComponent* BrickComponent = BrickActor->GetBrickComponent())
@@ -45,7 +48,7 @@ AWjWorldBrickActor* UWjWorldBrickSpawner::SpawnBrickActor(UWorld* World, const F
 			BrickProperties.CenterOffset,
 			BrickProperties.Size);
 
-		BrickActor->SetActorLocation(BrickPosition);
+		BrickActor->FinishSpawning(FTransform(BrickPosition));
 
 		UE_LOG(LogWjWorld, Log, TEXT("Spawned Brick at Row: %d, Col: %d, Type: %d, Position : %s"),
 			RowIndex, ColumnIndex, (int32)BrickProperties.BrickType, *BrickPosition.ToString());
@@ -161,18 +164,26 @@ void UWjWorldBrickSpawner::Tick(float DeltaTime)
 		else if (BrickType < (int32)EWjWorldBrickType::Standard
 			&& TargetDesc.SafeZonesSet.Contains(FIntPoint(CurrentLoadingBrickColIndex, CurrentLoadingBrickRowIndex)))
 		{
-			AWjWorldTileActor* TileActor = World->SpawnActor<AWjWorldTileActor>(AWjWorldTileActor::StaticClass());
+			FVector TilePosition = CalculateBrickPosition(
+				CurrentLoadingBrickColIndex,
+				CurrentLoadingBrickRowIndex,
+				TargetDesc.ColumnNum,
+				TargetDesc.RowNum,
+				TargetDesc.CenterOffset,
+				TargetDesc.BrickSize);
+
+			// 바둑판 패턴: (Column + Row) % 2로 검정/흰색 결정
+			const bool bIsWhiteTile = (CurrentLoadingBrickColIndex + CurrentLoadingBrickRowIndex) % 2 == 0;
+
+			// Deferred Spawn: InitializeTile 후 BeginPlay 호출
+			AWjWorldTileActor* TileActor = World->SpawnActorDeferred<AWjWorldTileActor>(
+				TileActorClass ? TileActorClass.Get() : AWjWorldTileActor::StaticClass(),
+				FTransform(TilePosition));
+
 			if (TileActor)
 			{
-				FVector TilePosition = CalculateBrickPosition(
-					CurrentLoadingBrickColIndex,
-					CurrentLoadingBrickRowIndex,
-					TargetDesc.ColumnNum,
-					TargetDesc.RowNum,
-					TargetDesc.CenterOffset,
-					TargetDesc.BrickSize);
-
-				TileActor->InitializeTile(TargetDesc.BrickSize, TilePosition);
+				TileActor->InitializeTile(TargetDesc.BrickSize, TilePosition, bIsWhiteTile);
+				TileActor->FinishSpawning(FTransform(TilePosition));
 			}
 		}
 

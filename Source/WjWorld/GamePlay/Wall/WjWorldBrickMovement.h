@@ -32,11 +32,23 @@ public:
 
 	void Tick(float DeltaTime);
 	void MoveBrick(float InMoveAllowTime);
+	void PushBrick(const FVector& Direction, float InMoveAllowTime);
+	void ExecutePush(const FVector& Direction, float InMoveAllowTime);
 
 	virtual FVector GetMovementVector(bool bIsNew = true);
 	virtual TArray<EWjWorldBrickMovementDirection> GetNextDirections();
 
 	FVector GetLastMovementVector() const { return LastMovementVector; }
+	bool IsMoving() const { return bIsMoving; }
+
+	// 연쇄 밀림 체크: 해당 방향으로 밀릴 수 있는지 확인 (재귀적으로 체크)
+	bool CanPushInDirection(const FVector& Direction, TArray<UWjWorldBrickComponent*>& OutBricksToMove);
+
+private:
+	void CheckCollisionWithOtherBricks();
+	void NotifyCollisionToBrick(class UWjWorldBrickComponent* OtherBrick, const FVector& Direction);
+	UWjWorldBrickComponent* FindBrickAtLocation(const FVector& Location);
+	bool IsLocationBlocked(const FVector& Location);
 
 private:
 	UPROPERTY()
