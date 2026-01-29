@@ -16,3 +16,4 @@
 // 로그 카테고리 선언
 DECLARE_LOG_CATEGORY_EXTERN(LogWjWorld, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(LogWjWorldAbilities, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogWjWorldCosmetic, Log, All);

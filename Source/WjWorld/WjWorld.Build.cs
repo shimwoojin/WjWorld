@@ -39,12 +39,19 @@ public class WjWorld : ModuleRules
             //"WjWorld/Public",
 		});
 
-        // Uncomment if you are using Slate UI
-        // PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-
-        // Uncomment if you are using online features
-        // PrivateDependencyModuleNames.Add("OnlineSubsystem");
-
-        // To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
+		// Steam 조건부 빌드
+		bool bWithSteam = (Target.Platform == UnrealTargetPlatform.Win64);
+		if (bWithSteam)
+		{
+			PublicDependencyModuleNames.AddRange(new string[] {
+				"Steamworks",
+				"OnlineSubsystemSteam",
+			});
+			PublicDefinitions.Add("WITH_STEAM=1");
+		}
+		else
+		{
+			PublicDefinitions.Add("WITH_STEAM=0");
+		}
     }
 }

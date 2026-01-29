@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Core/Base/WjWorldPlayerStateBase.h"
 #include "AbilitySystemInterface.h"
+#include "Cosmetic/WjWorldCosmeticTypes.h"
 #include "WjWorldPlayerStatePlay.generated.h"
 
 class UWjWorldAbilitySystemComponent;
@@ -31,11 +32,29 @@ public:
 
 	void AddGameDataComponent(TSubclassOf<UWjWorldGameDataComponent> InDataComponentClass);
 
+	// ---- 코스메틱 로드아웃 ----
+
+	/** 코스메틱 로드아웃 설정 (서버에서 호출) */
+	UFUNCTION(BlueprintCallable, Category = "Cosmetic")
+	void SetCosmeticLoadout(const FCosmeticLoadout& InLoadout);
+
+	/** 현재 코스메틱 로드아웃 반환 */
+	UFUNCTION(BlueprintCallable, Category = "Cosmetic")
+	const FCosmeticLoadout& GetCosmeticLoadout() const { return CosmeticLoadout; }
+
+protected:
+	UFUNCTION()
+	void OnRep_CosmeticLoadout();
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	TObjectPtr<UWjWorldAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY(Replicated)
 	TObjectPtr<UWjWorldGameDataComponent> PlayerDataComponent;
+
+	/** 리플리케이션되는 코스메틱 로드아웃 */
+	UPROPERTY(ReplicatedUsing = OnRep_CosmeticLoadout)
+	FCosmeticLoadout CosmeticLoadout;
 
 };

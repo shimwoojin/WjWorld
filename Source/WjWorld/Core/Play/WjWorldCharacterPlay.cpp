@@ -5,6 +5,8 @@
 #include "Core/Play/WjWorldPlayerStatePlay.h"
 #include "Core/GameData/ApproachingWallPlayerDataComponent.h"
 #include "AbilitySystem/WjWorldAbilitySystemComponent.h"
+#include "Cosmetic/WjWorldCosmeticComponent.h"
+#include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "DataAsset/CharacterPlaySetupDataAsset.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -16,7 +18,7 @@
 
 AWjWorldCharacterPlay::AWjWorldCharacterPlay()
 {
-
+	CosmeticComponent = CreateDefaultSubobject<UWjWorldCosmeticComponent>(TEXT("CosmeticComponent"));
 }
 
 void AWjWorldCharacterPlay::PostInitializeComponents()
@@ -172,6 +174,23 @@ void AWjWorldCharacterPlay::PossessedBy(AController* NewController)
 		FLoadSoftObjectPathAsyncDelegate SetupDataLoadDel;
 		SetupDataLoadDel.BindUObject(this, &ThisClass::OnSetupDataAssetLoaded);
 		SetupDataAsset.LoadAsync(SetupDataLoadDel);
+	}
+
+	// 코스메틱 로드아웃 설정 (서버에서)
+	if (HasAuthority())
+	{
+		if (UWjWorldCosmeticSubsystem* CosmeticSub = GetGameInstance()->GetSubsystem<UWjWorldCosmeticSubsystem>())
+		{
+			if (CosmeticComponent)
+			{
+				CosmeticComponent->SetCatalog(CosmeticSub->GetCatalog());
+			}
+
+			if (AWjWorldPlayerStatePlay* PS = GetPlayerState<AWjWorldPlayerStatePlay>())
+			{
+				PS->SetCosmeticLoadout(CosmeticSub->GetLoadout());
+			}
+		}
 	}
 }
 
