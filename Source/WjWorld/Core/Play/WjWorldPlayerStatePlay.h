@@ -10,6 +10,7 @@
 
 class UWjWorldAbilitySystemComponent;
 class UWjWorldGameDataComponent;
+class UWjWorldCharacterAttributeSet;
 
 /**
  * 
@@ -49,6 +50,9 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	TObjectPtr<UWjWorldAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	TObjectPtr<UWjWorldCharacterAttributeSet> CharacterAttributeSet;
 
 	UPROPERTY(Replicated)
 	TObjectPtr<UWjWorldGameDataComponent> PlayerDataComponent;

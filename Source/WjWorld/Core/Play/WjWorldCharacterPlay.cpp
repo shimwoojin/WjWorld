@@ -41,7 +41,6 @@ void AWjWorldCharacterPlay::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AWjWorldCharacterPlay, bIsEliminated);
-	DOREPLIFETIME(AWjWorldCharacterPlay, DeadStackCount);
 }
 
 void AWjWorldCharacterPlay::OnEliminated()
@@ -68,37 +67,12 @@ void AWjWorldCharacterPlay::OnEliminated()
 	HandleEliminationEffects();
 }
 
-void AWjWorldCharacterPlay::AddDeadStackCount(int32 InCount)
-{
-	DeadStackCount += InCount;
-
-	if (HasAuthority())
-	{
-		OnRep_DeadStackCountChanged();
-	}
-}
-
-void AWjWorldCharacterPlay::RemoveDeadStackCount(int32 InCount)
-{
-	DeadStackCount = FMath::Max(0, DeadStackCount - InCount);
-
-	if (HasAuthority())
-	{
-		OnRep_DeadStackCountChanged();
-	}
-}
-
 void AWjWorldCharacterPlay::OnRep_IsEliminated()
 {
 	if (bIsEliminated)
 	{
 		HandleEliminationEffects();
 	}
-}
-
-void AWjWorldCharacterPlay::OnRep_DeadStackCountChanged()
-{
-	OnDeadStackCountChanged.Broadcast(DeadStackCount);
 }
 
 void AWjWorldCharacterPlay::HandleEliminationEffects()

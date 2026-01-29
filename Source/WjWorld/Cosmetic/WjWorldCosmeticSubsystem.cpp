@@ -138,10 +138,10 @@ void UWjWorldCosmeticSubsystem::SaveLoadoutToLocal()
 {
 	FString ConfigFilePath = FPaths::GeneratedConfigDir() + TEXT("CosmeticLoadout.ini");
 
-	for (const auto& Pair : CurrentLoadout.EquippedItems)
+	for (const FCosmeticSlotEntry& Entry : CurrentLoadout.Entries)
 	{
-		FString SlotKey = FString::Printf(TEXT("Slot_%d"), static_cast<int32>(Pair.Key));
-		GConfig->SetString(*LoadoutConfigSection, *SlotKey, *Pair.Value.ToString(), ConfigFilePath);
+		FString SlotKey = FString::Printf(TEXT("Slot_%d"), static_cast<int32>(Entry.Slot));
+		GConfig->SetString(*LoadoutConfigSection, *SlotKey, *Entry.ItemId.ToString(), ConfigFilePath);
 	}
 
 	GConfig->Flush(false, ConfigFilePath);
@@ -152,7 +152,7 @@ void UWjWorldCosmeticSubsystem::LoadLoadoutFromLocal()
 {
 	FString ConfigFilePath = FPaths::GeneratedConfigDir() + TEXT("CosmeticLoadout.ini");
 
-	CurrentLoadout.EquippedItems.Reset();
+	CurrentLoadout.Reset();
 
 	for (int32 SlotIdx = static_cast<int32>(ECosmeticSlot::Head);
 		SlotIdx <= static_cast<int32>(ECosmeticSlot::Effect); ++SlotIdx)
@@ -168,7 +168,7 @@ void UWjWorldCosmeticSubsystem::LoadLoadoutFromLocal()
 		}
 	}
 
-	UE_LOG(LogWjWorldCosmetic, Log, TEXT("로드아웃 로컬 로드 완료 (%d 슬롯)"), CurrentLoadout.EquippedItems.Num());
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("로드아웃 로컬 로드 완료 (%d 슬롯)"), CurrentLoadout.Entries.Num());
 }
 
 void UWjWorldCosmeticSubsystem::HandleSteamInventoryResult()

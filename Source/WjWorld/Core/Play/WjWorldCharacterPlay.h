@@ -48,24 +48,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Death")
 	bool IsEliminated() const { return bIsEliminated; }
 
-	UFUNCTION(BlueprintCallable, Category = "Death")
-	int32 GetDeadStackCount() const { return DeadStackCount; }
-
-	UFUNCTION(BlueprintCallable, Category = "Death")
-	void AddDeadStackCount(int32 InCount);
-
-	UFUNCTION(BlueprintCallable, Category = "Death")
-	void RemoveDeadStackCount(int32 InCount);
-
 protected:
 	virtual void OnRep_PlayerState() override;
 	virtual void PossessedBy(AController* NewController) override;
 
 	UFUNCTION()
 	void OnRep_IsEliminated();
-
-	UFUNCTION()
-	void OnRep_DeadStackCountChanged();
 
 	// 사망 시 클라이언트에서 호출되는 로직
 	void HandleEliminationEffects();
@@ -92,7 +80,4 @@ private:
 	// 사망 상태 (리플리케이션)
 	UPROPERTY(ReplicatedUsing = OnRep_IsEliminated)
 	bool bIsEliminated = false;
-
-	UPROPERTY(ReplicatedUsing = OnRep_DeadStackCountChanged)
-	int32 DeadStackCount;
 };

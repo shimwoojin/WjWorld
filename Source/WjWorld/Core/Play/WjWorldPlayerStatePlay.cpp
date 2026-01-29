@@ -5,14 +5,18 @@
 #include "Core/Play/WjWorldHUDPlay.h"
 #include "Core/GameData/WjWorldGameDataComponent.h"
 #include "AbilitySystem/WjWorldAbilitySystemComponent.h"
+#include "AbilitySystem/AttributeSets/WjWorldCharacterAttributeSet.h"
 #include "Cosmetic/WjWorldCosmeticComponent.h"
-
 #include "Net/UnrealNetwork.h"
 
 AWjWorldPlayerStatePlay::AWjWorldPlayerStatePlay()
 {
 	AbilitySystemComponent = CreateDefaultSubobject<UWjWorldAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
+
+	CharacterAttributeSet = CreateDefaultSubobject<UWjWorldCharacterAttributeSet>(TEXT("CharacterAttributeSet"));
+
+	AbilitySystemComponent->AddSpawnedAttribute(CharacterAttributeSet);
 
 	bReplicates = true;
 }
@@ -32,6 +36,17 @@ void AWjWorldPlayerStatePlay::GetLifetimeReplicatedProps(TArray<FLifetimePropert
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AWjWorldPlayerStatePlay, CosmeticLoadout);
+}
+
+void AWjWorldPlayerStatePlay::AddGameDataComponent(TSubclassOf<UWjWorldGameDataComponent> InDataComponentClass)
+{
+	if (InDataComponentClass)
+	{
+		PlayerDataComponent = NewObject<UWjWorldGameDataComponent>(this, InDataComponentClass);
+		AddInstanceComponent(PlayerDataComponent);
+		PlayerDataComponent->RegisterComponent();
+		PlayerDataComponent->SetIsReplicated(true);
+	}
 }
 
 void AWjWorldPlayerStatePlay::SetCosmeticLoadout(const FCosmeticLoadout& InLoadout)
@@ -56,16 +71,5 @@ void AWjWorldPlayerStatePlay::OnRep_CosmeticLoadout()
 		{
 			CosmeticComp->ApplyLoadout(CosmeticLoadout);
 		}
-	}
-}
-
-void AWjWorldPlayerStatePlay::AddGameDataComponent(TSubclassOf<UWjWorldGameDataComponent> InDataComponentClass)
-{
-	if (InDataComponentClass)
-	{
-		PlayerDataComponent = NewObject<UWjWorldGameDataComponent>(this, InDataComponentClass);
-		AddInstanceComponent(PlayerDataComponent);
-		PlayerDataComponent->RegisterComponent();
-		PlayerDataComponent->SetIsReplicated(true);
 	}
 }

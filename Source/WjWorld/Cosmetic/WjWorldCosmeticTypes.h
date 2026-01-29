@@ -69,49 +69,132 @@ struct WJWORLD_API FCosmeticItemInstance
 };
 
 /**
+ * 코스메틱 슬롯-아이템 매핑 엔트리 (리플리케이션 가능)
+ */
+USTRUCT(BlueprintType)
+struct WJWORLD_API FCosmeticSlotEntry
+{
+	GENERATED_BODY()
+
+	FCosmeticSlotEntry() = default;
+
+	FCosmeticSlotEntry(ECosmeticSlot InSlot, FName InItemId)
+		: Slot(InSlot), ItemId(InItemId)
+	{
+	}
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ECosmeticSlot Slot = ECosmeticSlot::None;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName ItemId;
+
+	bool operator==(const FCosmeticSlotEntry& Other) const
+	{
+		return Slot == Other.Slot && ItemId == Other.ItemId;
+	}
+
+	bool operator!=(const FCosmeticSlotEntry& Other) const
+	{
+		return !(*this == Other);
+	}
+};
+
+/**
  * 코스메틱 로드아웃 (장착 중인 슬롯 → 아이템 매핑)
+ * TArray<FCosmeticSlotEntry> 기반으로 리플리케이션 지원
  */
 USTRUCT(BlueprintType)
 struct WJWORLD_API FCosmeticLoadout
 {
 	GENERATED_BODY()
 
-	/** 슬롯별 장착 아이템 */
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//TODO:리플리케이션 사용을 위해 TMap 사용 불가, 추후 다른 방법으로 변경 필요
-	TMap<ECosmeticSlot, FName> EquippedItems;
+	/** 슬롯별 장착 아이템 목록 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FCosmeticSlotEntry> Entries;
 
 	/** 특정 슬롯에 아이템 장착 */
 	void Equip(ECosmeticSlot Slot, FName ItemId)
 	{
-		if (Slot != ECosmeticSlot::None && !ItemId.IsNone())
+		if (Slot == ECosmeticSlot::None || ItemId.IsNone())
 		{
-			EquippedItems.Add(Slot, ItemId);
+			return;
 		}
+
+		// 이미 해당 슬롯에 엔트리가 있으면 교체
+		for (FCosmeticSlotEntry& Entry : Entries)
+		{
+			if (Entry.Slot == Slot)
+			{
+				Entry.ItemId = ItemId;
+				return;
+			}
+		}
+
+		Entries.Emplace(Slot, ItemId);
 	}
 
 	/** 특정 슬롯의 아이템 해제 */
 	void Unequip(ECosmeticSlot Slot)
 	{
-		EquippedItems.Remove(Slot);
+		Entries.RemoveAll([Slot](const FCosmeticSlotEntry& Entry)
+		{
+			return Entry.Slot == Slot;
+		});
 	}
 
 	/** 특정 슬롯에 장착된 아이템 반환 */
 	FName GetEquippedItem(ECosmeticSlot Slot) const
 	{
-		const FName* Found = EquippedItems.Find(Slot);
-		return Found ? *Found : NAME_None;
+		for (const FCosmeticSlotEntry& Entry : Entries)
+		{
+			if (Entry.Slot == Slot)
+			{
+				return Entry.ItemId;
+			}
+		}
+		return NAME_None;
 	}
 
 	/** 로드아웃이 비었는지 확인 */
 	bool IsEmpty() const
 	{
-		return EquippedItems.Num() == 0;
+		return Entries.Num() == 0;
+	}
+
+	/** 모든 슬롯의 키 배열 반환 */
+	TArray<ECosmeticSlot> GetEquippedSlots() const
+	{
+		TArray<ECosmeticSlot> Slots;
+		Slots.Reserve(Entries.Num());
+		for (const FCosmeticSlotEntry& Entry : Entries)
+		{
+			Slots.Add(Entry.Slot);
+		}
+		return Slots;
+	}
+
+	/** 초기화 */
+	void Reset()
+	{
+		Entries.Reset();
 	}
 
 	bool operator==(const FCosmeticLoadout& Other) const
 	{
-		return EquippedItems.OrderIndependentCompareEqual(Other.EquippedItems);
+		if (Entries.Num() != Other.Entries.Num())
+		{
+			return false;
+		}
+
+		for (const FCosmeticSlotEntry& Entry : Entries)
+		{
+			if (Other.GetEquippedItem(Entry.Slot) != Entry.ItemId)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	bool operator!=(const FCosmeticLoadout& Other) const

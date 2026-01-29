@@ -22,25 +22,25 @@ public:
 protected:
     virtual void BeginPlay() override;
 
-    // Login UI À§Á¬ Å¬·¡½º
+    // Login UI ìœ„ì ¯ í´ë˜ìŠ¤
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
     TSubclassOf<ULoginWindow> LoginWidgetClass;
 
-    // »ı¼ºµÈ À§Á¬ ÀÎ½ºÅÏ½º
+    // ìƒì„±ëœ ìœ„ì ¯ ì¸ìŠ¤í„´ìŠ¤
     UPROPERTY()
     ULoginWindow* LoginWidgetInstance;
 
-    // ·Î±×ÀÎ ´ë±â ½Ã°£ (ÃÊ)
+    // ë¡œê·¸ì¸ ëŒ€ê¸° ì‹œê°„ (ì´ˆ)
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Login")
-    float LoginWaitTime = 5.0f;
+    float LoginWaitTime = 1.2f;
 
 private:
-    // UI »ı¼º ¹× Ç¥½Ã
+    // UI ìƒì„± ë° í‘œì‹œ
     void CreateAndShowLoginUI();
 
-    // ·Î±×ÀÎ ¿Ï·á ÈÄ È£ÃâµÉ ÇÔ¼ö
+    // ë¡œê·¸ì¸ ì™„ë£Œ í›„ í˜¸ì¶œë  í•¨ìˆ˜
     void OnLoginCompleted();
 
-    // Å¸ÀÌ¸Ó ÇÚµé
+    // íƒ€ì´ë¨¸ í•¸ë“¤
     FTimerHandle LoginTimerHandle;
 };

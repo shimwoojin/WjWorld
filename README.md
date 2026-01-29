@@ -5,12 +5,14 @@
 ## 프로젝트 개요
 
 허브 공간, 미니게임, 멀티플레이어 기능을 갖춘 개인 학습 프로젝트입니다.
+Steam에 무료로 출시하며 코스메틱 아이템을 유료 판매합니다.
 
 ### 개발 목표
 1. **허브 공간** - 플레이어가 컨텐츠로 진입할 수 있는 로컬 공간
 2. **미니게임** - 다양한 장르의 미니게임 구현 (GameRule 시스템 기반)
 3. **멀티플레이어** - 기본적인 네트워킹 기능 구현
-4. **융합 컨텐츠** - 로컬과 멀티플레이어 요소 결합
+4. **코스메틱 & 수익화** - Steam Inventory 연동 코스메틱 판매 시스템
+5. **융합 컨텐츠** - 로컬과 멀티플레이어 요소 결합
 
 ## 개발 환경
 
@@ -19,6 +21,7 @@
 - **IDE**: Visual Studio 2022
 - **버전 관리**: Git
 - **문서화**: Doxygen
+- **배포 플랫폼**: Steam (Win64)
 
 ## 소스 구조
 
@@ -41,6 +44,14 @@ Source/WjWorld/
 │   ├── Components/                    # 게임플레이 헬퍼 컴포넌트
 │   ├── Session/                       # 세션 관리
 │   └── WjWorldGameInstance
+├── Cosmetic/                          # 코스메틱 및 구매 시스템
+│   ├── WjWorldCosmeticTypes           # 타입 정의 (슬롯, 로드아웃, 아이템 인스턴스)
+│   ├── WjWorldCosmeticComponent       # 캐릭터 비주얼 적용 (비동기 에셋 로드)
+│   ├── WjWorldCosmeticSubsystem       # 인벤토리/로드아웃 관리
+│   ├── WjWorldCosmeticDataAsset       # 아이템 카탈로그 (ItemId ↔ SteamItemDefId)
+│   └── WjWorldPurchaseSubsystem       # Steam 마이크로트랜잭션 구매
+├── Setting/                           # 개발자 설정
+│   └── WjWorldDeveloperSettings       # BP 설정용 DeveloperSettings
 ├── DataAsset/                         # 데이터 에셋
 ├── GamePlay/                          # 게임플레이 시스템
 │   ├── Camera/                        # 카메라 시스템
@@ -68,7 +79,7 @@ AWjWorldGameModeBase
 AWjWorldCharacterBase
 ├── AWjWorldCharacterLobby
 ├── AWjWorldCharacterWaitingRoom
-└── AWjWorldCharacterPlay          # 게임플레이 캐릭터 (ASC 지원)
+└── AWjWorldCharacterPlay          # 게임플레이 캐릭터 (ASC + CosmeticComponent)
 ```
 
 ### PlayerController
@@ -83,6 +94,13 @@ AWjWorldPlayerControllerBase
 ```
 UWjWorldGameRuleBase
 └── UWjWorldGameRuleApproachingWall   # Approaching Wall 미니게임
+```
+
+### Subsystem (GameInstanceSubsystem)
+```
+UGameInstanceSubsystem
+├── UWjWorldCosmeticSubsystem         # 인벤토리/로드아웃 관리
+└── UWjWorldPurchaseSubsystem         # Steam 구매 처리
 ```
 
 ### UI Widget
@@ -134,12 +152,41 @@ GameplayTag 기반 타입 세이프 데이터 저장 시스템.
 - `WjWorldWallManager` - 벽 이동 진행 관리
 - `WjWorldWallDescriptionDataAsset` - 벽 레이아웃 데이터
 
+### 코스메틱 시스템
+Steam 무료 출시 후 유료 코스메틱 판매를 위한 시스템.
+
+**아키텍처:**
+- `ItemId`(FName) 기반 플랫폼 독립 식별 → `SteamItemDefId`(int32) 매핑
+- `CosmeticCatalogDataAsset`으로 아이템 정의 (메시, 아이콘, 가격, 슬롯, 희귀도)
+- `CosmeticSubsystem`으로 인벤토리 캐시 및 로드아웃 관리
+- `CosmeticComponent`로 캐릭터에 비동기 메시 적용
+- `FCosmeticLoadout` (`TArray<FCosmeticSlotEntry>`) 기반 네트워크 리플리케이션
+
+**슬롯 종류:** Head, Body, Back, Effect
+
+**리플리케이션 흐름:**
+```
+CosmeticSubsystem → PlayerStatePlay (Replicated) → CosmeticComponent → 캐릭터 비주얼
+```
+
+### 구매 시스템
+- `PurchaseSubsystem`을 통한 Steam MicroTransaction API 연동
+- 구매 상태 관리 (Idle → Pending → Completed/Failed)
+- 성공 시 인벤토리 자동 갱신
+
+### Steam 빌드 설정
+- `WITH_STEAM` 매크로로 조건부 컴파일 (Win64 전용)
+- Steamworks, OnlineSubsystemSteam 모듈
+- OnlineSubsystemSteam 플러그인 활성화
+- Steam API 호출은 `#if WITH_STEAM` 블록으로 분리
+
 ## 빌드 방법
 
 ### 필수 요구사항
 - Visual Studio 2022 (C++ 개발 도구 포함)
 - Unreal Engine 5.7
 - Windows 10/11 SDK
+- Steamworks SDK (Steam 빌드 시)
 
 ### 프로젝트 설정
 ```bash
@@ -152,6 +199,15 @@ cd WjWorld
 - Visual Studio에서 솔루션 열기
 - Configuration: `DebugGame Editor` 또는 `Development Editor`
 - F5로 빌드 및 실행
+
+### 배치 파일 (Batch/)
+- `GenerateProjectFiles.bat` - 프로젝트 파일 생성
+- `OpenSolution.bat` - VS 솔루션 열기
+- `PackageDebugGame.bat` - 디버그 게임 패키징
+- `RebuildProject.bat` - 전체 리빌드
+- `RunDebugEditor.bat` - 디버그 에디터 실행
+- `GenerateDocs.bat` - Doxygen 문서 생성
+- `SetEnvironmentVariable.bat` - 환경 변수 설정
 
 ## 게임 플로우
 
@@ -199,16 +255,30 @@ GameRule 초기화 → 카운트다운 → 게임 시작
   - [x] 벽돌 이동 로직 (경로 탐색)
   - [x] 레벨 시스템 (12초 간격, 10레벨)
   - [x] 안전 구역 축소 알고리즘
-  - [x] 게임플레이 HUD (카운트다운)
+  - [x] 게임플레이 HUD (카운트다운, 결과 표시)
+  - [x] 플레이어 사망/제거 로직 (bIsEliminated 리플리케이션)
+- [x] **코스메틱 시스템**
+  - [x] 코스메틱 타입 정의 (슬롯, 로드아웃, 아이템 인스턴스)
+  - [x] 코스메틱 컴포넌트 (비동기 에셋 로드, 슬롯별 메시 관리)
+  - [x] 코스메틱 서브시스템 (인벤토리 캐시, 로드아웃, 로컬 저장)
+  - [x] 코스메틱 카탈로그 데이터 에셋 (ItemId ↔ SteamItemDefId)
+  - [x] FCosmeticLoadout 리플리케이션 (TArray<FCosmeticSlotEntry> 기반)
+- [x] **구매 시스템** (PurchaseSubsystem, Steam MicroTransaction 연동)
+- [x] **Steam 빌드 설정** (조건부 컴파일, 플러그인, 모듈)
+- [x] **개발자 설정** (WjWorldDeveloperSettings)
+- [x] **로그 카테고리** (LogWjWorld, LogWjWorldAbilities, LogWjWorldCosmetic)
 
 ### 진행 중
+- [ ] Steam Inventory 콜백 완전 구현
+- [ ] 구매 결과 콜백 체인 완성
+- [ ] 코스메틱 상점/인벤토리 UI 위젯
 - [ ] **Approaching Wall 완성**
   - [ ] 승리 조건 (최후 생존자)
-  - [ ] 플레이어 사망/제거 로직
   - [ ] 플레이어 어빌리티 (이동, 공격)
   - [ ] 게임 결과 처리 및 대기실 복귀
 
 ### 예정
+- [ ] 코스메틱 미리보기/시착 시스템
 - [ ] 추가 미니게임 구현
 - [ ] 멀티플레이어 동기화 개선
 

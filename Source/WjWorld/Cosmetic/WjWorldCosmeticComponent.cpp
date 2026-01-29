@@ -46,9 +46,9 @@ void UWjWorldCosmeticComponent::ApplyLoadout(const FCosmeticLoadout& InLoadout)
 	ClearAll();
 
 	// 새 로드아웃 적용
-	for (const auto& Pair : InLoadout.EquippedItems)
+	for (const FCosmeticSlotEntry& Entry : InLoadout.Entries)
 	{
-		ApplySlot(Pair.Key, Pair.Value);
+		ApplySlot(Entry.Slot, Entry.ItemId);
 	}
 }
 
@@ -136,15 +136,14 @@ void UWjWorldCosmeticComponent::ClearSlot(ECosmeticSlot Slot)
 
 void UWjWorldCosmeticComponent::ClearAll()
 {
-	TArray<ECosmeticSlot> Slots;
-	AppliedLoadout.EquippedItems.GetKeys(Slots);
+	TArray<ECosmeticSlot> Slots = AppliedLoadout.GetEquippedSlots();
 
 	for (ECosmeticSlot Slot : Slots)
 	{
 		ClearSlot(Slot);
 	}
 
-	AppliedLoadout.EquippedItems.Reset();
+	AppliedLoadout.Reset();
 }
 
 void UWjWorldCosmeticComponent::OnAssetLoaded(ECosmeticSlot Slot, FName ItemId)
