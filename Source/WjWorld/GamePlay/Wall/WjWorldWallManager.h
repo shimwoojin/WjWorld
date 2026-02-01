@@ -6,14 +6,16 @@
 #include "UObject/Object.h"
 #include "WjWorldWallManager.generated.h"
 
+class UWjWorldGameRuleApproachingWall;
+
 /**
- * 
+ *
  */
 UCLASS()
 class WJWORLD_API UWjWorldWallManager : public UObject
 {
 	GENERATED_BODY()
-	
+
 	constexpr static int32 MaxGameLevel = 10;
 	constexpr static float BrickMoveAllowedTimeMax = 5.0f;
 	constexpr static float BrickMoveAllowedTimeMin = 1.0f;
@@ -26,11 +28,16 @@ public:
 	void WallMoveStart(float WallMoveSeconds);
 	bool IsWallMoving() const { return bIsWallMoving; }
 
+	void SetGameRule(UWjWorldGameRuleApproachingWall* InGameRule);
+
 private:
 	void OnWallMoveEnd();
 	void PushCharactersInSafeZone();
 
 private:
+	UPROPERTY()
+	TWeakObjectPtr<UWjWorldGameRuleApproachingWall> GameRule;
+
 	float WallMoveDurationSeconds = 5.0f;
 	float WallMoveElapsedSeconds = 0.0f;
 	bool bIsWallMoving = false;

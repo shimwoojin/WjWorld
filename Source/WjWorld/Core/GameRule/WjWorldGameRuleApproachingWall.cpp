@@ -33,6 +33,10 @@ void UWjWorldGameRuleApproachingWall::Initialize(AWjWorldGameModePlay* InGameMod
 	{
 		UE_LOG(LogWjWorld, Error, TEXT("Failed to create WallManager in GameRuleApporachingWall"));
 	}
+	else
+	{
+		WallManager->SetGameRule(this);
+	}
 }
 
 void UWjWorldGameRuleApproachingWall::OnGameReady()

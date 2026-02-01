@@ -25,7 +25,8 @@ public class WjWorld : ModuleRules
             "OnlineSubsystem",
             "OnlineSubsystemUtils",
             "Niagara",
-            "GameplayCameras"   // 카메라 관련 기능
+            "GameplayCameras",  // 카메라 관련 기능
+            "GeometryCollectionEngine"  // Chaos Destruction
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {

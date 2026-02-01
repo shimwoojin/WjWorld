@@ -69,34 +69,48 @@ void UWjWorldBrickMovement::Tick(float DeltaTime)
 		CheckCollisionWithOtherBricks();
 	}
 
-	//TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
-	//ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
+	// 이동 중인 벽돌이 Pawn과 겹치면 이동 방향으로 밀어냄
+	if (BrickComponent.IsValid() && bIsMoving)
+	{
+		FVector BrickHalfSize = BoxExtent * 0.5f;
 
-	//TArray<AActor*> Overlaps;
-	//UKismetSystemLibrary::BoxOverlapActors(
-	//	GetWorld(),
-	//	NewLocation,
-	//	BoxExtent,
-	//	ObjectTypes,
-	//	APawn::StaticClass(),
-	//	{},
-	//	Overlaps
-	//);
+		TArray<FOverlapResult> PawnOverlaps;
+		FCollisionShape PawnCheckShape = FCollisionShape::MakeBox(BrickHalfSize);
 
-	//for (AActor* OverlapActor : Overlaps)
-	//{
-	//	ACharacter* Character = Cast<ACharacter>(OverlapActor);
-	//	if (Character == nullptr) continue;
+		if (GetWorld()->OverlapMultiByChannel(
+			PawnOverlaps,
+			NewLocation,
+			FQuat::Identity,
+			ECC_Pawn,
+			PawnCheckShape))
+		{
+			for (const FOverlapResult& Overlap : PawnOverlaps)
+			{
+				ACharacter* Character = Cast<ACharacter>(Overlap.GetActor());
+				if (!Character) continue;
 
-	//	FVector NewPosition = NewLocation;
-	//	float CapsuleRadius = Character->GetCapsuleComponent()->GetScaledCapsuleRadius();
+				float CapsuleRadius = Character->GetCapsuleComponent()->GetScaledCapsuleRadius();
 
-	//	FVector MoveVectorTemp = MovementVector;
-	//	MoveVectorTemp.Normalize();
-	//	NewPosition += MoveVectorTemp * (CapsuleRadius + BoxExtent.X);
+				FVector MoveDir = MovementVector.GetSafeNormal();
+				if (MoveDir.IsNearlyZero()) continue;
 
-	//	Character->SetActorLocation(NewPosition);
-	//}
+				// 벽돌 반 크기 + 캡슐 반지름 + 여유값
+				float PushDistance = 0.0f;
+				if (FMath::Abs(MoveDir.X) > FMath::Abs(MoveDir.Y))
+				{
+					PushDistance = BrickHalfSize.X + CapsuleRadius + 5.0f;
+				}
+				else
+				{
+					PushDistance = BrickHalfSize.Y + CapsuleRadius + 5.0f;
+				}
+
+				FVector PushTarget = NewLocation + MoveDir * PushDistance;
+				PushTarget.Z = Character->GetActorLocation().Z; // Z축 유지
+				Character->SetActorLocation(PushTarget);
+			}
+		}
+	}
 }
 
 void UWjWorldBrickMovement::MoveBrick(float InMoveAllowTime)

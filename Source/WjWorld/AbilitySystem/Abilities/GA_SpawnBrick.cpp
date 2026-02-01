@@ -10,10 +10,13 @@
 
 #include "GamePlay/Wall/WjWorldBrickSpawner.h"
 #include "GamePlay/Wall/WjWorldBrickComponent.h"
+#include "GamePlay/Wall/WjWorldBrickActor.h"
 #include "GamePlay/Wall/WjWorldBrickPreviewActor.h"
 
 #include "Abilities/Tasks/AbilityTask_WaitConfirmCancel.h"
 #include "TimerManager.h"
+
+#include "Engine/OverlapResult.h"
 
 UGA_SpawnBrick::UGA_SpawnBrick()
 {
@@ -172,7 +175,65 @@ FVector UGA_SpawnBrick::CalculatePreviewLocation() const
 
 bool UGA_SpawnBrick::CheckPreviewValid() const
 {
-	// TODO: 이미 벽돌이 있는 위치인지, 범위 밖인지 등 검사
+	FVector PreviewLocation = CalculatePreviewLocation();
+
+	// 그리드 범위 체크
+	FIntPoint GridIndex = UWjWorldBrickSpawner::CalculateBrickGridIndex(
+		PreviewLocation,
+		CachedWallDesc.ColumnNum,
+		CachedWallDesc.RowNum,
+		CachedWallDesc.CenterOffset,
+		CachedWallDesc.BrickSize
+	);
+
+	if (GridIndex.X < 0 || GridIndex.X >= CachedWallDesc.ColumnNum ||
+		GridIndex.Y < 0 || GridIndex.Y >= CachedWallDesc.RowNum)
+	{
+		return false;
+	}
+
+	// 이미 벽돌이 있는 위치인지 오버랩 체크
+	UWorld* World = GetWorld();
+	if (!World) return false;
+
+	FVector HalfSize = CachedWallDesc.BrickSize * 0.3f;
+	TArray<FOverlapResult> Overlaps;
+	FCollisionShape CollisionShape = FCollisionShape::MakeBox(HalfSize);
+
+	if (World->OverlapMultiByObjectType(
+		Overlaps,
+		PreviewLocation,
+		FQuat::Identity,
+		FCollisionObjectQueryParams::AllObjects,
+		CollisionShape))
+	{
+		for (const FOverlapResult& Overlap : Overlaps)
+		{
+			if (Cast<AWjWorldBrickActor>(Overlap.GetActor()))
+			{
+				return false;
+			}
+		}
+	}
+
+	// 서버에서는 안전 구역 범위 내인지 체크
+	if (HasAuthority(&CurrentActivationInfo))
+	{
+		AWjWorldGameModePlay* GameModePlay = World->GetAuthGameMode<AWjWorldGameModePlay>();
+		if (GameModePlay)
+		{
+			UWjWorldGameRuleApproachingWall* GameRule = GameModePlay->GetCurrentGameRule<UWjWorldGameRuleApproachingWall>();
+			if (GameRule)
+			{
+				const TSet<FIntPoint>& SafeZonePoints = GameRule->GetCurrentSafeZonePoints();
+				if (!SafeZonePoints.Contains(GridIndex))
+				{
+					return false;
+				}
+			}
+		}
+	}
+
 	return true;
 }
 

@@ -159,6 +159,12 @@ void UWjWorldBrickSpawner::Tick(float DeltaTime)
 			BrickProperties.ColumnNum = TargetDesc.ColumnNum;
 			BrickProperties.RowNum = TargetDesc.RowNum;
 
+			// Destructible 벽돌은 DeveloperSettings에서 MaxHP 설정
+			if (BrickProperties.BrickType == EWjWorldBrickType::Destructible)
+			{
+				BrickProperties.MaxHP = GetDefault<UWjWorldDeveloperSettings>()->DestructibleBrickDefaultHP;
+			}
+
 			SpawnBrickActor(World, BrickProperties, CurrentLoadingBrickColIndex, CurrentLoadingBrickRowIndex);
 		}
 		else if (BrickType < (int32)EWjWorldBrickType::Standard

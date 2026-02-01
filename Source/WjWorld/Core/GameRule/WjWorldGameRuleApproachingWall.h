@@ -40,6 +40,7 @@ public:
 	int32 GetAlivePlayerCount() const { return AlivePlayerCount; }
 
 	const TSet<FIntPoint>& GetFloodFillPoints() const { return FloodFillPoints; }
+	const TSet<FIntPoint>& GetCurrentSafeZonePoints() const { return CurrentSafeZonePoints; }
 	TObjectPtr<UWjWorldWallManager> GetWallManager() const { return WallManager; }
 
 	const FWjWorldWallDescription& GetWallDesc() const { return WallDesc; }

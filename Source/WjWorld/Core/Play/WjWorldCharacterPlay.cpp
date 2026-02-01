@@ -14,6 +14,7 @@
 #include "Net/UnrealNetwork.h"
 
 #include "WjWorldLogCategories.h"
+#include "WjWorldGameplayTag.h"
 #include "WjTypes.h"
 
 AWjWorldCharacterPlay::AWjWorldCharacterPlay()
@@ -51,6 +52,13 @@ void AWjWorldCharacterPlay::OnEliminated()
 	}
 
 	bIsEliminated = true;
+
+	// ASC에 State.Eliminated 태그 추가 → 어빌리티 활성화 차단
+	if (AbilitySystemComponent.IsValid())
+	{
+		AbilitySystemComponent->AddLooseGameplayTag(WjWorldGameplayTag::State_Eliminated());
+		AbilitySystemComponent->CancelAllAbilities();
+	}
 
 	// 서버에서 PlayerState의 데이터 컴포넌트도 업데이트
 	if (HasAuthority())

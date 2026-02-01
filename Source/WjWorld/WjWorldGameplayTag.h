@@ -21,7 +21,17 @@ public:
 
 	//Ability
 	static FGameplayTag Ability_NormalAttack();
+	static FGameplayTag Ability_LiftBrick();
 
 	//State
 	static FGameplayTag State_SpawnBrickPreview();
+	static FGameplayTag State_LiftBrickCarry();
+	static FGameplayTag State_Eliminated();
+
+	//Cooldown
+	static FGameplayTag Cooldown_NormalAttack();
+	static FGameplayTag Cooldown_LiftBrick();
+
+	//Data (SetByCaller용)
+	static FGameplayTag Data_Cooldown();
 };

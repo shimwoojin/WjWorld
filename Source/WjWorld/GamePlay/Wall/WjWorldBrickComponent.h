@@ -75,6 +75,9 @@ struct FWjWorldBrickProperties
 
 	UPROPERTY()
 	int32 ColumnNum = 0;
+
+	UPROPERTY(EditAnywhere)
+	int32 MaxHP = 1;
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -84,6 +87,7 @@ class WJWORLD_API UWjWorldBrickComponent : public UWjWorldGameplaySceneComponent
 
 public:
 	static const TCHAR* BrickMeshPath;
+	constexpr static float HitBoxSize = 5.0f;
 
 public:	
 	// Sets default values for this component's properties
@@ -92,6 +96,9 @@ public:
 	void InitializeBrick(const FWjWorldBrickProperties& InBrickProperties);
 	const FWjWorldBrickProperties& GetBrickProperties() const { return BrickProperties; }
 	void ReserveDestroyBrick(float AfterSeconds);
+
+	// HP 시스템
+	void ApplyDamage(int32 DamageAmount);
 
 	// 충돌 처리
 	void HandleWallCollision(const FVector& WallDirection);
@@ -121,7 +128,14 @@ private:
 	void Explode();
 	void DestroyBrick();
 
+	UFUNCTION()
+	void OnRep_CurrentHP();
+	void UpdateDamageVisuals();
+
 private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UBoxComponent> CenterHitBoxComponent;
+
 	UPROPERTY()
 	TObjectPtr<UStaticMeshComponent> BrickMeshComponent;
 
@@ -130,6 +144,9 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UWjWorldBrickMovement> BrickMovement;
+
+	UPROPERTY(ReplicatedUsing = OnRep_CurrentHP)
+	int32 CurrentHP = 1;
 
 	FTimerHandle DestroyHandle;
 

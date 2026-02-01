@@ -62,7 +62,7 @@ void AWjWorldGameModeLogin::OnLoginCompleted()
     // UI 제거
     if (LoginWidgetInstance)
     {
-        LoginWidgetInstance->RemoveFromViewport();
+        LoginWidgetInstance->RemoveFromParent();
         LoginWidgetInstance = nullptr;
     }
 

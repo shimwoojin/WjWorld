@@ -3,6 +3,7 @@
 
 #include "GamePlay/Wall/WjWorldBrickComponent.h"
 #include "GamePlay/Wall/WjWorldBrickMovement.h"
+#include "GamePlay/Wall/WjWorldBrickActor.h"
 #include "GamePlay/Wall/WjWorldWallManager.h"
 
 #include "Core/Play/WjWorldGameModePlay.h"
@@ -19,6 +20,8 @@ const TCHAR* UWjWorldBrickComponent::BrickMeshPath = TEXT("/Game/GamePlay/Wall/M
 UWjWorldBrickComponent::UWjWorldBrickComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+
+	
 }
 
 void UWjWorldBrickComponent::InitializeBrick(const FWjWorldBrickProperties& InBrickProperties)
@@ -26,6 +29,7 @@ void UWjWorldBrickComponent::InitializeBrick(const FWjWorldBrickProperties& InBr
 	if (GetOwnerRole() == ROLE_Authority)
 	{
 		this->BrickProperties = InBrickProperties;
+		this->CurrentHP = InBrickProperties.MaxHP;
 
 		switch (InBrickProperties.BrickMoveType)
 		{
@@ -78,7 +82,8 @@ void UWjWorldBrickComponent::BeginPlay()
 		UMaterialInstanceDynamic* DynamicMaterial = BrickMeshComponent->CreateAndSetMaterialInstanceDynamic(0);
 		if (DynamicMaterial)
 		{
-			DynamicMaterial->SetVectorParameterValue(FName("BaseColor"), FLinearColor(BrickProperties.Color));
+			DynamicMaterial->SetVectorParameterValue(FName("BaseColor"), FLinearColor(BrickProperties.GetColorWithBrickType()));
+			DynamicMaterial->SetScalarParameterValue(FName("CrackIntensity"), 0.0f);
 		}
 	}
 }
@@ -98,6 +103,11 @@ void UWjWorldBrickComponent::OnRegister()
 {
 	Super::OnRegister();
 
+	CenterHitBoxComponent = NewObject<UBoxComponent>(this, UBoxComponent::StaticClass(), TEXT("CenterHitBoxComponent"));
+	CenterHitBoxComponent->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
+	CenterHitBoxComponent->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
+	CenterHitBoxComponent->SetBoxExtent(FVector(HitBoxSize, HitBoxSize, HitBoxSize));
+
 	BrickMeshComponent = NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass(), TEXT("BrickMeshComponent"));
 	BrickMeshComponent->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 	BrickMeshComponent->RegisterComponent();
@@ -108,6 +118,7 @@ void UWjWorldBrickComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME_CONDITION(UWjWorldBrickComponent, BrickProperties, COND_InitialOnly);
+	DOREPLIFETIME(UWjWorldBrickComponent, CurrentHP);
 }
 
 // Called every frame
@@ -151,6 +162,11 @@ void UWjWorldBrickComponent::HandleWallCollision(const FVector& WallDirection)
 		break;
 
 	case EWjWorldBrickType::Destructible:
+		// 벽 충돌은 HP 무시하고 즉시 파괴 + 파쇄 연출
+		if (AWjWorldBrickActor* BrickActor = Cast<AWjWorldBrickActor>(GetOwner()))
+		{
+			BrickActor->MulticastSpawnDestructionFracture();
+		}
 		DestroyBrick();
 		break;
 
@@ -174,6 +190,12 @@ void UWjWorldBrickComponent::PushInDirection(const FVector& Direction, float Mov
 void UWjWorldBrickComponent::Explode()
 {
 	if (GetOwnerRole() != ROLE_Authority) return;
+
+	// 폭발 VFX
+	if (AWjWorldBrickActor* BrickActor = Cast<AWjWorldBrickActor>(GetOwner()))
+	{
+		BrickActor->MulticastSpawnExplosionEffect();
+	}
 
 	// 상하좌우 데미지 처리
 	const FVector& BrickSize = BrickProperties.Size;
@@ -218,5 +240,63 @@ void UWjWorldBrickComponent::Explode()
 
 void UWjWorldBrickComponent::DestroyBrick()
 {
+	// 파괴 VFX
+	if (AWjWorldBrickActor* BrickActor = Cast<AWjWorldBrickActor>(GetOwner()))
+	{
+		BrickActor->MulticastSpawnDestroyEffect();
+	}
+
 	ReserveDestroyBrick(0.1f);
+}
+
+void UWjWorldBrickComponent::ApplyDamage(int32 DamageAmount)
+{
+	if (GetOwnerRole() != ROLE_Authority) return;
+	if (CurrentHP <= 0) return;
+
+	CurrentHP = FMath::Max(0, CurrentHP - DamageAmount);
+
+	if (CurrentHP <= 0)
+	{
+		// HP 소진 → 파쇄 연출 + 파괴
+		if (AWjWorldBrickActor* BrickActor = Cast<AWjWorldBrickActor>(GetOwner()))
+		{
+			BrickActor->MulticastSpawnDestructionFracture();
+		}
+		DestroyBrick();
+	}
+	else
+	{
+		// 서버에서도 비주얼 업데이트 (클라이언트는 OnRep에서 호출)
+		UpdateDamageVisuals();
+	}
+}
+
+void UWjWorldBrickComponent::OnRep_CurrentHP()
+{
+	UpdateDamageVisuals();
+}
+
+void UWjWorldBrickComponent::UpdateDamageVisuals()
+{
+	if (!BrickMeshComponent) return;
+
+	UMaterialInstanceDynamic* DynamicMaterial = Cast<UMaterialInstanceDynamic>(BrickMeshComponent->GetMaterial(0));
+	if (!DynamicMaterial) return;
+
+	const int32 MaxHP = BrickProperties.MaxHP;
+	if (MaxHP <= 0) return;
+
+	// HP 비율: 1.0(풀HP) → 0.0(체력 없음)
+	const float HPRatio = static_cast<float>(CurrentHP) / static_cast<float>(MaxHP);
+
+	// BaseColor: Black(풀HP) → DarkRed(중간) → Red(저HP)
+	const FLinearColor FullHPColor = FLinearColor::Black;
+	const FLinearColor LowHPColor = FLinearColor::Red;
+	const FLinearColor InterpolatedColor = FMath::Lerp(LowHPColor, FullHPColor, HPRatio);
+	DynamicMaterial->SetVectorParameterValue(FName("BaseColor"), InterpolatedColor);
+
+	// CrackIntensity: 0.0(풀HP) → 1.0(저HP)
+	const float CrackIntensity = 1.0f - HPRatio;
+	DynamicMaterial->SetScalarParameterValue(FName("CrackIntensity"), CrackIntensity);
 }
