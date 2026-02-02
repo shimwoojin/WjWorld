@@ -19,6 +19,8 @@
 
 #include "Engine/OverlapResult.h"
 
+#include "Core/Play/WjWorldCharacterPlay.h"
+
 UGA_LiftBrick::UGA_LiftBrick()
 {
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
@@ -38,6 +40,9 @@ UGA_LiftBrick::UGA_LiftBrick()
 	// 쿨다운 설정
 	CooldownDuration = 2.0f;
 	CooldownTags.AddTag(WjWorldGameplayTag::Cooldown_LiftBrick());
+
+	// UI 메타데이터
+	AbilityName = NSLOCTEXT("Abilities", "LiftBrick", "벽돌 들기");
 }
 
 void UGA_LiftBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -126,6 +131,16 @@ void UGA_LiftBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 				true
 			);
 		}
+
+		// 프롬프트 UI 표시
+		if (AWjWorldCharacterPlay* CharacterPlay = Cast<AWjWorldCharacterPlay>(GetAvatarActorFromActorInfo()))
+		{
+			CharacterPlay->ShowAbilityPrompt(
+				NSLOCTEXT("AbilityPrompt", "ConfirmKey", "좌클릭"),
+				NSLOCTEXT("AbilityPrompt", "CancelKey", "우클릭"),
+				GetPromptDescription()
+			);
+		}
 	}
 
 	// Confirm/Cancel 대기 Task
@@ -146,6 +161,15 @@ void UGA_LiftBrick::EndAbility(const FGameplayAbilitySpecHandle Handle, const FG
 	}
 
 	DestroyPreviewActor();
+
+	// 프롬프트 UI 숨김
+	if (ActorInfo && ActorInfo->IsLocallyControlled())
+	{
+		if (AWjWorldCharacterPlay* CharacterPlay = Cast<AWjWorldCharacterPlay>(GetAvatarActorFromActorInfo()))
+		{
+			CharacterPlay->HideAbilityPrompt();
+		}
+	}
 
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
@@ -362,6 +386,11 @@ void UGA_LiftBrick::UpdatePreviewLocation()
 		PreviewActor->UpdatePreviewLocation(NewLocation);
 		PreviewActor->SetPreviewValid(CheckPreviewValid());
 	}
+}
+
+FText UGA_LiftBrick::GetPromptDescription() const
+{
+	return NSLOCTEXT("AbilityPrompt", "LiftBrickDesc", "벽돌을 놓을 위치를 선택하세요");
 }
 
 void UGA_LiftBrick::SpawnBrickAtLocation(const FVector& Location)

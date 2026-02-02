@@ -9,6 +9,7 @@
 #include "Core/Play/WjWorldPlayerStatePlay.h"
 
 #include "Core/GameRule/WjWorldGameRuleBase.h"
+#include "Core/WjWorldGameInstance.h"
 
 #include "WjWorldLogCategories.h"
 
@@ -59,12 +60,38 @@ void AWjWorldGameModePlay::PostLogin(APlayerController* NewPlayer)
 		}
 	}
 
+	// Play 중 플레이어 목록 캐시 (호스트 마이그레이션용)
+	if (UWjWorldGameInstance* GI = Cast<UWjWorldGameInstance>(GetGameInstance()))
+	{
+		AGameStateBase* GS = GetGameState<AGameStateBase>();
+		if (GS)
+		{
+			TArray<FPlayerDisplayInfo> PlayerList;
+			bool bFirstPlayer = true;
+			for (APlayerState* PS : GS->PlayerArray)
+			{
+				if (PS && !PS->GetPlayerName().IsEmpty())
+				{
+					FPlayerDisplayInfo Info;
+					Info.PlayerName = PS->GetPlayerName();
+					Info.PlayerID = PS->GetPlayerId();
+					Info.bIsHost = bFirstPlayer; // 서버의 첫 번째 플레이어 = 호스트
+					Info.bIsReady = true;
+					PlayerList.Add(Info);
+					bFirstPlayer = false;
+				}
+			}
+			GI->CachePlayerList(PlayerList);
+		}
+	}
+
 	UE_LOG(LogWjWorld, Log, TEXT("GameModePlay: PostLogin completed for %s"), *NewPlayer->GetName());
 }
 
 void AWjWorldGameModePlay::StartGame(float SecondsForStartCount)
 {
 	GetGameState<AWjWorldGameStatePlay>()->GameStartWithCountdown(SecondsForStartCount);
+	GetGameState<AWjWorldGameStatePlay>()->SetGameRuleClass(CurrentGameRule->GetClass());
 
 	if(GetWorld() && CurrentGameRule)
 	{

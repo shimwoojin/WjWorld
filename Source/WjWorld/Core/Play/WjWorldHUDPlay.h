@@ -7,6 +7,8 @@
 #include "WjWorldHUDPlay.generated.h"
 
 class UGameplayGlobalHUDWidget;
+class UWjWorldUserWidgetBase;
+class UWjWorldGameRuleBase;
 
 /**
  * 
@@ -20,6 +22,8 @@ public:
 	void StartGameStartCountDown(float CountDown);
 	void ShowGameResultText(const FString& ResultText, float Duration = 3.0f);
 
+	void ShowGameRuleHUDWidget(TSubclassOf<UWjWorldGameRuleBase> GameRuleClass);
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -29,4 +33,10 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UGameplayGlobalHUDWidget> GlobalHUDWidget;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TMap<TSubclassOf<UWjWorldGameRuleBase>, TSubclassOf<UWjWorldUserWidgetBase>> GameRuleHUDWidgetClasses;
+
+	UPROPERTY()
+	TObjectPtr<UWjWorldUserWidgetBase> GameRuleHUDWidget;
 };

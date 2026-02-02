@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AbilitySystem/GE_AbilityCooldown.h"
+#include "AbilitySystem/Effects/GE_AbilityCooldown.h"
 #include "WjWorldGameplayTag.h"
 
 UGE_AbilityCooldown::UGE_AbilityCooldown()

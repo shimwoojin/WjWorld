@@ -6,3 +6,4 @@
 DEFINE_LOG_CATEGORY(LogWjWorld);
 DEFINE_LOG_CATEGORY(LogWjWorldAbilities);
 DEFINE_LOG_CATEGORY(LogWjWorldCosmetic);
+DEFINE_LOG_CATEGORY(LogWjWorldStats);

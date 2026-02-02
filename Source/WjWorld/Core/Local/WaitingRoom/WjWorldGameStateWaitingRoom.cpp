@@ -2,6 +2,7 @@
 
 #include "Core/Local/WaitingRoom/WjWorldGameStateWaitingRoom.h"
 #include "Core/Base/WjWorldPlayerStateBase.h"
+#include "Core/WjWorldGameInstance.h"
 #include "Net/UnrealNetwork.h"
 #include "WjWorldLogCategories.h"
 
@@ -30,6 +31,12 @@ void AWjWorldGameStateWaitingRoom::InitializeRoomSettings(const FRoomSettings& S
 
 	RoomSettings = Settings;
 	OnRep_RoomSettings(); // 로컬에서도 이벤트 발생
+
+	// GameInstance에 방 설정 캐시 (호스트 마이그레이션용)
+	if (UWjWorldGameInstance* GI = Cast<UWjWorldGameInstance>(GetGameInstance()))
+	{
+		GI->CacheRoomSettings(Settings);
+	}
 
 	UE_LOG(LogWjWorld, Log, TEXT("GameStateWaitingRoom: Room settings initialized - %s"), *Settings.RoomName);
 }
@@ -123,6 +130,12 @@ void AWjWorldGameStateWaitingRoom::OnRep_RoomSettings()
 {
 	UE_LOG(LogWjWorld, Log, TEXT("GameStateWaitingRoom: Room settings replicated - %s"), *RoomSettings.RoomName);
 
+	// 클라이언트 측에서도 캐시 (호스트 마이그레이션용)
+	if (UWjWorldGameInstance* GI = Cast<UWjWorldGameInstance>(GetGameInstance()))
+	{
+		GI->CacheRoomSettings(RoomSettings);
+	}
+
 	// 이벤트 브로드캐스트
 	OnRoomInfoChanged.Broadcast(RoomSettings);
 }
@@ -209,6 +222,12 @@ void AWjWorldGameStateWaitingRoom::BroadcastPlayerListChanged()
 	TArray<FPlayerDisplayInfo> PlayerList = GetPlayerList();
 
 	UE_LOG(LogWjWorld, Log, TEXT("GameStateWaitingRoom: Broadcasting player list change - %d players"), PlayerList.Num());
+
+	// GameInstance에 플레이어 목록 캐시 (호스트 마이그레이션용)
+	if (UWjWorldGameInstance* GI = Cast<UWjWorldGameInstance>(GetGameInstance()))
+	{
+		GI->CachePlayerList(PlayerList);
+	}
 
 	// 이벤트 브로드캐스트
 	OnPlayerListChanged.Broadcast(PlayerList);

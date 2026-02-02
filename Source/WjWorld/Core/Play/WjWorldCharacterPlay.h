@@ -11,6 +11,8 @@ class UWjWorldAbilitySystemComponent;
 class UWjWorldCosmeticComponent;
 class UCharacterPlaySetupDataAsset;
 class UBoxComponent;
+class UWidgetComponent;
+class UAbilityPromptWidget;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeadStackCounthanged, int32, NewDeadStackCount);
 
@@ -48,6 +50,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Death")
 	bool IsEliminated() const { return bIsEliminated; }
 
+	// 어빌리티 프롬프트 표시/숨김
+	void ShowAbilityPrompt(const FText& ConfirmKeyName, const FText& CancelKeyName, const FText& Description);
+	void HideAbilityPrompt();
+
 protected:
 	virtual void OnRep_PlayerState() override;
 	virtual void PossessedBy(AController* NewController) override;
@@ -80,4 +86,8 @@ private:
 	// 사망 상태 (리플리케이션)
 	UPROPERTY(ReplicatedUsing = OnRep_IsEliminated)
 	bool bIsEliminated = false;
+
+	// 어빌리티 프롬프트 WidgetComponent
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI", meta = (AllowPrivateAccess = true))
+	TObjectPtr<UWidgetComponent> AbilityPromptComponent;
 };

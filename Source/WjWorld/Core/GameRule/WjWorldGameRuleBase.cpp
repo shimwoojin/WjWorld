@@ -6,6 +6,7 @@
 #include "Core/Play/WjWorldGameStatePlay.h"
 #include "Core/Play/WjWorldPlayerStatePlay.h"
 #include "Core/GameData/WjWorldGameDataComponent.h"
+#include "Core/WjWorldGameInstance.h"
 
 #include "WjWorldLogCategories.h"
 
@@ -71,6 +72,12 @@ void UWjWorldGameRuleBase::OnGameEnd()
 	UWorld* World = GetWorld();
 	if (World)
 	{
+		// 세션 종료 (InProgress → Ended) - WaitingRoom 복귀 후 다시 StartSession 가능하게
+		if (UWjWorldGameInstance* GI = Cast<UWjWorldGameInstance>(World->GetGameInstance()))
+		{
+			GI->EndGame();
+		}
+
 		World->GetTimerManager().SetTimer(GotoWaitingRoomHandle, FTimerDelegate::CreateLambda([this]() {
 			GetWorld()->ServerTravel(TEXT("/Game/Map/02-2_WaitingRoom"));
 			}), SecondsForGotoWaitingRoom, false);

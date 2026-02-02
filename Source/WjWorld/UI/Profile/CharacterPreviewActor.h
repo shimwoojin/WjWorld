@@ -1,0 +1,73 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "Cosmetic/WjWorldCosmeticTypes.h"
+#include "Engine/StreamableManager.h"
+#include "CharacterPreviewActor.generated.h"
+
+class USceneCaptureComponent2D;
+class UTextureRenderTarget2D;
+class USpotLightComponent;
+class UWjWorldCosmeticCatalogDataAsset;
+
+/**
+ * 3D 캐릭터 프리뷰 액터
+ * - 월드에서 보이지 않는 위치에 스폰
+ * - SkeletalMesh + 코스메틱 메시 표시
+ * - SceneCaptureComponent2D로 RenderTarget에 캡처
+ * - 위젯에서 RenderTarget을 UImage로 표시
+ */
+UCLASS()
+class WJWORLD_API ACharacterPreviewActor : public AActor
+{
+	GENERATED_BODY()
+
+public:
+	ACharacterPreviewActor();
+
+	/** 코스메틱 로드아웃으로 프리뷰 설정 */
+	void SetupPreview(const FCosmeticLoadout& Loadout);
+
+	/** 렌더 타겟 반환 */
+	UTextureRenderTarget2D* GetRenderTarget() const { return RenderTarget; }
+
+	/** 캡처 갱신 */
+	void RefreshCapture();
+
+protected:
+	virtual void BeginPlay() override;
+
+private:
+	/** 코스메틱 에셋 비동기 로드 완료 후 적용 */
+	void OnCosmeticAssetLoaded(ECosmeticSlot Slot, FName ItemId);
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> SceneRoot;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USkeletalMeshComponent> PreviewMeshComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USpotLightComponent> KeyLight;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneCaptureComponent2D> SceneCaptureComponent;
+
+	UPROPERTY()
+	TObjectPtr<UTextureRenderTarget2D> RenderTarget;
+
+	/** 슬롯별 코스메틱 메시 컴포넌트 */
+	UPROPERTY()
+	TMap<ECosmeticSlot, TObjectPtr<UStaticMeshComponent>> SlotMeshComponents;
+
+	/** 비동기 로드 핸들 */
+	FStreamableManager StreamableManager;
+	TMap<ECosmeticSlot, TSharedPtr<FStreamableHandle>> ActiveStreamHandles;
+
+	/** 렌더 타겟 크기 */
+	static constexpr int32 RenderTargetWidth = 256;
+	static constexpr int32 RenderTargetHeight = 512;
+};

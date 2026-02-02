@@ -7,21 +7,23 @@
 #include "LobbyHUDWidget.generated.h"
 
 class UButton;
+class UPlayerProfileWidget;
 
 /**
  * 로비 HUD 위젯
- * 
+ *
  * 기능:
  * - "방 만들기" 버튼
  * - "방 찾기" 버튼
  * - "직접 입장" 버튼 (NULL Subsystem용)
  * - "설정" 버튼 (추후)
+ * - "프로필" 버튼
  */
 UCLASS()
 class WJWORLD_API ULobbyHUDWidget : public UWjWorldUserWidgetBase
 {
 	GENERATED_BODY()
-	
+
 public:
 	virtual void NativeConstruct() override;
 
@@ -44,6 +46,14 @@ protected:
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UButton> SettingsButton;
 
+	/** 프로필 버튼 */
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UButton> ProfileButton;
+
+	/** 프로필 위젯 클래스 (Blueprint에서 설정) */
+	UPROPERTY(EditDefaultsOnly, Category = "Profile")
+	TSubclassOf<UPlayerProfileWidget> ProfileWidgetClass;
+
 protected:
 	//~ 버튼 클릭 이벤트
 
@@ -58,4 +68,11 @@ protected:
 
 	UFUNCTION()
 	void OnSettingsClicked();
+
+	UFUNCTION()
+	void OnProfileClicked();
+
+private:
+	UPROPERTY()
+	TObjectPtr<UPlayerProfileWidget> ProfileWidgetInstance;
 };

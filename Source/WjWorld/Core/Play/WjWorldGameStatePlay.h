@@ -36,6 +36,8 @@ public:
 	// 게임 결과 설정 (서버에서 호출)
 	void SetGameResult(const FString& WinnerName, bool bHasWinner);
 
+    void SetGameRuleClass(TSubclassOf<UWjWorldGameRuleBase> InGameRuleClass);
+
 	// 게임 결과 조회
 	UFUNCTION(BlueprintCallable, Category = "Game Result")
 	FString GetWinnerName() const { return WinnerPlayerName; }
@@ -61,6 +63,9 @@ public:
 
     UFUNCTION()
     void OnRep_GameResult();
+
+    UFUNCTION()
+    void OnRep_GameRuleClass();
 
 private:
     UPROPERTY()
@@ -91,4 +96,7 @@ private:
 
     UPROPERTY(ReplicatedUsing = OnRep_GameResult)
     bool bGameResultReady = false;
+
+    UPROPERTY(ReplicatedUsing = OnRep_GameRuleClass)
+	TSubclassOf<UWjWorldGameRuleBase> GameRuleClass;
 };

@@ -35,7 +35,7 @@ void AWjWorldPlayerStatePlay::GetLifetimeReplicatedProps(TArray<FLifetimePropert
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(AWjWorldPlayerStatePlay, CosmeticLoadout);
+	DOREPLIFETIME(AWjWorldPlayerStatePlay, PlayerDataComponent);
 }
 
 void AWjWorldPlayerStatePlay::AddGameDataComponent(TSubclassOf<UWjWorldGameDataComponent> InDataComponentClass)
@@ -49,27 +49,16 @@ void AWjWorldPlayerStatePlay::AddGameDataComponent(TSubclassOf<UWjWorldGameDataC
 	}
 }
 
-void AWjWorldPlayerStatePlay::SetCosmeticLoadout(const FCosmeticLoadout& InLoadout)
+void AWjWorldPlayerStatePlay::OnCosmeticLoadoutUpdated()
 {
-	if (!HasAuthority())
-	{
-		return;
-	}
+	Super::OnCosmeticLoadoutUpdated();
 
-	CosmeticLoadout = InLoadout;
-
-	// 서버에서도 즉시 적용
-	OnRep_CosmeticLoadout();
-}
-
-void AWjWorldPlayerStatePlay::OnRep_CosmeticLoadout()
-{
 	// 소유 Pawn의 CosmeticComponent에 로드아웃 적용
 	if (APawn* OwnerPawn = GetPawn())
 	{
 		if (UWjWorldCosmeticComponent* CosmeticComp = OwnerPawn->FindComponentByClass<UWjWorldCosmeticComponent>())
 		{
-			CosmeticComp->ApplyLoadout(CosmeticLoadout);
+			CosmeticComp->ApplyLoadout(GetCosmeticLoadout());
 		}
 	}
 }

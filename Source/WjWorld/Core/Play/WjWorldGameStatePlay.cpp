@@ -4,6 +4,8 @@
 #include "Core/Play/WjWorldGameStatePlay.h"
 #include "Core/GameData/WjWorldGameDataComponent.h"
 #include "Core/Play/WjWorldHUDPlay.h"
+#include "Stats/WjWorldStatsSubsystem.h"
+#include "Stats/WjWorldStatTypes.h"
 #include "GameFramework/PlayerState.h"
 #include "Net/UnrealNetwork.h"
 
@@ -29,6 +31,7 @@ void AWjWorldGameStatePlay::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	DOREPLIFETIME(AWjWorldGameStatePlay, WinnerPlayerName);
 	DOREPLIFETIME(AWjWorldGameStatePlay, bGameHasWinner);
 	DOREPLIFETIME(AWjWorldGameStatePlay, bGameResultReady);
+	DOREPLIFETIME(AWjWorldGameStatePlay, GameRuleClass);
 }
 
 bool AWjWorldGameStatePlay::HasMatchStarted() const
@@ -137,6 +140,16 @@ void AWjWorldGameStatePlay::SetGameResult(const FString& WinnerName, bool bHasWi
 	}
 }
 
+void AWjWorldGameStatePlay::SetGameRuleClass(TSubclassOf<UWjWorldGameRuleBase> InGameRuleClass)
+{
+	GameRuleClass = InGameRuleClass;
+
+	if (HasAuthority())
+	{
+		OnRep_GameRuleClass();
+	}
+}
+
 void AWjWorldGameStatePlay::OnRep_GameResult()
 {
 	if (!bGameResultReady) return;
@@ -150,16 +163,15 @@ void AWjWorldGameStatePlay::OnRep_GameResult()
 	AWjWorldHUDPlay* HUD = PC->GetHUD<AWjWorldHUDPlay>();
 	if (!HUD) return;
 
+	FString LocalPlayerName;
+	if (PC->PlayerState)
+	{
+		LocalPlayerName = PC->PlayerState->GetPlayerName();
+	}
+
 	FString ResultText;
 	if (bGameHasWinner)
 	{
-		// 현재 플레이어가 승자인지 확인
-		FString LocalPlayerName;
-		if (PC->PlayerState)
-		{
-			LocalPlayerName = PC->PlayerState->GetPlayerName();
-		}
-
 		if (LocalPlayerName == WinnerPlayerName)
 		{
 			ResultText = TEXT("Victory!");
@@ -176,5 +188,37 @@ void AWjWorldGameStatePlay::OnRep_GameResult()
 
 	HUD->ShowGameResultText(ResultText, 5.0f);
 
+	// 스탯 기록 (각 클라이언트가 자신의 스탯만 기록)
+	UWjWorldStatsSubsystem* Stats = GetGameInstance()->GetSubsystem<UWjWorldStatsSubsystem>();
+	if (Stats && PC->PlayerState)
+	{
+		Stats->IncrementLocalStat(WjWorldStats::ApproachingWall::GamesPlayed);
+
+		if (bGameHasWinner && WinnerPlayerName == LocalPlayerName)
+		{
+			Stats->IncrementLocalStat(WjWorldStats::ApproachingWall::Wins);
+		}
+		else
+		{
+			Stats->IncrementLocalStat(WjWorldStats::ApproachingWall::Losses);
+		}
+
+		Stats->StoreStats();
+	}
+
 	UE_LOG(LogWjWorld, Log, TEXT("GameState: Game Result - %s"), *ResultText);
+}
+
+void AWjWorldGameStatePlay::OnRep_GameRuleClass()
+{
+	UWorld* World = GetWorld();
+	if (!World) return;
+
+	APlayerController* PC = World->GetFirstPlayerController();
+	if (!PC) return;
+
+	AWjWorldHUDPlay* HUD = PC->GetHUD<AWjWorldHUDPlay>();
+	if (!HUD) return;
+
+	HUD->ShowGameRuleHUDWidget(GameRuleClass);
 }

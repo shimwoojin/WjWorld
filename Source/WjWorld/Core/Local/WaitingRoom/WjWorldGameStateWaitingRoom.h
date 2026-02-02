@@ -10,27 +10,6 @@
 class AWjWorldPlayerStateBase;
 
 /**
- * 플레이어 정보 구조체 (UI 표시용)
- */
-USTRUCT(BlueprintType)
-struct FPlayerDisplayInfo
-{
-	GENERATED_BODY()
-
-	UPROPERTY(BlueprintReadOnly, Category = "Player")
-	FString PlayerName;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Player")
-	bool bIsReady = false;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Player")
-	bool bIsHost = false;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Player")
-	int32 PlayerID = -1;
-};
-
-/**
  * 게임 상태 델리게이트
  */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerListChanged, const TArray<FPlayerDisplayInfo>&, PlayerList);

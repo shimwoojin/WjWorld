@@ -22,6 +22,7 @@ public class WjWorld : ModuleRules
             "GameplayTags",       // 태그 시스템
             "GameplayTasks",      // 태스크 시스템
             "CommonUI",         // 공통 UI 컴포넌트
+            "CoreOnline",       // FUniqueNetIdWrapper
             "OnlineSubsystem",
             "OnlineSubsystemUtils",
             "Niagara",

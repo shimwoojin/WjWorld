@@ -31,6 +31,9 @@ UGA_NormalAttack::UGA_NormalAttack()
 	// 쿨다운 설정
 	CooldownDuration = 1.0f;
 	CooldownTags.AddTag(WjWorldGameplayTag::Cooldown_NormalAttack());
+
+	// UI 메타데이터
+	AbilityName = NSLOCTEXT("Abilities", "NormalAttack", "공격");
 }
 
 void UGA_NormalAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -88,9 +91,8 @@ void UGA_NormalAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 					break;
 
 				case EWjWorldBrickType::Moving:
-					// 즉시 파괴
-					UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Moving brick - destroying"));
-					BrickComp->ReserveDestroyBrick(0.1f);
+					//UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Moving brick - destroying"));
+					//BrickComp->ReserveDestroyBrick(0.1f);
 					break;
 
 				case EWjWorldBrickType::Destructible:

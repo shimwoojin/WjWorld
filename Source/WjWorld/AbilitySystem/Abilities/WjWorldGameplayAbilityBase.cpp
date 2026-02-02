@@ -3,7 +3,7 @@
 
 #include "AbilitySystem/Abilities/WjWorldGameplayAbilityBase.h"
 
-#include "AbilitySystem/GE_AbilityCooldown.h"
+#include "AbilitySystem/Effects/GE_AbilityCooldown.h"
 #include "WjWorldGameplayTag.h"
 
 UWjWorldGameplayAbilityBase::UWjWorldGameplayAbilityBase()

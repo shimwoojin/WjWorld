@@ -8,8 +8,10 @@
 #include "Cosmetic/WjWorldCosmeticComponent.h"
 #include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "DataAsset/CharacterPlaySetupDataAsset.h"
+#include "UI/Ability/AbilityPromptWidget.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
 
@@ -20,6 +22,14 @@
 AWjWorldCharacterPlay::AWjWorldCharacterPlay()
 {
 	CosmeticComponent = CreateDefaultSubobject<UWjWorldCosmeticComponent>(TEXT("CosmeticComponent"));
+
+	// 어빌리티 프롬프트 WidgetComponent (캐릭터 머리 위에 Screen 공간으로 표시)
+	AbilityPromptComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("AbilityPromptComponent"));
+	AbilityPromptComponent->SetupAttachment(RootComponent);
+	AbilityPromptComponent->SetRelativeLocation(FVector(0.f, 0.f, 120.f));
+	AbilityPromptComponent->SetWidgetSpace(EWidgetSpace::Screen);
+	AbilityPromptComponent->SetDrawAtDesiredSize(true);
+	AbilityPromptComponent->SetVisibility(false);
 }
 
 void AWjWorldCharacterPlay::PostInitializeComponents()
@@ -223,5 +233,29 @@ void AWjWorldCharacterPlay::GasInputReleased(int32 InputID)
 	if (AbilitySystemComponent.IsValid())
 	{
 		AbilitySystemComponent->ReleaseInputID(InputID);
+	}
+}
+
+void AWjWorldCharacterPlay::ShowAbilityPrompt(const FText& ConfirmKeyName, const FText& CancelKeyName, const FText& Description)
+{
+	if (!AbilityPromptComponent)
+	{
+		return;
+	}
+
+	AbilityPromptComponent->SetVisibility(true);
+
+	UAbilityPromptWidget* PromptWidget = Cast<UAbilityPromptWidget>(AbilityPromptComponent->GetWidget());
+	if (PromptWidget)
+	{
+		PromptWidget->SetPromptInfo(ConfirmKeyName, CancelKeyName, Description);
+	}
+}
+
+void AWjWorldCharacterPlay::HideAbilityPrompt()
+{
+	if (AbilityPromptComponent)
+	{
+		AbilityPromptComponent->SetVisibility(false);
 	}
 }

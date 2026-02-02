@@ -10,12 +10,13 @@
 class UButton;
 class UTextBlock;
 class UVerticalBox;
+class UPlayerProfileWidget;
 
 /**
  * 대기실 HUD 위젯
- * 
+ *
  * 기능:
- * - 플레이어 목록 표시 (GameState 동기화)
+ * - 플레이어 목록 표시 (GameState 동기화) - 클릭 시 프로필 팝업
  * - 방 정보 표시 (GameState 동기화)
  * - 준비 버튼
  * - 게임 시작 버튼 (호스트만)
@@ -25,7 +26,7 @@ UCLASS()
 class WJWORLD_API UWaitingRoomHUDWidget : public UWjWorldUserWidgetBase
 {
 	GENERATED_BODY()
-	
+
 public:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
@@ -65,6 +66,10 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> LeaveButton;
 
+	/** 프로필 위젯 클래스 (Blueprint에서 설정) */
+	UPROPERTY(EditDefaultsOnly, Category = "Profile")
+	TSubclassOf<UPlayerProfileWidget> ProfileWidgetClass;
+
 protected:
 	//~ 버튼 클릭 이벤트
 
@@ -101,7 +106,21 @@ private:
 	/** 게임 시작 버튼 상태 업데이트 */
 	void UpdateStartGameButton();
 
+	/** 플레이어 버튼 클릭 공통 핸들러 (IsHovered로 어떤 버튼인지 판별) */
+	UFUNCTION()
+	void OnAnyPlayerButtonClicked();
+
+	/** 플레이어 버튼 클릭 → 프로필 표시 */
+	void ShowPlayerProfile(int32 PlayerID);
+
 	/** GameState 캐시 */
 	UPROPERTY()
 	TObjectPtr<AWjWorldGameStateWaitingRoom> CachedGameState;
+
+	/** 프로필 위젯 인스턴스 */
+	UPROPERTY()
+	TObjectPtr<UPlayerProfileWidget> ProfileWidgetInstance;
+
+	/** 캐시된 플레이어 목록 (버튼 인덱스 매핑용) */
+	TArray<FPlayerDisplayInfo> CachedPlayerDisplayList;
 };

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "UI/WaitingRoom/WaitingRoomHUDWidget.h"
+#include "UI/Profile/PlayerProfileWidget.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
@@ -250,36 +251,136 @@ void UWaitingRoomHUDWidget::UpdatePlayerList()
 	// 기존 목록 제거
 	PlayerListContainer->ClearChildren();
 
-	// 플레이어 목록 가져오기
-	TArray<FPlayerDisplayInfo> PlayerList = CachedGameState->GetPlayerList();
+	// 플레이어 목록 가져오기 & 캐시
+	CachedPlayerDisplayList = CachedGameState->GetPlayerList();
 
-	UE_LOG(LogWjWorld, Warning, TEXT("WaitingRoomHUDWidget: Updating player list - %d players"), PlayerList.Num());
+	UE_LOG(LogWjWorld, Warning, TEXT("WaitingRoomHUDWidget: Updating player list - %d players"), CachedPlayerDisplayList.Num());
 
-	// 간단한 텍스트로 표시 (나중에 커스텀 위젯으로 교체 가능)
-	for (const FPlayerDisplayInfo& Info : PlayerList)
+	// 버튼으로 표시 (클릭 시 프로필 팝업)
+	for (const FPlayerDisplayInfo& Info : CachedPlayerDisplayList)
 	{
+		UButton* PlayerButton = NewObject<UButton>(this);
+		if (!PlayerButton)
+		{
+			continue;
+		}
+
+		// 버튼 안에 텍스트 추가
 		UTextBlock* PlayerText = NewObject<UTextBlock>(this);
 		if (PlayerText)
 		{
-			// 플레이어 정보 포맷: "[Host] PlayerName (Ready)" 또는 "PlayerName"
 			FString DisplayText = Info.PlayerName;
-			
+
 			if (Info.bIsHost)
 			{
 				DisplayText = FString::Printf(TEXT("[Host] %s"), *DisplayText);
 			}
-			
+
 			if (Info.bIsReady)
 			{
 				DisplayText += TEXT(" (Ready)");
 			}
 
 			PlayerText->SetText(FText::FromString(DisplayText));
-			PlayerListContainer->AddChild(PlayerText);
+			PlayerButton->AddChild(PlayerText);
+		}
 
-			UE_LOG(LogWjWorld, Warning, TEXT("  - %s"), *DisplayText);
+		// 모든 버튼에 공통 핸들러 바인딩 (IsHovered로 어떤 버튼인지 판별)
+		PlayerButton->OnClicked.AddDynamic(this, &UWaitingRoomHUDWidget::OnAnyPlayerButtonClicked);
+
+		PlayerListContainer->AddChild(PlayerButton);
+
+		UE_LOG(LogWjWorld, Warning, TEXT("  - %s (ID: %d)"), *Info.PlayerName, Info.PlayerID);
+	}
+}
+
+void UWaitingRoomHUDWidget::OnAnyPlayerButtonClicked()
+{
+	if (!PlayerListContainer)
+	{
+		return;
+	}
+
+	// 어떤 버튼이 클릭되었는지 IsHovered()로 판별
+	for (int32 i = 0; i < PlayerListContainer->GetChildrenCount(); ++i)
+	{
+		UButton* Btn = Cast<UButton>(PlayerListContainer->GetChildAt(i));
+		if (Btn && Btn->IsHovered() && CachedPlayerDisplayList.IsValidIndex(i))
+		{
+			ShowPlayerProfile(CachedPlayerDisplayList[i].PlayerID);
+			return;
 		}
 	}
+}
+
+void UWaitingRoomHUDWidget::ShowPlayerProfile(int32 PlayerID)
+{
+	if (!CachedGameState)
+	{
+		return;
+	}
+
+	// PlayerID로 PlayerState 검색
+	APlayerState* TargetPS = nullptr;
+	for (APlayerState* PS : CachedGameState->PlayerArray)
+	{
+		if (PS && PS->GetPlayerId() == PlayerID)
+		{
+			TargetPS = PS;
+			break;
+		}
+	}
+
+	if (!TargetPS)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("WaitingRoomHUDWidget: PlayerState not found for ID %d"), PlayerID);
+		return;
+	}
+
+	// 프로필 위젯 생성
+	if (!ProfileWidgetClass)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("WaitingRoomHUDWidget: ProfileWidgetClass is not set"));
+		return;
+	}
+
+	if (!ProfileWidgetInstance)
+	{
+		ProfileWidgetInstance = CreateWidget<UPlayerProfileWidget>(GetOwningPlayer(), ProfileWidgetClass);
+		if (ProfileWidgetInstance)
+		{
+			ProfileWidgetInstance->AddToViewport(100);
+		}
+	}
+
+	if (!ProfileWidgetInstance)
+	{
+		return;
+	}
+
+	// 자기 자신인지 확인
+	APlayerController* LocalPC = GetOwningPlayer();
+	if (LocalPC && LocalPC->PlayerState && LocalPC->PlayerState->GetPlayerId() == PlayerID)
+	{
+		// 자기 자신 → ShowLocalProfile
+		ProfileWidgetInstance->ShowLocalProfile();
+	}
+	else
+	{
+		// 타 플레이어
+		AWjWorldPlayerStateBase* BasePS = Cast<AWjWorldPlayerStateBase>(TargetPS);
+		FUniqueNetIdRepl UniqueId = TargetPS->GetUniqueId();
+		FText PlayerName = FText::FromString(TargetPS->GetPlayerName());
+		FCosmeticLoadout Loadout;
+		if (BasePS)
+		{
+			Loadout = BasePS->GetCosmeticLoadout();
+		}
+
+		ProfileWidgetInstance->ShowPlayerProfile(UniqueId, PlayerName, Loadout);
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: ShowPlayerProfile for ID %d"), PlayerID);
 }
 
 void UWaitingRoomHUDWidget::UpdateReadyButton()

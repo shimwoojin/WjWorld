@@ -26,6 +26,7 @@ void USessionManager::Initialize()
 			SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(this, &USessionManager::OnJoinSessionComplete);
 			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &USessionManager::OnDestroySessionComplete);
 			SessionInterface->OnStartSessionCompleteDelegates.AddUObject(this, &USessionManager::OnStartSessionComplete);
+			SessionInterface->OnEndSessionCompleteDelegates.AddUObject(this, &USessionManager::OnEndSessionComplete);
 
 			UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Initialized successfully"));
 		}
@@ -50,6 +51,7 @@ void USessionManager::Shutdown()
 		SessionInterface->OnJoinSessionCompleteDelegates.RemoveAll(this);
 		SessionInterface->OnDestroySessionCompleteDelegates.RemoveAll(this);
 		SessionInterface->OnStartSessionCompleteDelegates.RemoveAll(this);
+		SessionInterface->OnEndSessionCompleteDelegates.RemoveAll(this);
 
 		UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Shutdown"));
 	}
@@ -248,6 +250,43 @@ bool USessionManager::StartSession()
 	return bSuccess;
 }
 
+bool USessionManager::EndSession()
+{
+	if (!SessionInterface.IsValid())
+	{
+		UE_LOG(LogWjWorld, Error, TEXT("SessionManager: SessionInterface is invalid"));
+		return false;
+	}
+
+	// 세션이 존재하고 InProgress 상태인지 확인
+	FNamedOnlineSession* ExistingSession = SessionInterface->GetNamedSession(SESSION_NAME);
+	if (!ExistingSession)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("SessionManager: EndSession - No session exists"));
+		return false;
+	}
+
+	if (ExistingSession->SessionState != EOnlineSessionState::InProgress)
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("SessionManager: EndSession - Session not InProgress (state: %d), skipping"),
+			static_cast<int32>(ExistingSession->SessionState));
+		return true; // 이미 종료된 상태이므로 성공으로 간주
+	}
+
+	bool bSuccess = SessionInterface->EndSession(SESSION_NAME);
+
+	if (bSuccess)
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Ending session (InProgress → Ended)"));
+	}
+	else
+	{
+		UE_LOG(LogWjWorld, Error, TEXT("SessionManager: Failed to end session"));
+	}
+
+	return bSuccess;
+}
+
 bool USessionManager::DestroySession()
 {
 	if (!SessionInterface.IsValid())
@@ -289,6 +328,37 @@ void USessionManager::OnFindSessionsComplete(bool bWasSuccessful)
 {
 	UE_LOG(LogWjWorld, Log, TEXT("SessionManager: OnFindSessionsComplete - Success: %d"), bWasSuccessful);
 
+	// 마이그레이션 세션 검색인 경우
+	if (!PendingMigrationTag.IsEmpty())
+	{
+		FString SearchTag = PendingMigrationTag;
+		PendingMigrationTag.Empty();
+
+		if (bWasSuccessful && SessionSearch.IsValid())
+		{
+			for (int32 i = 0; i < SessionSearch->SearchResults.Num(); i++)
+			{
+				FString FoundTag;
+				SessionSearch->SearchResults[i].Session.SessionSettings.Get(FName("MIGRATION_TAG"), FoundTag);
+
+				if (FoundTag == SearchTag)
+				{
+					UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Found migration session with tag '%s' at index %d"), *SearchTag, i);
+					JoinSession(i);
+					return;
+				}
+			}
+
+			UE_LOG(LogWjWorld, Warning, TEXT("SessionManager: Migration session with tag '%s' not found among %d results"),
+				*SearchTag, SessionSearch->SearchResults.Num());
+		}
+
+		// 마이그레이션 세션 미발견 → 빈 결과로 브로드캐스트하여 GameInstance가 재시도 처리
+		OnRoomsFoundEvent.Broadcast(false, TArray<FRoomInfo>());
+		return;
+	}
+
+	// 일반 세션 검색
 	TArray<FRoomInfo> Rooms;
 
 	if (bWasSuccessful && SessionSearch.IsValid())
@@ -298,19 +368,18 @@ void USessionManager::OnFindSessionsComplete(bool bWasSuccessful)
 		for (int32 i = 0; i < SessionSearch->SearchResults.Num(); i++)
 		{
 			const FOnlineSessionSearchResult& Result = SessionSearch->SearchResults[i];
-			
-			// ⭐ 디버깅: 상세 정보 로그
+
 			UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Session[%d] Details:"), i);
 			UE_LOG(LogWjWorld, Log, TEXT("  - IsValid: %d"), Result.IsValid());
 			UE_LOG(LogWjWorld, Log, TEXT("  - Ping: %d"), Result.PingInMs);
 			UE_LOG(LogWjWorld, Log, TEXT("  - NumPublicConnections: %d"), Result.Session.SessionSettings.NumPublicConnections);
 			UE_LOG(LogWjWorld, Log, TEXT("  - NumOpenPublicConnections: %d"), Result.Session.NumOpenPublicConnections);
-			
+
 			FRoomInfo RoomInfo = ConvertSearchResultToRoomInfo(Result, i);
-			UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Room[%d] Name='%s' Mode='%s' Players=%d/%d"), 
-				i, *RoomInfo.RoomName, *RoomInfo.GameMode, 
+			UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Room[%d] Name='%s' Mode='%s' Players=%d/%d"),
+				i, *RoomInfo.RoomName, *RoomInfo.GameMode,
 				RoomInfo.CurrentPlayers, RoomInfo.MaxPlayers);
-			
+
 			Rooms.Add(RoomInfo);
 		}
 	}
@@ -393,6 +462,114 @@ void USessionManager::OnStartSessionComplete(FName SessionName, bool bWasSuccess
 	UE_LOG(LogWjWorld, Log, TEXT("SessionManager: OnStartSessionComplete - Success: %d"), bWasSuccessful);
 
 	OnRoomStartedEvent.Broadcast(bWasSuccessful);
+}
+
+void USessionManager::OnEndSessionComplete(FName SessionName, bool bWasSuccessful)
+{
+	UE_LOG(LogWjWorld, Log, TEXT("SessionManager: OnEndSessionComplete - Success: %d"), bWasSuccessful);
+
+	OnRoomEndedEvent.Broadcast(bWasSuccessful);
+}
+
+bool USessionManager::CreateMigrationSession(const FRoomSettings& Settings, const FString& MigrationTag)
+{
+	if (!SessionInterface.IsValid())
+	{
+		UE_LOG(LogWjWorld, Error, TEXT("SessionManager: SessionInterface is invalid"));
+		return false;
+	}
+
+	// 기존 세션 제거
+	auto ExistingSession = SessionInterface->GetNamedSession(SESSION_NAME);
+	if (ExistingSession != nullptr)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("SessionManager: Migration - Destroying existing session..."));
+
+		SessionInterface->DestroySession(SESSION_NAME);
+
+		int32 WaitCount = 0;
+		while (SessionInterface->GetNamedSession(SESSION_NAME) != nullptr && WaitCount < 100)
+		{
+			FPlatformProcess::Sleep(0.01f);
+			WaitCount++;
+		}
+
+		if (SessionInterface->GetNamedSession(SESSION_NAME) != nullptr)
+		{
+			UE_LOG(LogWjWorld, Error, TEXT("SessionManager: Migration - Failed to destroy existing session"));
+			return false;
+		}
+	}
+
+	// 세션 설정 (CreateSession과 동일하되 MIGRATION_TAG 추가)
+	FOnlineSessionSettings SessionSettings;
+	SessionSettings.NumPublicConnections = Settings.MaxPlayers;
+	SessionSettings.bShouldAdvertise = true;
+	SessionSettings.bUsesPresence = false;
+	SessionSettings.bUseLobbiesIfAvailable = false;
+	SessionSettings.bAllowJoinInProgress = true;
+	SessionSettings.bIsLANMatch = true;
+	SessionSettings.bAllowJoinViaPresence = false;
+	SessionSettings.bAllowJoinViaPresenceFriendsOnly = false;
+
+	// 커스텀 데이터 설정
+	SessionSettings.Set(FName("ROOM_NAME"), Settings.RoomName, EOnlineDataAdvertisementType::ViaOnlineService);
+	SessionSettings.Set(FName("GAME_MODE"), Settings.GameMode, EOnlineDataAdvertisementType::ViaOnlineService);
+	SessionSettings.Set(FName("MAP_NAME"), Settings.MapName, EOnlineDataAdvertisementType::ViaOnlineService);
+	SessionSettings.Set(FName("IS_PRIVATE"), Settings.bIsPrivate, EOnlineDataAdvertisementType::ViaOnlineService);
+
+	// 마이그레이션 태그 추가
+	SessionSettings.Set(FName("MIGRATION_TAG"), MigrationTag, EOnlineDataAdvertisementType::ViaOnlineService);
+
+	// 세션 생성
+	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
+	bool bSuccess = SessionInterface->CreateSession(*LocalPlayer->GetPreferredUniqueNetId(), SESSION_NAME, SessionSettings);
+
+	if (bSuccess)
+	{
+		LastRoomSettings = Settings;
+		bIsHost = true;
+		UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Creating migration session '%s' with tag '%s'"),
+			*Settings.RoomName, *MigrationTag);
+	}
+	else
+	{
+		UE_LOG(LogWjWorld, Error, TEXT("SessionManager: Failed to create migration session"));
+	}
+
+	return bSuccess;
+}
+
+bool USessionManager::FindMigrationSession(const FString& MigrationTag)
+{
+	if (!SessionInterface.IsValid())
+	{
+		UE_LOG(LogWjWorld, Error, TEXT("SessionManager: SessionInterface is invalid"));
+		return false;
+	}
+
+	PendingMigrationTag = MigrationTag;
+
+	// 검색 설정
+	SessionSearch = MakeShareable(new FOnlineSessionSearch());
+	SessionSearch->MaxSearchResults = 50;
+	SessionSearch->bIsLanQuery = true;
+	SessionSearch->QuerySettings.Set(SEARCH_LOBBIES, false, EOnlineComparisonOp::Equals);
+
+	// 검색 시작
+	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
+	bool bSuccess = SessionInterface->FindSessions(*LocalPlayer->GetPreferredUniqueNetId(), SessionSearch.ToSharedRef());
+
+	if (bSuccess)
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Searching for migration session with tag '%s'"), *MigrationTag);
+	}
+	else
+	{
+		UE_LOG(LogWjWorld, Error, TEXT("SessionManager: Failed to start migration session search"));
+	}
+
+	return bSuccess;
 }
 
 FRoomInfo USessionManager::ConvertSearchResultToRoomInfo(const FOnlineSessionSearchResult& SearchResult, int32 Index)

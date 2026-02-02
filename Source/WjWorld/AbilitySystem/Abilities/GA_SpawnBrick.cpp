@@ -18,6 +18,15 @@
 
 #include "Engine/OverlapResult.h"
 
+#include "Setting/WjWorldDeveloperSettings.h"
+
+#include "AbilitySystemComponent.h"
+#include "AbilitySystem/Effects/GE_SpawnBrickChargeCost.h"
+#include "AbilitySystem/AttributeSets/WjWorldCharacterAttributeSet.h"
+#include "GameplayEffect.h"
+
+#include "Core/Play/WjWorldCharacterPlay.h"
+
 UGA_SpawnBrick::UGA_SpawnBrick()
 {
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
@@ -28,6 +37,55 @@ UGA_SpawnBrick::UGA_SpawnBrick()
 
 	// 이 태그 가진 어빌리티 블록 (NormalAttack 등)
 	BlockAbilitiesWithTag.AddTag(WjWorldGameplayTag::Ability_NormalAttack());
+
+	// UI 메타데이터
+	AbilityName = NSLOCTEXT("Abilities", "SpawnBrick", "벽돌 배치");
+}
+
+void UGA_SpawnBrick::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
+{
+	Super::OnGiveAbility(ActorInfo, Spec);
+
+	UAbilitySystemComponent* ASC = ActorInfo->AbilitySystemComponent.Get();
+	if (!ASC)
+	{
+		return;
+	}
+
+	// 서버에서 어트리뷰트 초기값 설정
+	if (ActorInfo->IsNetAuthority())
+	{
+		ASC->SetNumericAttributeBase(UWjWorldCharacterAttributeSet::GetMaxSpawnBrickChargesAttribute(), static_cast<float>(MaxCharges));
+		ASC->SetNumericAttributeBase(UWjWorldCharacterAttributeSet::GetSpawnBrickChargesAttribute(), static_cast<float>(MaxCharges));
+	}
+
+	// 리필 GE 오브젝트 생성
+	CreateRefillEffect();
+
+	// SpawnBrickCharges 변경 델리게이트 등록
+	ChargesChangedDelegateHandle = ASC->GetGameplayAttributeValueChangeDelegate(
+		UWjWorldCharacterAttributeSet::GetSpawnBrickChargesAttribute()
+	).AddUObject(this, &UGA_SpawnBrick::OnSpawnBrickChargesChanged);
+}
+
+void UGA_SpawnBrick::OnRemoveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
+{
+	StopChargeRefill();
+
+	// 델리게이트 해제
+	if (ChargesChangedDelegateHandle.IsValid())
+	{
+		UAbilitySystemComponent* ASC = ActorInfo->AbilitySystemComponent.Get();
+		if (ASC)
+		{
+			ASC->GetGameplayAttributeValueChangeDelegate(
+				UWjWorldCharacterAttributeSet::GetSpawnBrickChargesAttribute()
+			).Remove(ChargesChangedDelegateHandle);
+		}
+		ChargesChangedDelegateHandle.Reset();
+	}
+
+	Super::OnRemoveAbility(ActorInfo, Spec);
 }
 
 bool UGA_SpawnBrick::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, OUT FGameplayTagContainer* OptionalRelevantTags) const
@@ -35,6 +93,17 @@ bool UGA_SpawnBrick::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	if (!Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags))
 	{
 		return false;
+	}
+
+	// 충전 잔량 체크
+	const UAbilitySystemComponent* ASC = ActorInfo->AbilitySystemComponent.Get();
+	if (ASC)
+	{
+		float CurrentCharges = ASC->GetNumericAttribute(UWjWorldCharacterAttributeSet::GetSpawnBrickChargesAttribute());
+		if (CurrentCharges < 1.f)
+		{
+			return false;
+		}
 	}
 
 	return true;
@@ -71,6 +140,16 @@ void UGA_SpawnBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 				true
 			);
 		}
+
+		// 프롬프트 UI 표시
+		if (AWjWorldCharacterPlay* CharacterPlay = Cast<AWjWorldCharacterPlay>(GetAvatarActorFromActorInfo()))
+		{
+			CharacterPlay->ShowAbilityPrompt(
+				NSLOCTEXT("AbilityPrompt", "ConfirmKey", "좌클릭"),
+				NSLOCTEXT("AbilityPrompt", "CancelKey", "우클릭"),
+				GetPromptDescription()
+			);
+		}
 	}
 
 	// Confirm/Cancel 대기 Task
@@ -93,6 +172,15 @@ void UGA_SpawnBrick::EndAbility(const FGameplayAbilitySpecHandle Handle, const F
 
 	// Preview 정리
 	DestroyPreviewActor();
+
+	// 프롬프트 UI 숨김
+	if (ActorInfo && ActorInfo->IsLocallyControlled())
+	{
+		if (AWjWorldCharacterPlay* CharacterPlay = Cast<AWjWorldCharacterPlay>(GetAvatarActorFromActorInfo()))
+		{
+			CharacterPlay->HideAbilityPrompt();
+		}
+	}
 
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
@@ -243,10 +331,12 @@ void UGA_SpawnBrick::OnConfirmCallback()
 
 	if (CheckPreviewValid())
 	{
-		// 서버에서만 실제 스폰
+		// 서버에서만 실제 스폰 + 충전 소모
 		if (HasAuthority(&CurrentActivationInfo))
 		{
+			ApplyChargeCost();
 			SpawnBrickAtPreviewLocation();
+			StartChargeRefill();
 		}
 	}
 
@@ -280,6 +370,12 @@ void UGA_SpawnBrick::SpawnBrickAtPreviewLocation()
 	BrickProperties.ColumnNum = CachedWallDesc.ColumnNum;
 	BrickProperties.RowNum = CachedWallDesc.RowNum;
 
+	// Destructible 벽돌은 DeveloperSettings에서 MaxHP 설정
+	if (BrickProperties.BrickType == EWjWorldBrickType::Destructible)
+	{
+		BrickProperties.MaxHP = GetDefault<UWjWorldDeveloperSettings>()->DestructibleBrickDefaultHP;
+	}
+
 	UWjWorldBrickSpawner::SpawnBrickActor(GetWorld(), BrickProperties, SpawnIndexPoint.X, SpawnIndexPoint.Y);
 }
 
@@ -291,4 +387,162 @@ void UGA_SpawnBrick::UpdatePreviewLocation()
 		PreviewActor->UpdatePreviewLocation(NewLocation);
 		PreviewActor->SetPreviewValid(CheckPreviewValid());
 	}
+}
+
+// ---- 충전 시스템 구현 ----
+
+void UGA_SpawnBrick::ApplyChargeCost()
+{
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	if (!ASC)
+	{
+		return;
+	}
+
+	const UGameplayEffect* CostGE = UGE_SpawnBrickChargeCost::StaticClass()->GetDefaultObject<UGameplayEffect>();
+	if (CostGE)
+	{
+		FGameplayEffectSpecHandle SpecHandle = MakeOutgoingGameplayEffectSpec(CostGE->GetClass(), GetAbilityLevel());
+		if (SpecHandle.IsValid())
+		{
+			ApplyGameplayEffectSpecToOwner(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, SpecHandle);
+		}
+	}
+}
+
+void UGA_SpawnBrick::CreateRefillEffect()
+{
+	if (RefillEffect)
+	{
+		return;
+	}
+
+	RefillEffect = NewObject<UGameplayEffect>(this, FName(TEXT("GE_SpawnBrickChargeRefill")));
+	RefillEffect->DurationPolicy = EGameplayEffectDurationType::Infinite;
+	RefillEffect->Period = FScalableFloat(ChargeRefillInterval);
+	RefillEffect->bExecutePeriodicEffectOnApplication = false;
+
+	FGameplayModifierInfo Modifier;
+	Modifier.Attribute = UWjWorldCharacterAttributeSet::GetSpawnBrickChargesAttribute();
+	Modifier.ModifierOp = EGameplayModOp::Additive;
+	Modifier.ModifierMagnitude = FGameplayEffectModifierMagnitude(FScalableFloat(1.f));
+	RefillEffect->Modifiers.Add(Modifier);
+}
+
+void UGA_SpawnBrick::StartChargeRefill()
+{
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	if (!ASC || !RefillEffect)
+	{
+		return;
+	}
+
+	// 이미 리필 중이면 무시
+	if (RefillEffectHandle.IsValid() && ASC->GetActiveGameplayEffect(RefillEffectHandle))
+	{
+		return;
+	}
+
+	FGameplayEffectContextHandle ContextHandle = ASC->MakeEffectContext();
+	FGameplayEffectSpec Spec(RefillEffect, ContextHandle, 1.f);
+	RefillEffectHandle = ASC->ApplyGameplayEffectSpecToSelf(Spec);
+
+	// 리필 시작 시각 기록
+	if (UWorld* World = GetWorld())
+	{
+		RefillStartWorldTime = World->GetTimeSeconds();
+	}
+
+	UE_LOG(LogWjWorldAbilities, Log, TEXT("UGA_SpawnBrick: 충전 리필 시작 (%.1f초 간격)"), ChargeRefillInterval);
+}
+
+void UGA_SpawnBrick::StopChargeRefill()
+{
+	if (!RefillEffectHandle.IsValid())
+	{
+		return;
+	}
+
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	if (ASC)
+	{
+		ASC->RemoveActiveGameplayEffect(RefillEffectHandle);
+	}
+
+	RefillEffectHandle.Invalidate();
+	RefillStartWorldTime = 0.0;
+
+	UE_LOG(LogWjWorldAbilities, Log, TEXT("UGA_SpawnBrick: 충전 리필 중지 (충전 완료)"));
+}
+
+void UGA_SpawnBrick::OnSpawnBrickChargesChanged(const FOnAttributeChangeData& Data)
+{
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	if (!ASC)
+	{
+		return;
+	}
+
+	// 리필로 충전이 증가했으면 리필 시작 시각 갱신 (다음 리필까지의 남은 시간 계산용)
+	if (Data.NewValue > Data.OldValue && RefillEffectHandle.IsValid())
+	{
+		if (UWorld* World = GetWorld())
+		{
+			RefillStartWorldTime = World->GetTimeSeconds();
+		}
+	}
+
+	// 서버에서만 리필 관리
+	if (!CurrentActorInfo || !CurrentActorInfo->IsNetAuthority())
+	{
+		return;
+	}
+
+	float MaxChargesValue = ASC->GetNumericAttribute(UWjWorldCharacterAttributeSet::GetMaxSpawnBrickChargesAttribute());
+
+	// 충전이 최대치에 도달하면 리필 GE 제거
+	if (Data.NewValue >= MaxChargesValue && RefillEffectHandle.IsValid())
+	{
+		StopChargeRefill();
+	}
+}
+
+// ---- 충전 조회 메서드 ----
+
+int32 UGA_SpawnBrick::GetCurrentCharges() const
+{
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	if (!ASC)
+	{
+		return 0;
+	}
+	return FMath::TruncToInt32(ASC->GetNumericAttribute(UWjWorldCharacterAttributeSet::GetSpawnBrickChargesAttribute()));
+}
+
+int32 UGA_SpawnBrick::GetMaxCharges() const
+{
+	return MaxCharges;
+}
+
+float UGA_SpawnBrick::GetChargeRefillTimeRemaining() const
+{
+	if (!RefillEffectHandle.IsValid() || RefillStartWorldTime <= 0.0)
+	{
+		return 0.f;
+	}
+
+	const UWorld* World = GetWorld();
+	if (!World)
+	{
+		return 0.f;
+	}
+
+	double Elapsed = World->GetTimeSeconds() - RefillStartWorldTime;
+	float Remaining = ChargeRefillInterval - static_cast<float>(Elapsed);
+	return FMath::Max(Remaining, 0.f);
+}
+
+FText UGA_SpawnBrick::GetPromptDescription() const
+{
+	return NSLOCTEXT("AbilityPrompt", "SpawnBrickDesc", "벽돌을 배치할 위치를 선택하세요");
 }

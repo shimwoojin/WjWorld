@@ -13,7 +13,7 @@
  * - 벽돌 타입별 처리: Standard(파괴 불가), Explosive(폭발), Moving/Destructible(파괴)
  * - 단발성: ActivateAbility → 공격 처리 → 즉시 EndAbility
  */
-UCLASS()
+UCLASS(Abstract)
 class WJWORLD_API UGA_NormalAttack : public UWjWorldGameplayAbilityBase
 {
 	GENERATED_BODY()

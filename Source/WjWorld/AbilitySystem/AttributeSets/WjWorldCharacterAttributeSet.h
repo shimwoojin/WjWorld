@@ -15,6 +15,12 @@ class WJWORLD_API UWjWorldCharacterAttributeSet : public UWjWorldAttributeSetBas
 {
 	GENERATED_BODY()
 	
+public:
+	ATTRIBUTE_ACCESSORS_BASIC(UWjWorldCharacterAttributeSet, MaxHP);
+	ATTRIBUTE_ACCESSORS_BASIC(UWjWorldCharacterAttributeSet, HP);
+	ATTRIBUTE_ACCESSORS_BASIC(UWjWorldCharacterAttributeSet, MaxSpawnBrickCharges);
+	ATTRIBUTE_ACCESSORS_BASIC(UWjWorldCharacterAttributeSet, SpawnBrickCharges);
+
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 
@@ -32,12 +38,23 @@ protected:
 	UFUNCTION()
 	virtual void OnRep_HP(const FGameplayAttributeData& OldHP);
 
+	UFUNCTION()
+	virtual void OnRep_MaxSpawnBrickCharges(const FGameplayAttributeData& OldMaxSpawnBrickCharges);
+
+	UFUNCTION()
+	virtual void OnRep_SpawnBrickCharges(const FGameplayAttributeData& OldSpawnBrickCharges);
+
 protected:
-	ATTRIBUTE_ACCESSORS_BASIC(UWjWorldCharacterAttributeSet, MaxHP)
 	UPROPERTY(BlueprintReadOnly, Category = "Property", ReplicatedUsing = OnRep_MaxHP, Meta = (AllowPrivateAccess = "True"))
 	FGameplayAttributeData MaxHP;
 
-	ATTRIBUTE_ACCESSORS_BASIC(UWjWorldCharacterAttributeSet, HP)
 	UPROPERTY(BlueprintReadOnly, Category = "Property", ReplicatedUsing = OnRep_HP, Meta = (AllowPrivateAccess = "True"))
 	FGameplayAttributeData HP;
+
+	// SpawnBrick 충전 시스템
+	UPROPERTY(BlueprintReadOnly, Category = "Property", ReplicatedUsing = OnRep_MaxSpawnBrickCharges, Meta = (AllowPrivateAccess = "True"))
+	FGameplayAttributeData MaxSpawnBrickCharges;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Property", ReplicatedUsing = OnRep_SpawnBrickCharges, Meta = (AllowPrivateAccess = "True"))
+	FGameplayAttributeData SpawnBrickCharges;
 };

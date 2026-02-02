@@ -19,13 +19,15 @@ class AWjWorldBrickPreviewActor;
  * - Confirm: 프리뷰 위치에 같은 타입의 벽돌 새로 스폰
  * - Cancel: 원래 위치에 같은 타입의 벽돌 복원
  */
-UCLASS()
+UCLASS(Abstract)
 class WJWORLD_API UGA_LiftBrick : public UWjWorldGameplayAbilityBase
 {
 	GENERATED_BODY()
 
 public:
 	UGA_LiftBrick();
+
+	virtual FText GetPromptDescription() const override;
 
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;

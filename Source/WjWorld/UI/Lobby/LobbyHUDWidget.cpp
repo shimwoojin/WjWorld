@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "UI/Lobby/LobbyHUDWidget.h"
+#include "UI/Profile/PlayerProfileWidget.h"
 #include "Components/Button.h"
 #include "Core/Local/Lobby/WjWorldGameModeLobby.h"
 #include "Kismet/GameplayStatics.h"
@@ -30,6 +31,12 @@ void ULobbyHUDWidget::NativeConstruct()
 	if (DirectConnectButton)
 	{
 		DirectConnectButton->OnClicked.AddDynamic(this, &ULobbyHUDWidget::OnDirectConnectClicked);
+	}
+
+	// 프로필 버튼
+	if (ProfileButton)
+	{
+		ProfileButton->OnClicked.AddDynamic(this, &ULobbyHUDWidget::OnProfileClicked);
 	}
 
 	UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: NativeConstruct completed"));
@@ -88,4 +95,37 @@ void ULobbyHUDWidget::OnSettingsClicked()
 {
 	UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: Settings button clicked"));
 	// TODO: 설정 UI 표시
+}
+
+void ULobbyHUDWidget::OnProfileClicked()
+{
+	UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: Profile button clicked"));
+
+	if (!ProfileWidgetClass)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("LobbyHUDWidget: ProfileWidgetClass is not set"));
+		return;
+	}
+
+	// 이미 열려있으면 닫기
+	if (ProfileWidgetInstance && ProfileWidgetInstance->GetVisibility() == ESlateVisibility::Visible)
+	{
+		ProfileWidgetInstance->SetVisibility(ESlateVisibility::Collapsed);
+		return;
+	}
+
+	// 인스턴스가 없으면 생성
+	if (!ProfileWidgetInstance)
+	{
+		ProfileWidgetInstance = CreateWidget<UPlayerProfileWidget>(GetOwningPlayer(), ProfileWidgetClass);
+		if (ProfileWidgetInstance)
+		{
+			ProfileWidgetInstance->AddToViewport(100);
+		}
+	}
+
+	if (ProfileWidgetInstance)
+	{
+		ProfileWidgetInstance->ShowLocalProfile();
+	}
 }

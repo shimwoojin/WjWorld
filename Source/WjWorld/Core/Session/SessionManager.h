@@ -65,7 +65,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Session")
 	bool StartSession();
 
-	//~ Session 종료
+	//~ Session 종료 (InProgress → Ended)
+	/**
+	 * 세션 종료 (InProgress 상태를 Ended로 변경)
+	 * Play → WaitingRoom 복귀 시 호출하여 다시 StartSession 가능하게 함
+	 * @return 성공 여부
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Session")
+	bool EndSession();
+
+	//~ Session 파괴
 	/**
 	 * 세션 나가기/방 파괴
 	 * @return 성공 여부
@@ -109,6 +118,27 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Session|Events")
 	FOnRoomStarted OnRoomStartedEvent;
 
+	UPROPERTY(BlueprintAssignable, Category = "Session|Events")
+	FOnRoomEnded OnRoomEndedEvent;
+
+	//~ 호스트 마이그레이션 지원
+	/**
+	 * 마이그레이션 세션 생성 (MIGRATION_TAG 커스텀 세팅 포함)
+	 * @param Settings 방 설정
+	 * @param MigrationTag 마이그레이션 식별 태그
+	 * @return 성공 여부
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Session")
+	bool CreateMigrationSession(const FRoomSettings& Settings, const FString& MigrationTag);
+
+	/**
+	 * 마이그레이션 세션 검색 (MIGRATION_TAG로 필터링)
+	 * @param MigrationTag 검색할 마이그레이션 태그
+	 * @return 성공 여부
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Session")
+	bool FindMigrationSession(const FString& MigrationTag);
+
 private:
 	//~ Online Subsystem 콜백
 	void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
@@ -116,6 +146,7 @@ private:
 	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
 	void OnDestroySessionComplete(FName SessionName, bool bWasSuccessful);
 	void OnStartSessionComplete(FName SessionName, bool bWasSuccessful);
+	void OnEndSessionComplete(FName SessionName, bool bWasSuccessful);
 
 	//~ 헬퍼 함수
 	/** SearchResult를 FRoomInfo로 변환 */
@@ -140,4 +171,7 @@ private:
 
 	/** 마지막으로 참가한 방 인덱스 */
 	int32 LastJoinedRoomIndex = -1;
+
+	/** 마이그레이션 검색 시 사용할 태그 */
+	FString PendingMigrationTag;
 };

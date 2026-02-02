@@ -51,12 +51,32 @@ void AWjWorldGameModeWaitingRoom::BeginPlay()
 	if (HasAuthority())
 	{
 		UWjWorldGameInstance* GameInstance = Cast<UWjWorldGameInstance>(GetGameInstance());
-		if (GameInstance && GameInstance->GetSessionManager())
+		if (GameInstance)
 		{
+			// Safety: 이전 세션 상태가 InProgress면 종료 (게임 재시작 버그 방지)
+			GameInstance->EndGame();
+
 			AWjWorldGameStateWaitingRoom* WjGameState = GetGameState<AWjWorldGameStateWaitingRoom>();
-			if (WjGameState)
+
+			// 마이그레이션 후 진입인지 확인
+			bool bIsMigrationEntry = GameInstance->IsMigrating()
+				|| GameInstance->GetMigrationState() == EHostMigrationState::Complete;
+
+			if (bIsMigrationEntry && WjGameState)
 			{
-				// SessionManager에서 방 설정 가져오기
+				// 마이그레이션 후 복구: 캐시된 방 설정 사용
+				const FRoomSettings& CachedSettings = GameInstance->GetMigrationContext().CachedRoomSettings;
+				WjGameState->InitializeRoomSettings(CachedSettings);
+
+				UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameModeWaitingRoom: Migration recovery - restored room settings '%s'"),
+					*CachedSettings.RoomName);
+
+				// 마이그레이션 컨텍스트 리셋
+				GameInstance->GetMigrationContext().Reset();
+			}
+			else if (GameInstance->GetSessionManager() && WjGameState)
+			{
+				// 일반 진입: SessionManager에서 방 설정 가져오기
 				const FRoomSettings& Settings = GameInstance->GetSessionManager()->GetLastRoomSettings();
 				WjGameState->InitializeRoomSettings(Settings);
 
@@ -64,12 +84,12 @@ void AWjWorldGameModeWaitingRoom::BeginPlay()
 			}
 			else
 			{
-				UE_LOG(LogWjWorld, Error, TEXT("WjWorldGameModeWaitingRoom: Failed to get GameStateWaitingRoom"));
+				UE_LOG(LogWjWorld, Error, TEXT("WjWorldGameModeWaitingRoom: Failed to initialize GameState"));
 			}
 		}
 		else
 		{
-			UE_LOG(LogWjWorld, Error, TEXT("WjWorldGameModeWaitingRoom: GameInstance or SessionManager is null"));
+			UE_LOG(LogWjWorld, Error, TEXT("WjWorldGameModeWaitingRoom: GameInstance is null"));
 		}
 	}
 

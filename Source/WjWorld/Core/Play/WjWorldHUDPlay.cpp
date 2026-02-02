@@ -2,6 +2,7 @@
 
 
 #include "Core/Play/WjWorldHUDPlay.h"
+#include "Core/GameRule/WjWorldGameRuleBase.h"
 
 #include "UI/HUD/GameplayGlobalHUDWidget.h"
 
@@ -19,6 +20,28 @@ void AWjWorldHUDPlay::ShowGameResultText(const FString& ResultText, float Durati
     {
         GlobalHUDWidget->ShowGameResultText(ResultText, Duration);
     }
+}
+
+void AWjWorldHUDPlay::ShowGameRuleHUDWidget(TSubclassOf<UWjWorldGameRuleBase> GameRuleClass)
+{
+    if (GameRuleHUDWidget)
+    {
+        GameRuleHUDWidget->RemoveFromParent();
+        GameRuleHUDWidget = nullptr;
+    }
+
+    if (GameRuleHUDWidgetClasses.Contains(GameRuleClass))
+    {
+        TSubclassOf<UWjWorldUserWidgetBase> WidgetClass = GameRuleHUDWidgetClasses[GameRuleClass];
+        if (WidgetClass)
+        {
+            GameRuleHUDWidget = CreateWidget<UWjWorldUserWidgetBase>(GetWorld(), WidgetClass);
+            if (GameRuleHUDWidget)
+            {
+                GameRuleHUDWidget->AddToViewport();
+            }
+        }
+	}
 }
 
 void AWjWorldHUDPlay::BeginPlay()
