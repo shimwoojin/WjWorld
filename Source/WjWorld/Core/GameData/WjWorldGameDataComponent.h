@@ -9,7 +9,7 @@
 #include "WjWorldGameDataComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class WJWORLD_API UWjWorldGameDataComponent : public UActorComponent
 {
 	GENERATED_BODY()

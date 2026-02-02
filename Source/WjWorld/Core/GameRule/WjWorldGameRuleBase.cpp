@@ -15,14 +15,6 @@ void UWjWorldGameRuleBase::Initialize(AWjWorldGameModePlay* InGameMode)
 	if (InGameMode)
 	{
 		GameMode = InGameMode;
-		//GameState = InGameMode->GetGameState<AWjWorldGameStatePlay>();
-		//
-		//UE_LOG(LogWjWorld, Log, TEXT("GameState Valid ? : %d"), (int32)GameState.IsValid());
-		//
-		//if (GameState.IsValid() && GameDataComponentClass)
-		//{
-		//	GameState->AddGameDataComponent(GameDataComponentClass);
-		//}
 	}
 
 	UE_LOG(LogWjWorld, Log, TEXT("GameRuleBase: Initialized"));
@@ -31,6 +23,15 @@ void UWjWorldGameRuleBase::Initialize(AWjWorldGameModePlay* InGameMode)
 void UWjWorldGameRuleBase::OnGameReady()
 {
 	if (!HasAuthority()) return;
+
+	// GameState는 InitGameState() (PreInitializeComponents) 이후에 생성되므로
+	// Initialize() 시점에는 없고, OnGameReady() (StartPlay) 시점에 사용 가능
+	AWjWorldGameStatePlay* GameState = GetGameStatePlay();
+	if (GameState && GameDataComponentClass)
+	{
+		GameState->AddGameDataComponent(GameDataComponentClass);
+		UE_LOG(LogWjWorld, Log, TEXT("GameRuleBase: GameDataComponent added to GameState"));
+	}
 
 	UWorld* World = GetWorld();
 	if (World)

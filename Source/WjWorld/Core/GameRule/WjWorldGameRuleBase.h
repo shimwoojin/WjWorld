@@ -15,7 +15,7 @@ class UWjWorldGameDataComponent;
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class WJWORLD_API UWjWorldGameRuleBase : public UObject, public FTickableGameObject
 {
 	GENERATED_BODY()

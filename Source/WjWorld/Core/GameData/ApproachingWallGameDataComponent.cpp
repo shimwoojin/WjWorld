@@ -17,4 +17,7 @@ void UApproachingWallGameDataComponent::GetLifetimeReplicatedProps(TArray<FLifet
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(UApproachingWallGameDataComponent, SecondsForNextWaves);
+	DOREPLIFETIME(UApproachingWallGameDataComponent, CurrentLevel);
+	DOREPLIFETIME(UApproachingWallGameDataComponent, AlivePlayerCount);
+	DOREPLIFETIME(UApproachingWallGameDataComponent, TotalPlayerCount);
 }

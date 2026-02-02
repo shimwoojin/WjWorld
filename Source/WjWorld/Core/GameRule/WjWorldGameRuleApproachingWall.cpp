@@ -6,6 +6,7 @@
 #include "Core/Play/WjWorldCharacterPlay.h"
 #include "Core/Play/WjWorldGameStatePlay.h"
 #include "Core/GameData/ApproachingWallPlayerDataComponent.h"
+#include "Core/GameData/ApproachingWallGameDataComponent.h"
 #include "GamePlay/Wall/WjWorldBrickSpawner.h"
 #include "GamePlay/Wall/WjWorldWallManager.h"
 
@@ -20,13 +21,6 @@ void UWjWorldGameRuleApproachingWall::Initialize(AWjWorldGameModePlay* InGameMod
 	{
 		UE_LOG(LogWjWorld, Error, TEXT("Failed to create BrickSpawner in GameRuleApporachingWall"));
 	}
-
-	BrickSpawner->OnWallSpawnFinished.AddLambda([this](const TArray<FVector>& SpawnedBrickPositions, const FWjWorldWallDescription& Desc) {
-		if (!HasAuthority()) return;
-		UE_LOG(LogWjWorld, Log, TEXT("Bricks Spawned. Total Bricks: %d"), SpawnedBrickPositions.Num());
-		bIsWallSpawned = true;
-		InternalGameReadyProcess();
-		});
 
 	WallManager = UWjWorldWallManager::CreateWallManager(this);
 	if (!WallManager)
@@ -107,6 +101,8 @@ void UWjWorldGameRuleApproachingWall::OnPlayerJoined(AWjWorldPlayerStatePlay* Pl
 	AlivePlayerCount++;
 	TotalPlayerCount++;
 
+	UpdateGameData();
+
 	UE_LOG(LogWjWorld, Log, TEXT("UWjWorldGameRuleApproachingWall::OnPlayerJoined - Player: %s, Alive: %d, Total: %d"),
 		*Player->GetPlayerName(), AlivePlayerCount, TotalPlayerCount);
 }
@@ -123,6 +119,8 @@ void UWjWorldGameRuleApproachingWall::OnPlayerLeft(AWjWorldPlayerStatePlay* Play
 		AlivePlayerCount--;
 	}
 	TotalPlayerCount--;
+
+	UpdateGameData();
 
 	UE_LOG(LogWjWorld, Log, TEXT("UWjWorldGameRuleApproachingWall::OnPlayerLeft - Player: %s, Alive: %d, Total: %d"),
 		*Player->GetPlayerName(), AlivePlayerCount, TotalPlayerCount);
@@ -158,6 +156,8 @@ void UWjWorldGameRuleApproachingWall::OnPlayerEliminated(AWjWorldCharacterPlay* 
 		UE_LOG(LogWjWorld, Log, TEXT("UWjWorldGameRuleApproachingWall::OnPlayerEliminated - Player: %s eliminated. Alive: %d"),
 			*PlayerState->GetPlayerName(), AlivePlayerCount);
 	}
+
+	UpdateGameData();
 
 	// 승리 조건 체크
 	if (bIsGameStarted && CheckWinCondition())
@@ -201,6 +201,7 @@ AWjWorldPlayerStatePlay* UWjWorldGameRuleApproachingWall::GetWinner() const
 void UWjWorldGameRuleApproachingWall::Tick(float DeltaTime)
 {
 	if (!HasAuthority()) return;
+	if (!bGameStartInternalProcessDone) return;
 
 	TimeSinceLastBrickMoveSignal += DeltaTime;
 
@@ -223,6 +224,7 @@ void UWjWorldGameRuleApproachingWall::Tick(float DeltaTime)
 			}
 
 			GameLevelUp(BrickMoveSignalCount);
+			UpdateGameData();
 
 			if (PredictNextLevelIsLast())
 			{
@@ -276,7 +278,9 @@ void UWjWorldGameRuleApproachingWall::InternalGameReadyProcess()
 				if (PC)
 				{
 					PC->ClientMessage(TEXT("Game Ready! Wall has spawned."));
-					PC->GetPawn()->SetActorLocation(SpawnSafeZones.IsValidIndex(SafeZoneIndex++) ? SpawnSafeZones[SafeZoneIndex] : FVector::ZeroVector);
+					FVector SpawnLocation = SpawnSafeZones.IsValidIndex(SafeZoneIndex) ? SpawnSafeZones[SafeZoneIndex] : FVector::ZeroVector;
+					SafeZoneIndex++;
+					PC->GetPawn()->SetActorLocation(SpawnLocation);
 				}
 			}
 		}
@@ -292,6 +296,8 @@ void UWjWorldGameRuleApproachingWall::InternalGameStartProcess()
 	if(bIsWallSpawned && bIsGameReady && bIsGameStarted && !bGameStartInternalProcessDone)
 	{
 		bGameStartInternalProcessDone = true;
+		TimeSinceLastBrickMoveSignal = 0.0f;
+		BrickMoveSignalCount = 0;
 
 		UE_LOG(LogWjWorld, Log, TEXT("Starting Game after Wall Spawned"));
 	}
@@ -315,6 +321,19 @@ void UWjWorldGameRuleApproachingWall::OnWallSpawnFinished(const TArray<FVector>&
 		CurrentSafeZonePoints.Append(BrickSpawner->GetStartSafeZonePoints());
 		BrickSpawner->OnWallSpawnFinished.RemoveAll(this);
 	}
+}
+
+void UWjWorldGameRuleApproachingWall::UpdateGameData()
+{
+	AWjWorldGameStatePlay* GameState = GetGameStatePlay();
+	if (!GameState) return;
+
+	UApproachingWallGameDataComponent* GameData = GameState->GetGameData<UApproachingWallGameDataComponent>();
+	if (!GameData) return;
+
+	GameData->SetCurrentLevel(BrickMoveSignalCount);
+	GameData->SetAlivePlayerCount(AlivePlayerCount);
+	GameData->SetTotalPlayerCount(TotalPlayerCount);
 }
 
 void UWjWorldGameRuleApproachingWall::ShrinkSafeZones(bool& bAnySafeZoneExist)

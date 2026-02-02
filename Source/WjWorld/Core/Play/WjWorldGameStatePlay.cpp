@@ -82,6 +82,7 @@ UWjWorldGameDataComponent* AWjWorldGameStatePlay::AddGameDataComponent(TSubclass
 		GameDataComponent = NewObject<UWjWorldGameDataComponent>(this, InDataComponentClass);
 		AddInstanceComponent(GameDataComponent);
 		GameDataComponent->RegisterComponent();
+		GameDataComponent->SetIsReplicated(true);
 
 		return GameDataComponent;
 	}

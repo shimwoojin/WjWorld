@@ -56,7 +56,9 @@ private:
 	void OnWallSpawnFinished(const TArray<FVector>& InSafeZones, const FWjWorldWallDescription& Desc);
 
 	void ShrinkSafeZones(bool& bAnySafeZoneExist);
-	virtual bool PredictNextLevelIsLast() override;;
+	virtual bool PredictNextLevelIsLast() override;
+
+	void UpdateGameData();
 
 protected:
 	UPROPERTY()

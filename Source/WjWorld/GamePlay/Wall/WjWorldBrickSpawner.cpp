@@ -49,9 +49,6 @@ AWjWorldBrickActor* UWjWorldBrickSpawner::SpawnBrickActor(UWorld* World, const F
 			BrickProperties.Size);
 
 		BrickActor->FinishSpawning(FTransform(BrickPosition));
-
-		UE_LOG(LogWjWorld, Log, TEXT("Spawned Brick at Row: %d, Col: %d, Type: %d, Position : %s"),
-			RowIndex, ColumnIndex, (int32)BrickProperties.BrickType, *BrickPosition.ToString());
 	}
 
 	return BrickActor;
@@ -123,8 +120,6 @@ const TArray<FIntPoint>& UWjWorldBrickSpawner::GetStartSafeZonePoints()
 
 void UWjWorldBrickSpawner::Tick(float DeltaTime)
 {
-	//if (bTickable == false) return;
-
 	UWorld* World = GetWorld();
 	if (World == nullptr) return;
 
