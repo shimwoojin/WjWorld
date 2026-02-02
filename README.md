@@ -28,8 +28,9 @@ Steam에 무료로 출시하며 코스메틱 아이템을 유료 판매합니다
 ```
 Source/WjWorld/
 ├── AbilitySystem/                     # Gameplay Ability System
-│   ├── Abilities/                     # 어빌리티 클래스들
-│   ├── AttributeSets/                 # 어트리뷰트 셋
+│   ├── Abilities/                     # 어빌리티 (NormalAttack, SpawnBrick, LiftBrick)
+│   ├── AttributeSets/                 # 어트리뷰트 셋 (HP, 충전 등)
+│   ├── Effects/                       # GameplayEffect (쿨다운, 충전 비용)
 │   └── WjWorldAbilitySystemComponent  # ASC 컴포넌트
 ├── Core/                              # 핵심 게임 로직
 │   ├── Base/                          # 베이스 클래스들
@@ -50,6 +51,9 @@ Source/WjWorld/
 │   ├── WjWorldCosmeticSubsystem       # 인벤토리/로드아웃 관리
 │   ├── WjWorldCosmeticDataAsset       # 아이템 카탈로그 (ItemId ↔ SteamItemDefId)
 │   └── WjWorldPurchaseSubsystem       # Steam 마이크로트랜잭션 구매
+├── Stats/                             # 플레이어 스탯 시스템
+│   ├── WjWorldStatsSubsystem          # Steam User Stats 래핑
+│   └── WjWorldStatTypes               # 스탯 타입 정의
 ├── Setting/                           # 개발자 설정
 │   └── WjWorldDeveloperSettings       # BP 설정용 DeveloperSettings
 ├── DataAsset/                         # 데이터 에셋
@@ -60,6 +64,10 @@ Source/WjWorld/
 │   └── Wall/                          # Approaching Wall 미니게임
 ├── Network/                           # 네트워크/패킷 관련
 └── UI/                                # UI 위젯들
+    ├── Ability/                       # 어빌리티 UI (슬롯, 프롬프트)
+    ├── Profile/                       # 플레이어 프로필 (3D 프리뷰 + 스탯)
+    ├── HUD/                           # 게임플레이 HUD
+    └── ...                            # Intro, Login, Lobby, Session, WaitingRoom 등
 ```
 
 ## 주요 클래스 계층
@@ -96,11 +104,20 @@ UWjWorldGameRuleBase
 └── UWjWorldGameRuleApproachingWall   # Approaching Wall 미니게임
 ```
 
+### Gameplay Ability
+```
+UWjWorldGameplayAbilityBase
+├── UGA_NormalAttack               # 4방향 벽돌 공격
+├── UGA_SpawnBrick                 # 충전 기반 벽돌 배치
+└── UGA_LiftBrick                  # 벽돌 이동/재배치
+```
+
 ### Subsystem (GameInstanceSubsystem)
 ```
 UGameInstanceSubsystem
 ├── UWjWorldCosmeticSubsystem         # 인벤토리/로드아웃 관리
-└── UWjWorldPurchaseSubsystem         # Steam 구매 처리
+├── UWjWorldPurchaseSubsystem         # Steam 구매 처리
+└── UWjWorldStatsSubsystem            # 플레이어 스탯 관리
 ```
 
 ### UI Widget
@@ -111,6 +128,10 @@ UWjWorldUserWidgetBase
 ├── ULobbyHUDWidget
 ├── UWaitingRoomHUDWidget
 ├── UGameplayGlobalHUDWidget        # 게임플레이 HUD
+├── UApproachingWallHUDWidget       # Approaching Wall 전용 HUD
+├── UAbilitySlotWidget              # 어빌리티 슬롯 (쿨다운/충전)
+├── UAbilityPromptWidget            # Confirm/Cancel 프롬프트
+├── UPlayerProfileWidget            # 플레이어 프로필 (3D 프리뷰 + 스탯)
 ├── UCreateRoomWindow
 ├── URoomListWindow
 └── UInteractionWidget
@@ -145,12 +166,31 @@ GameplayTag 기반 타입 세이프 데이터 저장 시스템.
 - 12초마다 레벨업, 벽이 안쪽으로 이동
 - 이동 시간: 5초 → 1초 (10레벨 동안 점진적 감소)
 - Flood Fill 알고리즘으로 안전 구역 계산
+- 타일 폭탄 신호 시스템 (3초 차징, 노랑→빨강 색상 전환)
 
 **주요 클래스:**
 - `WjWorldBrickSpawner` - 비동기 벽돌 스폰 (8개/틱)
 - `WjWorldBrickMovement` - 개별 벽돌 이동 로직
 - `WjWorldWallManager` - 벽 이동 진행 관리
+- `WjWorldTileActor` - 안전 구역 타일 (폭탄 신호, 방향별 오버랩)
+- `WjWorldBrickPreviewActor` - 어빌리티 배치 프리뷰 (유효/무효 색상)
 - `WjWorldWallDescriptionDataAsset` - 벽 레이아웃 데이터
+
+### Gameplay Ability System
+GAS 기반 어빌리티 시스템. `UWjWorldGameplayAbilityBase`에서 공통 기능 제공.
+
+**공통 기능:**
+- AbilityName, AbilityIcon (UI 메타데이터)
+- 충전 시스템 인터페이스 (IsChargeBased, GetCurrentCharges, GetMaxCharges)
+- GetPromptDescription() (어빌리티별 프롬프트 텍스트)
+
+**어빌리티:**
+- `GA_NormalAttack` - 4방향 스냅(Yaw 기반) 벽돌 공격, BrickType별 처리
+- `GA_SpawnBrick` - 충전 기반 벽돌 배치, Preview → Confirm/Cancel 패턴
+- `GA_LiftBrick` - 벽돌 재배치, Cancel 시 원래 위치 복원
+
+**어트리뷰트:** HP, MaxSpawnBrickCharges, SpawnBrickCharges
+**이펙트:** GE_AbilityCooldown (쿨다운), GE_SpawnBrickChargeCost (충전 비용)
 
 ### 코스메틱 시스템
 Steam 무료 출시 후 유료 코스메틱 판매를 위한 시스템.
@@ -166,13 +206,31 @@ Steam 무료 출시 후 유료 코스메틱 판매를 위한 시스템.
 
 **리플리케이션 흐름:**
 ```
-CosmeticSubsystem → PlayerStatePlay (Replicated) → CosmeticComponent → 캐릭터 비주얼
+CosmeticSubsystem → PlayerStateBase (Replicated, 모든 모드) → CosmeticComponent → 캐릭터 비주얼
 ```
 
 ### 구매 시스템
 - `PurchaseSubsystem`을 통한 Steam MicroTransaction API 연동
 - 구매 상태 관리 (Idle → Pending → Completed/Failed)
 - 성공 시 인벤토리 자동 갱신
+
+### Stats 시스템
+Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용).
+
+**주요 기능:**
+- 로컬/원격 플레이어 스탯 읽기/쓰기
+- 미니게임별 스탯 자동 기록 (승/패/킬/게임 수)
+- 네임스페이스 기반 스탯 구조 (`WjWorldStats::ApproachingWall::Wins` 등)
+- 비동기 원격 플레이어 스탯 조회
+
+### 플레이어 프로필 시스템
+- `PlayerProfileWidget` - 3D 캐릭터 프리뷰 + 미니게임별 스탯 표시
+- `CharacterPreviewActor` - SceneCaptureComponent2D 기반 오프스크린 3D 렌더링 (256x512)
+- 비동기 코스메틱 메시 로드 및 스탯 로드
+
+### 어빌리티 UI
+- `AbilitySlotWidget` - 어빌리티 아이콘, 키바인딩, 쿨다운/충전 오버레이 표시
+- `AbilityPromptWidget` - Confirm/Cancel 키 이름 + 어빌리티 설명 표시 (WidgetComponent)
 
 ### Steam 빌드 설정
 - `WITH_STEAM` 매크로로 조건부 컴파일 (Win64 전용)
@@ -226,9 +284,9 @@ cd WjWorld
     ↓
 GameRule 초기화 → 카운트다운 → 게임 시작
     ↓
-게임 진행 (레벨업, 벽 이동)
+게임 진행 (레벨업, 벽 이동, 어빌리티 사용)
     ↓
-승리 조건 체크 → 결과 표시
+승리 조건 체크 → 결과 표시 → 스탯 자동 기록
     ↓
 대기실 복귀
 ```
@@ -255,18 +313,35 @@ GameRule 초기화 → 카운트다운 → 게임 시작
   - [x] 벽돌 이동 로직 (경로 탐색)
   - [x] 레벨 시스템 (12초 간격, 10레벨)
   - [x] 안전 구역 축소 알고리즘
-  - [x] 게임플레이 HUD (카운트다운, 결과 표시)
+  - [x] 타일 폭탄 신호 시스템 (3초 차징, 색상 전환)
+  - [x] 게임플레이 HUD (카운트다운, 결과 표시, GameRule별 HUD 매핑)
   - [x] 플레이어 사망/제거 로직 (bIsEliminated 리플리케이션)
+- [x] **게임플레이 어빌리티**
+  - [x] GA_NormalAttack (4방향 벽돌 공격)
+  - [x] GA_SpawnBrick (충전 기반 벽돌 배치, Preview + Confirm/Cancel)
+  - [x] GA_LiftBrick (벽돌 재배치, Cancel 시 복원)
+  - [x] 충전 시스템 (어트리뷰트 기반, GE 리필)
+  - [x] 벽돌 프리뷰 시스템 (유효/무효 색상)
+- [x] **어빌리티 UI**
+  - [x] AbilitySlotWidget (아이콘, 키바인딩, 쿨다운, 충전 표시)
+  - [x] AbilityPromptWidget (Confirm/Cancel 프롬프트)
 - [x] **코스메틱 시스템**
   - [x] 코스메틱 타입 정의 (슬롯, 로드아웃, 아이템 인스턴스)
   - [x] 코스메틱 컴포넌트 (비동기 에셋 로드, 슬롯별 메시 관리)
   - [x] 코스메틱 서브시스템 (인벤토리 캐시, 로드아웃, 로컬 저장)
   - [x] 코스메틱 카탈로그 데이터 에셋 (ItemId ↔ SteamItemDefId)
-  - [x] FCosmeticLoadout 리플리케이션 (TArray<FCosmeticSlotEntry> 기반)
+  - [x] FCosmeticLoadout 리플리케이션 (PlayerStateBase, 모든 모드)
 - [x] **구매 시스템** (PurchaseSubsystem, Steam MicroTransaction 연동)
+- [x] **스탯 시스템**
+  - [x] WjWorldStatsSubsystem (Steam User Stats + GConfig 폴백)
+  - [x] 미니게임별 스탯 자동 기록 (승/패/킬)
+  - [x] 비동기 원격 플레이어 스탯 조회
+- [x] **플레이어 프로필**
+  - [x] PlayerProfileWidget (3D 프리뷰 + 스탯 표시)
+  - [x] CharacterPreviewActor (SceneCaptureComponent2D)
 - [x] **Steam 빌드 설정** (조건부 컴파일, 플러그인, 모듈)
 - [x] **개발자 설정** (WjWorldDeveloperSettings)
-- [x] **로그 카테고리** (LogWjWorld, LogWjWorldAbilities, LogWjWorldCosmetic)
+- [x] **로그 카테고리** (LogWjWorld, LogWjWorldAbilities, LogWjWorldCosmetic, LogWjWorldStats)
 
 ### 진행 중
 - [ ] Steam Inventory 콜백 완전 구현
@@ -274,7 +349,6 @@ GameRule 초기화 → 카운트다운 → 게임 시작
 - [ ] 코스메틱 상점/인벤토리 UI 위젯
 - [ ] **Approaching Wall 완성**
   - [ ] 승리 조건 (최후 생존자)
-  - [ ] 플레이어 어빌리티 (이동, 공격)
   - [ ] 게임 결과 처리 및 대기실 복귀
 
 ### 예정
