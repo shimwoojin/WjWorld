@@ -362,6 +362,9 @@ void UGA_LiftBrick::OnConfirmCallback()
 		}
 	}
 
+	// 쿨다운 적용
+	ApplyCooldown(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo);
+
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 }
 
@@ -374,6 +377,9 @@ void UGA_LiftBrick::OnCancelCallback()
 	{
 		SpawnBrickAtLocation(OriginalBrickLocation);
 	}
+
+	// 쿨다운 적용 (Cancel 시에도 쿨다운 적용)
+	ApplyCooldown(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo);
 
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, true);
 }

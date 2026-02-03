@@ -144,6 +144,21 @@ void AWjWorldCharacterPlay::OnRep_PlayerState()
 			SetupDataAsset.LoadAsync(SetupDataLoadDel);
 		}
 	}
+
+	// 클라이언트에서 코스메틱 카탈로그 설정
+	if (CosmeticComponent)
+	{
+		if (UWjWorldCosmeticSubsystem* CosmeticSub = GetGameInstance()->GetSubsystem<UWjWorldCosmeticSubsystem>())
+		{
+			CosmeticComponent->SetCatalog(CosmeticSub->GetCatalog());
+		}
+	}
+
+	// Pawn이 설정되었으니 대기 중인 코스메틱 적용 시도
+	if (AWjWorldPlayerStatePlay* PS = GetPlayerState<AWjWorldPlayerStatePlay>())
+	{
+		PS->OnPawnSet(nullptr, this);
+	}
 }
 
 void AWjWorldCharacterPlay::PossessedBy(AController* NewController)
@@ -181,6 +196,8 @@ void AWjWorldCharacterPlay::PossessedBy(AController* NewController)
 			if (AWjWorldPlayerStatePlay* PS = GetPlayerState<AWjWorldPlayerStatePlay>())
 			{
 				PS->SetCosmeticLoadout(CosmeticSub->GetLoadout());
+				// 서버에서도 Pawn 설정 알림
+				PS->OnPawnSet(nullptr, this);
 			}
 		}
 	}

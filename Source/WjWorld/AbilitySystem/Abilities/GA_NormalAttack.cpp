@@ -108,6 +108,9 @@ void UGA_NormalAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 		}
 	}
 
+	// 쿨다운 적용
+	ApplyCooldown(Handle, ActorInfo, ActivationInfo);
+
 	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 }
 

@@ -34,11 +34,18 @@ public:
 
 	void AddGameDataComponent(TSubclassOf<UWjWorldGameDataComponent> InDataComponentClass);
 
+	/** Pawn이 설정되면 대기 중인 코스메틱 적용 (CharacterPlay에서 호출) */
+	void OnPawnSet(APawn* OldPawn, APawn* NewPawn);
+
 protected:
 	/** 코스메틱 로드아웃 업데이트 시 CharacterPlay의 CosmeticComponent에 적용 */
 	virtual void OnCosmeticLoadoutUpdated() override;
 
 private:
+	/** Pawn 없을 때 코스메틱 적용 대기 플래그 */
+	bool bPendingCosmeticApply = false;
+
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	TObjectPtr<UWjWorldAbilitySystemComponent> AbilitySystemComponent;
 

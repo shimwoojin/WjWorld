@@ -8,6 +8,11 @@ void UWjWorldCharacterAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeP
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+	// HP 리플리케이션
+	DOREPLIFETIME_CONDITION_NOTIFY(UWjWorldCharacterAttributeSet, MaxHP, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWjWorldCharacterAttributeSet, HP, COND_None, REPNOTIFY_Always);
+
+	// SpawnBrick 충전 리플리케이션
 	DOREPLIFETIME_CONDITION_NOTIFY(UWjWorldCharacterAttributeSet, MaxSpawnBrickCharges, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UWjWorldCharacterAttributeSet, SpawnBrickCharges, COND_None, REPNOTIFY_Always);
 }
@@ -15,6 +20,12 @@ void UWjWorldCharacterAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeP
 void UWjWorldCharacterAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
+
+	// HP를 [0, MaxHP] 범위로 클램프
+	if (Attribute == GetHPAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHP());
+	}
 
 	// SpawnBrickCharges를 [0, MaxSpawnBrickCharges] 범위로 클램프
 	if (Attribute == GetSpawnBrickChargesAttribute())

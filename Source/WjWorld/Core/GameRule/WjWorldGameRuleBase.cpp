@@ -93,8 +93,9 @@ void UWjWorldGameRuleBase::OnGameEnd()
 void UWjWorldGameRuleBase::OnPlayerJoined(AWjWorldPlayerStatePlay* Player)
 {
 	if (!HasAuthority()) return;
+	if (!Player) return;
 
-	if (Player && PlayerDataComponentClass)
+	if (PlayerDataComponentClass)
 	{
 		Player->AddGameDataComponent(PlayerDataComponentClass);
 	}
