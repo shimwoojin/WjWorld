@@ -37,14 +37,15 @@ Source/WjWorld/
 │   ├── Local/                         # 로컬 게임모드
 │   │   ├── Lobby/                     # 로비/허브
 │   │   │   ├── WjWorldGameModeLobby
+│   │   │   ├── WjWorldGameStateLobby  # 배치 오브젝트 리플리케이션
 │   │   │   ├── WjWorldCharacterLobby
-│   │   │   ├── WjWorldPlayerControllerLobby
+│   │   │   ├── WjWorldPlayerControllerLobby  # PlacementComponent 보유
 │   │   │   └── WjWorldHUDLobby
-│   │   └── WaitingRoom/               # 대기실
+│   │   └── WaitingRoom/               # 대기실 (Lobby 맵 + GameMode 오버라이드)
 │   │       ├── WjWorldGameModeWaitingRoom
 │   │       ├── WjWorldCharacterWaitingRoom
 │   │       ├── WjWorldPlayerControllerWaitingRoom
-│   │       ├── WjWorldGameStateWaitingRoom
+│   │       ├── WjWorldGameStateWaitingRoom  # GameStateLobby 상속
 │   │       └── WjWorldHUDWaitingRoom
 │   ├── Play/                          # 게임플레이 모드 (미니게임 공통)
 │   │   ├── WjWorldGameModePlay        # 게임플레이 게임모드
@@ -77,13 +78,21 @@ Source/WjWorld/
 │   ├── WjWorldStatsSubsystem          # Steam User Stats 래핑 (GameInstanceSubsystem)
 │   └── WjWorldStatTypes               # 스탯 타입 정의 (FMinigameStatEntry, FMinigameStatDescriptor)
 ├── Setting/                           # 개발자 설정
-│   └── WjWorldDeveloperSettings       # BP 설정용 (TileActorClass 등)
+│   └── WjWorldDeveloperSettings       # BP 설정용 (카탈로그 참조, TileActorClass 등)
 ├── DataAsset/                         # 데이터 에셋
-│   └── CharacterPlaySetupDataAsset    # 캐릭터 셋업 데이터
+│   ├── CharacterPlaySetupDataAsset    # 캐릭터 셋업 데이터
+│   ├── WjWorldMinigameDataAsset       # 미니게임 카탈로그 (GameModeId → GameRuleClass)
+│   └── WjWorldPlaceableObjectDataAsset  # 배치 오브젝트 카탈로그
+├── Save/                              # 저장 시스템
+│   └── WjWorldLayoutSaveGame          # 로비 배치 레이아웃 저장
 ├── GamePlay/                          # 게임플레이 시스템
 │   ├── Camera/                        # 카메라 시스템
 │   ├── Interact/                      # 상호작용
 │   │   └── InteractablePortal
+│   ├── Placement/                     # 로비 배치 시스템
+│   │   ├── WjWorldPlacementComponent  # 배치 핵심 로직 (PC에 부착)
+│   │   ├── WjWorldPlacementPreviewActor  # 배치 프리뷰 액터
+│   │   └── WjWorldPlacedObjectActor   # 배치된 오브젝트 액터
 │   ├── Quest/                         # 퀘스트 시스템
 │   │   ├── Quest
 │   │   ├── QuestInstance
@@ -107,7 +116,9 @@ Source/WjWorld/
     ├── WjWorldUserWidgetBase          # UI 베이스 클래스
     ├── Intro/IntroWindow
     ├── Login/LoginWindow
-    ├── Lobby/LobbyHUDWidget
+    ├── Lobby/
+    │   ├── LobbyHUDWidget
+    │   └── PlacementHUDWidget         # 배치 모드 HUD
     ├── Session/
     │   ├── CreateRoomWindow
     │   ├── RoomListWindow
@@ -129,12 +140,12 @@ Source/WjWorld/
 ```
 GameMode: AWjWorldGameModeBase → Intro, Login, Lobby, WaitingRoom, Play
 Character: AWjWorldCharacterBase → Lobby, WaitingRoom, Play (+ CosmeticComponent)
-PlayerController: AWjWorldPlayerControllerBase → Lobby, WaitingRoom, Play
-GameState: AWjWorldGameStateBase → WaitingRoom, Play
+PlayerController: AWjWorldPlayerControllerBase → Lobby (+ PlacementComponent), WaitingRoom, Play
+GameState: AWjWorldGameStateBase → GameStateLobby → GameStateWaitingRoom, GameStatePlay
 PlayerState: AWjWorldPlayerStateBase (+ FCosmeticLoadout) → Play (+ IAbilitySystemInterface)
 HUD: AWjWorldHUDBase → Lobby, WaitingRoom, Play
 UI Widget: UWjWorldUserWidgetBase → 각종 HUD 및 윈도우 위젯
-GameRule: UWjWorldGameRuleBase → ApproachingWall (미니게임 규칙)
+GameRule: UWjWorldGameRuleBase → ApproachingWall (미니게임 규칙, MinigameCatalog에서 조회)
 GameData: UWjWorldGameDataComponent → ApproachingWall 전용 데이터
 Ability: UWjWorldGameplayAbilityBase → GA_NormalAttack, GA_SpawnBrick, GA_LiftBrick
 Subsystem: UGameInstanceSubsystem → CosmeticSubsystem, PurchaseSubsystem, StatsSubsystem
@@ -147,13 +158,31 @@ Subsystem: UGameInstanceSubsystem → CosmeticSubsystem, PurchaseSubsystem, Stat
 - **라이프사이클**: `Initialize()` → `OnGameReady()` → `OnGameStart()` → `OnGameEndPredict()` → `OnGameEnd()`
 - **플레이어 이벤트**: `OnPlayerJoined()`, `OnPlayerLeft()`
 - **승리 조건**: `CheckWinCondition()`, `GetWinner()`
-- **Tickable**: `FTickableGameObject` 상속으로 프레임별 업데이트
+- **틱 처리**: `GameModePlay::Tick()`에서 `TickGameRule()` 직접 호출
+- **동적 조회**: `MinigameCatalog`에서 `GameModeId`로 `GameRuleClass` 조회 (BP_GameModePlay 단일 사용)
 
 ### GameData 컴포넌트 시스템
 게임/플레이어별 데이터를 관리하는 컴포넌트 시스템. GameplayTag 기반 타입 세이프 데이터 저장.
 - `GameStatePlay`에 게임 전체 데이터 (예: 웨이브 타이밍)
 - `PlayerStatePlay`에 플레이어별 데이터 (예: 점수, 상태)
 - 리플리케이션 지원
+
+### 미니게임 카탈로그 시스템
+`UWjWorldMinigameDataAsset` 기반 미니게임 정의 및 동적 조회.
+- **FWjWorldMinigameDefinition**: DisplayName, GameModeId, LevelPath, GameRuleClass, MapOptions
+- **FWjWorldMinigameMapOption**: 맵 변형 옵션 (예: 기본, 랜덤)
+- **동적 GameRule 조회**: `GameModePlay::InitGame()`에서 URL Options의 `GameModeId`로 카탈로그 조회
+- **DeveloperSettings 참조**: `MinigameCatalog` 소프트 참조
+
+### 로비 배치 시스템
+로비에서 오브젝트를 배치/삭제하고 저장하는 시스템. 멀티플레이어 지원.
+- **PlacementComponent**: `PlayerControllerLobby`에 부착, 배치 핵심 로직, EnhancedInput 바인딩
+- **PlacementPreviewActor**: 배치 프리뷰 (유효/무효 색상), `FStreamableManager` 비동기 메시 로드
+- **PlacedObjectActor**: 실제 배치된 오브젝트, 삭제 모드 하이라이트
+- **PlaceableObjectDataAsset**: 배치 가능 오브젝트 카탈로그 (`FPlaceableObjectDefinition`)
+- **LayoutSaveGame**: `USaveGame` 기반 레이아웃 저장/로드 (`LobbyLayout` 슬롯)
+- **GameStateLobby**: 배치 오브젝트 리플리케이션 (`TArray<FPlacedObjectSaveEntry>`)
+- **입력**: LMB(배치), R(회전), DEL(삭제), ESC(종료)
 
 ### Approaching Wall 미니게임
 첫 번째 미니게임. 벽이 점진적으로 다가오며 플레이어들이 안전 구역으로 이동해야 하는 PvP 게임.
@@ -228,7 +257,7 @@ Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용). `UWjWorldStatsSub
 - 퀘스트 시스템 기본 구조
 - 네트워크 패킷 구조
 - **게임플레이 모드 프레임워크** (Play 클래스 세트)
-- **GameRule 시스템** (미니게임 규칙 정의)
+- **GameRule 시스템** (미니게임 규칙 정의, MinigameCatalog 동적 조회)
 - **GameData 컴포넌트 시스템** (게임/플레이어 데이터)
 - **Approaching Wall 기본 구조** (벽돌 스폰, 이동, 레벨 시스템, 타일 폭탄 신호)
 - **게임플레이 HUD** (카운트다운, 결과 표시, GameRule별 HUD 위젯 매핑)
@@ -245,7 +274,12 @@ Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용). `UWjWorldStatsSub
 - **스탯 시스템** (WjWorldStatsSubsystem, 미니게임별 스탯, 자동 기록)
 - **플레이어 프로필** (PlayerProfileWidget, CharacterPreviewActor 3D 프리뷰)
 - **개발자 설정** (WjWorldDeveloperSettings)
-- **로그 카테고리** (LogWjWorld, LogWjWorldAbilities, LogWjWorldCosmetic, LogWjWorldStats)
+- **로그 카테고리** (LogWjWorld, LogWjWorldAbilities, LogWjWorldCosmetic, LogWjWorldStats, LogWjWorldPlacement)
+- **로비 배치 시스템** (PlacementComponent, PreviewActor, PlacedObjectActor, 저장/로드)
+- **GameStateLobby** (배치 오브젝트 멀티플레이어 리플리케이션)
+- **미니게임 카탈로그** (MinigameDataAsset, GameRule 동적 조회)
+- **WaitingRoom GameMode 오버라이드** (Lobby 맵 + `?game=` URL 옵션)
+- **대기실 Ready 상태 즉시 동기화** (OnReadyStateChanged 구독)
 
 ## 진행 중 / 미구현
 - Steam Inventory 콜백 완전 구현
@@ -277,15 +311,21 @@ Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용). `UWjWorldStatsSub
 
 ## 게임 플로우
 ```
-게임 시작 → 인트로 → 로그인 → 로비 → 방 생성/참가 → 대기실
+게임 시작 → 인트로 → 로그인 → 로비 (싱글)
     ↓
-GameModePlay 진입 (미니게임)
+방 생성 → OpenLevel(Lobby?game=WaitingRoom?Listen)
+    ↓
+대기실 (Lobby 맵 + WaitingRoom GameMode, 호스트 배치 오브젝트 표시)
+    ↓
+게임 시작 → ServerTravel(PlayMap?game=GameModePlay?GameModeId=xxx?MapOption=yyy)
+    ↓
+GameModePlay: MinigameCatalog에서 GameRuleClass 조회 → GameRule 생성
     ↓
 GameRule 초기화 → OnGameReady → 카운트다운 → OnGameStart
     ↓
-게임 진행 (Tick) → 승리 조건 체크 → OnGameEndPredict → OnGameEnd
+게임 진행 (TickGameRule) → 승리 조건 체크 → OnGameEndPredict → OnGameEnd
     ↓
-결과 표시 → 스탯 자동 기록 → 대기실 복귀
+결과 표시 → 스탯 자동 기록 → ServerTravel(Lobby?game=WaitingRoom) → 대기실 복귀
 ```
 
 ## 주요 데이터 흐름
@@ -355,4 +395,53 @@ StoreStats() (Steam API 또는 GConfig)
 PlayerProfileWidget (스탯 표시)
     ↓
 CharacterPreviewActor (3D 프리뷰)
+```
+
+### 로비 배치 시스템
+```
+[싱글 로비] LobbyHUD "배치 모드" 버튼
+    ↓
+PlacementComponent.EnterPlacementMode() → IMC_Placement 활성화
+    ↓
+카탈로그에서 오브젝트 선택 → PlacementPreviewActor 생성
+    ↓
+TickComponent: 마우스 트레이스 → 프리뷰 위치/유효성 갱신
+    ↓
+LMB: ConfirmPlacement() → PlacedObjectActor 스폰 + SaveLayout()
+    ↓
+LayoutSaveGame (LobbyLayout 슬롯) → 로컬 저장
+
+[멀티 대기실] GameModeWaitingRoom.BeginPlay()
+    ↓
+LoadHostLayoutToGameState() → 호스트 SaveGame 로드
+    ↓
+GameStateLobby.SetPlacedObjects() → 리플리케이션
+    ↓
+OnRep_PlacedObjects() → 모든 클라이언트에서 오브젝트 스폰
+```
+
+### 맵 전환 흐름
+```
+[방 생성]
+CreateRoomWindow.OnRoomCreated()
+    ↓
+OpenLevel("/Game/Map/02-1_Lobby?game=/Game/.../BP_GameModeWaitingRoom_C?Listen")
+    ↓
+Lobby 맵 + WaitingRoom GameMode로 Listen Server 시작
+
+[게임 시작]
+GameModeWaitingRoom.StartGame()
+    ↓
+MinigameCatalog.FindByGameModeId(Settings.GameMode) → LevelPath 조회
+    ↓
+ServerTravel("{LevelPath}?game=BP_GameModePlay_C?GameModeId={id}?MapOption={opt}")
+    ↓
+GameModePlay.InitGame(): URL Options 파싱 → GameRule 생성
+
+[게임 종료]
+GameRuleBase.OnGameEnd()
+    ↓
+ServerTravel("/Game/Map/02-1_Lobby?game=BP_GameModeWaitingRoom_C")
+    ↓
+대기실 복귀 (Lobby 맵 + WaitingRoom GameMode)
 ```
