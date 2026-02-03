@@ -39,6 +39,12 @@ void ULobbyHUDWidget::NativeConstruct()
 		ProfileButton->OnClicked.AddDynamic(this, &ULobbyHUDWidget::OnProfileClicked);
 	}
 
+	// 배치 모드 버튼
+	if (PlacementModeButton)
+	{
+		PlacementModeButton->OnClicked.AddDynamic(this, &ULobbyHUDWidget::OnPlacementModeClicked);
+	}
+
 	UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: NativeConstruct completed"));
 }
 
@@ -127,5 +133,20 @@ void ULobbyHUDWidget::OnProfileClicked()
 	if (ProfileWidgetInstance)
 	{
 		ProfileWidgetInstance->ShowLocalProfile();
+	}
+}
+
+void ULobbyHUDWidget::OnPlacementModeClicked()
+{
+	UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: Placement Mode button clicked"));
+
+	AWjWorldGameModeLobby* GameMode = Cast<AWjWorldGameModeLobby>(GetWorld()->GetAuthGameMode());
+	if (GameMode)
+	{
+		GameMode->EnterPlacementMode();
+	}
+	else
+	{
+		UE_LOG(LogWjWorld, Error, TEXT("LobbyHUDWidget: Failed to get WjWorldGameModeLobby"));
 	}
 }

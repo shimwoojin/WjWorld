@@ -7,6 +7,11 @@
 #include "Core/Base/WjWorldPlayerStateBase.h"
 #include "Core/WjWorldGameInstance.h"
 #include "Core/Session/SessionManager.h"
+#include "DataAsset/WjWorldMinigameDataAsset.h"
+#include "DataAsset/WjWorldPlaceableObjectDataAsset.h"
+#include "Save/WjWorldLayoutSaveGame.h"
+#include "Setting/WjWorldDeveloperSettings.h"
+#include "Kismet/GameplayStatics.h"
 #include "WjWorldLogCategories.h"
 
 AWjWorldGameModeWaitingRoom::AWjWorldGameModeWaitingRoom()
@@ -45,6 +50,15 @@ void AWjWorldGameModeWaitingRoom::BeginPlay()
 	{
 		PC->bShowMouseCursor = true;
 		PC->SetInputMode(FInputModeGameAndUI());
+	}
+
+	// 배치 카탈로그 로드 (서버/클라이언트 모두)
+	LoadPlacementCatalog();
+
+	// 서버에서만 레이아웃 로드
+	if (HasAuthority())
+	{
+		LoadHostLayoutToGameState();
 	}
 
 	// ⭐ GameState 초기화 (Server Only)
@@ -141,23 +155,122 @@ void AWjWorldGameModeWaitingRoom::StartGame()
 
 	// GameInstance를 통해 세션 시작
 	UWjWorldGameInstance* GameInstance = Cast<UWjWorldGameInstance>(GetGameInstance());
-	if (GameInstance)
+	if (!GameInstance)
 	{
-		bool bSuccess = GameInstance->StartGame();
-		if (bSuccess)
+		UE_LOG(LogWjWorld, Error, TEXT("WjWorldGameModeWaitingRoom: GameInstance is null"));
+		return;
+	}
+
+	bool bSuccess = GameInstance->StartGame();
+	if (!bSuccess)
+	{
+		UE_LOG(LogWjWorld, Error, TEXT("WjWorldGameModeWaitingRoom: Failed to start session"));
+		return;
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameModeWaitingRoom: Session start initiated"));
+
+	// SessionManager에서 RoomSettings 가져오기
+	FRoomSettings Settings;
+	if (GameInstance->GetSessionManager())
+	{
+		Settings = GameInstance->GetSessionManager()->GetLastRoomSettings();
+	}
+
+	// 카탈로그에서 LevelPath 조회
+	FString TravelURL;
+	const UWjWorldDeveloperSettings* DevSettings = GetDefault<UWjWorldDeveloperSettings>();
+	if (DevSettings && !DevSettings->MinigameCatalog.IsNull())
+	{
+		UWjWorldMinigameDataAsset* Catalog = DevSettings->MinigameCatalog.LoadSynchronous();
+		if (Catalog)
 		{
-			UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameModeWaitingRoom: Session start initiated"));
-			
-			// TODO: 게임 맵으로 이동
-			GetWorld()->ServerTravel("/Game/Map/03-1_ApproachingWall");
+			const FWjWorldMinigameDefinition* Def = Catalog->FindByGameModeId(FName(*Settings.GameMode));
+			if (Def)
+			{
+				// LevelPath + GameMode 명시적 지정 + GameModeId 전달 (GameRule 조회용)
+				TravelURL = FString::Printf(TEXT("%s?game=/Game/Core/Play/BP_GameModePlay.BP_GameModePlay_C?GameModeId=%s"),
+					*Def->LevelPath, *Settings.GameMode);
+
+				// MapOption을 URL 옵션으로 전달
+				if (!Settings.MapName.IsEmpty())
+				{
+					TravelURL += FString::Printf(TEXT("?MapOption=%s"), *Settings.MapName);
+				}
+
+				UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameModeWaitingRoom: Travel to '%s' (GameModeId: %s)"),
+					*TravelURL, *Settings.GameMode);
+			}
+			else
+			{
+				UE_LOG(LogWjWorld, Warning, TEXT("WjWorldGameModeWaitingRoom: GameModeId '%s' not found in catalog"), *Settings.GameMode);
+			}
 		}
-		else
-		{
-			UE_LOG(LogWjWorld, Error, TEXT("WjWorldGameModeWaitingRoom: Failed to start session"));
-		}
+	}
+
+	// 폴백: 카탈로그에서 못 찾으면 기본 경로 사용
+	if (TravelURL.IsEmpty())
+	{
+		TravelURL = TEXT("/Game/Map/03-1_ApproachingWall");
+		UE_LOG(LogWjWorld, Warning, TEXT("WjWorldGameModeWaitingRoom: Using fallback travel URL: %s"), *TravelURL);
+	}
+
+	GetWorld()->ServerTravel(TravelURL);
+}
+
+void AWjWorldGameModeWaitingRoom::LoadPlacementCatalog()
+{
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	if (!Settings || Settings->PlaceableObjectCatalog.IsNull())
+	{
+		UE_LOG(LogWjWorldPlacement, Log, TEXT("WjWorldGameModeWaitingRoom: No PlaceableObjectCatalog configured"));
+		return;
+	}
+
+	CachedPlacementCatalog = Settings->PlaceableObjectCatalog.LoadSynchronous();
+	if (!CachedPlacementCatalog)
+	{
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("WjWorldGameModeWaitingRoom: Failed to load PlaceableObjectCatalog"));
+		return;
+	}
+
+	// GameState에도 카탈로그 설정 (GameStateWaitingRoom은 GameStateLobby 상속)
+	AWjWorldGameStateWaitingRoom* WaitingRoomGameState = GetGameState<AWjWorldGameStateWaitingRoom>();
+	if (WaitingRoomGameState)
+	{
+		WaitingRoomGameState->SetCatalog(CachedPlacementCatalog);
+	}
+
+	UE_LOG(LogWjWorldPlacement, Log, TEXT("WjWorldGameModeWaitingRoom: Placement catalog loaded"));
+}
+
+void AWjWorldGameModeWaitingRoom::LoadHostLayoutToGameState()
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	AWjWorldGameStateWaitingRoom* WaitingRoomGameState = GetGameState<AWjWorldGameStateWaitingRoom>();
+	if (!WaitingRoomGameState)
+	{
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("WjWorldGameModeWaitingRoom: GameState not found"));
+		return;
+	}
+
+	// 호스트의 로컬 SaveGame 로드
+	UWjWorldLayoutSaveGame* SaveGame = Cast<UWjWorldLayoutSaveGame>(
+		UGameplayStatics::LoadGameFromSlot(TEXT("LobbyLayout"), 0)
+	);
+
+	if (SaveGame && SaveGame->PlacedObjects.Num() > 0)
+	{
+		WaitingRoomGameState->SetPlacedObjects(SaveGame->PlacedObjects);
+		UE_LOG(LogWjWorldPlacement, Log, TEXT("WjWorldGameModeWaitingRoom: Host layout loaded to GameState (%d objects)"),
+			SaveGame->PlacedObjects.Num());
 	}
 	else
 	{
-		UE_LOG(LogWjWorld, Error, TEXT("WjWorldGameModeWaitingRoom: GameInstance is null"));
+		UE_LOG(LogWjWorldPlacement, Log, TEXT("WjWorldGameModeWaitingRoom: No saved layout found for host"));
 	}
 }

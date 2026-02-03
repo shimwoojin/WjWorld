@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/Base/WjWorldGameStateBase.h"
+#include "Core/Local/Lobby/WjWorldGameStateLobby.h"
 #include "Network/SessionTypes.h"
 #include "WjWorldGameStateWaitingRoom.generated.h"
 
@@ -17,15 +17,16 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRoomInfoChanged, const FRoomSetti
 
 /**
  * 대기실 게임 상태 클래스
- * 
+ *
  * 역할:
+ * - GameStateLobby 상속: 배치 오브젝트 리플리케이션 기능
  * - 방 정보 동기화 (Replicated)
  * - 플레이어 목록 관리 (Replicated)
  * - 준비 상태 관리 (Replicated)
  * - 모든 클라이언트에서 접근 가능한 대기실 상태
  */
 UCLASS()
-class WJWORLD_API AWjWorldGameStateWaitingRoom : public AWjWorldGameStateBase
+class WJWORLD_API AWjWorldGameStateWaitingRoom : public AWjWorldGameStateLobby
 {
 	GENERATED_BODY()
 	
@@ -105,6 +106,9 @@ protected:
 	//~ PlayerState 이벤트 핸들러
 	UFUNCTION()
 	void OnPlayerNameUpdated(const FString& PlayerName);
+
+	UFUNCTION()
+	void OnPlayerReadyStateChanged(int32 PlayerID, bool bIsReady);
 
 private:
 	/** 플레이어 목록 변경 브로드캐스트 */

@@ -14,7 +14,7 @@ class AWjWorldCharacterPlay;
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class WJWORLD_API UWjWorldGameRuleApproachingWall : public UWjWorldGameRuleBase
 {
 	GENERATED_BODY()
@@ -46,7 +46,7 @@ public:
 	const FWjWorldWallDescription& GetWallDesc() const { return WallDesc; }
 
 protected:
-	virtual void Tick(float DeltaTime) override;
+	virtual void TickGameRule(float DeltaTime) override;
 
 private:
 	void InternalGameReadyProcess();

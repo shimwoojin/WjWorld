@@ -148,9 +148,12 @@ void AWjWorldGameStateWaitingRoom::AddPlayerState(APlayerState* PlayerState)
 	if (WjPS)
 	{
 		FString PlayerName = WjPS->GetPlayerName();
-		
+
 		// ⭐ PlayerName 업데이트 이벤트 구독
 		WjPS->OnPlayerNameUpdated.AddDynamic(this, &AWjWorldGameStateWaitingRoom::OnPlayerNameUpdated);
+
+		// ⭐ Ready 상태 변경 이벤트 구독
+		WjPS->OnReadyStateChanged.AddDynamic(this, &AWjWorldGameStateWaitingRoom::OnPlayerReadyStateChanged);
 
 		// ⭐ 이름이 비어있으면 아직 초기화 중 (나중에 OnPlayerNameUpdated 호출됨)
 		if (PlayerName.IsEmpty())
@@ -182,6 +185,7 @@ void AWjWorldGameStateWaitingRoom::RemovePlayerState(APlayerState* PlayerState)
 	{
 		// 이벤트 구독 해제
 		WjPS->OnPlayerNameUpdated.RemoveDynamic(this, &AWjWorldGameStateWaitingRoom::OnPlayerNameUpdated);
+		WjPS->OnReadyStateChanged.RemoveDynamic(this, &AWjWorldGameStateWaitingRoom::OnPlayerReadyStateChanged);
 
 		UE_LOG(LogWjWorld, Log, TEXT("GameStateWaitingRoom: Player removed - %s (ID: %d, Remaining: %d)"),
 			*WjPS->GetPlayerName(), WjPS->GetPlayerId(), GetPlayerCount() - 1);
@@ -211,9 +215,18 @@ void AWjWorldGameStateWaitingRoom::RemovePlayerState(APlayerState* PlayerState)
 
 void AWjWorldGameStateWaitingRoom::OnPlayerNameUpdated(const FString& PlayerName)
 {
-	UE_LOG(LogWjWorld, Warning, TEXT("GameStateWaitingRoom: OnPlayerNameUpdated called - %s"), *PlayerName);
+	UE_LOG(LogWjWorld, Log, TEXT("GameStateWaitingRoom: OnPlayerNameUpdated called - %s"), *PlayerName);
 
 	// 플레이어 목록 재브로드캐스트
+	BroadcastPlayerListChanged();
+}
+
+void AWjWorldGameStateWaitingRoom::OnPlayerReadyStateChanged(int32 PlayerID, bool bIsReady)
+{
+	UE_LOG(LogWjWorld, Log, TEXT("GameStateWaitingRoom: OnPlayerReadyStateChanged - PlayerID: %d, IsReady: %s"),
+		PlayerID, bIsReady ? TEXT("true") : TEXT("false"));
+
+	// 플레이어 목록 재브로드캐스트 (Ready 상태 포함)
 	BroadcastPlayerListChanged();
 }
 

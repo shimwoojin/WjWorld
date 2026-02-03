@@ -5,6 +5,7 @@
 #include "Core/Play/WjWorldPlayerStatePlay.h"
 #include "Core/Play/WjWorldCharacterPlay.h"
 #include "Core/Play/WjWorldGameStatePlay.h"
+#include "Core/Play/WjWorldGameModePlay.h"
 #include "Core/GameData/ApproachingWallPlayerDataComponent.h"
 #include "Core/GameData/ApproachingWallGameDataComponent.h"
 #include "GamePlay/Wall/WjWorldBrickSpawner.h"
@@ -44,9 +45,21 @@ void UWjWorldGameRuleApproachingWall::OnGameReady()
 	if(BrickSpawner)
 	{
 		BrickSpawner->OnWallSpawnFinished.AddUObject(this, &UWjWorldGameRuleApproachingWall::OnWallSpawnFinished);
-		BrickSpawner->SpawnBricksRandomMapAsync();
 
-		UE_LOG(LogWjWorld, Log, TEXT("UWjWorldGameRuleApproachingWall::OnGameReady >>> SpawnBricksRandomMapAsync"));
+		// MapOption에 따라 Random 또는 특정 WallName 스폰
+		AWjWorldGameModePlay* GameModePlay = GetGameModePlay();
+		FString CurrentMapOption = GameModePlay ? GameModePlay->GetMapOption() : FString();
+
+		if (CurrentMapOption.IsEmpty() || CurrentMapOption.Equals(TEXT("Random"), ESearchCase::IgnoreCase))
+		{
+			BrickSpawner->SpawnBricksRandomMapAsync();
+			UE_LOG(LogWjWorld, Log, TEXT("UWjWorldGameRuleApproachingWall::OnGameReady >>> SpawnBricksRandomMapAsync"));
+		}
+		else
+		{
+			BrickSpawner->SpawnBricksFromWallNameAsync(CurrentMapOption);
+			UE_LOG(LogWjWorld, Log, TEXT("UWjWorldGameRuleApproachingWall::OnGameReady >>> SpawnBricksFromWallNameAsync('%s')"), *CurrentMapOption);
+		}
 	}
 
 	InternalGameReadyProcess();
@@ -198,7 +211,7 @@ AWjWorldPlayerStatePlay* UWjWorldGameRuleApproachingWall::GetWinner() const
 	return WinnerPlayer.Get();
 }
 
-void UWjWorldGameRuleApproachingWall::Tick(float DeltaTime)
+void UWjWorldGameRuleApproachingWall::TickGameRule(float DeltaTime)
 {
 	if (!HasAuthority()) return;
 	if (!bGameStartInternalProcessDone) return;

@@ -2,6 +2,7 @@
 
 #include "Core/Local/Lobby/WjWorldHUDLobby.h"
 #include "UI/Lobby/LobbyHUDWidget.h"
+#include "UI/Lobby/PlacementHUDWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "WjWorldLogCategories.h"
 
@@ -15,6 +16,15 @@ AWjWorldHUDLobby::AWjWorldHUDLobby()
 	if (LobbyHUDWidgetBPClass.Succeeded())
 	{
 		LobbyHUDWidgetClass = LobbyHUDWidgetBPClass.Class;
+	}
+
+	static ConstructorHelpers::FClassFinder<UPlacementHUDWidget> PlacementHUDWidgetBPClass(
+		TEXT("/Game/UI/Blueprint/GamePlay/Placement/WBP_PlacementHUD")
+	);
+
+	if (PlacementHUDWidgetBPClass.Succeeded())
+	{
+		PlacementHUDWidgetClass = PlacementHUDWidgetBPClass.Class;
 	}
 }
 
@@ -64,4 +74,43 @@ void AWjWorldHUDLobby::HideLobbyHUD()
 		LobbyHUDWidgetInstance->RemoveFromParent();
 		UE_LOG(LogWjWorld, Log, TEXT("WjWorldHUDLobby: Lobby HUD hidden"));
 	}
+}
+
+void AWjWorldHUDLobby::ShowPlacementHUD(UWjWorldPlacementComponent* PlacementComponent)
+{
+	// 로비 HUD 숨기기
+	HideLobbyHUD();
+
+	if (!PlacementHUDWidgetClass)
+	{
+		UE_LOG(LogWjWorldPlacement, Error, TEXT("WjWorldHUDLobby: PlacementHUDWidgetClass is not set!"));
+		return;
+	}
+
+	// 이미 표시 중이면 스킵
+	if (PlacementHUDWidgetInstance && PlacementHUDWidgetInstance->IsInViewport())
+	{
+		return;
+	}
+
+	PlacementHUDWidgetInstance = CreateWidget<UPlacementHUDWidget>(GetWorld(), PlacementHUDWidgetClass);
+	if (PlacementHUDWidgetInstance)
+	{
+		PlacementHUDWidgetInstance->SetPlacementComponent(PlacementComponent);
+		PlacementHUDWidgetInstance->AddToViewport(0);
+		UE_LOG(LogWjWorldPlacement, Log, TEXT("WjWorldHUDLobby: Placement HUD displayed"));
+	}
+}
+
+void AWjWorldHUDLobby::HidePlacementHUD()
+{
+	if (PlacementHUDWidgetInstance && PlacementHUDWidgetInstance->IsInViewport())
+	{
+		PlacementHUDWidgetInstance->RemoveFromParent();
+		PlacementHUDWidgetInstance = nullptr;
+		UE_LOG(LogWjWorldPlacement, Log, TEXT("WjWorldHUDLobby: Placement HUD hidden"));
+	}
+
+	// 로비 HUD 복원
+	ShowLobbyHUD();
 }

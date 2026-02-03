@@ -19,13 +19,14 @@ UCLASS()
 class WJWORLD_API AWjWorldGameModePlay : public AWjWorldGameModeBase
 {
 	GENERATED_BODY()
-	
+
 public:
 	AWjWorldGameModePlay();
 
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
 	virtual void StartPlay() override;
 	virtual void PostLogin(APlayerController* NewPlayer) override;
+	virtual void Tick(float DeltaSeconds) override;
 
 	void StartGame(float SecondsForStartCount);
 	void EndGamePredict(float SecondsForEndCount);
@@ -34,6 +35,9 @@ public:
 
 	template<typename T>
 	TObjectPtr<T> GetCurrentGameRule() const { return Cast<T>(CurrentGameRule); }
+
+	/** URL Options에서 파싱된 MapOption 값 */
+	const FString& GetMapOption() const { return MapOption; }
 
 	void OnGameLevelUp(int32 NewLevel);
 
@@ -47,11 +51,18 @@ public:
 	FOnGameLevelChangeSignature OnGameLevelChange;
 
 private:
-	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true))
+	/** 카탈로그에서 GameRule을 찾지 못했을 때 사용할 폴백 클래스 (Deprecated) */
+	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true, DeprecatedProperty, DeprecationMessage = "Use MinigameCatalog's GameRuleClass instead"))
 	TSubclassOf<UWjWorldGameRuleBase> GameRuleClass;
 
 	UPROPERTY()
 	TObjectPtr<UWjWorldGameRuleBase> CurrentGameRule;
 
 	FTimerHandle StartGameHandle;
+
+	/** URL Options에서 파싱된 GameModeId (카탈로그 조회용) */
+	FString GameModeId;
+
+	/** URL Options에서 파싱된 MapOption */
+	FString MapOption;
 };

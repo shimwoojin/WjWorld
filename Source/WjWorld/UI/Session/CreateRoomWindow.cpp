@@ -8,6 +8,8 @@
 #include "Components/CheckBox.h"
 #include "Core/WjWorldGameInstance.h"
 #include "Core/Session/SessionManager.h"
+#include "DataAsset/WjWorldMinigameDataAsset.h"
+#include "Setting/WjWorldDeveloperSettings.h"
 #include "Kismet/GameplayStatics.h"
 #include "WjWorldLogCategories.h"
 
@@ -41,7 +43,13 @@ void UCreateRoomWindow::NativeConstruct()
 		CreateButton->OnClicked.AddDynamic(this, &UCreateRoomWindow::OnCreateClicked);
 	}
 
-	// 옵션 초기화
+	// 카탈로그 로드 및 옵션 초기화
+	const UWjWorldDeveloperSettings* DevSettings = GetDefault<UWjWorldDeveloperSettings>();
+	if (DevSettings && !DevSettings->MinigameCatalog.IsNull())
+	{
+		MinigameCatalog = DevSettings->MinigameCatalog.LoadSynchronous();
+	}
+
 	InitializeGameModeOptions();
 	InitializeMapOptions();
 
@@ -196,11 +204,13 @@ void UCreateRoomWindow::OnRoomCreated(bool bWasSuccessful)
 	if (bWasSuccessful)
 	{
 		UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Room created successfully!"));
-		
+
 		// 팝업 닫기
 		ClosePopup();
 
-		UGameplayStatics::OpenLevel(GetWorld(), TEXT("/Game/Map/02-2_WaitingRoom?Listen"));
+		// Lobby 맵을 Listen Server로 열되, GameMode는 BP_GameModeWaitingRoom으로 오버라이드
+		// Blueprint 클래스는 _C 접미사 필요
+		UGameplayStatics::OpenLevel(GetWorld(), TEXT("/Game/Map/02-1_Lobby?game=/Game/Core/WaitingRoom/BP_GameModeWaitingRoom.BP_GameModeWaitingRoom_C?Listen"));
 	}
 	else
 	{
@@ -287,16 +297,32 @@ FRoomSettings UCreateRoomWindow::BuildRoomSettings()
 		Settings.RoomName = RoomNameTextBox->GetText().ToString();
 	}
 
-	// 게임 모드
+	// 게임 모드: DisplayName → GameModeId 변환
 	if (GameModeComboBox)
 	{
-		Settings.GameMode = GameModeComboBox->GetSelectedOption();
+		FString SelectedDisplay = GameModeComboBox->GetSelectedOption();
+		if (const FName* FoundId = GameModeDisplayToId.Find(SelectedDisplay))
+		{
+			Settings.GameMode = FoundId->ToString();
+		}
+		else
+		{
+			Settings.GameMode = SelectedDisplay;
+		}
 	}
 
-	// 맵
+	// 맵: DisplayName → OptionValue 변환
 	if (MapComboBox)
 	{
-		Settings.MapName = MapComboBox->GetSelectedOption();
+		FString SelectedDisplay = MapComboBox->GetSelectedOption();
+		if (const FString* FoundValue = MapOptionDisplayToValue.Find(SelectedDisplay))
+		{
+			Settings.MapName = *FoundValue;
+		}
+		else
+		{
+			Settings.MapName = SelectedDisplay;
+		}
 	}
 
 	// 최대 인원
@@ -334,14 +360,36 @@ void UCreateRoomWindow::InitializeGameModeOptions()
 	}
 
 	GameModeComboBox->ClearOptions();
-	GameModeComboBox->AddOption(TEXT("SpeedRace"));
-	GameModeComboBox->AddOption(TEXT("ItemRace"));
-	GameModeComboBox->AddOption(TEXT("Battle"));
-	
-	// 기본 선택
-	GameModeComboBox->SetSelectedOption(TEXT("SpeedRace"));
+	GameModeDisplayToId.Empty();
 
-	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Game mode options initialized"));
+	if (MinigameCatalog)
+	{
+		for (const FWjWorldMinigameDefinition& Def : MinigameCatalog->Minigames)
+		{
+			FString DisplayStr = Def.DisplayName.ToString();
+			GameModeComboBox->AddOption(DisplayStr);
+			GameModeDisplayToId.Add(DisplayStr, Def.GameModeId);
+		}
+
+		// 첫 번째 항목 기본 선택
+		if (MinigameCatalog->Minigames.Num() > 0)
+		{
+			GameModeComboBox->SetSelectedOption(MinigameCatalog->Minigames[0].DisplayName.ToString());
+		}
+	}
+
+	// 게임모드 변경 콜백 바인딩
+	GameModeComboBox->OnSelectionChanged.AddDynamic(this, &UCreateRoomWindow::OnGameModeSelectionChanged);
+
+	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Game mode options initialized (%d items)"), GameModeDisplayToId.Num());
+}
+
+void UCreateRoomWindow::OnGameModeSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
+{
+	// 선택된 게임모드에 맞는 맵 옵션으로 갱신
+	InitializeMapOptions();
+
+	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Game mode changed to '%s'"), *SelectedItem);
 }
 
 void UCreateRoomWindow::InitializeMapOptions()
@@ -352,12 +400,30 @@ void UCreateRoomWindow::InitializeMapOptions()
 	}
 
 	MapComboBox->ClearOptions();
-	MapComboBox->AddOption(TEXT("Forest"));
-	MapComboBox->AddOption(TEXT("Desert"));
-	MapComboBox->AddOption(TEXT("City"));
-	
-	// 기본 선택
-	MapComboBox->SetSelectedOption(TEXT("Forest"));
+	MapOptionDisplayToValue.Empty();
 
-	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Map options initialized"));
+	if (MinigameCatalog && GameModeComboBox)
+	{
+		FString SelectedGameMode = GameModeComboBox->GetSelectedOption();
+		if (const FName* GameModeId = GameModeDisplayToId.Find(SelectedGameMode))
+		{
+			if (const FWjWorldMinigameDefinition* Def = MinigameCatalog->FindByGameModeId(*GameModeId))
+			{
+				for (const FWjWorldMinigameMapOption& MapOption : Def->MapOptions)
+				{
+					FString DisplayStr = MapOption.DisplayName.ToString();
+					MapComboBox->AddOption(DisplayStr);
+					MapOptionDisplayToValue.Add(DisplayStr, MapOption.OptionValue);
+				}
+
+				// 첫 번째 항목 기본 선택
+				if (Def->MapOptions.Num() > 0)
+				{
+					MapComboBox->SetSelectedOption(Def->MapOptions[0].DisplayName.ToString());
+				}
+			}
+		}
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Map options initialized (%d items)"), MapOptionDisplayToValue.Num());
 }

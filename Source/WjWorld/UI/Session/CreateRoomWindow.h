@@ -12,6 +12,8 @@ class UComboBoxString;
 class UButton;
 class UTextBlock;
 class UCheckBox;
+class UWjWorldMinigameDataAsset;
+struct FWjWorldMinigameDefinition;
 
 /**
  * 방 생성 UI 위젯
@@ -102,6 +104,10 @@ protected:
 	UFUNCTION()
 	void OnCreateClicked();
 
+	/** 게임모드 콤보박스 선택 변경 콜백 */
+	UFUNCTION()
+	void OnGameModeSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+
 	//~ SessionManager 콜백
 
 	UFUNCTION()
@@ -133,4 +139,14 @@ private:
 
 	/** 최대 인원 */
 	static constexpr int32 MAX_PLAYERS = 8;
+
+	/** 로드된 미니게임 카탈로그 */
+	UPROPERTY()
+	TObjectPtr<UWjWorldMinigameDataAsset> MinigameCatalog;
+
+	/** 게임모드 DisplayName → GameModeId 매핑 */
+	TMap<FString, FName> GameModeDisplayToId;
+
+	/** 맵옵션 DisplayName → OptionValue 매핑 */
+	TMap<FString, FString> MapOptionDisplayToValue;
 };

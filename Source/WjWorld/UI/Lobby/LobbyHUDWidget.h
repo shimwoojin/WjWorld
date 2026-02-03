@@ -50,6 +50,10 @@ protected:
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UButton> ProfileButton;
 
+	/** 배치 모드 버튼 */
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UButton> PlacementModeButton;
+
 	/** 프로필 위젯 클래스 (Blueprint에서 설정) */
 	UPROPERTY(EditDefaultsOnly, Category = "Profile")
 	TSubclassOf<UPlayerProfileWidget> ProfileWidgetClass;
@@ -71,6 +75,9 @@ protected:
 
 	UFUNCTION()
 	void OnProfileClicked();
+
+	UFUNCTION()
+	void OnPlacementModeClicked();
 
 private:
 	UPROPERTY()

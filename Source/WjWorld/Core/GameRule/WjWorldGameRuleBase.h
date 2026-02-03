@@ -13,41 +13,39 @@ class AWjWorldGameStatePlay;
 class UWjWorldGameDataComponent;
 
 /**
- * 
+ * 게임 규칙 베이스 클래스
+ * GameMode에서 TickGameRule()을 통해 틱 호출
  */
 UCLASS(Blueprintable)
-class WJWORLD_API UWjWorldGameRuleBase : public UObject, public FTickableGameObject
+class WJWORLD_API UWjWorldGameRuleBase : public UObject
 {
 	GENERATED_BODY()
-	
+
 public:
-    // 라이프사이클
-    virtual void Initialize(AWjWorldGameModePlay* InGameMode);
-    virtual void OnGameReady();
-    virtual void OnGameStart();
-    virtual void OnGameEndPredict(float Seconds);
-    virtual void OnGameEnd();
+	// 라이프사이클
+	virtual void Initialize(AWjWorldGameModePlay* InGameMode);
+	virtual void OnGameReady();
+	virtual void OnGameStart();
+	virtual void OnGameEndPredict(float Seconds);
+	virtual void OnGameEnd();
 
-    // 이벤트
-    virtual void OnPlayerJoined(AWjWorldPlayerStatePlay* Player);
-    virtual void OnPlayerLeft(AWjWorldPlayerStatePlay* Player);
+	// 이벤트
+	virtual void OnPlayerJoined(AWjWorldPlayerStatePlay* Player);
+	virtual void OnPlayerLeft(AWjWorldPlayerStatePlay* Player);
 
-    // 승리 조건
-    virtual bool CheckWinCondition() const;
-    virtual AWjWorldPlayerStatePlay* GetWinner() const;
+	// 승리 조건
+	virtual bool CheckWinCondition() const;
+	virtual AWjWorldPlayerStatePlay* GetWinner() const;
 
-	// FTickableGameObject Interface
-    virtual void Tick(float DeltaTime) override;
-    virtual UWorld* GetTickableGameObjectWorld() const;
-	virtual TStatId GetStatId() const override;
-	// ~FTickableGameObject Interface
-        
-    virtual void BeginDestroy() override;
+	// 틱 (GameMode에서 호출)
+	virtual void TickGameRule(float DeltaTime);
 
-    bool HasAuthority() const
-    {
-        UWorld* World = GetTickableGameObjectWorld();
-        return World && World->GetAuthGameMode() != nullptr;
+	virtual void BeginDestroy() override;
+
+	bool HasAuthority() const
+	{
+		UWorld* World = GetWorld();
+		return World && World->GetAuthGameMode() != nullptr;
 	}
 
     AWjWorldGameModePlay* GetGameModePlay() const;

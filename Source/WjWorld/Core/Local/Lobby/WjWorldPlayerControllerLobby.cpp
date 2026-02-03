@@ -2,6 +2,7 @@
 
 #include "WjWorldPlayerControllerLobby.h"
 #include "Core/Base/WjWorldCharacterBase.h"
+#include "GamePlay/Placement/WjWorldPlacementComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "InputMappingContext.h"
@@ -11,6 +12,8 @@ AWjWorldPlayerControllerLobby::AWjWorldPlayerControllerLobby()
 	bShowMouseCursor = true;
 	bEnableClickEvents = true;
 	bEnableMouseOverEvents = true;
+
+	PlacementComponent = CreateDefaultSubobject<UWjWorldPlacementComponent>(TEXT("PlacementComponent"));
 }
 
 void AWjWorldPlayerControllerLobby::BeginPlay()

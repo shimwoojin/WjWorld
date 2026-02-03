@@ -79,8 +79,9 @@ void UWjWorldGameRuleBase::OnGameEnd()
 			GI->EndGame();
 		}
 
+		// Lobby 맵을 사용하되 GameMode는 WaitingRoom으로 오버라이드
 		World->GetTimerManager().SetTimer(GotoWaitingRoomHandle, FTimerDelegate::CreateLambda([this]() {
-			GetWorld()->ServerTravel(TEXT("/Game/Map/02-2_WaitingRoom"));
+			GetWorld()->ServerTravel(TEXT("/Game/Map/02-1_Lobby?game=/Game/Core/WaitingRoom/BP_GameModeWaitingRoom.BP_GameModeWaitingRoom_C"));
 			}), SecondsForGotoWaitingRoom, false);
 
 		ChangeGamePhase(EGamePhase::Finished);
@@ -116,23 +117,9 @@ AWjWorldPlayerStatePlay* UWjWorldGameRuleBase::GetWinner() const
 	return nullptr;
 }
 
-void UWjWorldGameRuleBase::Tick(float DeltaTime)
+void UWjWorldGameRuleBase::TickGameRule(float DeltaTime)
 {
-
-}
-
-UWorld* UWjWorldGameRuleBase::GetTickableGameObjectWorld() const
-{
-	if (GameMode.IsValid())
-	{
-		return GameMode->GetWorld();
-	}
-	return nullptr;
-}
-
-TStatId UWjWorldGameRuleBase::GetStatId() const
-{
-	RETURN_QUICK_DECLARE_CYCLE_STAT(UMassComponentHitSubsystem, STATGROUP_Tickables);
+	// 서브클래스에서 오버라이드
 }
 
 void UWjWorldGameRuleBase::BeginDestroy()
