@@ -1,0 +1,166 @@
+\doxysection{UGA\+\_\+\+Spawn\+Brick Class Reference}
+\hypertarget{class_u_g_a___spawn_brick}{}\label{class_u_g_a___spawn_brick}\index{UGA\_SpawnBrick@{UGA\_SpawnBrick}}
+
+
+{\ttfamily \+\#include $<$GA\+\_\+\+Spawn\+Brick.\+h$>$}
+
+Inheritance diagram for UGA\+\_\+\+Spawn\+Brick:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_u_g_a___spawn_brick}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_u_g_a___spawn_brick_a45d02a51c0aa75a16a162e29139046c7}{UGA\+\_\+\+Spawn\+Brick}} ()
+\item 
+virtual bool \doxymbox{\hyperlink{class_u_g_a___spawn_brick_a4465f3e0d751bf4c2e1a19589af66ac5}{Is\+Charge\+Based}} () const override
+\item 
+virtual int32 \doxymbox{\hyperlink{class_u_g_a___spawn_brick_a92ac350d635859d22b8a7e8188b45204}{Get\+Current\+Charges}} () const override
+\item 
+virtual int32 \doxymbox{\hyperlink{class_u_g_a___spawn_brick_ad8c6151bb5ccaafbe7635ef61ba92980}{Get\+Max\+Charges}} () const override
+\item 
+virtual float \doxymbox{\hyperlink{class_u_g_a___spawn_brick_af62c7815934ba66522d0a65d89b8fb65}{Get\+Charge\+Refill\+Time\+Remaining}} () const override
+\item 
+virtual FText \doxymbox{\hyperlink{class_u_g_a___spawn_brick_a667a3866a69af8ef513249ae113d471d}{Get\+Prompt\+Description}} () const override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_g_a___spawn_brick_ac4e8b2abc4cd03f6fa4a3939232e87eb}{On\+Give\+Ability}} (const FGameplay\+Ability\+Actor\+Info \texorpdfstring{$\ast$}{*}Actor\+Info, const FGameplay\+Ability\+Spec \&Spec) override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_g_a___spawn_brick_a2817e6ff059d6a528ec33fb33ad6bb92}{On\+Remove\+Ability}} (const FGameplay\+Ability\+Actor\+Info \texorpdfstring{$\ast$}{*}Actor\+Info, const FGameplay\+Ability\+Spec \&Spec) override
+\item 
+virtual bool \doxymbox{\hyperlink{class_u_g_a___spawn_brick_a4060c53b67df112e39218d453ebee80c}{Can\+Activate\+Ability}} (const FGameplay\+Ability\+Spec\+Handle Handle, const FGameplay\+Ability\+Actor\+Info \texorpdfstring{$\ast$}{*}Actor\+Info, const FGameplay\+Tag\+Container \texorpdfstring{$\ast$}{*}Source\+Tags=nullptr, const FGameplay\+Tag\+Container \texorpdfstring{$\ast$}{*}Target\+Tags=nullptr, OUT FGameplay\+Tag\+Container \texorpdfstring{$\ast$}{*}Optional\+Relevant\+Tags=nullptr) const override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_g_a___spawn_brick_ace01b378a1b4f5d8c6003371e0e12684}{Activate\+Ability}} (const FGameplay\+Ability\+Spec\+Handle Handle, const FGameplay\+Ability\+Actor\+Info \texorpdfstring{$\ast$}{*}Actor\+Info, const FGameplay\+Ability\+Activation\+Info Activation\+Info, const FGameplay\+Event\+Data \texorpdfstring{$\ast$}{*}Trigger\+Event\+Data) override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_g_a___spawn_brick_a8483cbaad49f1d90505da69e476b04ae}{End\+Ability}} (const FGameplay\+Ability\+Spec\+Handle Handle, const FGameplay\+Ability\+Actor\+Info \texorpdfstring{$\ast$}{*}Actor\+Info, const FGameplay\+Ability\+Activation\+Info Activation\+Info, bool b\+Replicate\+End\+Ability, bool b\+Was\+Cancelled) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base}{UWj\+World\+Gameplay\+Ability\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_ad7322fe328393ab6e7dcf9bd1c4097f8}{UWj\+World\+Gameplay\+Ability\+Base}} ()
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a7d145e5a27753da9e9292cd56d2d146f}{Apply\+Cooldown}} (const FGameplay\+Ability\+Spec\+Handle Handle, const FGameplay\+Ability\+Actor\+Info \texorpdfstring{$\ast$}{*}Actor\+Info, const FGameplay\+Ability\+Activation\+Info Activation\+Info) const override
+\item 
+virtual const FGameplay\+Tag\+Container \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_ae7436e7fc243130b9cee911023e7d71f}{Get\+Cooldown\+Tags}} () const override
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Attributes inherited from \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base}{UWj\+World\+Gameplay\+Ability\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+FText \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a521ca3f0274e28edde5d44e75d8299b1}{Ability\+Name}}
+\item 
+TObject\+Ptr$<$ UTexture2D $>$ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_aa39d1ebfb973d1e3f3b744170c98c3ad}{Ability\+Icon}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base}{UWj\+World\+Gameplay\+Ability\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+float \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a7e6fa17e98744690454009d3a3543b2d}{Cooldown\+Duration}} = 0.f
+\item 
+FGameplay\+Tag\+Container \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_aafbad2cffd2117eb21c5d0fa0ed3629c}{Cooldown\+Tags}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+R키로 활성화 → Preview 표시 → 좌클릭(\+Confirm)으로 스폰 /\+ 우클릭(\+Cancel)으로 취소 충전 시스템:\+ 최대 Max\+Charges회 사용 가능, Charge\+Refill\+Interval초마다 1회 리필 
+
+\label{doc-constructors}
+\Hypertarget{class_u_g_a___spawn_brick_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_u_g_a___spawn_brick_a45d02a51c0aa75a16a162e29139046c7}\index{UGA\_SpawnBrick@{UGA\_SpawnBrick}!UGA\_SpawnBrick@{UGA\_SpawnBrick}}
+\index{UGA\_SpawnBrick@{UGA\_SpawnBrick}!UGA\_SpawnBrick@{UGA\_SpawnBrick}}
+\doxysubsubsection{\texorpdfstring{UGA\_SpawnBrick()}{UGA\_SpawnBrick()}}
+{\footnotesize\ttfamily \label{class_u_g_a___spawn_brick_a45d02a51c0aa75a16a162e29139046c7} 
+UGA\+\_\+\+Spawn\+Brick::\+\+UGA\+\_\+\+Spawn\+Brick (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_u_g_a___spawn_brick_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_g_a___spawn_brick_ace01b378a1b4f5d8c6003371e0e12684}\index{UGA\_SpawnBrick@{UGA\_SpawnBrick}!ActivateAbility@{ActivateAbility}}
+\index{ActivateAbility@{ActivateAbility}!UGA\_SpawnBrick@{UGA\_SpawnBrick}}
+\doxysubsubsection{\texorpdfstring{ActivateAbility()}{ActivateAbility()}}
+{\footnotesize\ttfamily \label{class_u_g_a___spawn_brick_ace01b378a1b4f5d8c6003371e0e12684} 
+void UGA\+\_\+\+Spawn\+Brick::\+\+Activate\+Ability (\begin{DoxyParamCaption}\item[{const FGameplay\+Ability\+Spec\+Handle}]{Handle}{, }\item[{const FGameplay\+Ability\+Actor\+Info \texorpdfstring{$\ast$}{*}}]{Actor\+Info}{, }\item[{const FGameplay\+Ability\+Activation\+Info}]{Activation\+Info}{, }\item[{const FGameplay\+Event\+Data \texorpdfstring{$\ast$}{*}}]{Trigger\+Event\+Data}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_g_a___spawn_brick_a4060c53b67df112e39218d453ebee80c}\index{UGA\_SpawnBrick@{UGA\_SpawnBrick}!CanActivateAbility@{CanActivateAbility}}
+\index{CanActivateAbility@{CanActivateAbility}!UGA\_SpawnBrick@{UGA\_SpawnBrick}}
+\doxysubsubsection{\texorpdfstring{CanActivateAbility()}{CanActivateAbility()}}
+{\footnotesize\ttfamily \label{class_u_g_a___spawn_brick_a4060c53b67df112e39218d453ebee80c} 
+bool UGA\+\_\+\+Spawn\+Brick::\+\+Can\+Activate\+Ability (\begin{DoxyParamCaption}\item[{const FGameplay\+Ability\+Spec\+Handle}]{Handle}{, }\item[{const FGameplay\+Ability\+Actor\+Info \texorpdfstring{$\ast$}{*}}]{Actor\+Info}{, }\item[{const FGameplay\+Tag\+Container \texorpdfstring{$\ast$}{*}}]{Source\+Tags}{ = {\ttfamily nullptr}, }\item[{const FGameplay\+Tag\+Container \texorpdfstring{$\ast$}{*}}]{Target\+Tags}{ = {\ttfamily nullptr}, }\item[{OUT FGameplay\+Tag\+Container \texorpdfstring{$\ast$}{*}}]{Optional\+Relevant\+Tags}{ = {\ttfamily nullptr}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_g_a___spawn_brick_a8483cbaad49f1d90505da69e476b04ae}\index{UGA\_SpawnBrick@{UGA\_SpawnBrick}!EndAbility@{EndAbility}}
+\index{EndAbility@{EndAbility}!UGA\_SpawnBrick@{UGA\_SpawnBrick}}
+\doxysubsubsection{\texorpdfstring{EndAbility()}{EndAbility()}}
+{\footnotesize\ttfamily \label{class_u_g_a___spawn_brick_a8483cbaad49f1d90505da69e476b04ae} 
+void UGA\+\_\+\+Spawn\+Brick::\+\+End\+Ability (\begin{DoxyParamCaption}\item[{const FGameplay\+Ability\+Spec\+Handle}]{Handle}{, }\item[{const FGameplay\+Ability\+Actor\+Info \texorpdfstring{$\ast$}{*}}]{Actor\+Info}{, }\item[{const FGameplay\+Ability\+Activation\+Info}]{Activation\+Info}{, }\item[{bool}]{b\+Replicate\+End\+Ability}{, }\item[{bool}]{b\+Was\+Cancelled}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_g_a___spawn_brick_af62c7815934ba66522d0a65d89b8fb65}\index{UGA\_SpawnBrick@{UGA\_SpawnBrick}!GetChargeRefillTimeRemaining@{GetChargeRefillTimeRemaining}}
+\index{GetChargeRefillTimeRemaining@{GetChargeRefillTimeRemaining}!UGA\_SpawnBrick@{UGA\_SpawnBrick}}
+\doxysubsubsection{\texorpdfstring{GetChargeRefillTimeRemaining()}{GetChargeRefillTimeRemaining()}}
+{\footnotesize\ttfamily \label{class_u_g_a___spawn_brick_af62c7815934ba66522d0a65d89b8fb65} 
+float UGA\+\_\+\+Spawn\+Brick::\+\+Get\+Charge\+Refill\+Time\+Remaining (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a5f53940eca5f3cd0930079bbf9aaa693}{UWj\+World\+Gameplay\+Ability\+Base}}.
+
+\Hypertarget{class_u_g_a___spawn_brick_a92ac350d635859d22b8a7e8188b45204}\index{UGA\_SpawnBrick@{UGA\_SpawnBrick}!GetCurrentCharges@{GetCurrentCharges}}
+\index{GetCurrentCharges@{GetCurrentCharges}!UGA\_SpawnBrick@{UGA\_SpawnBrick}}
+\doxysubsubsection{\texorpdfstring{GetCurrentCharges()}{GetCurrentCharges()}}
+{\footnotesize\ttfamily \label{class_u_g_a___spawn_brick_a92ac350d635859d22b8a7e8188b45204} 
+int32 UGA\+\_\+\+Spawn\+Brick::\+\+Get\+Current\+Charges (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a4d60b2169c22d0a049807c41de0cadd4}{UWj\+World\+Gameplay\+Ability\+Base}}.
+
+\Hypertarget{class_u_g_a___spawn_brick_ad8c6151bb5ccaafbe7635ef61ba92980}\index{UGA\_SpawnBrick@{UGA\_SpawnBrick}!GetMaxCharges@{GetMaxCharges}}
+\index{GetMaxCharges@{GetMaxCharges}!UGA\_SpawnBrick@{UGA\_SpawnBrick}}
+\doxysubsubsection{\texorpdfstring{GetMaxCharges()}{GetMaxCharges()}}
+{\footnotesize\ttfamily \label{class_u_g_a___spawn_brick_ad8c6151bb5ccaafbe7635ef61ba92980} 
+int32 UGA\+\_\+\+Spawn\+Brick::\+\+Get\+Max\+Charges (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a7bd14d94cd14baf7e8f66b7112a0b2c1}{UWj\+World\+Gameplay\+Ability\+Base}}.
+
+\Hypertarget{class_u_g_a___spawn_brick_a667a3866a69af8ef513249ae113d471d}\index{UGA\_SpawnBrick@{UGA\_SpawnBrick}!GetPromptDescription@{GetPromptDescription}}
+\index{GetPromptDescription@{GetPromptDescription}!UGA\_SpawnBrick@{UGA\_SpawnBrick}}
+\doxysubsubsection{\texorpdfstring{GetPromptDescription()}{GetPromptDescription()}}
+{\footnotesize\ttfamily \label{class_u_g_a___spawn_brick_a667a3866a69af8ef513249ae113d471d} 
+FText UGA\+\_\+\+Spawn\+Brick::\+\+Get\+Prompt\+Description (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Confirm/\+\+Cancel 프롬프트 설명 텍스트 (빈 값이면 프롬프트 표시 안 함) 
+
+Reimplemented from \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_aae3cf2fb33aa85b5a76843d0952a39b6}{UWj\+World\+Gameplay\+Ability\+Base}}.
+
+\Hypertarget{class_u_g_a___spawn_brick_a4465f3e0d751bf4c2e1a19589af66ac5}\index{UGA\_SpawnBrick@{UGA\_SpawnBrick}!IsChargeBased@{IsChargeBased}}
+\index{IsChargeBased@{IsChargeBased}!UGA\_SpawnBrick@{UGA\_SpawnBrick}}
+\doxysubsubsection{\texorpdfstring{IsChargeBased()}{IsChargeBased()}}
+{\footnotesize\ttfamily \label{class_u_g_a___spawn_brick_a4465f3e0d751bf4c2e1a19589af66ac5} 
+virtual bool UGA\+\_\+\+Spawn\+Brick::\+\+Is\+Charge\+Based (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a6d7f9f2e094eeb6f77fd496acb5e6c3f}{UWj\+World\+Gameplay\+Ability\+Base}}.
+
+\Hypertarget{class_u_g_a___spawn_brick_ac4e8b2abc4cd03f6fa4a3939232e87eb}\index{UGA\_SpawnBrick@{UGA\_SpawnBrick}!OnGiveAbility@{OnGiveAbility}}
+\index{OnGiveAbility@{OnGiveAbility}!UGA\_SpawnBrick@{UGA\_SpawnBrick}}
+\doxysubsubsection{\texorpdfstring{OnGiveAbility()}{OnGiveAbility()}}
+{\footnotesize\ttfamily \label{class_u_g_a___spawn_brick_ac4e8b2abc4cd03f6fa4a3939232e87eb} 
+void UGA\+\_\+\+Spawn\+Brick::\+\+On\+Give\+Ability (\begin{DoxyParamCaption}\item[{const FGameplay\+Ability\+Actor\+Info \texorpdfstring{$\ast$}{*}}]{Actor\+Info}{, }\item[{const FGameplay\+Ability\+Spec \&}]{Spec}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_g_a___spawn_brick_a2817e6ff059d6a528ec33fb33ad6bb92}\index{UGA\_SpawnBrick@{UGA\_SpawnBrick}!OnRemoveAbility@{OnRemoveAbility}}
+\index{OnRemoveAbility@{OnRemoveAbility}!UGA\_SpawnBrick@{UGA\_SpawnBrick}}
+\doxysubsubsection{\texorpdfstring{OnRemoveAbility()}{OnRemoveAbility()}}
+{\footnotesize\ttfamily \label{class_u_g_a___spawn_brick_a2817e6ff059d6a528ec33fb33ad6bb92} 
+void UGA\+\_\+\+Spawn\+Brick::\+\+On\+Remove\+Ability (\begin{DoxyParamCaption}\item[{const FGameplay\+Ability\+Actor\+Info \texorpdfstring{$\ast$}{*}}]{Actor\+Info}{, }\item[{const FGameplay\+Ability\+Spec \&}]{Spec}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Ability\+System/\+\+Abilities/\+\doxymbox{\hyperlink{_g_a___spawn_brick_8h}{GA\+\_\+\+Spawn\+Brick.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Ability\+System/\+\+Abilities/\+\doxymbox{\hyperlink{_g_a___spawn_brick_8cpp}{GA\+\_\+\+Spawn\+Brick.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,277 @@
+\doxysection{UWj\+World\+Developer\+Settings Class Reference}
+\hypertarget{class_u_wj_world_developer_settings}{}\label{class_u_wj_world_developer_settings}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Developer\+Settings.\+h$>$}
+
+Inheritance diagram for UWj\+World\+Developer\+Settings:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_u_wj_world_developer_settings}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual FName \doxymbox{\hyperlink{class_u_wj_world_developer_settings_af06c73c28c7c7414963af6a3d43db6ec}{Get\+Container\+Name}} () const override
+\item 
+virtual FName \doxymbox{\hyperlink{class_u_wj_world_developer_settings_aadedd88ad0a9d5fd04c7e472d263ba25}{Get\+Category\+Name}} () const override
+\item 
+virtual FName \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a4c6a27ae0ff5cd11ae3d8912fc0d608e}{Get\+Section\+Name}} () const override
+\item 
+FString \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a25c5d0050827780ee48920c2cf78ecb6}{Get\+Lobby\+Map\+Path}} () const
+\item 
+FString \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a78e3611e7ca4a08c2a4f0efe7271073a}{Get\+Waiting\+Room\+Open\+Level\+URL}} () const
+\item 
+FString \doxymbox{\hyperlink{class_u_wj_world_developer_settings_af875cc79f6b309ed1eb78d2f0e2ae219}{Get\+Waiting\+Room\+Server\+Travel\+URL}} () const
+\item 
+FString \doxymbox{\hyperlink{class_u_wj_world_developer_settings_ac3ea03cbdf409493e862191b6db12990}{Get\+Play\+Server\+Travel\+URL}} (const FString \&Level\+Path, const FString \&Game\+Mode\+Id) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FSoft\+Object\+Path \doxymbox{\hyperlink{class_u_wj_world_developer_settings_ae50e8fb613c402a08fb97e6419241d24}{Lobby\+Map\+Path}} = FSoft\+Object\+Path(TEXT("{}/\+Game/\+Map/\+02-\/1\+\_\+\+Lobby"{}))
+\item 
+TSoft\+Class\+Ptr$<$ AGame\+Mode\+Base $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a383e44cd6986cbe2cae5b3a6ed4241b0}{Waiting\+Room\+Game\+Mode\+Class}}
+\item 
+TSoft\+Class\+Ptr$<$ AGame\+Mode\+Base $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a33f9e07cec7c9b8c075b56e8114bfb9e}{Play\+Game\+Mode\+Class}}
+\item 
+TSoft\+Object\+Ptr$<$ USkeletal\+Mesh $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a05cfff1bec13db1f330aa361325b9958}{Default\+Character\+Mesh}}
+\item 
+TSoft\+Class\+Ptr$<$ UAnim\+Instance $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a4abbfdfce00098b1f226e2a674c8a2a3}{Default\+Anim\+Blueprint\+Class}}
+\item 
+TSoft\+Object\+Ptr$<$ UInput\+Mapping\+Context $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_ae819ee86d631859ad332a5b070fc8752}{Default\+Input\+Mapping\+Context}}
+\item 
+TSoft\+Class\+Ptr$<$ \doxymbox{\hyperlink{class_a_wj_world_tile_actor}{AWj\+World\+Tile\+Actor}} $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_af79c28835e4a4532cc4535b6d231ed93}{Tile\+Actor\+Class}}
+\item 
+TSoft\+Object\+Ptr$<$ UNiagara\+System $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_aa14b4966206d7a42de87205c6157274a}{Brick\+Destroy\+Effect}}
+\item 
+TSoft\+Object\+Ptr$<$ UNiagara\+System $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a0d9b9cb018c29b9b2977c19b25473e6e}{Brick\+Explosion\+Effect}}
+\item 
+int32 \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a73dcd6757bc997ede6cb00c2cd381808}{Destructible\+Brick\+Default\+HP}} = 3
+\item 
+TSoft\+Object\+Ptr$<$ UGeometry\+Collection $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a1892dab8a6b4ee8db37abb51d060e88a}{Destructible\+Brick\+Fracture\+Collection}}
+\item 
+float \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a1404aa2eb1bcb365e20e79ab2cbeaf24}{Destructible\+Brick\+Fracture\+Lifetime}} = 3.\+0f
+\item 
+TSoft\+Object\+Ptr$<$ UStatic\+Mesh $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a7f8dc1ca4f88cf4f49a81663f76805bb}{Brick\+Mesh}}
+\item 
+TSoft\+Object\+Ptr$<$ UStatic\+Mesh $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a31733424f9294568ebcb4ace751c9fcb}{Tile\+Mesh}}
+\item 
+TSoft\+Object\+Ptr$<$ \doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset}{UWj\+World\+Wall\+Description\+Data\+Asset}} $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a741c31b9419bcf35ec1f0f59ec2e3094}{Wall\+Description\+Asset}}
+\item 
+TSoft\+Object\+Ptr$<$ \doxymbox{\hyperlink{class_u_wj_world_minigame_data_asset}{UWj\+World\+Minigame\+Data\+Asset}} $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a443dcfa371db37377cea84ccc2ab437d}{Minigame\+Catalog}}
+\item 
+TSoft\+Object\+Ptr$<$ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset}{UWj\+World\+Cosmetic\+Catalog\+Data\+Asset}} $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a072d58e7ead6da288b15e6b83ab09485}{Cosmetic\+Catalog}}
+\item 
+TSoft\+Object\+Ptr$<$ \doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWj\+World\+Placeable\+Object\+Data\+Asset}} $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a058ca64bb41cc65816a5af4a6261da19}{Placeable\+Object\+Catalog}}
+\item 
+TSoft\+Object\+Ptr$<$ UInput\+Mapping\+Context $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a8c14745669bbcd3faf0d38cb1d978a25}{Placement\+Mapping\+Context}}
+\item 
+TSoft\+Object\+Ptr$<$ UInput\+Action $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_ac0b2cf1c63d81c28d621d468958bec3c}{Placement\+Confirm\+Action}}
+\item 
+TSoft\+Object\+Ptr$<$ UInput\+Action $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a47522ebccdfa706c578890b26420de08}{Placement\+Cancel\+Action}}
+\item 
+TSoft\+Object\+Ptr$<$ UInput\+Action $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a2324c8b24ca6867dd353cb8f9376242e}{Placement\+Rotate\+Action}}
+\item 
+TSoft\+Object\+Ptr$<$ UInput\+Action $>$ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a6c24c9c1d6e98682099dff163db6d1bd}{Placement\+Delete\+Action}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{class_wj_world}{Wj\+World} 프로젝트 개발자 설정 Project Settings \texorpdfstring{$>$}{>} \doxylink{class_wj_world}{Wj\+World} 에서 확인 가능 
+
+\label{doc-func-members}
+\Hypertarget{class_u_wj_world_developer_settings_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_wj_world_developer_settings_aadedd88ad0a9d5fd04c7e472d263ba25}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!GetCategoryName@{GetCategoryName}}
+\index{GetCategoryName@{GetCategoryName}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{GetCategoryName()}{GetCategoryName()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_aadedd88ad0a9d5fd04c7e472d263ba25} 
+virtual FName UWj\+World\+Developer\+Settings::\+\+Get\+Category\+Name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_developer_settings_af06c73c28c7c7414963af6a3d43db6ec}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!GetContainerName@{GetContainerName}}
+\index{GetContainerName@{GetContainerName}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{GetContainerName()}{GetContainerName()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_af06c73c28c7c7414963af6a3d43db6ec} 
+virtual FName UWj\+World\+Developer\+Settings::\+\+Get\+Container\+Name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_developer_settings_a25c5d0050827780ee48920c2cf78ecb6}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!GetLobbyMapPath@{GetLobbyMapPath}}
+\index{GetLobbyMapPath@{GetLobbyMapPath}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{GetLobbyMapPath()}{GetLobbyMapPath()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a25c5d0050827780ee48920c2cf78ecb6} 
+FString UWj\+World\+Developer\+Settings::\+\+Get\+Lobby\+Map\+Path (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+로비 맵 경로 반환 (예:\+ "{}/\+\+Game/\+\+Map/\+02-\/1\+\_\+\+Lobby"{}) \Hypertarget{class_u_wj_world_developer_settings_ac3ea03cbdf409493e862191b6db12990}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!GetPlayServerTravelURL@{GetPlayServerTravelURL}}
+\index{GetPlayServerTravelURL@{GetPlayServerTravelURL}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{GetPlayServerTravelURL()}{GetPlayServerTravelURL()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_ac3ea03cbdf409493e862191b6db12990} 
+FString UWj\+World\+Developer\+Settings::\+\+Get\+Play\+Server\+Travel\+URL (\begin{DoxyParamCaption}\item[{const FString \&}]{Level\+Path}{, }\item[{const FString \&}]{Game\+Mode\+Id}{}\end{DoxyParamCaption}) const}
+
+플레이 Server\+Travel URL 반환 \Hypertarget{class_u_wj_world_developer_settings_a4c6a27ae0ff5cd11ae3d8912fc0d608e}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!GetSectionName@{GetSectionName}}
+\index{GetSectionName@{GetSectionName}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{GetSectionName()}{GetSectionName()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a4c6a27ae0ff5cd11ae3d8912fc0d608e} 
+virtual FName UWj\+World\+Developer\+Settings::\+\+Get\+Section\+Name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_developer_settings_a78e3611e7ca4a08c2a4f0efe7271073a}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!GetWaitingRoomOpenLevelURL@{GetWaitingRoomOpenLevelURL}}
+\index{GetWaitingRoomOpenLevelURL@{GetWaitingRoomOpenLevelURL}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{GetWaitingRoomOpenLevelURL()}{GetWaitingRoomOpenLevelURL()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a78e3611e7ca4a08c2a4f0efe7271073a} 
+FString UWj\+World\+Developer\+Settings::\+\+Get\+Waiting\+Room\+Open\+Level\+URL (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+대기실 Open\+Level URL 반환 (예:\+ "{}/\+\+Game/\+\+Map/\+02-\/1\+\_\+\+Lobby?game=...?\+Listen"{}) \Hypertarget{class_u_wj_world_developer_settings_af875cc79f6b309ed1eb78d2f0e2ae219}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!GetWaitingRoomServerTravelURL@{GetWaitingRoomServerTravelURL}}
+\index{GetWaitingRoomServerTravelURL@{GetWaitingRoomServerTravelURL}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{GetWaitingRoomServerTravelURL()}{GetWaitingRoomServerTravelURL()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_af875cc79f6b309ed1eb78d2f0e2ae219} 
+FString UWj\+World\+Developer\+Settings::\+\+Get\+Waiting\+Room\+Server\+Travel\+URL (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+대기실 Server\+Travel URL 반환 (예:\+ "{}/\+\+Game/\+\+Map/\+02-\/1\+\_\+\+Lobby?game=..."{}) 
+
+\label{doc-variable-members}
+\Hypertarget{class_u_wj_world_developer_settings_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_wj_world_developer_settings_aa14b4966206d7a42de87205c6157274a}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!BrickDestroyEffect@{BrickDestroyEffect}}
+\index{BrickDestroyEffect@{BrickDestroyEffect}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{BrickDestroyEffect}{BrickDestroyEffect}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_aa14b4966206d7a42de87205c6157274a} 
+TSoft\+Object\+Ptr$<$UNiagara\+System$>$ UWj\+World\+Developer\+Settings::\+\+Brick\+Destroy\+Effect}
+
+\Hypertarget{class_u_wj_world_developer_settings_a0d9b9cb018c29b9b2977c19b25473e6e}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!BrickExplosionEffect@{BrickExplosionEffect}}
+\index{BrickExplosionEffect@{BrickExplosionEffect}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{BrickExplosionEffect}{BrickExplosionEffect}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a0d9b9cb018c29b9b2977c19b25473e6e} 
+TSoft\+Object\+Ptr$<$UNiagara\+System$>$ UWj\+World\+Developer\+Settings::\+\+Brick\+Explosion\+Effect}
+
+\Hypertarget{class_u_wj_world_developer_settings_a7f8dc1ca4f88cf4f49a81663f76805bb}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!BrickMesh@{BrickMesh}}
+\index{BrickMesh@{BrickMesh}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{BrickMesh}{BrickMesh}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a7f8dc1ca4f88cf4f49a81663f76805bb} 
+TSoft\+Object\+Ptr$<$UStatic\+Mesh$>$ UWj\+World\+Developer\+Settings::\+\+Brick\+Mesh}
+
+벽돌 메시 \Hypertarget{class_u_wj_world_developer_settings_a072d58e7ead6da288b15e6b83ab09485}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!CosmeticCatalog@{CosmeticCatalog}}
+\index{CosmeticCatalog@{CosmeticCatalog}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{CosmeticCatalog}{CosmeticCatalog}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a072d58e7ead6da288b15e6b83ab09485} 
+TSoft\+Object\+Ptr$<$\doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset}{UWj\+World\+Cosmetic\+Catalog\+Data\+Asset}}$>$ UWj\+World\+Developer\+Settings::\+\+Cosmetic\+Catalog}
+
+코스메틱 카탈로그 데이터 에셋 \Hypertarget{class_u_wj_world_developer_settings_a4abbfdfce00098b1f226e2a674c8a2a3}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!DefaultAnimBlueprintClass@{DefaultAnimBlueprintClass}}
+\index{DefaultAnimBlueprintClass@{DefaultAnimBlueprintClass}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{DefaultAnimBlueprintClass}{DefaultAnimBlueprintClass}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a4abbfdfce00098b1f226e2a674c8a2a3} 
+TSoft\+Class\+Ptr$<$UAnim\+Instance$>$ UWj\+World\+Developer\+Settings::\+\+Default\+Anim\+Blueprint\+Class}
+
+캐릭터 기본 애니메이션 블루프린트 클래스 \Hypertarget{class_u_wj_world_developer_settings_a05cfff1bec13db1f330aa361325b9958}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!DefaultCharacterMesh@{DefaultCharacterMesh}}
+\index{DefaultCharacterMesh@{DefaultCharacterMesh}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{DefaultCharacterMesh}{DefaultCharacterMesh}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a05cfff1bec13db1f330aa361325b9958} 
+TSoft\+Object\+Ptr$<$USkeletal\+Mesh$>$ UWj\+World\+Developer\+Settings::\+\+Default\+Character\+Mesh}
+
+캐릭터 기본 스켈레탈 메시 \Hypertarget{class_u_wj_world_developer_settings_ae819ee86d631859ad332a5b070fc8752}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!DefaultInputMappingContext@{DefaultInputMappingContext}}
+\index{DefaultInputMappingContext@{DefaultInputMappingContext}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{DefaultInputMappingContext}{DefaultInputMappingContext}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_ae819ee86d631859ad332a5b070fc8752} 
+TSoft\+Object\+Ptr$<$UInput\+Mapping\+Context$>$ UWj\+World\+Developer\+Settings::\+\+Default\+Input\+Mapping\+Context}
+
+캐릭터 기본 입력 매핑 컨텍스트 \Hypertarget{class_u_wj_world_developer_settings_a73dcd6757bc997ede6cb00c2cd381808}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!DestructibleBrickDefaultHP@{DestructibleBrickDefaultHP}}
+\index{DestructibleBrickDefaultHP@{DestructibleBrickDefaultHP}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{DestructibleBrickDefaultHP}{DestructibleBrickDefaultHP}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a73dcd6757bc997ede6cb00c2cd381808} 
+int32 UWj\+World\+Developer\+Settings::\+\+Destructible\+Brick\+Default\+HP = 3}
+
+\Hypertarget{class_u_wj_world_developer_settings_a1892dab8a6b4ee8db37abb51d060e88a}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!DestructibleBrickFractureCollection@{DestructibleBrickFractureCollection}}
+\index{DestructibleBrickFractureCollection@{DestructibleBrickFractureCollection}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{DestructibleBrickFractureCollection}{DestructibleBrickFractureCollection}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a1892dab8a6b4ee8db37abb51d060e88a} 
+TSoft\+Object\+Ptr$<$UGeometry\+Collection$>$ UWj\+World\+Developer\+Settings::\+\+Destructible\+Brick\+Fracture\+Collection}
+
+\Hypertarget{class_u_wj_world_developer_settings_a1404aa2eb1bcb365e20e79ab2cbeaf24}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!DestructibleBrickFractureLifetime@{DestructibleBrickFractureLifetime}}
+\index{DestructibleBrickFractureLifetime@{DestructibleBrickFractureLifetime}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{DestructibleBrickFractureLifetime}{DestructibleBrickFractureLifetime}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a1404aa2eb1bcb365e20e79ab2cbeaf24} 
+float UWj\+World\+Developer\+Settings::\+\+Destructible\+Brick\+Fracture\+Lifetime = 3.\+0f}
+
+\Hypertarget{class_u_wj_world_developer_settings_ae50e8fb613c402a08fb97e6419241d24}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!LobbyMapPath@{LobbyMapPath}}
+\index{LobbyMapPath@{LobbyMapPath}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{LobbyMapPath}{LobbyMapPath}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_ae50e8fb613c402a08fb97e6419241d24} 
+FSoft\+Object\+Path UWj\+World\+Developer\+Settings::\+\+Lobby\+Map\+Path = FSoft\+Object\+Path(TEXT("{}/\+Game/\+Map/\+02-\/1\+\_\+\+Lobby"{}))}
+
+로비 맵 경로 \Hypertarget{class_u_wj_world_developer_settings_a443dcfa371db37377cea84ccc2ab437d}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!MinigameCatalog@{MinigameCatalog}}
+\index{MinigameCatalog@{MinigameCatalog}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{MinigameCatalog}{MinigameCatalog}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a443dcfa371db37377cea84ccc2ab437d} 
+TSoft\+Object\+Ptr$<$\doxymbox{\hyperlink{class_u_wj_world_minigame_data_asset}{UWj\+World\+Minigame\+Data\+Asset}}$>$ UWj\+World\+Developer\+Settings::\+\+Minigame\+Catalog}
+
+미니게임 카탈로그 데이터 에셋 \Hypertarget{class_u_wj_world_developer_settings_a058ca64bb41cc65816a5af4a6261da19}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!PlaceableObjectCatalog@{PlaceableObjectCatalog}}
+\index{PlaceableObjectCatalog@{PlaceableObjectCatalog}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{PlaceableObjectCatalog}{PlaceableObjectCatalog}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a058ca64bb41cc65816a5af4a6261da19} 
+TSoft\+Object\+Ptr$<$\doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWj\+World\+Placeable\+Object\+Data\+Asset}}$>$ UWj\+World\+Developer\+Settings::\+\+Placeable\+Object\+Catalog}
+
+배치 가능한 오브젝트 카탈로그 \Hypertarget{class_u_wj_world_developer_settings_a47522ebccdfa706c578890b26420de08}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!PlacementCancelAction@{PlacementCancelAction}}
+\index{PlacementCancelAction@{PlacementCancelAction}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{PlacementCancelAction}{PlacementCancelAction}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a47522ebccdfa706c578890b26420de08} 
+TSoft\+Object\+Ptr$<$UInput\+Action$>$ UWj\+World\+Developer\+Settings::\+\+Placement\+Cancel\+Action}
+
+\Hypertarget{class_u_wj_world_developer_settings_ac0b2cf1c63d81c28d621d468958bec3c}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!PlacementConfirmAction@{PlacementConfirmAction}}
+\index{PlacementConfirmAction@{PlacementConfirmAction}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{PlacementConfirmAction}{PlacementConfirmAction}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_ac0b2cf1c63d81c28d621d468958bec3c} 
+TSoft\+Object\+Ptr$<$UInput\+Action$>$ UWj\+World\+Developer\+Settings::\+\+Placement\+Confirm\+Action}
+
+\Hypertarget{class_u_wj_world_developer_settings_a6c24c9c1d6e98682099dff163db6d1bd}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!PlacementDeleteAction@{PlacementDeleteAction}}
+\index{PlacementDeleteAction@{PlacementDeleteAction}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{PlacementDeleteAction}{PlacementDeleteAction}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a6c24c9c1d6e98682099dff163db6d1bd} 
+TSoft\+Object\+Ptr$<$UInput\+Action$>$ UWj\+World\+Developer\+Settings::\+\+Placement\+Delete\+Action}
+
+\Hypertarget{class_u_wj_world_developer_settings_a8c14745669bbcd3faf0d38cb1d978a25}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!PlacementMappingContext@{PlacementMappingContext}}
+\index{PlacementMappingContext@{PlacementMappingContext}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{PlacementMappingContext}{PlacementMappingContext}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a8c14745669bbcd3faf0d38cb1d978a25} 
+TSoft\+Object\+Ptr$<$UInput\+Mapping\+Context$>$ UWj\+World\+Developer\+Settings::\+\+Placement\+Mapping\+Context}
+
+배치 모드 입력 매핑 컨텍스트 \Hypertarget{class_u_wj_world_developer_settings_a2324c8b24ca6867dd353cb8f9376242e}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!PlacementRotateAction@{PlacementRotateAction}}
+\index{PlacementRotateAction@{PlacementRotateAction}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{PlacementRotateAction}{PlacementRotateAction}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a2324c8b24ca6867dd353cb8f9376242e} 
+TSoft\+Object\+Ptr$<$UInput\+Action$>$ UWj\+World\+Developer\+Settings::\+\+Placement\+Rotate\+Action}
+
+\Hypertarget{class_u_wj_world_developer_settings_a33f9e07cec7c9b8c075b56e8114bfb9e}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!PlayGameModeClass@{PlayGameModeClass}}
+\index{PlayGameModeClass@{PlayGameModeClass}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{PlayGameModeClass}{PlayGameModeClass}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a33f9e07cec7c9b8c075b56e8114bfb9e} 
+TSoft\+Class\+Ptr$<$AGame\+Mode\+Base$>$ UWj\+World\+Developer\+Settings::\+\+Play\+Game\+Mode\+Class}
+
+플레이 게임모드 클래스 \Hypertarget{class_u_wj_world_developer_settings_af79c28835e4a4532cc4535b6d231ed93}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!TileActorClass@{TileActorClass}}
+\index{TileActorClass@{TileActorClass}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{TileActorClass}{TileActorClass}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_af79c28835e4a4532cc4535b6d231ed93} 
+TSoft\+Class\+Ptr$<$\doxymbox{\hyperlink{class_a_wj_world_tile_actor}{AWj\+World\+Tile\+Actor}}$>$ UWj\+World\+Developer\+Settings::\+\+Tile\+Actor\+Class}
+
+\Hypertarget{class_u_wj_world_developer_settings_a31733424f9294568ebcb4ace751c9fcb}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!TileMesh@{TileMesh}}
+\index{TileMesh@{TileMesh}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{TileMesh}{TileMesh}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a31733424f9294568ebcb4ace751c9fcb} 
+TSoft\+Object\+Ptr$<$UStatic\+Mesh$>$ UWj\+World\+Developer\+Settings::\+\+Tile\+Mesh}
+
+타일 메시 \Hypertarget{class_u_wj_world_developer_settings_a383e44cd6986cbe2cae5b3a6ed4241b0}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!WaitingRoomGameModeClass@{WaitingRoomGameModeClass}}
+\index{WaitingRoomGameModeClass@{WaitingRoomGameModeClass}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{WaitingRoomGameModeClass}{WaitingRoomGameModeClass}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a383e44cd6986cbe2cae5b3a6ed4241b0} 
+TSoft\+Class\+Ptr$<$AGame\+Mode\+Base$>$ UWj\+World\+Developer\+Settings::\+\+Waiting\+Room\+Game\+Mode\+Class}
+
+대기실 게임모드 클래스 \Hypertarget{class_u_wj_world_developer_settings_a741c31b9419bcf35ec1f0f59ec2e3094}\index{UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}!WallDescriptionAsset@{WallDescriptionAsset}}
+\index{WallDescriptionAsset@{WallDescriptionAsset}!UWjWorldDeveloperSettings@{UWjWorldDeveloperSettings}}
+\doxysubsubsection{\texorpdfstring{WallDescriptionAsset}{WallDescriptionAsset}}
+{\footnotesize\ttfamily \label{class_u_wj_world_developer_settings_a741c31b9419bcf35ec1f0f59ec2e3094} 
+TSoft\+Object\+Ptr$<$\doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset}{UWj\+World\+Wall\+Description\+Data\+Asset}}$>$ UWj\+World\+Developer\+Settings::\+\+Wall\+Description\+Asset}
+
+벽 레이아웃 데이터 에셋 
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Setting/\+\doxymbox{\hyperlink{_wj_world_developer_settings_8h}{Wj\+World\+Developer\+Settings.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Setting/\+\doxymbox{\hyperlink{_wj_world_developer_settings_8cpp}{Wj\+World\+Developer\+Settings.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,99 @@
+\doxysection{ACharacter\+Preview\+Actor Class Reference}
+\hypertarget{class_a_character_preview_actor}{}\label{class_a_character_preview_actor}\index{ACharacterPreviewActor@{ACharacterPreviewActor}}
+
+
+{\ttfamily \+\#include $<$Character\+Preview\+Actor.\+h$>$}
+
+Inheritance diagram for ACharacter\+Preview\+Actor:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_a_character_preview_actor}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_character_preview_actor_ac12dec03860b8c10d7f230325ff38f8d}{ACharacter\+Preview\+Actor}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_character_preview_actor_a9860659c02d8083842193cb665916464}{Setup\+From\+Pawn}} (APawn \texorpdfstring{$\ast$}{*}Source\+Pawn)
+\item 
+void \doxymbox{\hyperlink{class_a_character_preview_actor_a9909217d63741ee3a77b18ab3afb8ca8}{Setup\+Preview}} (const \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmetic\+Loadout}} \&Loadout)
+\item 
+UTexture\+Render\+Target2D \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_character_preview_actor_abb23908ef75067b32408e38641245d4c}{Get\+Render\+Target}} () const
+\item 
+bool \doxymbox{\hyperlink{class_a_character_preview_actor_a08219627a229ee5bf269bc3f73d2591c}{Has\+Base\+Mesh}} () const
+\item 
+void \doxymbox{\hyperlink{class_a_character_preview_actor_a386b09fdf3373d5582d9193276df17b1}{Refresh\+Capture}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_a_character_preview_actor_af0d6c4c0b839861e4cd0305bf455d35d}{Begin\+Play}} () override
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+3D 캐릭터 프리뷰 액터
+\begin{DoxyItemize}
+\item 월드에서 보이지 않는 위치에 스폰
+\item Skeletal\+Mesh + 코스메틱 메시 표시
+\item Scene\+Capture\+Component2\+D로 Render\+Target에 캡처
+\item 위젯에서 Render\+Target을 UImage로 표시 
+\end{DoxyItemize}
+
+\label{doc-constructors}
+\Hypertarget{class_a_character_preview_actor_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_a_character_preview_actor_ac12dec03860b8c10d7f230325ff38f8d}\index{ACharacterPreviewActor@{ACharacterPreviewActor}!ACharacterPreviewActor@{ACharacterPreviewActor}}
+\index{ACharacterPreviewActor@{ACharacterPreviewActor}!ACharacterPreviewActor@{ACharacterPreviewActor}}
+\doxysubsubsection{\texorpdfstring{ACharacterPreviewActor()}{ACharacterPreviewActor()}}
+{\footnotesize\ttfamily \label{class_a_character_preview_actor_ac12dec03860b8c10d7f230325ff38f8d} 
+ACharacter\+Preview\+Actor::\+\+ACharacter\+Preview\+Actor (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_a_character_preview_actor_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_a_character_preview_actor_af0d6c4c0b839861e4cd0305bf455d35d}\index{ACharacterPreviewActor@{ACharacterPreviewActor}!BeginPlay@{BeginPlay}}
+\index{BeginPlay@{BeginPlay}!ACharacterPreviewActor@{ACharacterPreviewActor}}
+\doxysubsubsection{\texorpdfstring{BeginPlay()}{BeginPlay()}}
+{\footnotesize\ttfamily \label{class_a_character_preview_actor_af0d6c4c0b839861e4cd0305bf455d35d} 
+void ACharacter\+Preview\+Actor::\+\+Begin\+Play (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_character_preview_actor_abb23908ef75067b32408e38641245d4c}\index{ACharacterPreviewActor@{ACharacterPreviewActor}!GetRenderTarget@{GetRenderTarget}}
+\index{GetRenderTarget@{GetRenderTarget}!ACharacterPreviewActor@{ACharacterPreviewActor}}
+\doxysubsubsection{\texorpdfstring{GetRenderTarget()}{GetRenderTarget()}}
+{\footnotesize\ttfamily \label{class_a_character_preview_actor_abb23908ef75067b32408e38641245d4c} 
+UTexture\+Render\+Target2D \texorpdfstring{$\ast$}{*} ACharacter\+Preview\+Actor::\+\+Get\+Render\+Target (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+렌더 타겟 반환 \Hypertarget{class_a_character_preview_actor_a08219627a229ee5bf269bc3f73d2591c}\index{ACharacterPreviewActor@{ACharacterPreviewActor}!HasBaseMesh@{HasBaseMesh}}
+\index{HasBaseMesh@{HasBaseMesh}!ACharacterPreviewActor@{ACharacterPreviewActor}}
+\doxysubsubsection{\texorpdfstring{HasBaseMesh()}{HasBaseMesh()}}
+{\footnotesize\ttfamily \label{class_a_character_preview_actor_a08219627a229ee5bf269bc3f73d2591c} 
+bool ACharacter\+Preview\+Actor::\+\+Has\+Base\+Mesh (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+기본 메시가 설정되어 있는지 확인 \Hypertarget{class_a_character_preview_actor_a386b09fdf3373d5582d9193276df17b1}\index{ACharacterPreviewActor@{ACharacterPreviewActor}!RefreshCapture@{RefreshCapture}}
+\index{RefreshCapture@{RefreshCapture}!ACharacterPreviewActor@{ACharacterPreviewActor}}
+\doxysubsubsection{\texorpdfstring{RefreshCapture()}{RefreshCapture()}}
+{\footnotesize\ttfamily \label{class_a_character_preview_actor_a386b09fdf3373d5582d9193276df17b1} 
+void ACharacter\+Preview\+Actor::\+\+Refresh\+Capture (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+캡처 갱신 \Hypertarget{class_a_character_preview_actor_a9860659c02d8083842193cb665916464}\index{ACharacterPreviewActor@{ACharacterPreviewActor}!SetupFromPawn@{SetupFromPawn}}
+\index{SetupFromPawn@{SetupFromPawn}!ACharacterPreviewActor@{ACharacterPreviewActor}}
+\doxysubsubsection{\texorpdfstring{SetupFromPawn()}{SetupFromPawn()}}
+{\footnotesize\ttfamily \label{class_a_character_preview_actor_a9860659c02d8083842193cb665916464} 
+void ACharacter\+Preview\+Actor::\+\+Setup\+From\+Pawn (\begin{DoxyParamCaption}\item[{APawn \texorpdfstring{$\ast$}{*}}]{Source\+Pawn}{}\end{DoxyParamCaption})}
+
+Pawn에서 Skeletal\+Mesh와 Anim\+Blueprint 복사 \Hypertarget{class_a_character_preview_actor_a9909217d63741ee3a77b18ab3afb8ca8}\index{ACharacterPreviewActor@{ACharacterPreviewActor}!SetupPreview@{SetupPreview}}
+\index{SetupPreview@{SetupPreview}!ACharacterPreviewActor@{ACharacterPreviewActor}}
+\doxysubsubsection{\texorpdfstring{SetupPreview()}{SetupPreview()}}
+{\footnotesize\ttfamily \label{class_a_character_preview_actor_a9909217d63741ee3a77b18ab3afb8ca8} 
+void ACharacter\+Preview\+Actor::\+\+Setup\+Preview (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmetic\+Loadout}} \&}]{Loadout}{}\end{DoxyParamCaption})}
+
+코스메틱 로드아웃으로 프리뷰 설정 
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Profile/\+\doxymbox{\hyperlink{_character_preview_actor_8h}{Character\+Preview\+Actor.\+h}}\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Profile/\+\doxymbox{\hyperlink{_character_preview_actor_8cpp}{Character\+Preview\+Actor.\+cpp}}\end{DoxyCompactItemize}

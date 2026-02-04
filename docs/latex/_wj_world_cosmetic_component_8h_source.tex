@@ -1,0 +1,78 @@
+\doxysection{Wj\+World\+Cosmetic\+Component.\+h}
+\hypertarget{_wj_world_cosmetic_component_8h_source}{}\label{_wj_world_cosmetic_component_8h_source}\index{Source/WjWorld/Cosmetic/WjWorldCosmeticComponent.h@{Source/WjWorld/Cosmetic/WjWorldCosmeticComponent.h}}
+\doxymbox{\hyperlink{_wj_world_cosmetic_component_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Components/ActorComponent.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h}{Cosmetic/WjWorldCosmeticTypes.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}Engine/StreamableManager.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}WjWorldCosmeticComponent.generated.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset}{UWjWorldCosmeticCatalogDataAsset}};}
+\DoxyCodeLine{00012\ \textcolor{keyword}{struct\ }\doxymbox{\hyperlink{struct_f_cosmetic_item_definition}{FCosmeticItemDefinition}};}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00020\ UCLASS(ClassGroup=(Custom),\ meta=(BlueprintSpawnableComponent))}
+\DoxyCodeLine{00021\ \textcolor{keyword}{class\ }WJWORLD\_API\ UWjWorldCosmeticComponent\ :\ \textcolor{keyword}{public}\ UActorComponent}
+\DoxyCodeLine{00022\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ public:}
+\DoxyCodeLine{00026\ \ \ \ \ UWjWorldCosmeticComponent();}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ BeginPlay()\ override;}
+\DoxyCodeLine{00029\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ EndPlay(const\ EEndPlayReason::Type\ EndPlayReason)\ override;}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ SetCatalog(UWjWorldCosmeticCatalogDataAsset*\ InCatalog);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00035\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ ApplyLoadout(const\ FCosmeticLoadout\&\ InLoadout);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00039\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{void}\ ApplySlot(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ Slot,\ FName\ ItemId);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00043\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{void}\ ClearSlot(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ Slot);}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00047\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{void}\ ClearAll();}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00051\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00052\ \ \ \ \ const\ FCosmeticLoadout\&\ GetAppliedLoadout()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ AppliedLoadout;\ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00056\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00057\ \ \ \ \ void\ OnLoadoutChangedHandler(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ Slot,\ FName\ ItemId);}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ private:}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{void}\ OnAssetLoaded(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ Slot,\ FName\ ItemId);}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00064\ \ \ \ \ UMeshComponent*\ GetOrCreateSlotMeshComponent(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ Slot);}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{void}\ BackupDefaultMeshes();}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordtype}{void}\ RestoreDefaultMesh(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ Slot);}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00073\ \ \ \ \ TObjectPtr<UWjWorldCosmeticCatalogDataAsset>\ Catalog;}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00076\ \ \ \ \ FCosmeticLoadout\ AppliedLoadout;}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00079\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00080\ \ \ \ \ TMap<\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}},\ TObjectPtr<UMeshComponent>>\ SlotMeshComponents;}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00083\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00084\ \ \ \ \ TMap<\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}},\ TSoftObjectPtr<USkeletalMesh>>\ DefaultMeshes;}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00087\ \ \ \ \ FStreamableManager\ StreamableManager;}
+\DoxyCodeLine{00088\ \ \ \ \ TMap<\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}},\ TSharedPtr<FStreamableHandle>>\ ActiveStreamHandles;}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordtype}{bool}\ bDefaultMeshesBackedUp\ =\ false;}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00094\ \ \ \ \ static\ FName\ GetDefaultSocketName(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ Slot);}
+\DoxyCodeLine{00095\ \};}
+
+\end{DoxyCode}

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['keyprompt_0',['KeyPrompt',['../class_u_interaction_widget.html#a80d9248f9c4c1ffe5ecba4e6b54766a4',1,'UInteractionWidget']]]
+  ['joinbutton_0',['JoinButton',['../class_u_room_list_entry_widget.html#ac4c36035f7c1c92e1629d060f648b586',1,'URoomListEntryWidget']]]
 ];

@@ -8,43 +8,103 @@
 \DoxyCodeLine{00004\ }
 \DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
 \DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Engine/GameInstance.h"{}}}
-\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_session_types_8h}{Network/SessionTypes.h}}"{}}}
-\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldGameInstance.generated.h"{}}}
-\DoxyCodeLine{00009\ }
-\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_session_manager}{USessionManager}};}
-\DoxyCodeLine{00011\ }
-\DoxyCodeLine{00020\ UCLASS()}
-\DoxyCodeLine{00021\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_game_instance}{UWjWorldGameInstance}}\ :\ public\ UGameInstance}
-\DoxyCodeLine{00022\ \{}
-\DoxyCodeLine{00023\ \ \ \ \ GENERATED\_BODY()}
-\DoxyCodeLine{00024\ \ \ \ \ }
-\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_instance_a1d4d1b588c7fdc9990268930bb3eb8fb}{Init}}()\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_session_manager_a9d8be892168a95f0e7779d3992797a0c}{Shutdown}}()\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00028\ }
-\DoxyCodeLine{00029\ \ \ \ \ \textcolor{comment}{//\string~\ Session\ Manager\ 접근}}
-\DoxyCodeLine{00033\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}},\ meta\ =\ (DisplayName\ =\ \textcolor{stringliteral}{"{}Get\ Session\ Manager"{}}))}
-\DoxyCodeLine{00034\ \ \ \ \ \doxymbox{\hyperlink{class_u_session_manager}{USessionManager}}*\ \doxymbox{\hyperlink{class_u_wj_world_game_instance_ac2613d2e0482c2e2a39d4614e2bdf315}{GetSessionManager}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ SessionManager;\ \}}
-\DoxyCodeLine{00035\ }
-\DoxyCodeLine{00036\ \ \ \ \ \textcolor{comment}{//\string~\ 편의\ 함수\ (UI에서\ 직접\ 호출\ 가능)}}
-\DoxyCodeLine{00037\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
-\DoxyCodeLine{00038\ \ \ \ \ bool\ CreateRoom(const\ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\&\ Settings);}
-\DoxyCodeLine{00039\ }
-\DoxyCodeLine{00040\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
-\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{bool}\ FindRooms(int32\ MaxResults\ =\ 100);}
-\DoxyCodeLine{00042\ }
-\DoxyCodeLine{00043\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
-\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{bool}\ JoinRoom(int32\ RoomIndex);}
-\DoxyCodeLine{00045\ }
-\DoxyCodeLine{00046\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
-\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{bool}\ StartGame();}
-\DoxyCodeLine{00048\ }
-\DoxyCodeLine{00049\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
-\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{bool}\ LeaveRoom();}
-\DoxyCodeLine{00051\ }
-\DoxyCodeLine{00052\ private:}
-\DoxyCodeLine{00054\ \ \ \ \ UPROPERTY()}
-\DoxyCodeLine{00055\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_session_manager}{USessionManager}}>\ SessionManager;}
-\DoxyCodeLine{00056\ \};}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}Engine/NetDriver.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_session_types_8h}{Network/SessionTypes.h}}"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}WjWorldGameInstance.generated.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_session_manager}{USessionManager}};}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00022\ UCLASS()}
+\DoxyCodeLine{00023\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_game_instance}{UWjWorldGameInstance}}\ :\ public\ UGameInstance}
+\DoxyCodeLine{00024\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_instance_a1d4d1b588c7fdc9990268930bb3eb8fb}{Init}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_session_manager_a9d8be892168a95f0e7779d3992797a0c}{Shutdown}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{comment}{//\string~\ Session\ Manager\ 접근}}
+\DoxyCodeLine{00032\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}},\ meta\ =\ (DisplayName\ =\ \textcolor{stringliteral}{"{}Get\ Session\ Manager"{}}))}
+\DoxyCodeLine{00033\ \ \ \ \ \doxymbox{\hyperlink{class_u_session_manager}{USessionManager}}*\ \doxymbox{\hyperlink{class_u_wj_world_game_instance_ac2613d2e0482c2e2a39d4614e2bdf315}{GetSessionManager}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ SessionManager;\ \}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//\string~\ 편의\ 함수\ (UI에서\ 직접\ 호출\ 가능)}}
+\DoxyCodeLine{00036\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
+\DoxyCodeLine{00037\ \ \ \ \ bool\ CreateRoom(const\ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\&\ Settings);}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{bool}\ FindRooms(int32\ MaxResults\ =\ 100);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{bool}\ JoinRoom(int32\ RoomIndex);}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{bool}\ StartGame();}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{bool}\ LeaveRoom();}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{comment}{//\string~\ 게임\ 종료\ (세션\ InProgress\ →\ Ended)}}
+\DoxyCodeLine{00056\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Session"{}})}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{bool}\ EndGame();}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{comment}{//\string~\ 캐싱\ (호스트\ 마이그레이션용)}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{void}\ CachePlayerList(const\ TArray<\doxymbox{\hyperlink{struct_f_player_display_info}{FPlayerDisplayInfo}}>\&\ PlayerList);}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{void}\ CacheRoomSettings(const\ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\&\ Settings);}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{comment}{//\string~\ 호스트\ 마이그레이션}}
+\DoxyCodeLine{00068\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}Migration"{}})}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_game_instance_a59822103171ca15e6a4f67f64cafb87c}{IsMigrating}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ MigrationContext.bIsMigrating;\ \}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00072\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}Migration"{}})}
+\DoxyCodeLine{00073\ \ \ \ \ \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1e}{EHostMigrationState}}\ \doxymbox{\hyperlink{class_u_wj_world_game_instance_a6950736a62f668c2b5874712f7914d31}{GetMigrationState}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ MigrationState;\ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00076\ \ \ \ \ \doxymbox{\hyperlink{struct_f_host_migration_context}{FHostMigrationContext}}\&\ \doxymbox{\hyperlink{class_u_wj_world_game_instance_a649189e28c325c04a5dd158818c4611c}{GetMigrationContext}}()\ \{\ \textcolor{keywordflow}{return}\ MigrationContext;\ \}}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_host_migration_context}{FHostMigrationContext}}\&\ \doxymbox{\hyperlink{class_u_wj_world_game_instance_ad8350e971a0f51415d63ec929f85e6f1}{GetMigrationContext}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ MigrationContext;\ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{comment}{//\string~\ NetworkFailure\ 핸들러}}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{void}\ HandleNetworkFailure(UWorld*\ World,\ UNetDriver*\ NetDriver,}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ ENetworkFailure::Type\ FailureType,\ \textcolor{keyword}{const}\ FString\&\ ErrorString);}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{comment}{//\string~\ 호스트\ 마이그레이션\ 내부\ 함수}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{void}\ BeginHostMigration();}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{bool}\ DetermineIfNewHost()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00092\ \ \ \ \ FString\ GenerateMigrationTag()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordtype}{void}\ MigrationCreateSession();}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{void}\ MigrationSearchForNewHost();}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00101\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00102\ \ \ \ \ void\ OnMigrationSessionCreated(\textcolor{keywordtype}{bool}\ bWasSuccessful);}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00105\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordtype}{void}\ OnMigrationSearchResult(\textcolor{keywordtype}{bool}\ bWasSuccessful,\ const\ TArray<\doxymbox{\hyperlink{struct_f_room_info}{FRoomInfo}}>\&\ Rooms);}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordtype}{void}\ MigrationRetryOrFail();}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordtype}{void}\ OnMigrationTimeout();}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordtype}{void}\ MigrationFailed();}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordtype}{void}\ SetMigrationState(\doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1e}{EHostMigrationState}}\ NewState);}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ private:}
+\DoxyCodeLine{00122\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00123\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_session_manager}{USessionManager}}>\ SessionManager;}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00126\ \ \ \ \ FDelegateHandle\ NetworkFailureHandle;}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00129\ \ \ \ \ \doxymbox{\hyperlink{struct_f_host_migration_context}{FHostMigrationContext}}\ MigrationContext;}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00132\ \ \ \ \ \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1e}{EHostMigrationState}}\ MigrationState\ =\ \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1e}{EHostMigrationState}}::\doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0ea6adf97f83acf6453d4a6a4b1070f3754}{None}};}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00135\ \ \ \ \ FTimerHandle\ MigrationTimeoutHandle;}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00138\ \ \ \ \ FTimerHandle\ MigrationRetryHandle;}
+\DoxyCodeLine{00139\ \};}
 
 \end{DoxyCode}

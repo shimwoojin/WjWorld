@@ -1,0 +1,160 @@
+\doxysection{AWj\+World\+Game\+Mode\+Play Class Reference}
+\hypertarget{class_a_wj_world_game_mode_play}{}\label{class_a_wj_world_game_mode_play}\index{AWjWorldGameModePlay@{AWjWorldGameModePlay}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Game\+Mode\+Play.\+h$>$}
+
+Inheritance diagram for AWj\+World\+Game\+Mode\+Play:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_a_wj_world_game_mode_play}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_game_mode_play_af92ada8a034999da5d815bcd2c43cd01}{AWj\+World\+Game\+Mode\+Play}} ()
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_game_mode_play_a7ae0475464407b25a48e7d1dcd0b69f8}{Init\+Game}} (const FString \&Map\+Name, const FString \&Options, FString \&Error\+Message) override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_game_mode_play_a99d3f7662799c0ae8afc3705703a37df}{Start\+Play}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_game_mode_play_aeacc7ab3988b40ca189f3bfbdedeca30}{Post\+Login}} (APlayer\+Controller \texorpdfstring{$\ast$}{*}New\+Player) override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_game_mode_play_a774e3f3cb542366bf8a15f1262e5b7d7}{Tick}} (float Delta\+Seconds) override
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_mode_play_a7b3be80978fd601852236ba64cf400d0}{Start\+Game}} (float Seconds\+For\+Start\+Count)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_mode_play_a3e4373de480a7be782330e7d590bebc2}{End\+Game\+Predict}} (float Seconds\+For\+End\+Count)
+\item 
+TObject\+Ptr$<$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base}{UWj\+World\+Game\+Rule\+Base}} $>$ \doxymbox{\hyperlink{class_a_wj_world_game_mode_play_a3e62bf2a7ba03b1903dc8cc9b7db891f}{Get\+Current\+Game\+Rule}} () const
+\item 
+{\footnotesize template$<$typename T$>$ }\\TObject\+Ptr$<$ T $>$ \doxymbox{\hyperlink{class_a_wj_world_game_mode_play_acc51d0d1ff96e7d95a2d4716f8f9800b}{Get\+Current\+Game\+Rule}} () const
+\item 
+const FString \& \doxymbox{\hyperlink{class_a_wj_world_game_mode_play_af8c013f1fa0807ef8c93b04c27f55f47}{Get\+Map\+Option}} () const
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_mode_play_ab84871abf13ed014e159e59fd6c7c6ea}{On\+Game\+Level\+Up}} (int32 New\+Level)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_a_wj_world_game_mode_base}{AWj\+World\+Game\+Mode\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_game_mode_base_a490046ce96deebf80d8f351c4831b6f9}{AWj\+World\+Game\+Mode\+Base}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FOn\+Game\+Start\+Delegate \doxymbox{\hyperlink{class_a_wj_world_game_mode_play_a6278374c539a0ba9bd204ff6bd8dead8}{On\+Game\+Start}}
+\item 
+FOn\+Game\+Level\+Change\+Signature \doxymbox{\hyperlink{class_a_wj_world_game_mode_play_a2a7eb56590883c6e0b2a79ac075b6716}{On\+Game\+Level\+Change}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_game_mode_play_a9905747c683d85df1131eb83e453c286}{Begin\+Destroy}} () override
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{class_a_wj_world_game_mode_play_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_a_wj_world_game_mode_play_af92ada8a034999da5d815bcd2c43cd01}\index{AWjWorldGameModePlay@{AWjWorldGameModePlay}!AWjWorldGameModePlay@{AWjWorldGameModePlay}}
+\index{AWjWorldGameModePlay@{AWjWorldGameModePlay}!AWjWorldGameModePlay@{AWjWorldGameModePlay}}
+\doxysubsubsection{\texorpdfstring{AWjWorldGameModePlay()}{AWjWorldGameModePlay()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_play_af92ada8a034999da5d815bcd2c43cd01} 
+AWj\+World\+Game\+Mode\+Play::\+\+AWj\+World\+Game\+Mode\+Play (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_a_wj_world_game_mode_play_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_a_wj_world_game_mode_play_a9905747c683d85df1131eb83e453c286}\index{AWjWorldGameModePlay@{AWjWorldGameModePlay}!BeginDestroy@{BeginDestroy}}
+\index{BeginDestroy@{BeginDestroy}!AWjWorldGameModePlay@{AWjWorldGameModePlay}}
+\doxysubsubsection{\texorpdfstring{BeginDestroy()}{BeginDestroy()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_play_a9905747c683d85df1131eb83e453c286} 
+void AWj\+World\+Game\+Mode\+Play::\+\+Begin\+Destroy (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_game_mode_play_a3e4373de480a7be782330e7d590bebc2}\index{AWjWorldGameModePlay@{AWjWorldGameModePlay}!EndGamePredict@{EndGamePredict}}
+\index{EndGamePredict@{EndGamePredict}!AWjWorldGameModePlay@{AWjWorldGameModePlay}}
+\doxysubsubsection{\texorpdfstring{EndGamePredict()}{EndGamePredict()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_play_a3e4373de480a7be782330e7d590bebc2} 
+void AWj\+World\+Game\+Mode\+Play::\+\+End\+Game\+Predict (\begin{DoxyParamCaption}\item[{float}]{Seconds\+For\+End\+Count}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_a_wj_world_game_mode_play_acc51d0d1ff96e7d95a2d4716f8f9800b}\index{AWjWorldGameModePlay@{AWjWorldGameModePlay}!GetCurrentGameRule@{GetCurrentGameRule}}
+\index{GetCurrentGameRule@{GetCurrentGameRule}!AWjWorldGameModePlay@{AWjWorldGameModePlay}}
+\doxysubsubsection{\texorpdfstring{GetCurrentGameRule()}{GetCurrentGameRule()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_play_acc51d0d1ff96e7d95a2d4716f8f9800b} 
+template$<$typename T$>$ \\
+TObject\+Ptr$<$ T $>$ AWj\+World\+Game\+Mode\+Play::\+\+Get\+Current\+Game\+Rule (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_a_wj_world_game_mode_play_a3e62bf2a7ba03b1903dc8cc9b7db891f}\index{AWjWorldGameModePlay@{AWjWorldGameModePlay}!GetCurrentGameRule@{GetCurrentGameRule}}
+\index{GetCurrentGameRule@{GetCurrentGameRule}!AWjWorldGameModePlay@{AWjWorldGameModePlay}}
+\doxysubsubsection{\texorpdfstring{GetCurrentGameRule()}{GetCurrentGameRule()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_play_a3e62bf2a7ba03b1903dc8cc9b7db891f} 
+TObject\+Ptr$<$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base}{UWj\+World\+Game\+Rule\+Base}} $>$ AWj\+World\+Game\+Mode\+Play::\+\+Get\+Current\+Game\+Rule (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_a_wj_world_game_mode_play_af8c013f1fa0807ef8c93b04c27f55f47}\index{AWjWorldGameModePlay@{AWjWorldGameModePlay}!GetMapOption@{GetMapOption}}
+\index{GetMapOption@{GetMapOption}!AWjWorldGameModePlay@{AWjWorldGameModePlay}}
+\doxysubsubsection{\texorpdfstring{GetMapOption()}{GetMapOption()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_play_af8c013f1fa0807ef8c93b04c27f55f47} 
+const FString \& AWj\+World\+Game\+Mode\+Play::\+\+Get\+Map\+Option (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+URL Options에서 파싱된 Map\+Option 값 \Hypertarget{class_a_wj_world_game_mode_play_a7ae0475464407b25a48e7d1dcd0b69f8}\index{AWjWorldGameModePlay@{AWjWorldGameModePlay}!InitGame@{InitGame}}
+\index{InitGame@{InitGame}!AWjWorldGameModePlay@{AWjWorldGameModePlay}}
+\doxysubsubsection{\texorpdfstring{InitGame()}{InitGame()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_play_a7ae0475464407b25a48e7d1dcd0b69f8} 
+void AWj\+World\+Game\+Mode\+Play::\+\+Init\+Game (\begin{DoxyParamCaption}\item[{const FString \&}]{Map\+Name}{, }\item[{const FString \&}]{Options}{, }\item[{FString \&}]{Error\+Message}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_game_mode_play_ab84871abf13ed014e159e59fd6c7c6ea}\index{AWjWorldGameModePlay@{AWjWorldGameModePlay}!OnGameLevelUp@{OnGameLevelUp}}
+\index{OnGameLevelUp@{OnGameLevelUp}!AWjWorldGameModePlay@{AWjWorldGameModePlay}}
+\doxysubsubsection{\texorpdfstring{OnGameLevelUp()}{OnGameLevelUp()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_play_ab84871abf13ed014e159e59fd6c7c6ea} 
+void AWj\+World\+Game\+Mode\+Play::\+\+On\+Game\+Level\+Up (\begin{DoxyParamCaption}\item[{int32}]{New\+Level}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_a_wj_world_game_mode_play_aeacc7ab3988b40ca189f3bfbdedeca30}\index{AWjWorldGameModePlay@{AWjWorldGameModePlay}!PostLogin@{PostLogin}}
+\index{PostLogin@{PostLogin}!AWjWorldGameModePlay@{AWjWorldGameModePlay}}
+\doxysubsubsection{\texorpdfstring{PostLogin()}{PostLogin()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_play_aeacc7ab3988b40ca189f3bfbdedeca30} 
+void AWj\+World\+Game\+Mode\+Play::\+\+Post\+Login (\begin{DoxyParamCaption}\item[{APlayer\+Controller \texorpdfstring{$\ast$}{*}}]{New\+Player}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_game_mode_play_a7b3be80978fd601852236ba64cf400d0}\index{AWjWorldGameModePlay@{AWjWorldGameModePlay}!StartGame@{StartGame}}
+\index{StartGame@{StartGame}!AWjWorldGameModePlay@{AWjWorldGameModePlay}}
+\doxysubsubsection{\texorpdfstring{StartGame()}{StartGame()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_play_a7b3be80978fd601852236ba64cf400d0} 
+void AWj\+World\+Game\+Mode\+Play::\+\+Start\+Game (\begin{DoxyParamCaption}\item[{float}]{Seconds\+For\+Start\+Count}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_a_wj_world_game_mode_play_a99d3f7662799c0ae8afc3705703a37df}\index{AWjWorldGameModePlay@{AWjWorldGameModePlay}!StartPlay@{StartPlay}}
+\index{StartPlay@{StartPlay}!AWjWorldGameModePlay@{AWjWorldGameModePlay}}
+\doxysubsubsection{\texorpdfstring{StartPlay()}{StartPlay()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_play_a99d3f7662799c0ae8afc3705703a37df} 
+void AWj\+World\+Game\+Mode\+Play::\+\+Start\+Play (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_game_mode_play_a774e3f3cb542366bf8a15f1262e5b7d7}\index{AWjWorldGameModePlay@{AWjWorldGameModePlay}!Tick@{Tick}}
+\index{Tick@{Tick}!AWjWorldGameModePlay@{AWjWorldGameModePlay}}
+\doxysubsubsection{\texorpdfstring{Tick()}{Tick()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_play_a774e3f3cb542366bf8a15f1262e5b7d7} 
+void AWj\+World\+Game\+Mode\+Play::\+\+Tick (\begin{DoxyParamCaption}\item[{float}]{Delta\+Seconds}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{class_a_wj_world_game_mode_play_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_a_wj_world_game_mode_play_a2a7eb56590883c6e0b2a79ac075b6716}\index{AWjWorldGameModePlay@{AWjWorldGameModePlay}!OnGameLevelChange@{OnGameLevelChange}}
+\index{OnGameLevelChange@{OnGameLevelChange}!AWjWorldGameModePlay@{AWjWorldGameModePlay}}
+\doxysubsubsection{\texorpdfstring{OnGameLevelChange}{OnGameLevelChange}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_play_a2a7eb56590883c6e0b2a79ac075b6716} 
+FOn\+Game\+Level\+Change\+Signature AWj\+World\+Game\+Mode\+Play::\+\+On\+Game\+Level\+Change}
+
+\Hypertarget{class_a_wj_world_game_mode_play_a6278374c539a0ba9bd204ff6bd8dead8}\index{AWjWorldGameModePlay@{AWjWorldGameModePlay}!OnGameStart@{OnGameStart}}
+\index{OnGameStart@{OnGameStart}!AWjWorldGameModePlay@{AWjWorldGameModePlay}}
+\doxysubsubsection{\texorpdfstring{OnGameStart}{OnGameStart}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_play_a6278374c539a0ba9bd204ff6bd8dead8} 
+FOn\+Game\+Start\+Delegate AWj\+World\+Game\+Mode\+Play::\+\+On\+Game\+Start}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Play/\+\doxymbox{\hyperlink{_wj_world_game_mode_play_8h}{Wj\+World\+Game\+Mode\+Play.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Play/\+\doxymbox{\hyperlink{_wj_world_game_mode_play_8cpp}{Wj\+World\+Game\+Mode\+Play.\+cpp}}\end{DoxyCompactItemize}

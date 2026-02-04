@@ -1,6 +1,19 @@
 var searchData=
 [
-  ['fplayerdisplayinfo_0',['FPlayerDisplayInfo',['../struct_f_player_display_info.html',1,'']]],
-  ['froominfo_1',['FRoomInfo',['../struct_f_room_info.html',1,'']]],
-  ['froomsettings_2',['FRoomSettings',['../struct_f_room_settings.html',1,'']]]
+  ['fcosmeticitemdefinition_0',['FCosmeticItemDefinition',['../struct_f_cosmetic_item_definition.html',1,'']]],
+  ['fcosmeticiteminstance_1',['FCosmeticItemInstance',['../struct_f_cosmetic_item_instance.html',1,'']]],
+  ['fcosmeticloadout_2',['FCosmeticLoadout',['../struct_f_cosmetic_loadout.html',1,'']]],
+  ['fcosmeticslotentry_3',['FCosmeticSlotEntry',['../struct_f_cosmetic_slot_entry.html',1,'']]],
+  ['fhostmigrationcontext_4',['FHostMigrationContext',['../struct_f_host_migration_context.html',1,'']]],
+  ['fminigamestatdescriptor_5',['FMinigameStatDescriptor',['../struct_f_minigame_stat_descriptor.html',1,'']]],
+  ['fminigamestatentry_6',['FMinigameStatEntry',['../struct_f_minigame_stat_entry.html',1,'']]],
+  ['fplaceableobjectdefinition_7',['FPlaceableObjectDefinition',['../struct_f_placeable_object_definition.html',1,'']]],
+  ['fplacedobjectsaveentry_8',['FPlacedObjectSaveEntry',['../struct_f_placed_object_save_entry.html',1,'']]],
+  ['fplayerdisplayinfo_9',['FPlayerDisplayInfo',['../struct_f_player_display_info.html',1,'']]],
+  ['froominfo_10',['FRoomInfo',['../struct_f_room_info.html',1,'']]],
+  ['froomsettings_11',['FRoomSettings',['../struct_f_room_settings.html',1,'']]],
+  ['fwjworldbrickproperties_12',['FWjWorldBrickProperties',['../struct_f_wj_world_brick_properties.html',1,'']]],
+  ['fwjworldminigamedefinition_13',['FWjWorldMinigameDefinition',['../struct_f_wj_world_minigame_definition.html',1,'']]],
+  ['fwjworldminigamemapoption_14',['FWjWorldMinigameMapOption',['../struct_f_wj_world_minigame_map_option.html',1,'']]],
+  ['fwjworldwalldescription_15',['FWjWorldWallDescription',['../struct_f_wj_world_wall_description.html',1,'']]]
 ];

@@ -1,0 +1,374 @@
+\doxysection{UWj\+World\+Game\+Rule\+Approaching\+Wall Class Reference}
+\hypertarget{class_u_wj_world_game_rule_approaching_wall}{}\label{class_u_wj_world_game_rule_approaching_wall}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Game\+Rule\+Approaching\+Wall.\+h$>$}
+
+Inheritance diagram for UWj\+World\+Game\+Rule\+Approaching\+Wall:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_u_wj_world_game_rule_approaching_wall}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a55d628529bf751c91ecdbc4aa6d6b6eb}{Initialize}} (\doxymbox{\hyperlink{class_a_wj_world_game_mode_play}{AWj\+World\+Game\+Mode\+Play}} \texorpdfstring{$\ast$}{*}In\+Game\+Mode) override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a4a2ffb64cd62023fc41144a8e4159d13}{On\+Game\+Ready}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ae127086918459440004885a6573fd356}{On\+Game\+Start}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a030b02482879c08cd2206487a7bd627d}{On\+Game\+End}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a267f4fc225b52eaed9271921ebf7bdfb}{On\+Player\+Joined}} (\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWj\+World\+Player\+State\+Play}} \texorpdfstring{$\ast$}{*}Player) override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a32003aa1aa10c6ab90f57d33ef842f57}{On\+Player\+Left}} (\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWj\+World\+Player\+State\+Play}} \texorpdfstring{$\ast$}{*}Player) override
+\item 
+virtual bool \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a400d1e4aea150d4f697dc6407999bfbd}{Check\+Win\+Condition}} () const override
+\item 
+virtual \doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWj\+World\+Player\+State\+Play}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a586d5fe7d29ceb7fbe976c34d2743e21}{Get\+Winner}} () const override
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a4ec15df2182c98ee834d765746956288}{On\+Player\+Eliminated}} (\doxymbox{\hyperlink{class_a_wj_world_character_play}{AWj\+World\+Character\+Play}} \texorpdfstring{$\ast$}{*}Eliminated\+Character)
+\item 
+int32 \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a4887e230f5d469095040515a589185dc}{Get\+Alive\+Player\+Count}} () const
+\item 
+const TSet$<$ FInt\+Point $>$ \& \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a727c912df1a1eafa203e7036909c5163}{Get\+Flood\+Fill\+Points}} () const
+\item 
+const TSet$<$ FInt\+Point $>$ \& \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_aaf5ad6cd0096fc28436e224828487b6a}{Get\+Current\+Safe\+Zone\+Points}} () const
+\item 
+TObject\+Ptr$<$ \doxymbox{\hyperlink{class_u_wj_world_wall_manager}{UWj\+World\+Wall\+Manager}} $>$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_af32d076fd5e24cd75073d4855696116e}{Get\+Wall\+Manager}} () const
+\item 
+const \doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWj\+World\+Wall\+Description}} \& \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_aca3c85a254ccdc0f14caa73a6df4e983}{Get\+Wall\+Desc}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_u_wj_world_game_rule_base}{UWj\+World\+Game\+Rule\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a226c0e618ee08f44123e1a95d9b1213f}{On\+Game\+End\+Predict}} (float Seconds)
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a16f0716eb64654b26b56c05112b70d79}{Begin\+Destroy}} () override
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a5dced7d956649a0a10e47ccdbcabad90}{Has\+Authority}} () const
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_game_mode_play}{AWj\+World\+Game\+Mode\+Play}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a21332ec2b8f14ed555fbe286027e513c}{Get\+Game\+Mode\+Play}} () const
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_game_state_play}{AWj\+World\+Game\+State\+Play}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a39827e7eeafa65353860b29f94202c79}{Get\+Game\+State\+Play}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ac444df5653e8d72110232bd37f17c826}{Tick\+Game\+Rule}} (float Delta\+Time) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \doxymbox{\hyperlink{class_u_wj_world_game_rule_base}{UWj\+World\+Game\+Rule\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_ac99d78d7e74b7b1a4d06ac5a6567ddb2}{Game\+Level\+Up}} (int32 New\+Level)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ \doxymbox{\hyperlink{class_u_wj_world_wall_manager}{UWj\+World\+Wall\+Manager}} $>$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a26f90d5f71d2df7b64516c849fd2c799}{Wall\+Manager}}
+\item 
+TObject\+Ptr$<$ \doxymbox{\hyperlink{class_u_wj_world_brick_spawner}{UWj\+World\+Brick\+Spawner}} $>$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a0fe2a0efabb345d2b25f1e6d105ebdf8}{Brick\+Spawner}}
+\item 
+\doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWj\+World\+Wall\+Description}} \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a71e420c110161db13c94e33a4c1bf91c}{Wall\+Desc}}
+\item 
+TSet$<$ FInt\+Point $>$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ad01608a3f2866afdc898ca5dd58f4671}{Current\+Safe\+Zone\+Points}}
+\item 
+TSet$<$ FInt\+Point $>$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a8d63c09147c591f648c1819777bcf29e}{Flood\+Fill\+Points}}
+\item 
+TArray$<$ FVector $>$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ac2b75e5e5c2abc5bbc35cb1f0280b117}{Spawn\+Safe\+Zones}}
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_aae406a86db236f536a4f583697f562a0}{b\+Is\+Wall\+Spawned}} = false
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_aa2bbf33d66beb258ee99dc4391b3d496}{b\+Is\+Game\+Started}} = false
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ab81d56f2c15425988352b658926c760b}{b\+Is\+Game\+Ready}} = false
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a2e5877caad7b5f755069fe82afafa771}{b\+Game\+Start\+Internal\+Process\+Done}} = false
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_acdc7ae62474cc50a2374ed4799346d0a}{b\+Game\+Over\+Condition\+Met}} = false
+\item 
+int32 \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ab3abd354688dcb957f27dd8a1af5b5e7}{Brick\+Move\+Signal\+Count}} = 0
+\item 
+float \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a6acd779e3156da3e76df00b3b7658bbe}{Time\+Since\+Last\+Brick\+Move\+Signal}} = 0.\+0f
+\item 
+float \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a1150501b274a91e4f83553f83e8a00f9}{Brick\+Move\+Signal\+Interval}} = 12.\+0f
+\item 
+TArray$<$ TWeak\+Object\+Ptr$<$ \doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWj\+World\+Player\+State\+Play}} $>$ $>$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ae0019f1cc7e20034f72292a6de6696f3}{Alive\+Players}}
+\item 
+TWeak\+Object\+Ptr$<$ \doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWj\+World\+Player\+State\+Play}} $>$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a22214003fe65c956d71fbd51e718d1ee}{Winner\+Player}}
+\item 
+int32 \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a484a13eb7e9cf4424a40c2573292e4f0}{Alive\+Player\+Count}} = 0
+\item 
+int32 \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a8b75a57eee4d5e27cb4ce962fd9c81a8}{Total\+Player\+Count}} = 0
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_u_wj_world_game_rule_base}{UWj\+World\+Game\+Rule\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+TWeak\+Object\+Ptr$<$ \doxymbox{\hyperlink{class_a_wj_world_game_mode_play}{AWj\+World\+Game\+Mode\+Play}} $>$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a255d277042a68f697f579f21ab582e1a}{Game\+Mode}}
+\item 
+TSubclass\+Of$<$ UWj\+World\+Game\+Data\+Component $>$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a96ca73919fc5cf009ff9d1167d042697}{Game\+Data\+Component\+Class}}
+\item 
+TSubclass\+Of$<$ UWj\+World\+Game\+Data\+Component $>$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a2ff20f4707783824d893bfa81c278e0f}{Player\+Data\+Component\+Class}}
+\item 
+float \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a25c4c3adc9dafe1b4df707bf3dc40adc}{Start\+Delay}} = 2.\+0f
+\item 
+FTimer\+Handle \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_aae96bc2b57198f3b67a01fc3fa3bdd71}{Delay\+Start\+Handle}}
+\item 
+FTimer\+Handle \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a12e89cfbe51172785d91747f5f4c3603}{Goto\+Waiting\+Room\+Handle}}
+\item 
+float \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_aa95ca7ebca82dbc13247fde5dc2edbc3}{Seconds\+For\+Game\+Start\+Count}} = 3.\+0f
+\item 
+float \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a5773435b2bd861858e02805fb54a95af}{Seconds\+For\+Goto\+Waiting\+Room}} = 3.\+0f
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a400d1e4aea150d4f697dc6407999bfbd}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!CheckWinCondition@{CheckWinCondition}}
+\index{CheckWinCondition@{CheckWinCondition}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{CheckWinCondition()}{CheckWinCondition()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a400d1e4aea150d4f697dc6407999bfbd} 
+bool UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Check\+Win\+Condition (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_ab03f9ec99b29c60c9c8da015ece91d3e}{UWj\+World\+Game\+Rule\+Base}}.
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a4887e230f5d469095040515a589185dc}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!GetAlivePlayerCount@{GetAlivePlayerCount}}
+\index{GetAlivePlayerCount@{GetAlivePlayerCount}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{GetAlivePlayerCount()}{GetAlivePlayerCount()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a4887e230f5d469095040515a589185dc} 
+int32 UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Get\+Alive\+Player\+Count (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_aaf5ad6cd0096fc28436e224828487b6a}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!GetCurrentSafeZonePoints@{GetCurrentSafeZonePoints}}
+\index{GetCurrentSafeZonePoints@{GetCurrentSafeZonePoints}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{GetCurrentSafeZonePoints()}{GetCurrentSafeZonePoints()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_aaf5ad6cd0096fc28436e224828487b6a} 
+const TSet$<$ FInt\+Point $>$ \& UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Get\+Current\+Safe\+Zone\+Points (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a727c912df1a1eafa203e7036909c5163}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!GetFloodFillPoints@{GetFloodFillPoints}}
+\index{GetFloodFillPoints@{GetFloodFillPoints}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{GetFloodFillPoints()}{GetFloodFillPoints()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a727c912df1a1eafa203e7036909c5163} 
+const TSet$<$ FInt\+Point $>$ \& UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Get\+Flood\+Fill\+Points (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_aca3c85a254ccdc0f14caa73a6df4e983}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!GetWallDesc@{GetWallDesc}}
+\index{GetWallDesc@{GetWallDesc}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{GetWallDesc()}{GetWallDesc()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_aca3c85a254ccdc0f14caa73a6df4e983} 
+const \doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWj\+World\+Wall\+Description}} \& UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Get\+Wall\+Desc (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_af32d076fd5e24cd75073d4855696116e}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!GetWallManager@{GetWallManager}}
+\index{GetWallManager@{GetWallManager}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{GetWallManager()}{GetWallManager()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_af32d076fd5e24cd75073d4855696116e} 
+TObject\+Ptr$<$ \doxymbox{\hyperlink{class_u_wj_world_wall_manager}{UWj\+World\+Wall\+Manager}} $>$ UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Get\+Wall\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a586d5fe7d29ceb7fbe976c34d2743e21}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!GetWinner@{GetWinner}}
+\index{GetWinner@{GetWinner}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{GetWinner()}{GetWinner()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a586d5fe7d29ceb7fbe976c34d2743e21} 
+\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWj\+World\+Player\+State\+Play}} \texorpdfstring{$\ast$}{*} UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Get\+Winner (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_aebe46f808610fcdfea7ef15291904e1b}{UWj\+World\+Game\+Rule\+Base}}.
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a55d628529bf751c91ecdbc4aa6d6b6eb}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a55d628529bf751c91ecdbc4aa6d6b6eb} 
+void UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Initialize (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_a_wj_world_game_mode_play}{AWj\+World\+Game\+Mode\+Play}} \texorpdfstring{$\ast$}{*}}]{In\+Game\+Mode}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a6f8e0f1b98821229b24c2fecd5a9df19}{UWj\+World\+Game\+Rule\+Base}}.
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a030b02482879c08cd2206487a7bd627d}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!OnGameEnd@{OnGameEnd}}
+\index{OnGameEnd@{OnGameEnd}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{OnGameEnd()}{OnGameEnd()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a030b02482879c08cd2206487a7bd627d} 
+void UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+On\+Game\+End (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_af35e4129d70e97f6061dcc7d141d5c2a}{UWj\+World\+Game\+Rule\+Base}}.
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a4a2ffb64cd62023fc41144a8e4159d13}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!OnGameReady@{OnGameReady}}
+\index{OnGameReady@{OnGameReady}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{OnGameReady()}{OnGameReady()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a4a2ffb64cd62023fc41144a8e4159d13} 
+void UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+On\+Game\+Ready (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_ac05f38f32baecd50107359e0254c3c52}{UWj\+World\+Game\+Rule\+Base}}.
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_ae127086918459440004885a6573fd356}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!OnGameStart@{OnGameStart}}
+\index{OnGameStart@{OnGameStart}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{OnGameStart()}{OnGameStart()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_ae127086918459440004885a6573fd356} 
+void UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+On\+Game\+Start (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a049b44d0b0a32a890d58f866f98b7821}{UWj\+World\+Game\+Rule\+Base}}.
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a4ec15df2182c98ee834d765746956288}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!OnPlayerEliminated@{OnPlayerEliminated}}
+\index{OnPlayerEliminated@{OnPlayerEliminated}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{OnPlayerEliminated()}{OnPlayerEliminated()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a4ec15df2182c98ee834d765746956288} 
+void UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+On\+Player\+Eliminated (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_a_wj_world_character_play}{AWj\+World\+Character\+Play}} \texorpdfstring{$\ast$}{*}}]{Eliminated\+Character}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a267f4fc225b52eaed9271921ebf7bdfb}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!OnPlayerJoined@{OnPlayerJoined}}
+\index{OnPlayerJoined@{OnPlayerJoined}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{OnPlayerJoined()}{OnPlayerJoined()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a267f4fc225b52eaed9271921ebf7bdfb} 
+void UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+On\+Player\+Joined (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWj\+World\+Player\+State\+Play}} \texorpdfstring{$\ast$}{*}}]{Player}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a0db12030f099799b91e6a18dcf917f90}{UWj\+World\+Game\+Rule\+Base}}.
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a32003aa1aa10c6ab90f57d33ef842f57}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!OnPlayerLeft@{OnPlayerLeft}}
+\index{OnPlayerLeft@{OnPlayerLeft}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{OnPlayerLeft()}{OnPlayerLeft()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a32003aa1aa10c6ab90f57d33ef842f57} 
+void UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+On\+Player\+Left (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWj\+World\+Player\+State\+Play}} \texorpdfstring{$\ast$}{*}}]{Player}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_ab930230376f69ffb45dd4cd306544c5d}{UWj\+World\+Game\+Rule\+Base}}.
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_ac444df5653e8d72110232bd37f17c826}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!TickGameRule@{TickGameRule}}
+\index{TickGameRule@{TickGameRule}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{TickGameRule()}{TickGameRule()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_ac444df5653e8d72110232bd37f17c826} 
+void UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Tick\+Game\+Rule (\begin{DoxyParamCaption}\item[{float}]{Delta\+Time}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a7b0d89afe68ade01a5d05df040619156}{UWj\+World\+Game\+Rule\+Base}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a484a13eb7e9cf4424a40c2573292e4f0}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!AlivePlayerCount@{AlivePlayerCount}}
+\index{AlivePlayerCount@{AlivePlayerCount}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{AlivePlayerCount}{AlivePlayerCount}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a484a13eb7e9cf4424a40c2573292e4f0} 
+int32 UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Alive\+Player\+Count = 0\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_ae0019f1cc7e20034f72292a6de6696f3}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!AlivePlayers@{AlivePlayers}}
+\index{AlivePlayers@{AlivePlayers}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{AlivePlayers}{AlivePlayers}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_ae0019f1cc7e20034f72292a6de6696f3} 
+TArray$<$TWeak\+Object\+Ptr$<$\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWj\+World\+Player\+State\+Play}}$>$ $>$ UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Alive\+Players\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_acdc7ae62474cc50a2374ed4799346d0a}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!bGameOverConditionMet@{bGameOverConditionMet}}
+\index{bGameOverConditionMet@{bGameOverConditionMet}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{bGameOverConditionMet}{bGameOverConditionMet}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_acdc7ae62474cc50a2374ed4799346d0a} 
+bool UWj\+World\+Game\+Rule\+Approaching\+Wall::\+b\+Game\+Over\+Condition\+Met = false\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a2e5877caad7b5f755069fe82afafa771}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!bGameStartInternalProcessDone@{bGameStartInternalProcessDone}}
+\index{bGameStartInternalProcessDone@{bGameStartInternalProcessDone}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{bGameStartInternalProcessDone}{bGameStartInternalProcessDone}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a2e5877caad7b5f755069fe82afafa771} 
+bool UWj\+World\+Game\+Rule\+Approaching\+Wall::\+b\+Game\+Start\+Internal\+Process\+Done = false\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_ab81d56f2c15425988352b658926c760b}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!bIsGameReady@{bIsGameReady}}
+\index{bIsGameReady@{bIsGameReady}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{bIsGameReady}{bIsGameReady}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_ab81d56f2c15425988352b658926c760b} 
+bool UWj\+World\+Game\+Rule\+Approaching\+Wall::\+b\+Is\+Game\+Ready = false\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_aa2bbf33d66beb258ee99dc4391b3d496}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!bIsGameStarted@{bIsGameStarted}}
+\index{bIsGameStarted@{bIsGameStarted}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{bIsGameStarted}{bIsGameStarted}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_aa2bbf33d66beb258ee99dc4391b3d496} 
+bool UWj\+World\+Game\+Rule\+Approaching\+Wall::\+b\+Is\+Game\+Started = false\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_aae406a86db236f536a4f583697f562a0}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!bIsWallSpawned@{bIsWallSpawned}}
+\index{bIsWallSpawned@{bIsWallSpawned}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{bIsWallSpawned}{bIsWallSpawned}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_aae406a86db236f536a4f583697f562a0} 
+bool UWj\+World\+Game\+Rule\+Approaching\+Wall::\+b\+Is\+Wall\+Spawned = false\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_ab3abd354688dcb957f27dd8a1af5b5e7}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!BrickMoveSignalCount@{BrickMoveSignalCount}}
+\index{BrickMoveSignalCount@{BrickMoveSignalCount}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{BrickMoveSignalCount}{BrickMoveSignalCount}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_ab3abd354688dcb957f27dd8a1af5b5e7} 
+int32 UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Brick\+Move\+Signal\+Count = 0\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a1150501b274a91e4f83553f83e8a00f9}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!BrickMoveSignalInterval@{BrickMoveSignalInterval}}
+\index{BrickMoveSignalInterval@{BrickMoveSignalInterval}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{BrickMoveSignalInterval}{BrickMoveSignalInterval}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a1150501b274a91e4f83553f83e8a00f9} 
+float UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Brick\+Move\+Signal\+Interval = 12.\+0f\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a0fe2a0efabb345d2b25f1e6d105ebdf8}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!BrickSpawner@{BrickSpawner}}
+\index{BrickSpawner@{BrickSpawner}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{BrickSpawner}{BrickSpawner}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a0fe2a0efabb345d2b25f1e6d105ebdf8} 
+TObject\+Ptr$<$\doxymbox{\hyperlink{class_u_wj_world_brick_spawner}{UWj\+World\+Brick\+Spawner}}$>$ UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Brick\+Spawner\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_ad01608a3f2866afdc898ca5dd58f4671}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!CurrentSafeZonePoints@{CurrentSafeZonePoints}}
+\index{CurrentSafeZonePoints@{CurrentSafeZonePoints}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{CurrentSafeZonePoints}{CurrentSafeZonePoints}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_ad01608a3f2866afdc898ca5dd58f4671} 
+TSet$<$FInt\+Point$>$ UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Current\+Safe\+Zone\+Points\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a8d63c09147c591f648c1819777bcf29e}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!FloodFillPoints@{FloodFillPoints}}
+\index{FloodFillPoints@{FloodFillPoints}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{FloodFillPoints}{FloodFillPoints}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a8d63c09147c591f648c1819777bcf29e} 
+TSet$<$FInt\+Point$>$ UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Flood\+Fill\+Points\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_ac2b75e5e5c2abc5bbc35cb1f0280b117}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!SpawnSafeZones@{SpawnSafeZones}}
+\index{SpawnSafeZones@{SpawnSafeZones}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{SpawnSafeZones}{SpawnSafeZones}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_ac2b75e5e5c2abc5bbc35cb1f0280b117} 
+TArray$<$FVector$>$ UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Spawn\+Safe\+Zones\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a6acd779e3156da3e76df00b3b7658bbe}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!TimeSinceLastBrickMoveSignal@{TimeSinceLastBrickMoveSignal}}
+\index{TimeSinceLastBrickMoveSignal@{TimeSinceLastBrickMoveSignal}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{TimeSinceLastBrickMoveSignal}{TimeSinceLastBrickMoveSignal}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a6acd779e3156da3e76df00b3b7658bbe} 
+float UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Time\+Since\+Last\+Brick\+Move\+Signal = 0.\+0f\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a8b75a57eee4d5e27cb4ce962fd9c81a8}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!TotalPlayerCount@{TotalPlayerCount}}
+\index{TotalPlayerCount@{TotalPlayerCount}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{TotalPlayerCount}{TotalPlayerCount}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a8b75a57eee4d5e27cb4ce962fd9c81a8} 
+int32 UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Total\+Player\+Count = 0\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a71e420c110161db13c94e33a4c1bf91c}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!WallDesc@{WallDesc}}
+\index{WallDesc@{WallDesc}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{WallDesc}{WallDesc}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a71e420c110161db13c94e33a4c1bf91c} 
+\doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWj\+World\+Wall\+Description}} UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Wall\+Desc\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a26f90d5f71d2df7b64516c849fd2c799}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!WallManager@{WallManager}}
+\index{WallManager@{WallManager}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{WallManager}{WallManager}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a26f90d5f71d2df7b64516c849fd2c799} 
+TObject\+Ptr$<$\doxymbox{\hyperlink{class_u_wj_world_wall_manager}{UWj\+World\+Wall\+Manager}}$>$ UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Wall\+Manager\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_approaching_wall_a22214003fe65c956d71fbd51e718d1ee}\index{UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}!WinnerPlayer@{WinnerPlayer}}
+\index{WinnerPlayer@{WinnerPlayer}!UWjWorldGameRuleApproachingWall@{UWjWorldGameRuleApproachingWall}}
+\doxysubsubsection{\texorpdfstring{WinnerPlayer}{WinnerPlayer}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_approaching_wall_a22214003fe65c956d71fbd51e718d1ee} 
+TWeak\+Object\+Ptr$<$\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWj\+World\+Player\+State\+Play}}$>$ UWj\+World\+Game\+Rule\+Approaching\+Wall::\+\+Winner\+Player\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Game\+Rule/\+\doxymbox{\hyperlink{_wj_world_game_rule_approaching_wall_8h}{Wj\+World\+Game\+Rule\+Approaching\+Wall.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Game\+Rule/\+\doxymbox{\hyperlink{_wj_world_game_rule_approaching_wall_8cpp}{Wj\+World\+Game\+Rule\+Approaching\+Wall.\+cpp}}\end{DoxyCompactItemize}

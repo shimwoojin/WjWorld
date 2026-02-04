@@ -1,0 +1,89 @@
+\doxysection{UGA\+\_\+\+Normal\+Attack Class Reference}
+\hypertarget{class_u_g_a___normal_attack}{}\label{class_u_g_a___normal_attack}\index{UGA\_NormalAttack@{UGA\_NormalAttack}}
+
+
+{\ttfamily \+\#include $<$GA\+\_\+\+Normal\+Attack.\+h$>$}
+
+Inheritance diagram for UGA\+\_\+\+Normal\+Attack:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_u_g_a___normal_attack}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_u_g_a___normal_attack_abdf1f7ad9a37d56e6444175f160c741a}{UGA\+\_\+\+Normal\+Attack}} ()
+\item 
+virtual void \doxymbox{\hyperlink{class_u_g_a___normal_attack_ab552119a6d7d421c306718d21430a019}{Activate\+Ability}} (const FGameplay\+Ability\+Spec\+Handle Handle, const FGameplay\+Ability\+Actor\+Info \texorpdfstring{$\ast$}{*}Actor\+Info, const FGameplay\+Ability\+Activation\+Info Activation\+Info, const FGameplay\+Event\+Data \texorpdfstring{$\ast$}{*}Trigger\+Event\+Data) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base}{UWj\+World\+Gameplay\+Ability\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_ad7322fe328393ab6e7dcf9bd1c4097f8}{UWj\+World\+Gameplay\+Ability\+Base}} ()
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a7d145e5a27753da9e9292cd56d2d146f}{Apply\+Cooldown}} (const FGameplay\+Ability\+Spec\+Handle Handle, const FGameplay\+Ability\+Actor\+Info \texorpdfstring{$\ast$}{*}Actor\+Info, const FGameplay\+Ability\+Activation\+Info Activation\+Info) const override
+\item 
+virtual const FGameplay\+Tag\+Container \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_ae7436e7fc243130b9cee911023e7d71f}{Get\+Cooldown\+Tags}} () const override
+\item 
+virtual bool \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a6d7f9f2e094eeb6f77fd496acb5e6c3f}{Is\+Charge\+Based}} () const
+\item 
+virtual int32 \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a4d60b2169c22d0a049807c41de0cadd4}{Get\+Current\+Charges}} () const
+\item 
+virtual int32 \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a7bd14d94cd14baf7e8f66b7112a0b2c1}{Get\+Max\+Charges}} () const
+\item 
+virtual float \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a5f53940eca5f3cd0930079bbf9aaa693}{Get\+Charge\+Refill\+Time\+Remaining}} () const
+\item 
+virtual FText \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_aae3cf2fb33aa85b5a76843d0952a39b6}{Get\+Prompt\+Description}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Attributes inherited from \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base}{UWj\+World\+Gameplay\+Ability\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+FText \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a521ca3f0274e28edde5d44e75d8299b1}{Ability\+Name}}
+\item 
+TObject\+Ptr$<$ UTexture2D $>$ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_aa39d1ebfb973d1e3f3b744170c98c3ad}{Ability\+Icon}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base}{UWj\+World\+Gameplay\+Ability\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+float \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a7e6fa17e98744690454009d3a3543b2d}{Cooldown\+Duration}} = 0.f
+\item 
+FGameplay\+Tag\+Container \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_aafbad2cffd2117eb21c5d0fa0ed3629c}{Cooldown\+Tags}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+바라보는 방향의 벽돌을 공격(파괴)하는 어빌리티
+\begin{DoxyItemize}
+\item Yaw 기반 4방향 스냅으로 타겟 위치 계산
+\item 벽돌 타입별 처리:\+ Standard(파괴 불가), Explosive(폭발), Moving/\+\+Destructible(파괴)
+\item 단발성:\+ Activate\+Ability → 공격 처리 → 즉시 End\+Ability 
+\end{DoxyItemize}
+
+\label{doc-constructors}
+\Hypertarget{class_u_g_a___normal_attack_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_u_g_a___normal_attack_abdf1f7ad9a37d56e6444175f160c741a}\index{UGA\_NormalAttack@{UGA\_NormalAttack}!UGA\_NormalAttack@{UGA\_NormalAttack}}
+\index{UGA\_NormalAttack@{UGA\_NormalAttack}!UGA\_NormalAttack@{UGA\_NormalAttack}}
+\doxysubsubsection{\texorpdfstring{UGA\_NormalAttack()}{UGA\_NormalAttack()}}
+{\footnotesize\ttfamily \label{class_u_g_a___normal_attack_abdf1f7ad9a37d56e6444175f160c741a} 
+UGA\+\_\+\+Normal\+Attack::\+\+UGA\+\_\+\+Normal\+Attack (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_u_g_a___normal_attack_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_g_a___normal_attack_ab552119a6d7d421c306718d21430a019}\index{UGA\_NormalAttack@{UGA\_NormalAttack}!ActivateAbility@{ActivateAbility}}
+\index{ActivateAbility@{ActivateAbility}!UGA\_NormalAttack@{UGA\_NormalAttack}}
+\doxysubsubsection{\texorpdfstring{ActivateAbility()}{ActivateAbility()}}
+{\footnotesize\ttfamily \label{class_u_g_a___normal_attack_ab552119a6d7d421c306718d21430a019} 
+void UGA\+\_\+\+Normal\+Attack::\+\+Activate\+Ability (\begin{DoxyParamCaption}\item[{const FGameplay\+Ability\+Spec\+Handle}]{Handle}{, }\item[{const FGameplay\+Ability\+Actor\+Info \texorpdfstring{$\ast$}{*}}]{Actor\+Info}{, }\item[{const FGameplay\+Ability\+Activation\+Info}]{Activation\+Info}{, }\item[{const FGameplay\+Event\+Data \texorpdfstring{$\ast$}{*}}]{Trigger\+Event\+Data}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Ability\+System/\+\+Abilities/\+\doxymbox{\hyperlink{_g_a___normal_attack_8h}{GA\+\_\+\+Normal\+Attack.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Ability\+System/\+\+Abilities/\+\doxymbox{\hyperlink{_g_a___normal_attack_8cpp}{GA\+\_\+\+Normal\+Attack.\+cpp}}\end{DoxyCompactItemize}

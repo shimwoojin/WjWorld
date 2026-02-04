@@ -1,0 +1,90 @@
+\doxysection{AWj\+World\+Placed\+Object\+Actor Class Reference}
+\hypertarget{class_a_wj_world_placed_object_actor}{}\label{class_a_wj_world_placed_object_actor}\index{AWjWorldPlacedObjectActor@{AWjWorldPlacedObjectActor}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Placed\+Object\+Actor.\+h$>$}
+
+Inheritance diagram for AWj\+World\+Placed\+Object\+Actor:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_a_wj_world_placed_object_actor}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_placed_object_actor_abfc77fd64b3b436ee5d78aa36734cdf1}{AWj\+World\+Placed\+Object\+Actor}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_placed_object_actor_aadf4c51f8f60f0337107430a0a765841}{Initialize\+From\+Definition}} (const \doxymbox{\hyperlink{struct_f_placeable_object_definition}{FPlaceable\+Object\+Definition}} \&Definition)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_placed_object_actor_a5c37cf5dabd1a6daea1f88ae977bf570}{Initialize\+From\+Save\+Data}} (FName In\+Object\+Id, const FTransform \&In\+Transform, const \doxymbox{\hyperlink{struct_f_placeable_object_definition}{FPlaceable\+Object\+Definition}} \&Definition)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_placed_object_actor_ae9fd14aead333abec41f2ae67a70848e}{Set\+Highlighted}} (bool b\+Highlight)
+\item 
+FName \doxymbox{\hyperlink{class_a_wj_world_placed_object_actor_a8f7342caae8bd3b398c5a3d89e759825}{Get\+Object\+Id}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UStatic\+Mesh\+Component $>$ \doxymbox{\hyperlink{class_a_wj_world_placed_object_actor_a4abecfe0876abe23d0f2b82a097c0dc0}{Mesh\+Component}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+실제 배치된 오브젝트 액터 
+
+\label{doc-constructors}
+\Hypertarget{class_a_wj_world_placed_object_actor_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_a_wj_world_placed_object_actor_abfc77fd64b3b436ee5d78aa36734cdf1}\index{AWjWorldPlacedObjectActor@{AWjWorldPlacedObjectActor}!AWjWorldPlacedObjectActor@{AWjWorldPlacedObjectActor}}
+\index{AWjWorldPlacedObjectActor@{AWjWorldPlacedObjectActor}!AWjWorldPlacedObjectActor@{AWjWorldPlacedObjectActor}}
+\doxysubsubsection{\texorpdfstring{AWjWorldPlacedObjectActor()}{AWjWorldPlacedObjectActor()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placed_object_actor_abfc77fd64b3b436ee5d78aa36734cdf1} 
+AWj\+World\+Placed\+Object\+Actor::\+\+AWj\+World\+Placed\+Object\+Actor (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_a_wj_world_placed_object_actor_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_a_wj_world_placed_object_actor_a8f7342caae8bd3b398c5a3d89e759825}\index{AWjWorldPlacedObjectActor@{AWjWorldPlacedObjectActor}!GetObjectId@{GetObjectId}}
+\index{GetObjectId@{GetObjectId}!AWjWorldPlacedObjectActor@{AWjWorldPlacedObjectActor}}
+\doxysubsubsection{\texorpdfstring{GetObjectId()}{GetObjectId()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placed_object_actor_a8f7342caae8bd3b398c5a3d89e759825} 
+FName AWj\+World\+Placed\+Object\+Actor::\+\+Get\+Object\+Id (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+오브젝트 ID \Hypertarget{class_a_wj_world_placed_object_actor_aadf4c51f8f60f0337107430a0a765841}\index{AWjWorldPlacedObjectActor@{AWjWorldPlacedObjectActor}!InitializeFromDefinition@{InitializeFromDefinition}}
+\index{InitializeFromDefinition@{InitializeFromDefinition}!AWjWorldPlacedObjectActor@{AWjWorldPlacedObjectActor}}
+\doxysubsubsection{\texorpdfstring{InitializeFromDefinition()}{InitializeFromDefinition()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placed_object_actor_aadf4c51f8f60f0337107430a0a765841} 
+void AWj\+World\+Placed\+Object\+Actor::\+\+Initialize\+From\+Definition (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{struct_f_placeable_object_definition}{FPlaceable\+Object\+Definition}} \&}]{Definition}{}\end{DoxyParamCaption})}
+
+오브젝트 정의로 초기화 (배치 시) \Hypertarget{class_a_wj_world_placed_object_actor_a5c37cf5dabd1a6daea1f88ae977bf570}\index{AWjWorldPlacedObjectActor@{AWjWorldPlacedObjectActor}!InitializeFromSaveData@{InitializeFromSaveData}}
+\index{InitializeFromSaveData@{InitializeFromSaveData}!AWjWorldPlacedObjectActor@{AWjWorldPlacedObjectActor}}
+\doxysubsubsection{\texorpdfstring{InitializeFromSaveData()}{InitializeFromSaveData()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placed_object_actor_a5c37cf5dabd1a6daea1f88ae977bf570} 
+void AWj\+World\+Placed\+Object\+Actor::\+\+Initialize\+From\+Save\+Data (\begin{DoxyParamCaption}\item[{FName}]{In\+Object\+Id}{, }\item[{const FTransform \&}]{In\+Transform}{, }\item[{const \doxymbox{\hyperlink{struct_f_placeable_object_definition}{FPlaceable\+Object\+Definition}} \&}]{Definition}{}\end{DoxyParamCaption})}
+
+세이브 데이터로 복원 \Hypertarget{class_a_wj_world_placed_object_actor_ae9fd14aead333abec41f2ae67a70848e}\index{AWjWorldPlacedObjectActor@{AWjWorldPlacedObjectActor}!SetHighlighted@{SetHighlighted}}
+\index{SetHighlighted@{SetHighlighted}!AWjWorldPlacedObjectActor@{AWjWorldPlacedObjectActor}}
+\doxysubsubsection{\texorpdfstring{SetHighlighted()}{SetHighlighted()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placed_object_actor_ae9fd14aead333abec41f2ae67a70848e} 
+void AWj\+World\+Placed\+Object\+Actor::\+\+Set\+Highlighted (\begin{DoxyParamCaption}\item[{bool}]{b\+Highlight}{}\end{DoxyParamCaption})}
+
+삭제 모드 호버 하이라이트 
+
+\label{doc-variable-members}
+\Hypertarget{class_a_wj_world_placed_object_actor_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_a_wj_world_placed_object_actor_a4abecfe0876abe23d0f2b82a097c0dc0}\index{AWjWorldPlacedObjectActor@{AWjWorldPlacedObjectActor}!MeshComponent@{MeshComponent}}
+\index{MeshComponent@{MeshComponent}!AWjWorldPlacedObjectActor@{AWjWorldPlacedObjectActor}}
+\doxysubsubsection{\texorpdfstring{MeshComponent}{MeshComponent}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placed_object_actor_a4abecfe0876abe23d0f2b82a097c0dc0} 
+TObject\+Ptr$<$UStatic\+Mesh\+Component$>$ AWj\+World\+Placed\+Object\+Actor::\+\+Mesh\+Component\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Placement/\+\doxymbox{\hyperlink{_wj_world_placed_object_actor_8h}{Wj\+World\+Placed\+Object\+Actor.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Placement/\+\doxymbox{\hyperlink{_wj_world_placed_object_actor_8cpp}{Wj\+World\+Placed\+Object\+Actor.\+cpp}}\end{DoxyCompactItemize}

@@ -17,9 +17,23 @@ Inheritance diagram for AWj\+World\+Game\+Mode\+Lobby:\+\begin{figure}[H]
 \item 
 virtual void \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a0219569a8a01f9bca235725fdc638f8b}{Begin\+Play}} () override
 \item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_ae77af4559a06c9539a2e416414df962b}{Post\+Login}} (APlayer\+Controller \texorpdfstring{$\ast$}{*}New\+Player) override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_ad0c2e38503ffb1c61b6c13863794ecbd}{Logout}} (AController \texorpdfstring{$\ast$}{*}Exiting) override
+\item 
 void \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a0bb530dba5fb150b97300008a2be6182}{Show\+Create\+Room\+Window}} ()
 \item 
 void \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a38f53d22203fb1ef5dff8ecb49674a73}{Show\+Room\+List\+Window}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a4593794a87fe36ef1dc0ecf2a3497605}{Enter\+Placement\+Mode}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_aa8bfce81b32378d3af2f61dab3ede537}{Exit\+Placement\+Mode}} ()
+\item 
+bool \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a458f1714dc66d79c9ee58d7f3dbf9a49}{Is\+Host}} (APlayer\+Controller \texorpdfstring{$\ast$}{*}PC) const
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_game_state_lobby}{AWj\+World\+Game\+State\+Lobby}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a56c9c5ea4ae5b211bf8479926ecd2028}{Get\+Lobby\+Game\+State}} () const
+\item 
+\doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWj\+World\+Placeable\+Object\+Data\+Asset}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a537954d6eab97a6d7fd55847618f547f}{Get\+Catalog}} () const
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_a_wj_world_game_mode_base}{AWj\+World\+Game\+Mode\+Base}}}
 \begin{DoxyCompactItemize}
@@ -41,7 +55,9 @@ TSubclass\+Of$<$ \doxymbox{\hyperlink{class_u_room_list_window}{URoom\+List\+Win
 기능:\+
 \begin{DoxyItemize}
 \item 방 생성 UI 관리
-\item 방 목록 UI 관리 
+\item 방 목록 UI 관리
+\item 오브젝트 배치 모드 관리
+\item 멀티플레이 지원 (호스트 = 방장) 
 \end{DoxyItemize}
 
 \label{doc-constructors}
@@ -63,6 +79,48 @@ AWj\+World\+Game\+Mode\+Lobby::\+\+AWj\+World\+Game\+Mode\+Lobby (\begin{DoxyPar
 \doxysubsubsection{\texorpdfstring{BeginPlay()}{BeginPlay()}}
 {\footnotesize\ttfamily \label{class_a_wj_world_game_mode_lobby_a0219569a8a01f9bca235725fdc638f8b} 
 void AWj\+World\+Game\+Mode\+Lobby::\+\+Begin\+Play (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_game_mode_lobby_a4593794a87fe36ef1dc0ecf2a3497605}\index{AWjWorldGameModeLobby@{AWjWorldGameModeLobby}!EnterPlacementMode@{EnterPlacementMode}}
+\index{EnterPlacementMode@{EnterPlacementMode}!AWjWorldGameModeLobby@{AWjWorldGameModeLobby}}
+\doxysubsubsection{\texorpdfstring{EnterPlacementMode()}{EnterPlacementMode()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_lobby_a4593794a87fe36ef1dc0ecf2a3497605} 
+void AWj\+World\+Game\+Mode\+Lobby::\+\+Enter\+Placement\+Mode (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+배치 모드 진입 (호스트만 가능) \Hypertarget{class_a_wj_world_game_mode_lobby_aa8bfce81b32378d3af2f61dab3ede537}\index{AWjWorldGameModeLobby@{AWjWorldGameModeLobby}!ExitPlacementMode@{ExitPlacementMode}}
+\index{ExitPlacementMode@{ExitPlacementMode}!AWjWorldGameModeLobby@{AWjWorldGameModeLobby}}
+\doxysubsubsection{\texorpdfstring{ExitPlacementMode()}{ExitPlacementMode()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_lobby_aa8bfce81b32378d3af2f61dab3ede537} 
+void AWj\+World\+Game\+Mode\+Lobby::\+\+Exit\+Placement\+Mode (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+배치 모드 종료 \Hypertarget{class_a_wj_world_game_mode_lobby_a537954d6eab97a6d7fd55847618f547f}\index{AWjWorldGameModeLobby@{AWjWorldGameModeLobby}!GetCatalog@{GetCatalog}}
+\index{GetCatalog@{GetCatalog}!AWjWorldGameModeLobby@{AWjWorldGameModeLobby}}
+\doxysubsubsection{\texorpdfstring{GetCatalog()}{GetCatalog()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_lobby_a537954d6eab97a6d7fd55847618f547f} 
+\doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWj\+World\+Placeable\+Object\+Data\+Asset}} \texorpdfstring{$\ast$}{*} AWj\+World\+Game\+Mode\+Lobby::\+\+Get\+Catalog (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+카탈로그 참조 \Hypertarget{class_a_wj_world_game_mode_lobby_a56c9c5ea4ae5b211bf8479926ecd2028}\index{AWjWorldGameModeLobby@{AWjWorldGameModeLobby}!GetLobbyGameState@{GetLobbyGameState}}
+\index{GetLobbyGameState@{GetLobbyGameState}!AWjWorldGameModeLobby@{AWjWorldGameModeLobby}}
+\doxysubsubsection{\texorpdfstring{GetLobbyGameState()}{GetLobbyGameState()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_lobby_a56c9c5ea4ae5b211bf8479926ecd2028} 
+\doxymbox{\hyperlink{class_a_wj_world_game_state_lobby}{AWj\+World\+Game\+State\+Lobby}} \texorpdfstring{$\ast$}{*} AWj\+World\+Game\+Mode\+Lobby::\+\+Get\+Lobby\+Game\+State (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+Game\+State\+Lobby 참조 \Hypertarget{class_a_wj_world_game_mode_lobby_a458f1714dc66d79c9ee58d7f3dbf9a49}\index{AWjWorldGameModeLobby@{AWjWorldGameModeLobby}!IsHost@{IsHost}}
+\index{IsHost@{IsHost}!AWjWorldGameModeLobby@{AWjWorldGameModeLobby}}
+\doxysubsubsection{\texorpdfstring{IsHost()}{IsHost()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_lobby_a458f1714dc66d79c9ee58d7f3dbf9a49} 
+bool AWj\+World\+Game\+Mode\+Lobby::\+\+Is\+Host (\begin{DoxyParamCaption}\item[{APlayer\+Controller \texorpdfstring{$\ast$}{*}}]{PC}{}\end{DoxyParamCaption}) const}
+
+현재 플레이어가 호스트인지 확인 \Hypertarget{class_a_wj_world_game_mode_lobby_ad0c2e38503ffb1c61b6c13863794ecbd}\index{AWjWorldGameModeLobby@{AWjWorldGameModeLobby}!Logout@{Logout}}
+\index{Logout@{Logout}!AWjWorldGameModeLobby@{AWjWorldGameModeLobby}}
+\doxysubsubsection{\texorpdfstring{Logout()}{Logout()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_lobby_ad0c2e38503ffb1c61b6c13863794ecbd} 
+void AWj\+World\+Game\+Mode\+Lobby::\+\+Logout (\begin{DoxyParamCaption}\item[{AController \texorpdfstring{$\ast$}{*}}]{Exiting}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_game_mode_lobby_ae77af4559a06c9539a2e416414df962b}\index{AWjWorldGameModeLobby@{AWjWorldGameModeLobby}!PostLogin@{PostLogin}}
+\index{PostLogin@{PostLogin}!AWjWorldGameModeLobby@{AWjWorldGameModeLobby}}
+\doxysubsubsection{\texorpdfstring{PostLogin()}{PostLogin()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_mode_lobby_ae77af4559a06c9539a2e416414df962b} 
+void AWj\+World\+Game\+Mode\+Lobby::\+\+Post\+Login (\begin{DoxyParamCaption}\item[{APlayer\+Controller \texorpdfstring{$\ast$}{*}}]{New\+Player}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 \Hypertarget{class_a_wj_world_game_mode_lobby_a0bb530dba5fb150b97300008a2be6182}\index{AWjWorldGameModeLobby@{AWjWorldGameModeLobby}!ShowCreateRoomWindow@{ShowCreateRoomWindow}}
 \index{ShowCreateRoomWindow@{ShowCreateRoomWindow}!AWjWorldGameModeLobby@{AWjWorldGameModeLobby}}

@@ -1,0 +1,85 @@
+\doxysection{Wj\+World\+Game\+Rule\+Base.\+h}
+\hypertarget{_wj_world_game_rule_base_8h_source}{}\label{_wj_world_game_rule_base_8h_source}\index{Source/WjWorld/Core/GameRule/WjWorldGameRuleBase.h@{Source/WjWorld/Core/GameRule/WjWorldGameRuleBase.h}}
+\doxymbox{\hyperlink{_wj_world_game_rule_base_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}UObject/Object.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_core_types_8h}{Core/WjWorldCoreTypes.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldGameRuleBase.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_game_mode_play}{AWjWorldGameModePlay}};}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWjWorldPlayerStatePlay}};}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_game_state_play}{AWjWorldGameStatePlay}};}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }UWjWorldGameDataComponent;}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00019\ UCLASS(Blueprintable)}
+\DoxyCodeLine{00020\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base}{UWjWorldGameRuleBase}}\ :\ public\ UObject}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{comment}{//\ 라이프사이클}}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a6f8e0f1b98821229b24c2fecd5a9df19}{Initialize}}(\doxymbox{\hyperlink{class_a_wj_world_game_mode_play}{AWjWorldGameModePlay}}*\ InGameMode);}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_ac05f38f32baecd50107359e0254c3c52}{OnGameReady}}();}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a049b44d0b0a32a890d58f866f98b7821}{OnGameStart}}();}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a226c0e618ee08f44123e1a95d9b1213f}{OnGameEndPredict}}(\textcolor{keywordtype}{float}\ Seconds);}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_af35e4129d70e97f6061dcc7d141d5c2a}{OnGameEnd}}();}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\ 이벤트}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a0db12030f099799b91e6a18dcf917f90}{OnPlayerJoined}}(\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWjWorldPlayerStatePlay}}*\ Player);}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_ab930230376f69ffb45dd4cd306544c5d}{OnPlayerLeft}}(\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWjWorldPlayerStatePlay}}*\ Player);}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{comment}{//\ 승리\ 조건}}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_ab03f9ec99b29c60c9c8da015ece91d3e}{CheckWinCondition}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{virtual}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWjWorldPlayerStatePlay}}*\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_aebe46f808610fcdfea7ef15291904e1b}{GetWinner}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{comment}{//\ 틱\ (GameMode에서\ 호출)}}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a7b0d89afe68ade01a5d05df040619156}{TickGameRule}}(\textcolor{keywordtype}{float}\ DeltaTime);}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a16f0716eb64654b26b56c05112b70d79}{BeginDestroy}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a5dced7d956649a0a10e47ccdbcabad90}{HasAuthority}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00046\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ UWorld*\ World\ =\ GetWorld();}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ World\ \&\&\ World-\/>GetAuthGameMode()\ !=\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_game_mode_play}{AWjWorldGameModePlay}}*\ GetGameModePlay()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00052\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_game_state_play}{AWjWorldGameStatePlay}}*\ GetGameStatePlay()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_aeaee66281849cdde641252c596fe4a5a}{PredictNextLevelIsLast}}()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ GameLevelUp(int32\ NewLevel);}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{void}\ ChangeGamePhase(\doxymbox{\hyperlink{_wj_world_core_types_8h_a110fd991750d11dddc7f1f886cdb8dd5}{EGamePhase}}\ GamePhase);}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00063\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00064\ \ \ \ \ TWeakObjectPtr<\doxymbox{\hyperlink{class_a_wj_world_game_mode_play}{AWjWorldGameModePlay}}>\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a255d277042a68f697f579f21ab582e1a}{GameMode}};}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}DataComponent"{}})}
+\DoxyCodeLine{00067\ \ \ \ \ TSubclassOf<UWjWorldGameDataComponent>\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a96ca73919fc5cf009ff9d1167d042697}{GameDataComponentClass}};}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}DataComponent"{}})}
+\DoxyCodeLine{00070\ \ \ \ \ TSubclassOf<UWjWorldGameDataComponent>\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a2ff20f4707783824d893bfa81c278e0f}{PlayerDataComponentClass}};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}GameRule"{}})}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a25c4c3adc9dafe1b4df707bf3dc40adc}{StartDelay}}\ =\ 2.0f;}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ FTimerHandle\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_aae96bc2b57198f3b67a01fc3fa3bdd71}{DelayStartHandle}};}
+\DoxyCodeLine{00076\ \ \ \ \ FTimerHandle\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a12e89cfbe51172785d91747f5f4c3603}{GotoWaitingRoomHandle}};}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}GameRule"{}})}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_aa95ca7ebca82dbc13247fde5dc2edbc3}{SecondsForGameStartCount}}\ =\ 3.0f;}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}GameRule"{}})}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a5773435b2bd861858e02805fb54a95af}{SecondsForGotoWaitingRoom}}\ =\ 3.0f;}
+\DoxyCodeLine{00083\ \};}
+
+\end{DoxyCode}

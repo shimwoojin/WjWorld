@@ -100,31 +100,46 @@ Inheritance diagram for AWjWorldCharacterBase:</div>
   <img src="class_a_wj_world_character_base.png" usemap="#AWjWorldCharacterBase_map" alt=""/>
   <map id="AWjWorldCharacterBase_map" name="AWjWorldCharacterBase_map">
 <area href="class_a_wj_world_character_lobby.html" alt="AWjWorldCharacterLobby" shape="rect" coords="0,112,197,136"/>
-<area href="class_a_wj_world_character_waiting_room.html" alt="AWjWorldCharacterWaitingRoom" shape="rect" coords="207,112,404,136"/>
+<area href="class_a_wj_world_character_play.html" alt="AWjWorldCharacterPlay" shape="rect" coords="207,112,404,136"/>
+<area href="class_a_wj_world_character_waiting_room.html" alt="AWjWorldCharacterWaitingRoom" shape="rect" coords="414,112,611,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a89132c9b76acde3a302c706d1931769a" id="r_a89132c9b76acde3a302c706d1931769a"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a89132c9b76acde3a302c706d1931769a">AWjWorldCharacterBase</a> ()</td></tr>
-<tr class="memitem:a10d3770bc59c61b53da2682a7faae57b" id="r_a10d3770bc59c61b53da2682a7faae57b"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a10d3770bc59c61b53da2682a7faae57b">SetCharacterViewMode</a> (<a class="el" href="_wj_world_character_base_8h.html#aac1445d872a9eeaf8933fc54f5a955ab">ECharacterViewMode</a> NewViewMode)</td></tr>
+<tr class="memitem:aea545fa94580dbb8ef63571ca6f30e20" id="r_aea545fa94580dbb8ef63571ca6f30e20"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aea545fa94580dbb8ef63571ca6f30e20">SetCharacterViewMode</a> (<a class="el" href="_wj_camera_types_8h.html#a3a319438a0221a6fe61b590733aa450a">ECharacterCameraMode</a> NewViewMode)</td></tr>
+<tr class="memitem:a0090cb0b54ce850e04cb8268de590284" id="r_a0090cb0b54ce850e04cb8268de590284"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a0090cb0b54ce850e04cb8268de590284">SetCharacterViewMode</a> (const FGameplayTag &amp;NewViewMode)</td></tr>
 <tr class="memitem:a645d77e1ca3055c7b4450aa4d5eb111b" id="r_a645d77e1ca3055c7b4450aa4d5eb111b"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#a645d77e1ca3055c7b4450aa4d5eb111b">Tick</a> (float DeltaTime) override</td></tr>
+<tr class="memitem:ab7642bf2689f3be3aa21eb28aecffa69" id="r_ab7642bf2689f3be3aa21eb28aecffa69"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#ab7642bf2689f3be3aa21eb28aecffa69">PossessedBy</a> (AController *NewController) override</td></tr>
+<tr class="memitem:a25cd0af46e146c8e95e87c640cd5b593" id="r_a25cd0af46e146c8e95e87c640cd5b593"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#a25cd0af46e146c8e95e87c640cd5b593">OnRep_PlayerState</a> () override</td></tr>
 <tr class="memitem:a8db3fd1326b0c7b43a2918902d3ffd1c" id="r_a8db3fd1326b0c7b43a2918902d3ffd1c"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#a8db3fd1326b0c7b43a2918902d3ffd1c">SetupPlayerInputComponent</a> (class UInputComponent *PlayerInputComponent) override</td></tr>
 <tr class="memitem:a37598085f9ad1a4c22117c219844d7d9" id="r_a37598085f9ad1a4c22117c219844d7d9"><td class="memItemLeft">TObjectPtr&lt; UGameplayCameraComponent &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a37598085f9ad1a4c22117c219844d7d9">GetGamePlayCamera</a> ()</td></tr>
-<tr class="memitem:a948532d6c1431ced08d67cf65ecf419a" id="r_a948532d6c1431ced08d67cf65ecf419a"><td class="memItemLeft">TObjectPtr&lt; UInputMappingContext &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a948532d6c1431ced08d67cf65ecf419a">GetDefaultMappingContext</a> ()</td></tr>
+<tr class="memitem:a81631a3a599046bf627cf7d608cdf77f" id="r_a81631a3a599046bf627cf7d608cdf77f"><td class="memItemLeft">UInputMappingContext *&#160;</td><td class="memItemRight"><a class="el" href="#a81631a3a599046bf627cf7d608cdf77f">GetDefaultMappingContext</a> () const</td></tr>
+<tr class="memitem:a41d508753a4083abaef3233100ca0957" id="r_a41d508753a4083abaef3233100ca0957"><td class="memItemLeft">UWjWorldCosmeticComponent *&#160;</td><td class="memItemRight"><a class="el" href="#a41d508753a4083abaef3233100ca0957">GetCosmeticComponent</a> () const</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:ade363b8269f3199fff404e8dfefe27a2" id="r_ade363b8269f3199fff404e8dfefe27a2"><td class="memItemLeft">FOnCharacterViewModeChanged&#160;</td><td class="memItemRight"><a class="el" href="#ade363b8269f3199fff404e8dfefe27a2">OnCharacterViewModeChanged</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a5ebcfc311e7cd5b917dafe7846af70e7" id="r_a5ebcfc311e7cd5b917dafe7846af70e7"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#a5ebcfc311e7cd5b917dafe7846af70e7">PostInitializeComponents</a> () override</td></tr>
 <tr class="memitem:a38194801545a2d8433deb48ce36300d9" id="r_a38194801545a2d8433deb48ce36300d9"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#a38194801545a2d8433deb48ce36300d9">BeginPlay</a> () override</td></tr>
 <tr class="memitem:a6970818ef125ea9ce78baa7ae4247fca" id="r_a6970818ef125ea9ce78baa7ae4247fca"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#a6970818ef125ea9ce78baa7ae4247fca">InitializeCharacter</a> ()</td></tr>
 <tr class="memitem:accfb44f05f97b60c21c14ca7c07c8104" id="r_accfb44f05f97b60c21c14ca7c07c8104"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#accfb44f05f97b60c21c14ca7c07c8104">SetupInputBindings</a> (class UInputComponent *PlayerInputComponent)</td></tr>
+<tr class="memitem:a8b7c47cbcbbaf64ae1b61b50bd47ff5c" id="r_a8b7c47cbcbbaf64ae1b61b50bd47ff5c"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#a8b7c47cbcbbaf64ae1b61b50bd47ff5c">GasInputPressed</a> (int32 InputID)</td></tr>
+<tr class="memitem:a7ea189681e2c9b85ed41a3a5c9904256" id="r_a7ea189681e2c9b85ed41a3a5c9904256"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#a7ea189681e2c9b85ed41a3a5c9904256">GasInputReleased</a> (int32 InputID)</td></tr>
 <tr class="memitem:ae0763ed841b7861571568921978c477e" id="r_ae0763ed841b7861571568921978c477e"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#ae0763ed841b7861571568921978c477e">Move</a> (const FInputActionValue &amp;Value)</td></tr>
 <tr class="memitem:a91d6696a44335c36fa3dcd8dd5d94395" id="r_a91d6696a44335c36fa3dcd8dd5d94395"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#a91d6696a44335c36fa3dcd8dd5d94395">Interact</a> (const FInputActionValue &amp;Value)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a1e0d571d583e75bdfacbb250be2eb13f" id="r_a1e0d571d583e75bdfacbb250be2eb13f"><td class="memItemLeft">TObjectPtr&lt; UGameplayCameraComponent &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a1e0d571d583e75bdfacbb250be2eb13f">GamePlayCamera</a></td></tr>
-<tr class="memitem:ab6f878f0b06d53b21dd251f45f69e545" id="r_ab6f878f0b06d53b21dd251f45f69e545"><td class="memItemLeft">TObjectPtr&lt; UInputMappingContext &gt;&#160;</td><td class="memItemRight"><a class="el" href="#ab6f878f0b06d53b21dd251f45f69e545">DefaultMappingContext</a></td></tr>
+<tr class="memitem:a6a4c84e9691b5d7ae7c26a3504e5ec42" id="r_a6a4c84e9691b5d7ae7c26a3504e5ec42"><td class="memItemLeft">TSoftObjectPtr&lt; USkeletalMesh &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a6a4c84e9691b5d7ae7c26a3504e5ec42">DefaultSkeletalMesh</a></td></tr>
+<tr class="memitem:a6f9a2a10161b54d7eb04ef0553ad0ce1" id="r_a6f9a2a10161b54d7eb04ef0553ad0ce1"><td class="memItemLeft">TSoftClassPtr&lt; UAnimInstance &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a6f9a2a10161b54d7eb04ef0553ad0ce1">DefaultAnimBlueprintClass</a></td></tr>
+<tr class="memitem:a176f4d6ce4609a4820bcd7de6e8997ea" id="r_a176f4d6ce4609a4820bcd7de6e8997ea"><td class="memItemLeft">TSoftObjectPtr&lt; UInputMappingContext &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a176f4d6ce4609a4820bcd7de6e8997ea">DefaultMappingContext</a></td></tr>
+<tr class="memitem:a9a560bb4c3f5eb7769914966dd639430" id="r_a9a560bb4c3f5eb7769914966dd639430"><td class="memItemLeft">TObjectPtr&lt; UWjWorldCosmeticComponent &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a9a560bb4c3f5eb7769914966dd639430">CosmeticComponent</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>기본 캐릭터 클래스</p>
@@ -178,8 +193,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a948532d6c1431ced08d67cf65ecf419a" name="a948532d6c1431ced08d67cf65ecf419a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a948532d6c1431ced08d67cf65ecf419a">&#9670;&#160;</a></span>GetDefaultMappingContext()</h2>
+<a id="a8b7c47cbcbbaf64ae1b61b50bd47ff5c" name="a8b7c47cbcbbaf64ae1b61b50bd47ff5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b7c47cbcbbaf64ae1b61b50bd47ff5c">&#9670;&#160;</a></span>GasInputPressed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -188,10 +203,60 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">TObjectPtr&lt; UInputMappingContext &gt; AWjWorldCharacterBase::GetDefaultMappingContext </td>
+          <td class="memname">void AWjWorldCharacterBase::GasInputPressed </td>
+          <td>(</td>
+          <td class="paramtype">int32</td>          <td class="paramname"><span class="paramname"><em>InputID</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7ea189681e2c9b85ed41a3a5c9904256" name="a7ea189681e2c9b85ed41a3a5c9904256"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ea189681e2c9b85ed41a3a5c9904256">&#9670;&#160;</a></span>GasInputReleased()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldCharacterBase::GasInputReleased </td>
+          <td>(</td>
+          <td class="paramtype">int32</td>          <td class="paramname"><span class="paramname"><em>InputID</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a41d508753a4083abaef3233100ca0957" name="a41d508753a4083abaef3233100ca0957"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41d508753a4083abaef3233100ca0957">&#9670;&#160;</a></span>GetCosmeticComponent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">UWjWorldCosmeticComponent * AWjWorldCharacterBase::GetCosmeticComponent </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -199,6 +264,23 @@ Protected Attributes</h2></td></tr>
 <span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a81631a3a599046bf627cf7d608cdf77f" name="a81631a3a599046bf627cf7d608cdf77f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81631a3a599046bf627cf7d608cdf77f">&#9670;&#160;</a></span>GetDefaultMappingContext()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UInputMappingContext * AWjWorldCharacterBase::GetDefaultMappingContext </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 </div>
@@ -308,8 +390,89 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a10d3770bc59c61b53da2682a7faae57b" name="a10d3770bc59c61b53da2682a7faae57b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10d3770bc59c61b53da2682a7faae57b">&#9670;&#160;</a></span>SetCharacterViewMode()</h2>
+<a id="a25cd0af46e146c8e95e87c640cd5b593" name="a25cd0af46e146c8e95e87c640cd5b593"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25cd0af46e146c8e95e87c640cd5b593">&#9670;&#160;</a></span>OnRep_PlayerState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldCharacterBase::OnRep_PlayerState </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="class_a_wj_world_character_play.html#a367e459594df99f7ccbcf4252cb056cc">AWjWorldCharacterPlay</a>.</p>
+
+</div>
+</div>
+<a id="ab7642bf2689f3be3aa21eb28aecffa69" name="ab7642bf2689f3be3aa21eb28aecffa69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7642bf2689f3be3aa21eb28aecffa69">&#9670;&#160;</a></span>PossessedBy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldCharacterBase::PossessedBy </td>
+          <td>(</td>
+          <td class="paramtype">AController *</td>          <td class="paramname"><span class="paramname"><em>NewController</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="class_a_wj_world_character_play.html#a2bac2ed41ac307ff190e52f2d654866b">AWjWorldCharacterPlay</a>, and <a class="el" href="class_a_wj_world_character_waiting_room.html#a7b49f595cfb2fa254f1ffd47f4c84731">AWjWorldCharacterWaitingRoom</a>.</p>
+
+</div>
+</div>
+<a id="a5ebcfc311e7cd5b917dafe7846af70e7" name="a5ebcfc311e7cd5b917dafe7846af70e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ebcfc311e7cd5b917dafe7846af70e7">&#9670;&#160;</a></span>PostInitializeComponents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldCharacterBase::PostInitializeComponents </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="class_a_wj_world_character_play.html#a652ec81b7c9e82214614f11c5453f907">AWjWorldCharacterPlay</a>.</p>
+
+</div>
+</div>
+<a id="a0090cb0b54ce850e04cb8268de590284" name="a0090cb0b54ce850e04cb8268de590284"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0090cb0b54ce850e04cb8268de590284">&#9670;&#160;</a></span>SetCharacterViewMode() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -317,7 +480,24 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">void AWjWorldCharacterBase::SetCharacterViewMode </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_wj_world_character_base_8h.html#aac1445d872a9eeaf8933fc54f5a955ab">ECharacterViewMode</a></td>          <td class="paramname"><span class="paramname"><em>NewViewMode</em></span></td><td>)</td>
+          <td class="paramtype">const FGameplayTag &amp;</td>          <td class="paramname"><span class="paramname"><em>NewViewMode</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aea545fa94580dbb8ef63571ca6f30e20" name="aea545fa94580dbb8ef63571ca6f30e20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea545fa94580dbb8ef63571ca6f30e20">&#9670;&#160;</a></span>SetCharacterViewMode() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldCharacterBase::SetCharacterViewMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_wj_camera_types_8h.html#a3a319438a0221a6fe61b590733aa450a">ECharacterCameraMode</a></td>          <td class="paramname"><span class="paramname"><em>NewViewMode</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -404,8 +584,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
-<a id="ab6f878f0b06d53b21dd251f45f69e545" name="ab6f878f0b06d53b21dd251f45f69e545"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6f878f0b06d53b21dd251f45f69e545">&#9670;&#160;</a></span>DefaultMappingContext</h2>
+<a id="a9a560bb4c3f5eb7769914966dd639430" name="a9a560bb4c3f5eb7769914966dd639430"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a560bb4c3f5eb7769914966dd639430">&#9670;&#160;</a></span>CosmeticComponent</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -414,7 +594,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">TObjectPtr&lt;UInputMappingContext&gt; AWjWorldCharacterBase::DefaultMappingContext</td>
+          <td class="memname">TObjectPtr&lt;UWjWorldCosmeticComponent&gt; AWjWorldCharacterBase::CosmeticComponent</td>
         </tr>
       </table>
   </td>
@@ -423,7 +603,76 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>기본 Input Mapping Context </p>
+<p>코스메틱 컴포넌트 </p>
+
+</div>
+</div>
+<a id="a6f9a2a10161b54d7eb04ef0553ad0ce1" name="a6f9a2a10161b54d7eb04ef0553ad0ce1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f9a2a10161b54d7eb04ef0553ad0ce1">&#9670;&#160;</a></span>DefaultAnimBlueprintClass</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TSoftClassPtr&lt;UAnimInstance&gt; AWjWorldCharacterBase::DefaultAnimBlueprintClass</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>기본 애니메이션 블루프린트 클래스 (설정 안하면 DeveloperSettings 사용) </p>
+
+</div>
+</div>
+<a id="a176f4d6ce4609a4820bcd7de6e8997ea" name="a176f4d6ce4609a4820bcd7de6e8997ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a176f4d6ce4609a4820bcd7de6e8997ea">&#9670;&#160;</a></span>DefaultMappingContext</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TSoftObjectPtr&lt;UInputMappingContext&gt; AWjWorldCharacterBase::DefaultMappingContext</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>기본 Input Mapping Context (설정 안하면 DeveloperSettings 사용) </p>
+
+</div>
+</div>
+<a id="a6a4c84e9691b5d7ae7c26a3504e5ec42" name="a6a4c84e9691b5d7ae7c26a3504e5ec42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a4c84e9691b5d7ae7c26a3504e5ec42">&#9670;&#160;</a></span>DefaultSkeletalMesh</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TSoftObjectPtr&lt;USkeletalMesh&gt; AWjWorldCharacterBase::DefaultSkeletalMesh</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>기본 스켈레탈 메시 (설정 안하면 DeveloperSettings 사용) </p>
 
 </div>
 </div>
@@ -447,6 +696,20 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>GamePlay 카메라 컴포넌트 </p>
+
+</div>
+</div>
+<a id="ade363b8269f3199fff404e8dfefe27a2" name="ade363b8269f3199fff404e8dfefe27a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade363b8269f3199fff404e8dfefe27a2">&#9670;&#160;</a></span>OnCharacterViewModeChanged</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FOnCharacterViewModeChanged AWjWorldCharacterBase::OnCharacterViewModeChanged</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

@@ -1,0 +1,121 @@
+\doxysection{Wj\+World\+Wall\+Description\+Data\+Asset.\+h}
+\hypertarget{_wj_world_wall_description_data_asset_8h_source}{}\label{_wj_world_wall_description_data_asset_8h_source}\index{Source/WjWorld/GamePlay/Wall/WjWorldWallDescriptionDataAsset.h@{Source/WjWorld/GamePlay/Wall/WjWorldWallDescriptionDataAsset.h}}
+\doxymbox{\hyperlink{_wj_world_wall_description_data_asset_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Engine/DataAsset.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_log_categories_8h}{WjWorldLogCategories.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldWallDescriptionDataAsset.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ USTRUCT(BlueprintType)}
+\DoxyCodeLine{00011\ struct\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWjWorldWallDescription}}}
+\DoxyCodeLine{00012\ \{}
+\DoxyCodeLine{00013\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \ \ \ \ constexpr\ static\ int32\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_a6e77e943ea0817cb38ac9b1b59b4a364}{WallCell\_Empty}}\ =\ -\/1;}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ad61a1385af86b2d661f2aaf12f9c9253}{LoadWallLayoutFromFile}}();}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_afbb9b3213473eaf08a83e50f88ff5f23}{GetRandomSafeZones}}(TArray<FIntPoint>\&\ OutSafeZones,\ int32\ MaxCount\ =\ 10)\ const;}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ade9df2efe1e4d8fde702f311b1f8d17a}{Reset}}()}
+\DoxyCodeLine{00021\ \ \ \ \ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_a4b44a8fec285109ccecd1d2d8e7407d3}{WallLayout}}.Empty();}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ac1dd451aad2cbc42d10b0d1d25f1d1b1}{bIsLayoutValid}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_aee15d86a8ec724091361b75d53bdd30c}{bSizeExactMatch}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_a385aa550239cdf450bf9679919c98dbb}{RowNum}}\ =\ 0;}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ac1179fb359682321bf4fabb08a183132}{ColumnNum}}\ =\ 0;}
+\DoxyCodeLine{00027\ \ \ \ \ \}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_a99d8d21c286ad3c137c534543f78b74c}{IsWallClosed}}()}
+\DoxyCodeLine{00030\ \ \ \ \ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\doxymbox{\hyperlink{struct_f_wj_world_wall_description_af12f56f824bb08cac030337f9e545998}{IsLayoutEmpty}}())}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ Result\ =\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ad61a1385af86b2d661f2aaf12f9c9253}{LoadWallLayoutFromFile}}();}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Result\ ==\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ac7fcc162ec2ba0d97d5a17c3eaadff1e}{IsLayoutValid}}();}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ac7fcc162ec2ba0d97d5a17c3eaadff1e}{IsLayoutValid}}()}
+\DoxyCodeLine{00044\ \ \ \ \ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !\doxymbox{\hyperlink{struct_f_wj_world_wall_description_af12f56f824bb08cac030337f9e545998}{IsLayoutEmpty}}()\ \&\&\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ac1dd451aad2cbc42d10b0d1d25f1d1b1}{bIsLayoutValid}};}
+\DoxyCodeLine{00046\ \ \ \ \ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_af12f56f824bb08cac030337f9e545998}{IsLayoutEmpty}}()}
+\DoxyCodeLine{00049\ \ \ \ \ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_a4b44a8fec285109ccecd1d2d8e7407d3}{WallLayout}}.IsEmpty();}
+\DoxyCodeLine{00051\ \ \ \ \ \}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00054\ \ \ \ \ FString\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_af8525249608ef5d947fc7df75ebebc7e}{WallName}};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00057\ \ \ \ \ FVector\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_a3a17cff17474b3b9e6510b4d0bd633ed}{CenterOffset}}\ =\ FVector::ZeroVector;}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00060\ \ \ \ \ FVector\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_aa8e5423509ebf7c785f4f059a03749a3}{BrickSize}}\ =\ FVector(100.0,\ 100.0,\ 100.0);}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ BlueprintReadOnly)}
+\DoxyCodeLine{00063\ \ \ \ \ FFilePath\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_a1097d71b058af7401e42f7fdece8e96f}{WallLayoutFilePath}};}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ TArray<TArray<int32>>\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_a4b44a8fec285109ccecd1d2d8e7407d3}{WallLayout}};}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ac1dd451aad2cbc42d10b0d1d25f1d1b1}{bIsLayoutValid}}\ =\ false;}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_aee15d86a8ec724091361b75d53bdd30c}{bSizeExactMatch}}\ =\ false;}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_a385aa550239cdf450bf9679919c98dbb}{RowNum}}\ =\ 0;}
+\DoxyCodeLine{00070\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ac1179fb359682321bf4fabb08a183132}{ColumnNum}}\ =\ 0;}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ TArray<FIntPoint>\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_aed6253d31d9001e8e76ae6c8c007a0c9}{SafeZones}};}
+\DoxyCodeLine{00073\ \ \ \ \ TSet<FIntPoint>\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ac8eb39db511dee0bcf25d9b5d035a0ee}{SafeZonesSet}};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ private:}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{bool}\ ParseWallLayout(const\ FString\&\ FileContent);}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{bool}\ FindStartingEmptyCell(int32\&\ OutX,\ int32\&\ OutY);}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsAreaEnclosedByWalls(int32\ StartX,\ int32\ StartY);}
+\DoxyCodeLine{00079\ \};}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00084\ UCLASS()}
+\DoxyCodeLine{00085\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset}{UWjWorldWallDescriptionDataAsset}}\ :\ public\ UPrimaryDataAsset}
+\DoxyCodeLine{00086\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00088\ \ \ \ \ }
+\DoxyCodeLine{00089\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset_a784d41dfbbb4e31f8db2b5d22b532cef}{GetWallDescriptionByName}}(\textcolor{keyword}{const}\ FString\&\ Name,\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWjWorldWallDescription}}\&\ OutDescription)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00091\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWjWorldWallDescription}}\&\ Description\ :\ \doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset_ad875fe8be0e65bef29ea8e7e012f9ef8}{WallDescriptions}})}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Description.WallName\ ==\ Name)}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ OutDescription\ =\ Description;}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00101\ \ \ \ \ \}}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \ \ FString\ \doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset_a21314178af9c075e7c6b1d06b2aabb07}{GenerateRandomWallDescriptionKey}}()}
+\DoxyCodeLine{00104\ \ \ \ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ int32\ RandomIndex\ =\ FMath::RandRange(0,\ \doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset_ad875fe8be0e65bef29ea8e7e012f9ef8}{WallDescriptions}}.Num()\ -\/\ 1);}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset_ad875fe8be0e65bef29ea8e7e012f9ef8}{WallDescriptions}}.IsValidIndex(RandomIndex))}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset_ad875fe8be0e65bef29ea8e7e012f9ef8}{WallDescriptions}}[RandomIndex].WallName;}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ UE\_LOG(LogWjWorld,\ Error,\ TEXT(\textcolor{stringliteral}{"{}No\ Wall\ Descriptions\ available\ to\ generate\ a\ random\ key."{}}));}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FString();}
+\DoxyCodeLine{00113\ \ \ \ \ \}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00116\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Wall\ Description"{}})}
+\DoxyCodeLine{00117\ \ \ \ \ TArray<\doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWjWorldWallDescription}}>\ \doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset_ad875fe8be0e65bef29ea8e7e012f9ef8}{WallDescriptions}};}
+\DoxyCodeLine{00118\ \};}
+
+\end{DoxyCode}

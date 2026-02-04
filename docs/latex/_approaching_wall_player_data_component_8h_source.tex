@@ -1,0 +1,48 @@
+\doxysection{Approaching\+Wall\+Player\+Data\+Component.\+h}
+\hypertarget{_approaching_wall_player_data_component_8h_source}{}\label{_approaching_wall_player_data_component_8h_source}\index{Source/WjWorld/Core/GameData/ApproachingWallPlayerDataComponent.h@{Source/WjWorld/Core/GameData/ApproachingWallPlayerDataComponent.h}}
+\doxymbox{\hyperlink{_approaching_wall_player_data_component_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_game_data_component_8h}{Core/GameData/WjWorldGameDataComponent.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}ApproachingWallPlayerDataComponent.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \doxymbox{\hyperlink{_approaching_wall_player_data_component_8h_a583bab1de12f286b728f8f77fd190701}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnPlayerAliveChanged,\ \textcolor{keywordtype}{bool},\ bIsAlive);}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00014\ UCLASS()}
+\DoxyCodeLine{00015\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_approaching_wall_player_data_component_ac488548baa13f9e2e67f8cf91cd89dce}{UApproachingWallPlayerDataComponent}}\ :\ public\ UWjWorldGameDataComponent}
+\DoxyCodeLine{00016\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \ \ \doxymbox{\hyperlink{class_u_approaching_wall_player_data_component_ac488548baa13f9e2e67f8cf91cd89dce}{UApproachingWallPlayerDataComponent}}();}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_approaching_wall_player_data_component_a011cf74efed70d5d413b0017360e9bec}{GetLifetimeReplicatedProps}}(TArray<FLifetimeProperty>\&\ OutLifetimeProps)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{comment}{//\ 생존\ 상태}}
+\DoxyCodeLine{00025\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}ApproachingWall"{}})}
+\DoxyCodeLine{00026\ \ \ \ \ bool\ \doxymbox{\hyperlink{class_u_approaching_wall_player_data_component_ab4c1d5d33e8e5533410d2be728809c4b}{IsAlive}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ bIsAlive;\ \}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}ApproachingWall"{}})}
+\DoxyCodeLine{00029\ \ \ \ \ void\ SetAlive(\textcolor{keywordtype}{bool}\ bNewAlive);}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{comment}{//\ 사망\ 시\ 호출}}
+\DoxyCodeLine{00032\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}ApproachingWall"{}})}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ OnEliminated();}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}ApproachingWall"{}})}
+\DoxyCodeLine{00036\ \ \ \ \ FOnPlayerAliveChanged\ \doxymbox{\hyperlink{class_u_approaching_wall_player_data_component_afaf2523668e5fc083d9d0e3fac468690}{OnPlayerAliveChanged}};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ protected:}
+\DoxyCodeLine{00039\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_approaching_wall_player_data_component_ad3bc6492f87a74c727c71606b3ef92c1}{OnRep\_IsAlive}}();}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ private:}
+\DoxyCodeLine{00043\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ \doxymbox{\hyperlink{class_u_approaching_wall_player_data_component_ad3bc6492f87a74c727c71606b3ef92c1}{OnRep\_IsAlive}})}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{bool}\ bIsAlive\ =\ true;}
+\DoxyCodeLine{00045\ \};}
+
+\end{DoxyCode}

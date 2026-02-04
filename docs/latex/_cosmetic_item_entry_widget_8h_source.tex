@@ -1,0 +1,92 @@
+\doxysection{Cosmetic\+Item\+Entry\+Widget.\+h}
+\hypertarget{_cosmetic_item_entry_widget_8h_source}{}\label{_cosmetic_item_entry_widget_8h_source}\index{Source/WjWorld/UI/Cosmetic/CosmeticItemEntryWidget.h@{Source/WjWorld/UI/Cosmetic/CosmeticItemEntryWidget.h}}
+\doxymbox{\hyperlink{_cosmetic_item_entry_widget_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_user_widget_base_8h}{UI/WjWorldUserWidgetBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h}{Cosmetic/WjWorldCosmeticTypes.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}Engine/StreamableManager.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}CosmeticItemEntryWidget.generated.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }UImage;}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }UTextBlock;}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }UBorder;}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }UButton;}
+\DoxyCodeLine{00015\ \textcolor{keyword}{struct\ }\doxymbox{\hyperlink{struct_f_cosmetic_item_definition}{FCosmeticItemDefinition}};}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \doxymbox{\hyperlink{_cosmetic_item_entry_widget_8h_a317e1fb82fe044e837f4489990cccba1}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnCosmeticItemClicked,\ FName,\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_abb4adee6ebb5e3b58e33d8772b68d1dd}{ItemId}});}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00026\ UCLASS()}
+\DoxyCodeLine{00027\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget}{UCosmeticItemEntryWidget}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}}
+\DoxyCodeLine{00028\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a41c14ede8962b61da63ab201dc61136f}{NativeConstruct}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a18aa4bd9e5629cd95ebdd26838a17048}{NativeDestruct}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00036\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a250ec19667f4c54d2b44791f59fe39e6}{SetItemDefinition}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition}{FCosmeticItemDefinition}}\&\ Def);}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00040\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_af43c3e450bb4631db272bdda7a2cb5d7}{SetOwned}}(\textcolor{keywordtype}{bool}\ bOwned);}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00044\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a7bd77f381ed1b76d69d9e2a69d8b949d}{SetEquipped}}(\textcolor{keywordtype}{bool}\ bEquipped);}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00048\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_acc7f604e524e818c22a464537b712ca6}{SetSelected}}(\textcolor{keywordtype}{bool}\ bSelected);}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00052\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00053\ \ \ \ \ FName\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a47519866d277369812b3949323f2eda3}{GetItemId}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CachedItemId;\ \}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00056\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00057\ \ \ \ \ FOnCosmeticItemClicked\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a946663dab9ba62da394f5ee95575a0a4}{OnItemClicked}};}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ protected:}
+\DoxyCodeLine{00061\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00062\ \ \ \ \ TObjectPtr<UImage>\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_abf85516d332ef6e5aba88ae2c61fee80}{IconImage}};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00065\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00066\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a0e02befd28774ac0216fc56cf007dca3}{NameText}};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00069\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00070\ \ \ \ \ TObjectPtr<UImage>\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_ace573b313ac21cc8d2ca05f575dd5065}{RarityBar}};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00073\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00074\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a99531014647fe491819b8c16902e5250}{PriceText}};}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00077\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00078\ \ \ \ \ TObjectPtr<UBorder>\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_aec16939678bed4357cfa5bc8ebf15035}{SelectionBorder}};}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00081\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00082\ \ \ \ \ TObjectPtr<UImage>\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a7f41ad2918b38236356c9913dac99704}{EquippedIcon}};}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00085\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00086\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a86cbd911281fe81eaa3305cef2fed359}{ItemButton}};}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a463212786ceae7d05a52fe88575906ab}{OnItemButtonClicked}}();}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ private:}
+\DoxyCodeLine{00093\ \ \ \ \ FLinearColor\ GetRarityColor(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_af3b6fbfb2df313f7e1012e2cb7ac931c}{ECosmeticRarity}}\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_ac2d12a7e9873b0775cb275f524548096}{Rarity}})\ const;}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordtype}{void}\ OnIconLoaded();}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00099\ \ \ \ \ FName\ CachedItemId;}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{bool}\ bIsOwned\ =\ false;}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordtype}{bool}\ bIsEquipped\ =\ false;}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordtype}{bool}\ bIsSelected\ =\ false;}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00111\ \ \ \ \ FStreamableManager\ StreamableManager;}
+\DoxyCodeLine{00112\ \ \ \ \ TSharedPtr<FStreamableHandle>\ IconLoadHandle;}
+\DoxyCodeLine{00113\ \};}
+
+\end{DoxyCode}

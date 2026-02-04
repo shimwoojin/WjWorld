@@ -22,15 +22,23 @@ void \doxymbox{\hyperlink{class_a_wj_world_character_lobby_aeed3735b1c7c2e60e2cb
 \item 
 \doxymbox{\hyperlink{class_a_wj_world_character_base_a89132c9b76acde3a302c706d1931769a}{AWj\+World\+Character\+Base}} ()
 \item 
-void \doxymbox{\hyperlink{class_a_wj_world_character_base_a10d3770bc59c61b53da2682a7faae57b}{Set\+Character\+View\+Mode}} (\doxymbox{\hyperlink{_wj_world_character_base_8h_aac1445d872a9eeaf8933fc54f5a955ab}{ECharacter\+View\+Mode}} New\+View\+Mode)
+void \doxymbox{\hyperlink{class_a_wj_world_character_base_aea545fa94580dbb8ef63571ca6f30e20}{Set\+Character\+View\+Mode}} (\doxymbox{\hyperlink{_wj_camera_types_8h_a3a319438a0221a6fe61b590733aa450a}{ECharacter\+Camera\+Mode}} New\+View\+Mode)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_character_base_a0090cb0b54ce850e04cb8268de590284}{Set\+Character\+View\+Mode}} (const FGameplay\+Tag \&New\+View\+Mode)
 \item 
 virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a645d77e1ca3055c7b4450aa4d5eb111b}{Tick}} (float Delta\+Time) override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_ab7642bf2689f3be3aa21eb28aecffa69}{Possessed\+By}} (AController \texorpdfstring{$\ast$}{*}New\+Controller) override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a25cd0af46e146c8e95e87c640cd5b593}{On\+Rep\+\_\+\+Player\+State}} () override
 \item 
 virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a8db3fd1326b0c7b43a2918902d3ffd1c}{Setup\+Player\+Input\+Component}} (class UInput\+Component \texorpdfstring{$\ast$}{*}Player\+Input\+Component) override
 \item 
 TObject\+Ptr$<$ UGameplay\+Camera\+Component $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a37598085f9ad1a4c22117c219844d7d9}{Get\+Game\+Play\+Camera}} ()
 \item 
-TObject\+Ptr$<$ UInput\+Mapping\+Context $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a948532d6c1431ced08d67cf65ecf419a}{Get\+Default\+Mapping\+Context}} ()
+UInput\+Mapping\+Context \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_wj_world_character_base_a81631a3a599046bf627cf7d608cdf77f}{Get\+Default\+Mapping\+Context}} () const
+\item 
+UWj\+World\+Cosmetic\+Component \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_wj_world_character_base_a41d508753a4083abaef3233100ca0957}{Get\+Cosmetic\+Component}} () const
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
@@ -46,17 +54,34 @@ void \doxymbox{\hyperlink{class_a_wj_world_character_lobby_a943c39483e2e90fcdf53
 \doxysubsection*{Protected Member Functions inherited from \doxymbox{\hyperlink{class_a_wj_world_character_base}{AWj\+World\+Character\+Base}}}
 \begin{DoxyCompactItemize}
 \item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a5ebcfc311e7cd5b917dafe7846af70e7}{Post\+Initialize\+Components}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a8b7c47cbcbbaf64ae1b61b50bd47ff5c}{Gas\+Input\+Pressed}} (int32 Input\+ID)
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a7ea189681e2c9b85ed41a3a5c9904256}{Gas\+Input\+Released}} (int32 Input\+ID)
+\item 
 virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_ae0763ed841b7861571568921978c477e}{Move}} (const FInput\+Action\+Value \&Value)
 \item 
 virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a91d6696a44335c36fa3dcd8dd5d94395}{Interact}} (const FInput\+Action\+Value \&Value)
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Attributes inherited from \doxymbox{\hyperlink{class_a_wj_world_character_base}{AWj\+World\+Character\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+FOn\+Character\+View\+Mode\+Changed \doxymbox{\hyperlink{class_a_wj_world_character_base_ade363b8269f3199fff404e8dfefe27a2}{On\+Character\+View\+Mode\+Changed}}
+\end{DoxyCompactItemize}
 \doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_a_wj_world_character_base}{AWj\+World\+Character\+Base}}}
 \begin{DoxyCompactItemize}
 \item 
 TObject\+Ptr$<$ UGameplay\+Camera\+Component $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a1e0d571d583e75bdfacbb250be2eb13f}{Game\+Play\+Camera}}
 \item 
-TObject\+Ptr$<$ UInput\+Mapping\+Context $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_ab6f878f0b06d53b21dd251f45f69e545}{Default\+Mapping\+Context}}
+TSoft\+Object\+Ptr$<$ USkeletal\+Mesh $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a6a4c84e9691b5d7ae7c26a3504e5ec42}{Default\+Skeletal\+Mesh}}
+\item 
+TSoft\+Class\+Ptr$<$ UAnim\+Instance $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a6f9a2a10161b54d7eb04ef0553ad0ce1}{Default\+Anim\+Blueprint\+Class}}
+\item 
+TSoft\+Object\+Ptr$<$ UInput\+Mapping\+Context $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a176f4d6ce4609a4820bcd7de6e8997ea}{Default\+Mapping\+Context}}
+\item 
+TObject\+Ptr$<$ UWj\+World\+Cosmetic\+Component $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a9a560bb4c3f5eb7769914966dd639430}{Cosmetic\+Component}}
 \end{DoxyCompactItemize}
 
 

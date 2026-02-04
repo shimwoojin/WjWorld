@@ -1,0 +1,108 @@
+\doxysection{UAbility\+Slot\+Widget Class Reference}
+\hypertarget{class_u_ability_slot_widget}{}\label{class_u_ability_slot_widget}\index{UAbilitySlotWidget@{UAbilitySlotWidget}}
+
+
+{\ttfamily \+\#include $<$Ability\+Slot\+Widget.\+h$>$}
+
+Inheritance diagram for UAbility\+Slot\+Widget:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_u_ability_slot_widget}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TSubclass\+Of$<$ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base}{UWj\+World\+Gameplay\+Ability\+Base}} $>$ \doxymbox{\hyperlink{class_u_ability_slot_widget_adc7e11b35221de863bb7f46aaf5ea619}{Ability\+Class}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_ability_slot_widget_aa869a50dc8fd14b3e887965f7e7d95b6}{Native\+Construct}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_ability_slot_widget_ad209a8387d7547d1a632476df2c56a21}{Native\+Tick}} (const FGeometry \&My\+Geometry, float In\+Delta\+Time) override
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UImage $>$ \doxymbox{\hyperlink{class_u_ability_slot_widget_aa30f31633431f5a30556f1e5d9a4f5e4}{Ability\+Icon\+Image}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_ability_slot_widget_a1f25a183171e71ecabdcf714cfd48b00}{Key\+Bind\+Text}}
+\item 
+TObject\+Ptr$<$ UImage $>$ \doxymbox{\hyperlink{class_u_ability_slot_widget_a6431892343d1fb6dcbc3ba47d81e37f0}{Cooldown\+Overlay}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_ability_slot_widget_a1cffe6cfe83b4d18af087da176bb7652}{Cooldown\+Text}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_ability_slot_widget_a232901fb4bb41cb4503e3b159d29b112}{Charge\+Count\+Text}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+어빌리티 슬롯 위젯
+\begin{DoxyItemize}
+\item 어빌리티 아이콘, 키 바인딩, 쿨다운, 충전 정보 표시
+\item UMG Blueprint에서 Ability\+Class 설정 후 HUD에 배치 
+\end{DoxyItemize}
+
+\label{doc-func-members}
+\Hypertarget{class_u_ability_slot_widget_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_ability_slot_widget_aa869a50dc8fd14b3e887965f7e7d95b6}\index{UAbilitySlotWidget@{UAbilitySlotWidget}!NativeConstruct@{NativeConstruct}}
+\index{NativeConstruct@{NativeConstruct}!UAbilitySlotWidget@{UAbilitySlotWidget}}
+\doxysubsubsection{\texorpdfstring{NativeConstruct()}{NativeConstruct()}}
+{\footnotesize\ttfamily \label{class_u_ability_slot_widget_aa869a50dc8fd14b3e887965f7e7d95b6} 
+void UAbility\+Slot\+Widget::\+\+Native\+Construct (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_ability_slot_widget_ad209a8387d7547d1a632476df2c56a21}\index{UAbilitySlotWidget@{UAbilitySlotWidget}!NativeTick@{NativeTick}}
+\index{NativeTick@{NativeTick}!UAbilitySlotWidget@{UAbilitySlotWidget}}
+\doxysubsubsection{\texorpdfstring{NativeTick()}{NativeTick()}}
+{\footnotesize\ttfamily \label{class_u_ability_slot_widget_ad209a8387d7547d1a632476df2c56a21} 
+void UAbility\+Slot\+Widget::\+\+Native\+Tick (\begin{DoxyParamCaption}\item[{const FGeometry \&}]{My\+Geometry}{, }\item[{float}]{In\+Delta\+Time}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{class_u_ability_slot_widget_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_ability_slot_widget_adc7e11b35221de863bb7f46aaf5ea619}\index{UAbilitySlotWidget@{UAbilitySlotWidget}!AbilityClass@{AbilityClass}}
+\index{AbilityClass@{AbilityClass}!UAbilitySlotWidget@{UAbilitySlotWidget}}
+\doxysubsubsection{\texorpdfstring{AbilityClass}{AbilityClass}}
+{\footnotesize\ttfamily \label{class_u_ability_slot_widget_adc7e11b35221de863bb7f46aaf5ea619} 
+TSubclass\+Of$<$\doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base}{UWj\+World\+Gameplay\+Ability\+Base}}$>$ UAbility\+Slot\+Widget::\+\+Ability\+Class}
+
+이 슬롯에 연결할 어빌리티 클래스 \Hypertarget{class_u_ability_slot_widget_aa30f31633431f5a30556f1e5d9a4f5e4}\index{UAbilitySlotWidget@{UAbilitySlotWidget}!AbilityIconImage@{AbilityIconImage}}
+\index{AbilityIconImage@{AbilityIconImage}!UAbilitySlotWidget@{UAbilitySlotWidget}}
+\doxysubsubsection{\texorpdfstring{AbilityIconImage}{AbilityIconImage}}
+{\footnotesize\ttfamily \label{class_u_ability_slot_widget_aa30f31633431f5a30556f1e5d9a4f5e4} 
+TObject\+Ptr$<$UImage$>$ UAbility\+Slot\+Widget::\+\+Ability\+Icon\+Image\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_ability_slot_widget_a232901fb4bb41cb4503e3b159d29b112}\index{UAbilitySlotWidget@{UAbilitySlotWidget}!ChargeCountText@{ChargeCountText}}
+\index{ChargeCountText@{ChargeCountText}!UAbilitySlotWidget@{UAbilitySlotWidget}}
+\doxysubsubsection{\texorpdfstring{ChargeCountText}{ChargeCountText}}
+{\footnotesize\ttfamily \label{class_u_ability_slot_widget_a232901fb4bb41cb4503e3b159d29b112} 
+TObject\+Ptr$<$UText\+Block$>$ UAbility\+Slot\+Widget::\+\+Charge\+Count\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_ability_slot_widget_a6431892343d1fb6dcbc3ba47d81e37f0}\index{UAbilitySlotWidget@{UAbilitySlotWidget}!CooldownOverlay@{CooldownOverlay}}
+\index{CooldownOverlay@{CooldownOverlay}!UAbilitySlotWidget@{UAbilitySlotWidget}}
+\doxysubsubsection{\texorpdfstring{CooldownOverlay}{CooldownOverlay}}
+{\footnotesize\ttfamily \label{class_u_ability_slot_widget_a6431892343d1fb6dcbc3ba47d81e37f0} 
+TObject\+Ptr$<$UImage$>$ UAbility\+Slot\+Widget::\+\+Cooldown\+Overlay\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_ability_slot_widget_a1cffe6cfe83b4d18af087da176bb7652}\index{UAbilitySlotWidget@{UAbilitySlotWidget}!CooldownText@{CooldownText}}
+\index{CooldownText@{CooldownText}!UAbilitySlotWidget@{UAbilitySlotWidget}}
+\doxysubsubsection{\texorpdfstring{CooldownText}{CooldownText}}
+{\footnotesize\ttfamily \label{class_u_ability_slot_widget_a1cffe6cfe83b4d18af087da176bb7652} 
+TObject\+Ptr$<$UText\+Block$>$ UAbility\+Slot\+Widget::\+\+Cooldown\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_ability_slot_widget_a1f25a183171e71ecabdcf714cfd48b00}\index{UAbilitySlotWidget@{UAbilitySlotWidget}!KeyBindText@{KeyBindText}}
+\index{KeyBindText@{KeyBindText}!UAbilitySlotWidget@{UAbilitySlotWidget}}
+\doxysubsubsection{\texorpdfstring{KeyBindText}{KeyBindText}}
+{\footnotesize\ttfamily \label{class_u_ability_slot_widget_a1f25a183171e71ecabdcf714cfd48b00} 
+TObject\+Ptr$<$UText\+Block$>$ UAbility\+Slot\+Widget::\+\+Key\+Bind\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Ability/\+\doxymbox{\hyperlink{_ability_slot_widget_8h}{Ability\+Slot\+Widget.\+h}}\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Ability/\+\doxymbox{\hyperlink{_ability_slot_widget_8cpp}{Ability\+Slot\+Widget.\+cpp}}\end{DoxyCompactItemize}

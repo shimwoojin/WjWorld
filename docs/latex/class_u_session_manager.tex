@@ -27,6 +27,8 @@ bool \doxymbox{\hyperlink{class_u_session_manager_a32f197f8374246ca5cf86e1605456
 \item 
 bool \doxymbox{\hyperlink{class_u_session_manager_ab3cfbbaeeb116fb2fccbb1e29306bca1}{Start\+Session}} ()
 \item 
+bool \doxymbox{\hyperlink{class_u_session_manager_ac299fe26079bf1debb9379a9bb4af60a}{End\+Session}} ()
+\item 
 bool \doxymbox{\hyperlink{class_u_session_manager_a4fbecb2c4677b89c93da574ba4a3a880}{Destroy\+Session}} ()
 \item 
 bool \doxymbox{\hyperlink{class_u_session_manager_a31b432b8faf2bd085d9cd7bcac99009f}{Is\+In\+Session}} () const
@@ -34,6 +36,10 @@ bool \doxymbox{\hyperlink{class_u_session_manager_a31b432b8faf2bd085d9cd7bcac990
 bool \doxymbox{\hyperlink{class_u_session_manager_adc285ffe581170aa4cf4ee0a18c50c0f}{Is\+Host}} () const
 \item 
 const \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} \& \doxymbox{\hyperlink{class_u_session_manager_a21352ba694d12881b0c39a28446c2d96}{Get\+Last\+Room\+Settings}} () const
+\item 
+bool \doxymbox{\hyperlink{class_u_session_manager_a8098cdf9ef09766e1c3b7e101d965c9a}{Create\+Migration\+Session}} (const \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} \&Settings, const FString \&Migration\+Tag)
+\item 
+bool \doxymbox{\hyperlink{class_u_session_manager_a4791df939a99711af8f689554158bb32}{Find\+Migration\+Session}} (const FString \&Migration\+Tag)
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -47,6 +53,8 @@ FOn\+Room\+Joined \doxymbox{\hyperlink{class_u_session_manager_aabc4f41d007cfc1d
 FOn\+Room\+Destroyed \doxymbox{\hyperlink{class_u_session_manager_ab1155f138e56a4feebd8041aeb478ead}{On\+Room\+Destroyed\+Event}}
 \item 
 FOn\+Room\+Started \doxymbox{\hyperlink{class_u_session_manager_a47cced85a2e73327b1c279f32603d5e2}{On\+Room\+Started\+Event}}
+\item 
+FOn\+Room\+Ended \doxymbox{\hyperlink{class_u_session_manager_ad6e5c50f4e26af65301d8cb231018403}{On\+Room\+Ended\+Event}}
 \end{DoxyCompactItemize}
 
 
@@ -74,6 +82,22 @@ USession\+Manager::\+\+USession\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyP
 \label{doc-func-members}
 \Hypertarget{class_u_session_manager_doc-func-members}
 \doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_session_manager_a8098cdf9ef09766e1c3b7e101d965c9a}\index{USessionManager@{USessionManager}!CreateMigrationSession@{CreateMigrationSession}}
+\index{CreateMigrationSession@{CreateMigrationSession}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{CreateMigrationSession()}{CreateMigrationSession()}}
+{\footnotesize\ttfamily \label{class_u_session_manager_a8098cdf9ef09766e1c3b7e101d965c9a} 
+bool USession\+Manager::\+\+Create\+Migration\+Session (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} \&}]{Settings}{, }\item[{const FString \&}]{Migration\+Tag}{}\end{DoxyParamCaption})}
+
+마이그레이션 세션 생성 (MIGRATION\+\_\+\+TAG 커스텀 세팅 포함) 
+\begin{DoxyParams}{Parameters}
+{\em Settings} & 방 설정 \\
+\hline
+{\em Migration\+Tag} & 마이그레이션 식별 태그 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+성공 여부 
+\end{DoxyReturn}
 \Hypertarget{class_u_session_manager_ab58ff48bccaf5249d196d9768264a68e}\index{USessionManager@{USessionManager}!CreateSession@{CreateSession}}
 \index{CreateSession@{CreateSession}!USessionManager@{USessionManager}}
 \doxysubsubsection{\texorpdfstring{CreateSession()}{CreateSession()}}
@@ -95,6 +119,29 @@ bool USession\+Manager::\+\+Create\+Session (\begin{DoxyParamCaption}\item[{cons
 bool USession\+Manager::\+\+Destroy\+Session (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
 
 세션 나가기/\+방 파괴 \begin{DoxyReturn}{Returns}
+성공 여부 
+\end{DoxyReturn}
+\Hypertarget{class_u_session_manager_ac299fe26079bf1debb9379a9bb4af60a}\index{USessionManager@{USessionManager}!EndSession@{EndSession}}
+\index{EndSession@{EndSession}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{EndSession()}{EndSession()}}
+{\footnotesize\ttfamily \label{class_u_session_manager_ac299fe26079bf1debb9379a9bb4af60a} 
+bool USession\+Manager::\+\+End\+Session (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+세션 종료 (In\+Progress 상태를 Ended로 변경) Play → Waiting\+Room 복귀 시 호출하여 다시 Start\+Session 가능하게 함 \begin{DoxyReturn}{Returns}
+성공 여부 
+\end{DoxyReturn}
+\Hypertarget{class_u_session_manager_a4791df939a99711af8f689554158bb32}\index{USessionManager@{USessionManager}!FindMigrationSession@{FindMigrationSession}}
+\index{FindMigrationSession@{FindMigrationSession}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{FindMigrationSession()}{FindMigrationSession()}}
+{\footnotesize\ttfamily \label{class_u_session_manager_a4791df939a99711af8f689554158bb32} 
+bool USession\+Manager::\+\+Find\+Migration\+Session (\begin{DoxyParamCaption}\item[{const FString \&}]{Migration\+Tag}{}\end{DoxyParamCaption})}
+
+마이그레이션 세션 검색 (MIGRATION\+\_\+\+TAG로 필터링) 
+\begin{DoxyParams}{Parameters}
+{\em Migration\+Tag} & 검색할 마이그레이션 태그 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
 성공 여부 
 \end{DoxyReturn}
 \Hypertarget{class_u_session_manager_affd4b1b4610f2e965bac95582ec04f78}\index{USessionManager@{USessionManager}!FindSessions@{FindSessions}}
@@ -180,6 +227,12 @@ FOn\+Room\+Created USession\+Manager::\+\+On\+Room\+Created\+Event}
 \doxysubsubsection{\texorpdfstring{OnRoomDestroyedEvent}{OnRoomDestroyedEvent}}
 {\footnotesize\ttfamily \label{class_u_session_manager_ab1155f138e56a4feebd8041aeb478ead} 
 FOn\+Room\+Destroyed USession\+Manager::\+\+On\+Room\+Destroyed\+Event}
+
+\Hypertarget{class_u_session_manager_ad6e5c50f4e26af65301d8cb231018403}\index{USessionManager@{USessionManager}!OnRoomEndedEvent@{OnRoomEndedEvent}}
+\index{OnRoomEndedEvent@{OnRoomEndedEvent}!USessionManager@{USessionManager}}
+\doxysubsubsection{\texorpdfstring{OnRoomEndedEvent}{OnRoomEndedEvent}}
+{\footnotesize\ttfamily \label{class_u_session_manager_ad6e5c50f4e26af65301d8cb231018403} 
+FOn\+Room\+Ended USession\+Manager::\+\+On\+Room\+Ended\+Event}
 
 \Hypertarget{class_u_session_manager_aabc4f41d007cfc1d6004275c5db20608}\index{USessionManager@{USessionManager}!OnRoomJoinedEvent@{OnRoomJoinedEvent}}
 \index{OnRoomJoinedEvent@{OnRoomJoinedEvent}!USessionManager@{USessionManager}}

@@ -100,7 +100,8 @@ Inheritance diagram for AWjWorldPlayerControllerBase:</div>
   <img src="class_a_wj_world_player_controller_base.png" usemap="#AWjWorldPlayerControllerBase_map" alt=""/>
   <map id="AWjWorldPlayerControllerBase_map" name="AWjWorldPlayerControllerBase_map">
 <area href="class_a_wj_world_player_controller_lobby.html" alt="AWjWorldPlayerControllerLobby" shape="rect" coords="0,112,233,136"/>
-<area href="class_a_wj_world_player_controller_waiting_room.html" alt="AWjWorldPlayerControllerWaitingRoom" shape="rect" coords="243,112,476,136"/>
+<area href="class_a_wj_world_player_controller_play.html" alt="AWjWorldPlayerControllerPlay" shape="rect" coords="243,112,476,136"/>
+<area href="class_a_wj_world_player_controller_waiting_room.html" alt="AWjWorldPlayerControllerWaitingRoom" shape="rect" coords="486,112,719,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -109,6 +110,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8f14af55142a1ba5c59962e72119036b" id="r_a8f14af55142a1ba5c59962e72119036b"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a8f14af55142a1ba5c59962e72119036b">AWjWorldPlayerControllerBase</a> ()</td></tr>
 <tr class="memitem:a9f54609e2389a05ceecfda4d692b6e11" id="r_a9f54609e2389a05ceecfda4d692b6e11"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a9f54609e2389a05ceecfda4d692b6e11">CheckInputMode</a> ()</td></tr>
 <tr class="memitem:aa497bc09d850e10891a40ef9fb7a9016" id="r_aa497bc09d850e10891a40ef9fb7a9016"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aa497bc09d850e10891a40ef9fb7a9016">ChangeCharacterViewMode</a> (int32 InViewMode)</td></tr>
+<tr class="memitem:af2f84b216c2519d4736feaa65be5b41c" id="r_af2f84b216c2519d4736feaa65be5b41c"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af2f84b216c2519d4736feaa65be5b41c">ServerTravelWaitingRoom</a> ()</td></tr>
+<tr class="memitem:a3c509112f1f97d2ac52e8611040806af" id="r_a3c509112f1f97d2ac52e8611040806af"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a3c509112f1f97d2ac52e8611040806af">Cosmetic_GrantItem</a> (FString ItemId)</td></tr>
+<tr class="memitem:ad253dda2d9cff5026c61161f5bbb8991" id="r_ad253dda2d9cff5026c61161f5bbb8991"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ad253dda2d9cff5026c61161f5bbb8991">Cosmetic_GrantAll</a> ()</td></tr>
+<tr class="memitem:af57a7b343a75f3707e0a328ae08a2329" id="r_af57a7b343a75f3707e0a328ae08a2329"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af57a7b343a75f3707e0a328ae08a2329">Cosmetic_ClearInventory</a> ()</td></tr>
+<tr class="memitem:a0506c084330637d9bbf633c43f5eecd5" id="r_a0506c084330637d9bbf633c43f5eecd5"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a0506c084330637d9bbf633c43f5eecd5">Cosmetic_PrintInventory</a> ()</td></tr>
+<tr class="memitem:a79ffaf474dd3e8b20745c3da035e40e7" id="r_a79ffaf474dd3e8b20745c3da035e40e7"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a79ffaf474dd3e8b20745c3da035e40e7">Cosmetic_PrintLoadout</a> ()</td></tr>
+<tr class="memitem:a6cedcb2154acc3bb923c9eb37e24c95c" id="r_a6cedcb2154acc3bb923c9eb37e24c95c"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a6cedcb2154acc3bb923c9eb37e24c95c">Cosmetic_Equip</a> (int32 SlotIndex, FString ItemId)</td></tr>
+<tr class="memitem:a39a33c2746443f17ed1f15efd948b5e9" id="r_a39a33c2746443f17ed1f15efd948b5e9"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a39a33c2746443f17ed1f15efd948b5e9">Cosmetic_Unequip</a> (int32 SlotIndex)</td></tr>
+<tr class="memitem:a2578c356c89b8a1c36b81f0e5852b3dd" id="r_a2578c356c89b8a1c36b81f0e5852b3dd"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a2578c356c89b8a1c36b81f0e5852b3dd">Cosmetic_RefreshInventory</a> ()</td></tr>
+<tr class="memitem:a0ddfb88f4c166428205938a3211c2475" id="r_a0ddfb88f4c166428205938a3211c2475"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a0ddfb88f4c166428205938a3211c2475">Cosmetic_OpenShop</a> ()</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -202,6 +213,172 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="af57a7b343a75f3707e0a328ae08a2329" name="af57a7b343a75f3707e0a328ae08a2329"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af57a7b343a75f3707e0a328ae08a2329">&#9670;&#160;</a></span>Cosmetic_ClearInventory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldPlayerControllerBase::Cosmetic_ClearInventory </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>인벤토리 초기화 </p>
+
+</div>
+</div>
+<a id="a6cedcb2154acc3bb923c9eb37e24c95c" name="a6cedcb2154acc3bb923c9eb37e24c95c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cedcb2154acc3bb923c9eb37e24c95c">&#9670;&#160;</a></span>Cosmetic_Equip()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldPlayerControllerBase::Cosmetic_Equip </td>
+          <td>(</td>
+          <td class="paramtype">int32</td>          <td class="paramname"><span class="paramname"><em>SlotIndex</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FString</td>          <td class="paramname"><span class="paramname"><em>ItemId</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>특정 슬롯에 아이템 장착 (1=Head, 2=Body, 3=Back, 4=Effect) </p>
+
+</div>
+</div>
+<a id="ad253dda2d9cff5026c61161f5bbb8991" name="ad253dda2d9cff5026c61161f5bbb8991"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad253dda2d9cff5026c61161f5bbb8991">&#9670;&#160;</a></span>Cosmetic_GrantAll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldPlayerControllerBase::Cosmetic_GrantAll </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>모든 카탈로그 아이템을 인벤토리에 추가 </p>
+
+</div>
+</div>
+<a id="a3c509112f1f97d2ac52e8611040806af" name="a3c509112f1f97d2ac52e8611040806af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c509112f1f97d2ac52e8611040806af">&#9670;&#160;</a></span>Cosmetic_GrantItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldPlayerControllerBase::Cosmetic_GrantItem </td>
+          <td>(</td>
+          <td class="paramtype">FString</td>          <td class="paramname"><span class="paramname"><em>ItemId</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>특정 아이템을 인벤토리에 추가 (테스트용) </p>
+
+</div>
+</div>
+<a id="a0ddfb88f4c166428205938a3211c2475" name="a0ddfb88f4c166428205938a3211c2475"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ddfb88f4c166428205938a3211c2475">&#9670;&#160;</a></span>Cosmetic_OpenShop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldPlayerControllerBase::Cosmetic_OpenShop </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>코스메틱 상점 UI 열기 </p>
+
+</div>
+</div>
+<a id="a0506c084330637d9bbf633c43f5eecd5" name="a0506c084330637d9bbf633c43f5eecd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0506c084330637d9bbf633c43f5eecd5">&#9670;&#160;</a></span>Cosmetic_PrintInventory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldPlayerControllerBase::Cosmetic_PrintInventory </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>인벤토리 상태 출력 </p>
+
+</div>
+</div>
+<a id="a79ffaf474dd3e8b20745c3da035e40e7" name="a79ffaf474dd3e8b20745c3da035e40e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79ffaf474dd3e8b20745c3da035e40e7">&#9670;&#160;</a></span>Cosmetic_PrintLoadout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldPlayerControllerBase::Cosmetic_PrintLoadout </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>로드아웃 상태 출력 </p>
+
+</div>
+</div>
+<a id="a2578c356c89b8a1c36b81f0e5852b3dd" name="a2578c356c89b8a1c36b81f0e5852b3dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2578c356c89b8a1c36b81f0e5852b3dd">&#9670;&#160;</a></span>Cosmetic_RefreshInventory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldPlayerControllerBase::Cosmetic_RefreshInventory </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Steam 인벤토리 갱신 요청 </p>
+
+</div>
+</div>
+<a id="a39a33c2746443f17ed1f15efd948b5e9" name="a39a33c2746443f17ed1f15efd948b5e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39a33c2746443f17ed1f15efd948b5e9">&#9670;&#160;</a></span>Cosmetic_Unequip()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldPlayerControllerBase::Cosmetic_Unequip </td>
+          <td>(</td>
+          <td class="paramtype">int32</td>          <td class="paramname"><span class="paramname"><em>SlotIndex</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>특정 슬롯 장착 해제 </p>
+
+</div>
+</div>
 <a id="a6d65e79630d3a58f0b941f6099170969" name="a6d65e79630d3a58f0b941f6099170969"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6d65e79630d3a58f0b941f6099170969">&#9670;&#160;</a></span>InitializeController()</h2>
 
@@ -255,6 +432,23 @@ Protected Member Functions</h2></td></tr>
 <p>UI 초기화 </p>
 
 <p>Reimplemented in <a class="el" href="class_a_wj_world_player_controller_lobby.html#a21eb7141349255cb377531d47a32341f">AWjWorldPlayerControllerLobby</a>, and <a class="el" href="class_a_wj_world_player_controller_waiting_room.html#a5994cdea8794b3076a81561c4e427817">AWjWorldPlayerControllerWaitingRoom</a>.</p>
+
+</div>
+</div>
+<a id="af2f84b216c2519d4736feaa65be5b41c" name="af2f84b216c2519d4736feaa65be5b41c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2f84b216c2519d4736feaa65be5b41c">&#9670;&#160;</a></span>ServerTravelWaitingRoom()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldPlayerControllerBase::ServerTravelWaitingRoom </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

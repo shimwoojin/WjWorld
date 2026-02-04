@@ -1,0 +1,73 @@
+\doxysection{UAbility\+Prompt\+Widget Class Reference}
+\hypertarget{class_u_ability_prompt_widget}{}\label{class_u_ability_prompt_widget}\index{UAbilityPromptWidget@{UAbilityPromptWidget}}
+
+
+{\ttfamily \+\#include $<$Ability\+Prompt\+Widget.\+h$>$}
+
+Inheritance diagram for UAbility\+Prompt\+Widget:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_u_ability_prompt_widget}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{class_u_ability_prompt_widget_a5cde7986d2582bc5ec1532032ee8b9fc}{Set\+Prompt\+Info}} (const FText \&Confirm\+Key\+Name, const FText \&Cancel\+Key\+Name, const FText \&Description)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_ability_prompt_widget_ac0a0e61f2242ed5c271c1ec6fa5f28e6}{Confirm\+Text}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_ability_prompt_widget_aac1c046b0f867102df5353dc0395386e}{Cancel\+Text}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_ability_prompt_widget_ab17e3ff6b4374c4076f75a0d35a80db4}{Description\+Text}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Confirm/\+\+Cancel 어빌리티 활성화 시 캐릭터 위에 표시되는 프롬프트 위젯
+\begin{DoxyItemize}
+\item 확인/\+취소 키 안내 + 어빌리티별 커스텀 설명 표시
+\item Character\+Play의 Widget\+Component에 설정하여 사용 
+\end{DoxyItemize}
+
+\label{doc-func-members}
+\Hypertarget{class_u_ability_prompt_widget_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_ability_prompt_widget_a5cde7986d2582bc5ec1532032ee8b9fc}\index{UAbilityPromptWidget@{UAbilityPromptWidget}!SetPromptInfo@{SetPromptInfo}}
+\index{SetPromptInfo@{SetPromptInfo}!UAbilityPromptWidget@{UAbilityPromptWidget}}
+\doxysubsubsection{\texorpdfstring{SetPromptInfo()}{SetPromptInfo()}}
+{\footnotesize\ttfamily \label{class_u_ability_prompt_widget_a5cde7986d2582bc5ec1532032ee8b9fc} 
+void UAbility\+Prompt\+Widget::\+\+Set\+Prompt\+Info (\begin{DoxyParamCaption}\item[{const FText \&}]{Confirm\+Key\+Name}{, }\item[{const FText \&}]{Cancel\+Key\+Name}{, }\item[{const FText \&}]{Description}{}\end{DoxyParamCaption})}
+
+프롬프트 내용 설정 
+
+\label{doc-variable-members}
+\Hypertarget{class_u_ability_prompt_widget_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_ability_prompt_widget_aac1c046b0f867102df5353dc0395386e}\index{UAbilityPromptWidget@{UAbilityPromptWidget}!CancelText@{CancelText}}
+\index{CancelText@{CancelText}!UAbilityPromptWidget@{UAbilityPromptWidget}}
+\doxysubsubsection{\texorpdfstring{CancelText}{CancelText}}
+{\footnotesize\ttfamily \label{class_u_ability_prompt_widget_aac1c046b0f867102df5353dc0395386e} 
+TObject\+Ptr$<$UText\+Block$>$ UAbility\+Prompt\+Widget::\+\+Cancel\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+취소 키 안내 텍스트 (예:\+ "{}우클릭:\+ 취소"{}) \Hypertarget{class_u_ability_prompt_widget_ac0a0e61f2242ed5c271c1ec6fa5f28e6}\index{UAbilityPromptWidget@{UAbilityPromptWidget}!ConfirmText@{ConfirmText}}
+\index{ConfirmText@{ConfirmText}!UAbilityPromptWidget@{UAbilityPromptWidget}}
+\doxysubsubsection{\texorpdfstring{ConfirmText}{ConfirmText}}
+{\footnotesize\ttfamily \label{class_u_ability_prompt_widget_ac0a0e61f2242ed5c271c1ec6fa5f28e6} 
+TObject\+Ptr$<$UText\+Block$>$ UAbility\+Prompt\+Widget::\+\+Confirm\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+확인 키 안내 텍스트 (예:\+ "{}좌클릭:\+ 확인"{}) \Hypertarget{class_u_ability_prompt_widget_ab17e3ff6b4374c4076f75a0d35a80db4}\index{UAbilityPromptWidget@{UAbilityPromptWidget}!DescriptionText@{DescriptionText}}
+\index{DescriptionText@{DescriptionText}!UAbilityPromptWidget@{UAbilityPromptWidget}}
+\doxysubsubsection{\texorpdfstring{DescriptionText}{DescriptionText}}
+{\footnotesize\ttfamily \label{class_u_ability_prompt_widget_ab17e3ff6b4374c4076f75a0d35a80db4} 
+TObject\+Ptr$<$UText\+Block$>$ UAbility\+Prompt\+Widget::\+\+Description\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+어빌리티별 커스텀 설명 (예:\+ "{}벽돌을 배치할 위치를 선택하세요"{}) 
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Ability/\+\doxymbox{\hyperlink{_ability_prompt_widget_8h}{Ability\+Prompt\+Widget.\+h}}\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Ability/\+\doxymbox{\hyperlink{_ability_prompt_widget_8cpp}{Ability\+Prompt\+Widget.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,185 @@
+\doxysection{Wj\+World\+Cosmetic\+Types.\+h}
+\hypertarget{_wj_world_cosmetic_types_8h_source}{}\label{_wj_world_cosmetic_types_8h_source}\index{Source/WjWorld/Cosmetic/WjWorldCosmeticTypes.h@{Source/WjWorld/Cosmetic/WjWorldCosmeticTypes.h}}
+\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}WjWorldCosmeticTypes.generated.h"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00011\ UENUM(BlueprintType)}
+\DoxyCodeLine{00012\ enum\ class\ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ :\ uint8}
+\DoxyCodeLine{00013\ \{}
+\DoxyCodeLine{00014\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0ea6adf97f83acf6453d4a6a4b1070f3754}{None}}\ \ \ \ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2aa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}None"{}}),}
+\DoxyCodeLine{00015\ \ \ \ \ Head\ \ \ \ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2aa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Head"{}}),}
+\DoxyCodeLine{00016\ \ \ \ \ Body\ \ \ \ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2aa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Body"{}}),}
+\DoxyCodeLine{00017\ \ \ \ \ Back\ \ \ \ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2aa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Back"{}}),}
+\DoxyCodeLine{00018\ \ \ \ \ Effect\ \ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2aa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Effect"{}}),}
+\DoxyCodeLine{00019\ \};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00024\ UENUM(BlueprintType)}
+\DoxyCodeLine{00025\ enum\ class\ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_af3b6fbfb2df313f7e1012e2cb7ac931c}{ECosmeticRarity}}\ :\ uint8}
+\DoxyCodeLine{00026\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ Common\ \ \ \ \ \ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2aa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Common"{}}),}
+\DoxyCodeLine{00028\ \ \ \ \ Uncommon\ \ \ \ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2aa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Uncommon"{}}),}
+\DoxyCodeLine{00029\ \ \ \ \ Rare\ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2aa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Rare"{}}),}
+\DoxyCodeLine{00030\ \ \ \ \ Epic\ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2aa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Epic"{}}),}
+\DoxyCodeLine{00031\ \ \ \ \ Legendary\ \ \ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2aa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Legendary"{}}),}
+\DoxyCodeLine{00032\ \};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00038\ USTRUCT(BlueprintType)}
+\DoxyCodeLine{00039\ struct\ WJWORLD\_API\ \doxymbox{\hyperlink{struct_f_cosmetic_item_instance_aaee1a2c3352c4a59d69f22545fe07e58}{FCosmeticItemInstance}}}
+\DoxyCodeLine{00040\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \doxymbox{\hyperlink{struct_f_cosmetic_item_instance_aaee1a2c3352c4a59d69f22545fe07e58}{FCosmeticItemInstance}}()\ =\ default;}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ explicit\ \doxymbox{\hyperlink{struct_f_cosmetic_item_instance_aaee1a2c3352c4a59d69f22545fe07e58}{FCosmeticItemInstance}}(FName\ InItemId)}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ :\ \doxymbox{\hyperlink{struct_f_cosmetic_item_instance_a91e5e0bf48068fc75a63b8a09decf389}{ItemId}}(InItemId)}
+\DoxyCodeLine{00047\ \ \ \ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00051\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadWrite)}
+\DoxyCodeLine{00052\ \ \ \ \ FName\ \doxymbox{\hyperlink{struct_f_cosmetic_item_instance_a91e5e0bf48068fc75a63b8a09decf389}{ItemId}};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00055\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadWrite)}
+\DoxyCodeLine{00056\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_cosmetic_item_instance_a99d9d8415883b2ad2e8162aeb4c6ca14}{Quantity}}\ =\ 1;}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_cosmetic_item_instance_a008d787ddcff403ee2b8b6bfd5f70afd}{IsValid}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !\doxymbox{\hyperlink{struct_f_cosmetic_item_instance_a91e5e0bf48068fc75a63b8a09decf389}{ItemId}}.IsNone();\ \}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_cosmetic_item_instance_aee0329e9ffcc8101786c0f1729c12922}{operator==}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_cosmetic_item_instance_aaee1a2c3352c4a59d69f22545fe07e58}{FCosmeticItemInstance}}\&\ Other)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00061\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{struct_f_cosmetic_item_instance_a91e5e0bf48068fc75a63b8a09decf389}{ItemId}}\ ==\ Other.\doxymbox{\hyperlink{struct_f_cosmetic_item_instance_a91e5e0bf48068fc75a63b8a09decf389}{ItemId}};}
+\DoxyCodeLine{00063\ \ \ \ \ \}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{friend}\ uint32\ \doxymbox{\hyperlink{struct_f_cosmetic_item_instance_aa428fdeb0f1a05bd0ef6fbdb83346332}{GetTypeHash}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_cosmetic_item_instance_aaee1a2c3352c4a59d69f22545fe07e58}{FCosmeticItemInstance}}\&\ Instance)}
+\DoxyCodeLine{00066\ \ \ \ \ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{struct_f_cosmetic_item_instance_aa428fdeb0f1a05bd0ef6fbdb83346332}{GetTypeHash}}(Instance.\doxymbox{\hyperlink{struct_f_cosmetic_item_instance_a91e5e0bf48068fc75a63b8a09decf389}{ItemId}});}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00074\ USTRUCT(BlueprintType)}
+\DoxyCodeLine{00075\ struct\ WJWORLD\_API\ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry_a07e3aad0a17da2b5051071a878677aaa}{FCosmeticSlotEntry}}}
+\DoxyCodeLine{00076\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry_a07e3aad0a17da2b5051071a878677aaa}{FCosmeticSlotEntry}}()\ =\ default;}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \ \ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry_a07e3aad0a17da2b5051071a878677aaa}{FCosmeticSlotEntry}}(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ InSlot,\ FName\ InItemId)}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ :\ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry_a24b57cac23cca0a0324a98be3ad9c2a9}{Slot}}(InSlot),\ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry_a0c7b08fe888b1ba762e9a2e9ed8244f7}{ItemId}}(InItemId)}
+\DoxyCodeLine{00083\ \ \ \ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadWrite)}
+\DoxyCodeLine{00087\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry_a24b57cac23cca0a0324a98be3ad9c2a9}{Slot}}\ =\ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}::\doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0ea6adf97f83acf6453d4a6a4b1070f3754}{None}};}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadWrite)}
+\DoxyCodeLine{00090\ \ \ \ \ FName\ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry_a0c7b08fe888b1ba762e9a2e9ed8244f7}{ItemId}};}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator==(const\ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry_a07e3aad0a17da2b5051071a878677aaa}{FCosmeticSlotEntry}}\&\ Other)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00093\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry_a24b57cac23cca0a0324a98be3ad9c2a9}{Slot}}\ ==\ Other.Slot\ \&\&\ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry_a0c7b08fe888b1ba762e9a2e9ed8244f7}{ItemId}}\ ==\ Other.ItemId;}
+\DoxyCodeLine{00095\ \ \ \ \ \}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry_a81fdccad9e16ae14d47f6bd44eaea053}{operator!=}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry_a07e3aad0a17da2b5051071a878677aaa}{FCosmeticSlotEntry}}\&\ Other)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00098\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !(*\textcolor{keyword}{this}\ ==\ Other);}
+\DoxyCodeLine{00100\ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \};}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00107\ USTRUCT(BlueprintType)}
+\DoxyCodeLine{00108\ struct\ WJWORLD\_API\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmeticLoadout}}}
+\DoxyCodeLine{00109\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ }
+\DoxyCodeLine{00113\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadWrite)}
+\DoxyCodeLine{00114\ \ \ \ \ TArray<\doxymbox{\hyperlink{struct_f_cosmetic_slot_entry}{FCosmeticSlotEntry}}>\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_acfc7611ef92df08f48e393c1cba84f9f}{Entries}};}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_a97ad651e85b8c7ba8977a763f3f0d69a}{Equip}}(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ Slot,\ FName\ ItemId)}
+\DoxyCodeLine{00118\ \ \ \ \ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Slot\ ==\ ECosmeticSlot::None\ ||\ ItemId.IsNone())}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ return;}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 이미\ 해당\ 슬롯에\ 엔트리가\ 있으면\ 교체}}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ for\ (\doxymbox{\hyperlink{struct_f_cosmetic_slot_entry}{FCosmeticSlotEntry}}\&\ Entry\ :\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_acfc7611ef92df08f48e393c1cba84f9f}{Entries}})}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Entry.Slot\ ==\ Slot)}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Entry.ItemId\ =\ ItemId;}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_acfc7611ef92df08f48e393c1cba84f9f}{Entries}}.Emplace(Slot,\ ItemId);}
+\DoxyCodeLine{00135\ \ \ \ \ \}}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_a0bb0f7631392ea5ad7445c0c38ca7553}{Unequip}}(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ Slot)}
+\DoxyCodeLine{00139\ \ \ \ \ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_acfc7611ef92df08f48e393c1cba84f9f}{Entries}}.RemoveAll([Slot](\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry}{FCosmeticSlotEntry}}\&\ Entry)}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Entry.\doxymbox{\hyperlink{struct_f_cosmetic_slot_entry_a24b57cac23cca0a0324a98be3ad9c2a9}{Slot}}\ ==\ Slot;}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{00144\ \ \ \ \ \}}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00147\ \ \ \ \ FName\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_a032ab279c27bc35e41739f772cd28445}{GetEquippedItem}}(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ Slot)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00148\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry}{FCosmeticSlotEntry}}\&\ Entry\ :\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_acfc7611ef92df08f48e393c1cba84f9f}{Entries}})}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Entry.Slot\ ==\ Slot)}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Entry.ItemId;}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ NAME\_None;}
+\DoxyCodeLine{00157\ \ \ \ \ \}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_a09c814037c7db3193614df4e9636071c}{IsEmpty}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00161\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_acfc7611ef92df08f48e393c1cba84f9f}{Entries}}.Num()\ ==\ 0;}
+\DoxyCodeLine{00163\ \ \ \ \ \}}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00166\ \ \ \ \ TArray<ECosmeticSlot>\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_a50f993965763ee4572e31648fd2ff287}{GetEquippedSlots}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00167\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ TArray<ECosmeticSlot>\ Slots;}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ Slots.Reserve(\doxymbox{\hyperlink{struct_f_cosmetic_loadout_acfc7611ef92df08f48e393c1cba84f9f}{Entries}}.Num());}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry}{FCosmeticSlotEntry}}\&\ Entry\ :\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_acfc7611ef92df08f48e393c1cba84f9f}{Entries}})}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \ \ Slots.Add(Entry.Slot);}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Slots;}
+\DoxyCodeLine{00175\ \ \ \ \ \}}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_a10397016f1368df3a4b1be29c67eb817}{Reset}}()}
+\DoxyCodeLine{00179\ \ \ \ \ \{}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_acfc7611ef92df08f48e393c1cba84f9f}{Entries}}.Reset();}
+\DoxyCodeLine{00181\ \ \ \ \ \}}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_acdc62a1a6b62079d405da3f6d40c809a}{operator==}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmeticLoadout}}\&\ Other)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00184\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\doxymbox{\hyperlink{struct_f_cosmetic_loadout_acfc7611ef92df08f48e393c1cba84f9f}{Entries}}.Num()\ !=\ Other.\doxymbox{\hyperlink{struct_f_cosmetic_loadout_acfc7611ef92df08f48e393c1cba84f9f}{Entries}}.Num())}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry}{FCosmeticSlotEntry}}\&\ Entry\ :\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_acfc7611ef92df08f48e393c1cba84f9f}{Entries}})}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Other.\doxymbox{\hyperlink{struct_f_cosmetic_loadout_a032ab279c27bc35e41739f772cd28445}{GetEquippedItem}}(Entry.Slot)\ !=\ Entry.ItemId)}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00198\ \ \ \ \ \}}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_ab55b5b216da7355b4c34e7fa1fea17a0}{operator!=}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmeticLoadout}}\&\ Other)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00201\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !(*\textcolor{keyword}{this}\ ==\ Other);}
+\DoxyCodeLine{00203\ \ \ \ \ \}}
+\DoxyCodeLine{00204\ \};}
+
+\end{DoxyCode}

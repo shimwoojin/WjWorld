@@ -97,52 +97,121 @@ $(function(){initNavTree('_wj_world_game_instance_8h_source.html','',''); });
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;CoreMinimal.h&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;Engine/GameInstance.h&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="_session_types_8h.html">Network/SessionTypes.h</a>&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;WjWorldGameInstance.generated.h&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">class </span><a class="code hl_class" href="class_u_session_manager.html">USessionManager</a>;</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>UCLASS()</div>
-<div class="foldopen" id="foldopen00021" data-start="{" data-end="};">
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="class_u_wj_world_game_instance.html">   21</a></span>class WJWORLD_API <a class="code hl_class" href="class_u_wj_world_game_instance.html">UWjWorldGameInstance</a> : public UGameInstance</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>{</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    GENERATED_BODY()</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_u_wj_world_game_instance.html#a1d4d1b588c7fdc9990268930bb3eb8fb">Init</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_u_session_manager.html#a9d8be892168a95f0e7779d3992797a0c">Shutdown</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="comment">//~ Session Manager 접근</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    UFUNCTION(BlueprintPure, Category = <span class="stringliteral">&quot;Session&quot;</span>, meta = (DisplayName = <span class="stringliteral">&quot;Get Session Manager&quot;</span>))</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="class_u_wj_world_game_instance.html#ac2613d2e0482c2e2a39d4614e2bdf315">   34</a></span>    <a class="code hl_class" href="class_u_session_manager.html">USessionManager</a>* <a class="code hl_function" href="class_u_wj_world_game_instance.html#ac2613d2e0482c2e2a39d4614e2bdf315">GetSessionManager</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> SessionManager; }</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="comment">//~ 편의 함수 (UI에서 직접 호출 가능)</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    UFUNCTION(BlueprintCallable, Category = <span class="stringliteral">&quot;Session&quot;</span>)</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    bool CreateRoom(const <a class="code hl_struct" href="struct_f_room_settings.html">FRoomSettings</a>&amp; Settings);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    UFUNCTION(BlueprintCallable, Category = <span class="stringliteral">&quot;Session&quot;</span>)</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordtype">bool</span> FindRooms(int32 MaxResults = 100);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    UFUNCTION(BlueprintCallable, Category = <span class="stringliteral">&quot;Session&quot;</span>)</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordtype">bool</span> JoinRoom(int32 RoomIndex);</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    UFUNCTION(BlueprintCallable, Category = <span class="stringliteral">&quot;Session&quot;</span>)</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordtype">bool</span> StartGame();</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    UFUNCTION(BlueprintCallable, Category = <span class="stringliteral">&quot;Session&quot;</span>)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordtype">bool</span> LeaveRoom();</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>private:</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    UPROPERTY()</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    TObjectPtr&lt;<a class="code hl_class" href="class_u_session_manager.html">USessionManager</a>&gt; SessionManager;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>};</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;Engine/NetDriver.h&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="_session_types_8h.html">Network/SessionTypes.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;WjWorldGameInstance.generated.h&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">class </span><a class="code hl_class" href="class_u_session_manager.html">USessionManager</a>;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>UCLASS()</div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="};">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="class_u_wj_world_game_instance.html">   23</a></span>class WJWORLD_API <a class="code hl_class" href="class_u_wj_world_game_instance.html">UWjWorldGameInstance</a> : public UGameInstance</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    GENERATED_BODY()</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_u_wj_world_game_instance.html#a1d4d1b588c7fdc9990268930bb3eb8fb">Init</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_u_session_manager.html#a9d8be892168a95f0e7779d3992797a0c">Shutdown</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="comment">//~ Session Manager 접근</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    UFUNCTION(BlueprintPure, Category = <span class="stringliteral">&quot;Session&quot;</span>, meta = (DisplayName = <span class="stringliteral">&quot;Get Session Manager&quot;</span>))</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="class_u_wj_world_game_instance.html#ac2613d2e0482c2e2a39d4614e2bdf315">   33</a></span>    <a class="code hl_class" href="class_u_session_manager.html">USessionManager</a>* <a class="code hl_function" href="class_u_wj_world_game_instance.html#ac2613d2e0482c2e2a39d4614e2bdf315">GetSessionManager</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> SessionManager; }</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="comment">//~ 편의 함수 (UI에서 직접 호출 가능)</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    UFUNCTION(BlueprintCallable, Category = <span class="stringliteral">&quot;Session&quot;</span>)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    bool CreateRoom(const <a class="code hl_struct" href="struct_f_room_settings.html">FRoomSettings</a>&amp; Settings);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    UFUNCTION(BlueprintCallable, Category = <span class="stringliteral">&quot;Session&quot;</span>)</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordtype">bool</span> FindRooms(int32 MaxResults = 100);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    UFUNCTION(BlueprintCallable, Category = <span class="stringliteral">&quot;Session&quot;</span>)</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordtype">bool</span> JoinRoom(int32 RoomIndex);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    UFUNCTION(BlueprintCallable, Category = <span class="stringliteral">&quot;Session&quot;</span>)</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordtype">bool</span> StartGame();</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    UFUNCTION(BlueprintCallable, Category = <span class="stringliteral">&quot;Session&quot;</span>)</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordtype">bool</span> LeaveRoom();</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="comment">//~ 게임 종료 (세션 InProgress → Ended)</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    UFUNCTION(BlueprintCallable, Category = <span class="stringliteral">&quot;Session&quot;</span>)</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordtype">bool</span> EndGame();</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="comment">//~ 캐싱 (호스트 마이그레이션용)</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordtype">void</span> CachePlayerList(const TArray&lt;<a class="code hl_struct" href="struct_f_player_display_info.html">FPlayerDisplayInfo</a>&gt;&amp; PlayerList);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordtype">void</span> CacheRoomSettings(const <a class="code hl_struct" href="struct_f_room_settings.html">FRoomSettings</a>&amp; Settings);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="comment">//~ 호스트 마이그레이션</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    UFUNCTION(BlueprintPure, Category = <span class="stringliteral">&quot;Migration&quot;</span>)</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="class_u_wj_world_game_instance.html#a59822103171ca15e6a4f67f64cafb87c">   69</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_u_wj_world_game_instance.html#a59822103171ca15e6a4f67f64cafb87c">IsMigrating</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> MigrationContext.bIsMigrating; }</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    UFUNCTION(BlueprintPure, Category = <span class="stringliteral">&quot;Migration&quot;</span>)</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="class_u_wj_world_game_instance.html#a6950736a62f668c2b5874712f7914d31">   73</a></span>    <a class="code hl_enumeration" href="_session_types_8h.html#ab3dfa8a05261e6faa3af631b30f0bc1e">EHostMigrationState</a> <a class="code hl_function" href="class_u_wj_world_game_instance.html#a6950736a62f668c2b5874712f7914d31">GetMigrationState</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> MigrationState; }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="class_u_wj_world_game_instance.html#a649189e28c325c04a5dd158818c4611c">   76</a></span>    <a class="code hl_struct" href="struct_f_host_migration_context.html">FHostMigrationContext</a>&amp; <a class="code hl_function" href="class_u_wj_world_game_instance.html#a649189e28c325c04a5dd158818c4611c">GetMigrationContext</a>() { <span class="keywordflow">return</span> MigrationContext; }</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="class_u_wj_world_game_instance.html#ad8350e971a0f51415d63ec929f85e6f1">   77</a></span>    <span class="keyword">const</span> <a class="code hl_struct" href="struct_f_host_migration_context.html">FHostMigrationContext</a>&amp; <a class="code hl_function" href="class_u_wj_world_game_instance.html#ad8350e971a0f51415d63ec929f85e6f1">GetMigrationContext</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> MigrationContext; }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="comment">//~ NetworkFailure 핸들러</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordtype">void</span> HandleNetworkFailure(UWorld* World, UNetDriver* NetDriver,</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        ENetworkFailure::Type FailureType, <span class="keyword">const</span> FString&amp; ErrorString);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="comment">//~ 호스트 마이그레이션 내부 함수</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordtype">void</span> BeginHostMigration();</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordtype">bool</span> DetermineIfNewHost() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    FString GenerateMigrationTag() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordtype">void</span> MigrationCreateSession();</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordtype">void</span> MigrationSearchForNewHost();</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    UFUNCTION()</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    void OnMigrationSessionCreated(<span class="keywordtype">bool</span> bWasSuccessful);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    UFUNCTION()</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordtype">void</span> OnMigrationSearchResult(<span class="keywordtype">bool</span> bWasSuccessful, const TArray&lt;<a class="code hl_struct" href="struct_f_room_info.html">FRoomInfo</a>&gt;&amp; Rooms);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keywordtype">void</span> MigrationRetryOrFail();</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordtype">void</span> OnMigrationTimeout();</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keywordtype">void</span> MigrationFailed();</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordtype">void</span> SetMigrationState(<a class="code hl_enumeration" href="_session_types_8h.html#ab3dfa8a05261e6faa3af631b30f0bc1e">EHostMigrationState</a> NewState);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>private:</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    UPROPERTY()</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    TObjectPtr&lt;<a class="code hl_class" href="class_u_session_manager.html">USessionManager</a>&gt; SessionManager;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    FDelegateHandle NetworkFailureHandle;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <a class="code hl_struct" href="struct_f_host_migration_context.html">FHostMigrationContext</a> MigrationContext;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <a class="code hl_enumeration" href="_session_types_8h.html#ab3dfa8a05261e6faa3af631b30f0bc1e">EHostMigrationState</a> MigrationState = <a class="code hl_enumeration" href="_session_types_8h.html#ab3dfa8a05261e6faa3af631b30f0bc1e">EHostMigrationState</a>::<a class="code hl_enumvalue" href="_wj_world_placement_component_8h.html#a0baad503e9a7d563b7b22c618221bd0ea6adf97f83acf6453d4a6a4b1070f3754">None</a>;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    FTimerHandle MigrationTimeoutHandle;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    FTimerHandle MigrationRetryHandle;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>};</div>
 </div>
 <div class="ttc" id="a_session_types_8h_html"><div class="ttname"><a href="_session_types_8h.html">SessionTypes.h</a></div></div>
+<div class="ttc" id="a_session_types_8h_html_ab3dfa8a05261e6faa3af631b30f0bc1e"><div class="ttname"><a href="_session_types_8h.html#ab3dfa8a05261e6faa3af631b30f0bc1e">EHostMigrationState</a></div><div class="ttdeci">EHostMigrationState</div><div class="ttdef"><b>Definition</b> SessionTypes.h:126</div></div>
+<div class="ttc" id="a_wj_world_placement_component_8h_html_a0baad503e9a7d563b7b22c618221bd0ea6adf97f83acf6453d4a6a4b1070f3754"><div class="ttname"><a href="_wj_world_placement_component_8h.html#a0baad503e9a7d563b7b22c618221bd0ea6adf97f83acf6453d4a6a4b1070f3754">EPlacementMode::None</a></div><div class="ttdeci">@ None</div><div class="ttdef"><b>Definition</b> WjWorldPlacementComponent.h:25</div></div>
 <div class="ttc" id="aclass_u_session_manager_html"><div class="ttname"><a href="class_u_session_manager.html">USessionManager</a></div><div class="ttdef"><b>Definition</b> SessionManager.h:21</div></div>
-<div class="ttc" id="aclass_u_session_manager_html_a9d8be892168a95f0e7779d3992797a0c"><div class="ttname"><a href="class_u_session_manager.html#a9d8be892168a95f0e7779d3992797a0c">USessionManager::Shutdown</a></div><div class="ttdeci">void Shutdown()</div><div class="ttdef"><b>Definition</b> SessionManager.cpp:43</div></div>
-<div class="ttc" id="aclass_u_wj_world_game_instance_html"><div class="ttname"><a href="class_u_wj_world_game_instance.html">UWjWorldGameInstance</a></div><div class="ttdef"><b>Definition</b> WjWorldGameInstance.h:22</div></div>
-<div class="ttc" id="aclass_u_wj_world_game_instance_html_a1d4d1b588c7fdc9990268930bb3eb8fb"><div class="ttname"><a href="class_u_wj_world_game_instance.html#a1d4d1b588c7fdc9990268930bb3eb8fb">UWjWorldGameInstance::Init</a></div><div class="ttdeci">virtual void Init() override</div><div class="ttdef"><b>Definition</b> WjWorldGameInstance.cpp:7</div></div>
-<div class="ttc" id="aclass_u_wj_world_game_instance_html_ac2613d2e0482c2e2a39d4614e2bdf315"><div class="ttname"><a href="class_u_wj_world_game_instance.html#ac2613d2e0482c2e2a39d4614e2bdf315">UWjWorldGameInstance::GetSessionManager</a></div><div class="ttdeci">USessionManager * GetSessionManager() const</div><div class="ttdef"><b>Definition</b> WjWorldGameInstance.h:34</div></div>
+<div class="ttc" id="aclass_u_session_manager_html_a9d8be892168a95f0e7779d3992797a0c"><div class="ttname"><a href="class_u_session_manager.html#a9d8be892168a95f0e7779d3992797a0c">USessionManager::Shutdown</a></div><div class="ttdeci">void Shutdown()</div><div class="ttdef"><b>Definition</b> SessionManager.cpp:44</div></div>
+<div class="ttc" id="aclass_u_wj_world_game_instance_html"><div class="ttname"><a href="class_u_wj_world_game_instance.html">UWjWorldGameInstance</a></div><div class="ttdef"><b>Definition</b> WjWorldGameInstance.h:24</div></div>
+<div class="ttc" id="aclass_u_wj_world_game_instance_html_a1d4d1b588c7fdc9990268930bb3eb8fb"><div class="ttname"><a href="class_u_wj_world_game_instance.html#a1d4d1b588c7fdc9990268930bb3eb8fb">UWjWorldGameInstance::Init</a></div><div class="ttdeci">virtual void Init() override</div><div class="ttdef"><b>Definition</b> WjWorldGameInstance.cpp:11</div></div>
+<div class="ttc" id="aclass_u_wj_world_game_instance_html_a59822103171ca15e6a4f67f64cafb87c"><div class="ttname"><a href="class_u_wj_world_game_instance.html#a59822103171ca15e6a4f67f64cafb87c">UWjWorldGameInstance::IsMigrating</a></div><div class="ttdeci">bool IsMigrating() const</div><div class="ttdef"><b>Definition</b> WjWorldGameInstance.h:69</div></div>
+<div class="ttc" id="aclass_u_wj_world_game_instance_html_a649189e28c325c04a5dd158818c4611c"><div class="ttname"><a href="class_u_wj_world_game_instance.html#a649189e28c325c04a5dd158818c4611c">UWjWorldGameInstance::GetMigrationContext</a></div><div class="ttdeci">FHostMigrationContext &amp; GetMigrationContext()</div><div class="ttdef"><b>Definition</b> WjWorldGameInstance.h:76</div></div>
+<div class="ttc" id="aclass_u_wj_world_game_instance_html_a6950736a62f668c2b5874712f7914d31"><div class="ttname"><a href="class_u_wj_world_game_instance.html#a6950736a62f668c2b5874712f7914d31">UWjWorldGameInstance::GetMigrationState</a></div><div class="ttdeci">EHostMigrationState GetMigrationState() const</div><div class="ttdef"><b>Definition</b> WjWorldGameInstance.h:73</div></div>
+<div class="ttc" id="aclass_u_wj_world_game_instance_html_ac2613d2e0482c2e2a39d4614e2bdf315"><div class="ttname"><a href="class_u_wj_world_game_instance.html#ac2613d2e0482c2e2a39d4614e2bdf315">UWjWorldGameInstance::GetSessionManager</a></div><div class="ttdeci">USessionManager * GetSessionManager() const</div><div class="ttdef"><b>Definition</b> WjWorldGameInstance.h:33</div></div>
+<div class="ttc" id="aclass_u_wj_world_game_instance_html_ad8350e971a0f51415d63ec929f85e6f1"><div class="ttname"><a href="class_u_wj_world_game_instance.html#ad8350e971a0f51415d63ec929f85e6f1">UWjWorldGameInstance::GetMigrationContext</a></div><div class="ttdeci">const FHostMigrationContext &amp; GetMigrationContext() const</div><div class="ttdef"><b>Definition</b> WjWorldGameInstance.h:77</div></div>
+<div class="ttc" id="astruct_f_host_migration_context_html"><div class="ttname"><a href="struct_f_host_migration_context.html">FHostMigrationContext</a></div><div class="ttdef"><b>Definition</b> SessionTypes.h:142</div></div>
+<div class="ttc" id="astruct_f_player_display_info_html"><div class="ttname"><a href="struct_f_player_display_info.html">FPlayerDisplayInfo</a></div><div class="ttdef"><b>Definition</b> SessionTypes.h:105</div></div>
+<div class="ttc" id="astruct_f_room_info_html"><div class="ttname"><a href="struct_f_room_info.html">FRoomInfo</a></div><div class="ttdef"><b>Definition</b> SessionTypes.h:50</div></div>
 <div class="ttc" id="astruct_f_room_settings_html"><div class="ttname"><a href="struct_f_room_settings.html">FRoomSettings</a></div><div class="ttdef"><b>Definition</b> SessionTypes.h:13</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

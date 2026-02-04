@@ -7,7 +7,7 @@
 Inheritance diagram for AWj\+World\+Game\+State\+Waiting\+Room:\+\begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[height=3.000000cm]{class_a_wj_world_game_state_waiting_room}
+\includegraphics[height=4.000000cm]{class_a_wj_world_game_state_waiting_room}
 \end{center}
 \end{figure}
 \doxysubsubsection*{Public Member Functions}
@@ -29,12 +29,38 @@ int32 \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a08168b50302
 \item 
 bool \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a1829186877cfb1ec78545de93d923ed5}{Are\+All\+Players\+Ready}} () const
 \end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby}{AWj\+World\+Game\+State\+Lobby}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a2a1c8e702129af47676377563e3bca0b}{AWj\+World\+Game\+State\+Lobby}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a5e7772a7e958af54f40cc0ae974e3a9d}{Add\+Placed\+Object}} (const \doxymbox{\hyperlink{struct_f_placed_object_save_entry}{FPlaced\+Object\+Save\+Entry}} \&Entry)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a39e1836213a2d253527bccba9b87413f}{Remove\+Placed\+Object\+At}} (int32 Index)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a87ce82e7e7301b5e2f8c701cac93ef31}{Set\+Placed\+Objects}} (const TArray$<$ \doxymbox{\hyperlink{struct_f_placed_object_save_entry}{FPlaced\+Object\+Save\+Entry}} $>$ \&In\+Placed\+Objects)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a52f69bc0e37baa99e6bf45b843cd997b}{Clear\+Placed\+Objects}} ()
+\item 
+const TArray$<$ \doxymbox{\hyperlink{struct_f_placed_object_save_entry}{FPlaced\+Object\+Save\+Entry}} $>$ \& \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a192f83881adec3519ba95f692e83b0b4}{Get\+Placed\+Objects}} () const
+\item 
+int32 \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a9d4e1232acd2e8f659ea341acfef0ba6}{Get\+Placed\+Object\+Count}} () const
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a7bc7cd413484ee28e0e1fda612132d39}{Set\+Catalog}} (\doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWj\+World\+Placeable\+Object\+Data\+Asset}} \texorpdfstring{$\ast$}{*}In\+Catalog)
+\item 
+\doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWj\+World\+Placeable\+Object\+Data\+Asset}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a41dd22b7c9c2fe9a659744a4815a2b08}{Get\+Catalog}} () const
+\end{DoxyCompactItemize}
 \doxysubsubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 FOn\+Player\+List\+Changed \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a159182cab4ec3799f68f01ea84a453db}{On\+Player\+List\+Changed}}
 \item 
 FOn\+Room\+Info\+Changed \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a5244c60dc814951a5e9b1d28bab179f1}{On\+Room\+Info\+Changed}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby}{AWj\+World\+Game\+State\+Lobby}}}
+\begin{DoxyCompactItemize}
+\item 
+FOn\+Placement\+Data\+Changed \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a07fad28ce214fa7aa6a57e231672f6dc}{On\+Placement\+Data\+Changed}}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
@@ -46,11 +72,23 @@ virtual void \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_ac335
 virtual void \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_aa1f8c774125543498bf66aaff699e049}{Remove\+Player\+State}} (APlayer\+State \texorpdfstring{$\ast$}{*}Player\+State) override
 \item 
 void \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a6c8c71ef408a5b76c51d3501765001a7}{On\+Player\+Name\+Updated}} (const FString \&Player\+Name)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a8420d820897cf44fa5484bb0a8d392ea}{On\+Player\+Ready\+State\+Changed}} (int32 Player\+ID, bool b\+Is\+Ready)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby}{AWj\+World\+Game\+State\+Lobby}}}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a7bb76b2a01abc18afaf08805dc4e4bfe}{On\+Rep\+\_\+\+Placed\+Objects}} ()
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a42968a86fcc6cf99ed53bb710db1bcae}{Room\+Settings}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby}{AWj\+World\+Game\+State\+Lobby}}}
+\begin{DoxyCompactItemize}
+\item 
+TArray$<$ \doxymbox{\hyperlink{struct_f_placed_object_save_entry}{FPlaced\+Object\+Save\+Entry}} $>$ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a10bf53d8346ec503f3719bb9b5913549}{Placed\+Objects}}
 \end{DoxyCompactItemize}
 
 
@@ -59,6 +97,7 @@ void \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a6c8c71ef408a
 
 역할:\+
 \begin{DoxyItemize}
+\item Game\+State\+Lobby 상속:\+ 배치 오브젝트 리플리케이션 기능
 \item 방 정보 동기화 (Replicated)
 \item 플레이어 목록 관리 (Replicated)
 \item 준비 상태 관리 (Replicated)
@@ -97,6 +136,10 @@ bool AWj\+World\+Game\+State\+Waiting\+Room::\+\+Are\+All\+Players\+Ready (\begi
 {\footnotesize\ttfamily \label{class_a_wj_world_game_state_waiting_room_a6bccd8c0d87e9688101963d34a34c661} 
 void AWj\+World\+Game\+State\+Waiting\+Room::\+\+Get\+Lifetime\+Replicated\+Props (\begin{DoxyParamCaption}\item[{TArray$<$ FLifetime\+Property $>$ \&}]{Out\+Lifetime\+Props}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
+
+
+Reimplemented from \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_aa3b5fe1d24d846ce2280c51c9dd29ae2}{AWj\+World\+Game\+State\+Lobby}}.
+
 \Hypertarget{class_a_wj_world_game_state_waiting_room_a2320a83ae939b31b533531e24c946218}\index{AWjWorldGameStateWaitingRoom@{AWjWorldGameStateWaitingRoom}!GetPlayerCount@{GetPlayerCount}}
 \index{GetPlayerCount@{GetPlayerCount}!AWjWorldGameStateWaitingRoom@{AWjWorldGameStateWaitingRoom}}
 \doxysubsubsection{\texorpdfstring{GetPlayerCount()}{GetPlayerCount()}}
@@ -132,6 +175,12 @@ void AWj\+World\+Game\+State\+Waiting\+Room::\+\+Initialize\+Room\+Settings (\be
 \doxysubsubsection{\texorpdfstring{OnPlayerNameUpdated()}{OnPlayerNameUpdated()}}
 {\footnotesize\ttfamily \label{class_a_wj_world_game_state_waiting_room_a6c8c71ef408a5b76c51d3501765001a7} 
 void AWj\+World\+Game\+State\+Waiting\+Room::\+\+On\+Player\+Name\+Updated (\begin{DoxyParamCaption}\item[{const FString \&}]{Player\+Name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_game_state_waiting_room_a8420d820897cf44fa5484bb0a8d392ea}\index{AWjWorldGameStateWaitingRoom@{AWjWorldGameStateWaitingRoom}!OnPlayerReadyStateChanged@{OnPlayerReadyStateChanged}}
+\index{OnPlayerReadyStateChanged@{OnPlayerReadyStateChanged}!AWjWorldGameStateWaitingRoom@{AWjWorldGameStateWaitingRoom}}
+\doxysubsubsection{\texorpdfstring{OnPlayerReadyStateChanged()}{OnPlayerReadyStateChanged()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_waiting_room_a8420d820897cf44fa5484bb0a8d392ea} 
+void AWj\+World\+Game\+State\+Waiting\+Room::\+\+On\+Player\+Ready\+State\+Changed (\begin{DoxyParamCaption}\item[{int32}]{Player\+ID}{, }\item[{bool}]{b\+Is\+Ready}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 \Hypertarget{class_a_wj_world_game_state_waiting_room_a4087b01b23feac0773a5a83d36c2f275}\index{AWjWorldGameStateWaitingRoom@{AWjWorldGameStateWaitingRoom}!OnRep\_RoomSettings@{OnRep\_RoomSettings}}
 \index{OnRep\_RoomSettings@{OnRep\_RoomSettings}!AWjWorldGameStateWaitingRoom@{AWjWorldGameStateWaitingRoom}}

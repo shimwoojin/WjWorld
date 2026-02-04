@@ -1,0 +1,73 @@
+\doxysection{Wj\+World\+Game\+State\+Lobby.\+h}
+\hypertarget{_wj_world_game_state_lobby_8h_source}{}\label{_wj_world_game_state_lobby_8h_source}\index{Source/WjWorld/Core/Local/Lobby/WjWorldGameStateLobby.h@{Source/WjWorld/Core/Local/Lobby/WjWorldGameStateLobby.h}}
+\doxymbox{\hyperlink{_wj_world_game_state_lobby_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_game_state_base_8h}{Core/Base/WjWorldGameStateBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_layout_save_game_8h}{Save/WjWorldLayoutSaveGame.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldGameStateLobby.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_placed_object_actor}{AWjWorldPlacedObjectActor}};}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWjWorldPlaceableObjectDataAsset}};}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \doxymbox{\hyperlink{_wj_world_game_state_lobby_8h_a5fafb64ed1cb5c9811e9c42e83f1bb8d}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE}}(FOnPlacementDataChanged);}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00019\ UCLASS()}
+\DoxyCodeLine{00020\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a2a1c8e702129af47676377563e3bca0b}{AWjWorldGameStateLobby}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_game_state_base}{AWjWorldGameStateBase}}}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a2a1c8e702129af47676377563e3bca0b}{AWjWorldGameStateLobby}}();}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_aa3b5fe1d24d846ce2280c51c9dd29ae2}{GetLifetimeReplicatedProps}}(TArray<FLifetimeProperty>\&\ OutLifetimeProps)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{comment}{//\string~\ 배치\ 데이터\ 관리\ (서버)}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a5e7772a7e958af54f40cc0ae974e3a9d}{AddPlacedObject}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_placed_object_save_entry}{FPlacedObjectSaveEntry}}\&\ Entry);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a39e1836213a2d253527bccba9b87413f}{RemovePlacedObjectAt}}(int32\ Index);}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a87ce82e7e7301b5e2f8c701cac93ef31}{SetPlacedObjects}}(\textcolor{keyword}{const}\ TArray<FPlacedObjectSaveEntry>\&\ InPlacedObjects);}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a52f69bc0e37baa99e6bf45b843cd997b}{ClearPlacedObjects}}();}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{comment}{//\string~\ Getter}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{const}\ TArray<FPlacedObjectSaveEntry>\&\ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a192f83881adec3519ba95f692e83b0b4}{GetPlacedObjects}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a10bf53d8346ec503f3719bb9b5913549}{PlacedObjects}};\ \}}
+\DoxyCodeLine{00046\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a9d4e1232acd2e8f659ea341acfef0ba6}{GetPlacedObjectCount}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a10bf53d8346ec503f3719bb9b5913549}{PlacedObjects}}.Num();\ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{//\string~\ 델리게이트}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00051\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}Lobby|Placement"{}})}
+\DoxyCodeLine{00052\ \ \ \ \ FOnPlacementDataChanged\ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a07fad28ce214fa7aa6a57e231672f6dc}{OnPlacementDataChanged}};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{comment}{//\string~\ 카탈로그\ (오브젝트\ 스폰에\ 필요)}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a7bc7cd413484ee28e0e1fda612132d39}{SetCatalog}}(\doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWjWorldPlaceableObjectDataAsset}}*\ InCatalog)\ \{\ Catalog\ =\ InCatalog;\ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWjWorldPlaceableObjectDataAsset}}*\ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a41dd22b7c9c2fe9a659744a4815a2b08}{GetCatalog}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Catalog;\ \}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00061\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ OnRep\_PlacedObjects)}
+\DoxyCodeLine{00062\ \ \ \ \ TArray<\doxymbox{\hyperlink{struct_f_placed_object_save_entry}{FPlacedObjectSaveEntry}}>\ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a10bf53d8346ec503f3719bb9b5913549}{PlacedObjects}};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a7bb76b2a01abc18afaf08805dc4e4bfe}{OnRep\_PlacedObjects}}();}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ private:}
+\DoxyCodeLine{00069\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00070\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWjWorldPlaceableObjectDataAsset}}>\ Catalog;}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00073\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00074\ \ \ \ \ TArray<TObjectPtr<\doxymbox{\hyperlink{class_a_wj_world_placed_object_actor}{AWjWorldPlacedObjectActor}}>>\ SpawnedActors;}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{void}\ RespawnAllPlacedObjects();}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{void}\ EnsureCatalogLoaded();}
+\DoxyCodeLine{00081\ \};}
+
+\end{DoxyCode}

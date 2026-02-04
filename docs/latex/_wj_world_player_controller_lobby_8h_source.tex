@@ -10,31 +10,40 @@
 \DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_player_controller_base_8h}{Core/Base/WjWorldPlayerControllerBase.h}}"{}}}
 \DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldPlayerControllerLobby.generated.h"{}}}
 \DoxyCodeLine{00008\ }
-\DoxyCodeLine{00017\ UCLASS()}
-\DoxyCodeLine{00018\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a4bd4b731d6d0b6f24bb80a0f1b22db52}{AWjWorldPlayerControllerLobby}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a8f14af55142a1ba5c59962e72119036b}{AWjWorldPlayerControllerBase}}}
-\DoxyCodeLine{00019\ \{}
-\DoxyCodeLine{00020\ \ \ \ \ GENERATED\_BODY()}
-\DoxyCodeLine{00021\ }
-\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00023\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a4bd4b731d6d0b6f24bb80a0f1b22db52}{AWjWorldPlayerControllerLobby}}();}
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }UWjWorldPlacementComponent;}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00020\ UCLASS()}
+\DoxyCodeLine{00021\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a4bd4b731d6d0b6f24bb80a0f1b22db52}{AWjWorldPlayerControllerLobby}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a8f14af55142a1ba5c59962e72119036b}{AWjWorldPlayerControllerBase}}}
+\DoxyCodeLine{00022\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ GENERATED\_BODY()}
 \DoxyCodeLine{00024\ }
-\DoxyCodeLine{00025\ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a0b138dde24f651cb7c777adc3d8a4753}{BeginPlay}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a4bd4b731d6d0b6f24bb80a0f1b22db52}{AWjWorldPlayerControllerLobby}}();}
 \DoxyCodeLine{00027\ }
-\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a0845c1b791db95d1221a89913ff231ad}{InitializeController}}()\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a21eb7141349255cb377531d47a32341f}{InitializeUI}}()\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00030\ }
-\DoxyCodeLine{00031\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00035\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Lobby"{}})}
-\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a44b7d1f4d1771a2958577abdb5078d93}{OpenRoomList}}();}
+\DoxyCodeLine{00029\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Lobby|Placement"{}})}
+\DoxyCodeLine{00030\ \ \ \ \ UWjWorldPlacementComponent*\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a63edb9ba38870d2e5b95487cb5d5a143}{GetPlacementComponent}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ PlacementComponent;\ \}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ BeginPlay()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ InitializeController()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ InitializeUI()\ \textcolor{keyword}{override};}
 \DoxyCodeLine{00037\ }
-\DoxyCodeLine{00041\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Lobby"{}})}
-\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a78f923bf76121a46dc1f69673ead2873}{OpenCreateRoom}}();}
-\DoxyCodeLine{00043\ }
-\DoxyCodeLine{00044\ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_af13cd7b4d1615526967d0c93d80e98d4}{InitializeLobbyController}}();}
-\DoxyCodeLine{00049\ }
-\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a1a23990cdf7793d8b9019e1f929bd99f}{CreateLobbyUI}}();}
-\DoxyCodeLine{00054\ \};}
+\DoxyCodeLine{00038\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00042\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Lobby"{}})}
+\DoxyCodeLine{00043\ \ \ \ \ void\ OpenRoomList();}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00048\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Lobby"{}})}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ OpenCreateRoom();}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ protected:}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{void}\ InitializeLobbyController();}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{void}\ CreateLobbyUI();}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ private:}
+\DoxyCodeLine{00064\ \ \ \ \ UPROPERTY(VisibleAnywhere,\ Category\ =\ \textcolor{stringliteral}{"{}Placement"{}})}
+\DoxyCodeLine{00065\ \ \ \ \ TObjectPtr<UWjWorldPlacementComponent>\ PlacementComponent;}
+\DoxyCodeLine{00066\ \};}
 
 \end{DoxyCode}

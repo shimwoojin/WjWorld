@@ -1,0 +1,197 @@
+\doxysection{AWj\+World\+Tile\+Actor Class Reference}
+\hypertarget{class_a_wj_world_tile_actor}{}\label{class_a_wj_world_tile_actor}\index{AWjWorldTileActor@{AWjWorldTileActor}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Tile\+Actor.\+h$>$}
+
+Inheritance diagram for AWj\+World\+Tile\+Actor:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_a_wj_world_tile_actor}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_tile_actor_a004eeefb7438f8af0b3c13c5519fc678}{AWj\+World\+Tile\+Actor}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a2b4311f97632b82c0832f03481b1c12c}{Initialize\+Tile}} (const FVector \&In\+Size, const FVector \&In\+Center\+Offset, bool b\+In\+Is\+White\+Tile)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static UStatic\+Mesh \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_wj_world_tile_actor_aef947c82ff9841ceb237639719693baa}{Get\+Tile\+Mesh}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_tile_actor_adadef6c54a21a38550c86563e67e0387}{Begin\+Play}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_tile_actor_aba43594f404f1cc6737e8b0e76b20792}{Tick}} (float Delta\+Time) override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_tile_actor_aed76ca0e749a67f771f7cadd689bbbb4}{Get\+Lifetime\+Replicated\+Props}} (TArray$<$ FLifetime\+Property $>$ \&Out\+Lifetime\+Props) const override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_tile_actor_ab457b59151a19e30bcc5ba3c9a212f09}{Post\+Net\+Init}} () override
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UBox\+Component $>$ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a5f0a308fbcd198602a2fd44ff2d6f65b}{Center\+Hit\+Box\+Component}}
+\item 
+TObject\+Ptr$<$ UStatic\+Mesh\+Component $>$ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_ad015bdd2d9d7f9195e1b4994a3c6e355}{Tile\+Mesh\+Component}}
+\item 
+TObject\+Ptr$<$ UBox\+Component $>$ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_ade13e9f4b9abafdf27a3e4ac6da3935f}{Hit\+Box\+Components}} \+[\doxymbox{\hyperlink{namespace_e_wj_world_direction_a516be08e8ee5444f5ec3eb0e357c0c26a59081b9bde9d7da5b6dfed0e017ff926}{EWj\+World\+Direction::\+\+Max}}]\+
+\item 
+TWeak\+Object\+Ptr$<$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall}{UWj\+World\+Game\+Rule\+Approaching\+Wall}} $>$ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a65d97dd9856a5d1b2782e334113e6f19}{Game\+Rule}}
+\item 
+int32 \doxymbox{\hyperlink{class_a_wj_world_tile_actor_aaa3ae6c0b26c3b9d5ed3d5ef466a2476}{b\+Is\+Overlap\+Bricks}} \+[\doxymbox{\hyperlink{namespace_e_wj_world_direction_a516be08e8ee5444f5ec3eb0e357c0c26a59081b9bde9d7da5b6dfed0e017ff926}{EWj\+World\+Direction::\+\+Max}}]\+
+\item 
+bool \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a88c3b8993b81e128893513cc7b40f7c3}{b\+Is\+Bomb\+Signal\+On}} = false
+\item 
+float \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a700055c0c7e619922a7332a7e54bb4b3}{Elapsed\+Bombing\+Time}} = 0.\+0f
+\item 
+float \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a5cb27c5b065d611d2e0db50e2cc59935}{Bomb\+Charging\+Time}} = 3.\+0f
+\item 
+UNiagara\+System \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_wj_world_tile_actor_ad2644651248bde3c67aa816e69846a24}{Niagara\+System}}
+\item 
+TObject\+Ptr$<$ UMaterial\+Instance\+Dynamic $>$ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a9b9cf52d185ffefc99a520e3f6ad0f3e}{Dynamic\+Material}}
+\item 
+bool \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a935fb6895c755b7d9da8c7fd4b665b71}{b\+Is\+White\+Tile}} = true
+\item 
+FLinear\+Color \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a65f77e5fe031595591060e06b2e8d98d}{Default\+Base\+Color}}
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{class_a_wj_world_tile_actor_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_a_wj_world_tile_actor_a004eeefb7438f8af0b3c13c5519fc678}\index{AWjWorldTileActor@{AWjWorldTileActor}!AWjWorldTileActor@{AWjWorldTileActor}}
+\index{AWjWorldTileActor@{AWjWorldTileActor}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{AWjWorldTileActor()}{AWjWorldTileActor()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_a004eeefb7438f8af0b3c13c5519fc678} 
+AWj\+World\+Tile\+Actor::\+\+AWj\+World\+Tile\+Actor (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_a_wj_world_tile_actor_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_a_wj_world_tile_actor_adadef6c54a21a38550c86563e67e0387}\index{AWjWorldTileActor@{AWjWorldTileActor}!BeginPlay@{BeginPlay}}
+\index{BeginPlay@{BeginPlay}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{BeginPlay()}{BeginPlay()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_adadef6c54a21a38550c86563e67e0387} 
+void AWj\+World\+Tile\+Actor::\+\+Begin\+Play (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_tile_actor_aed76ca0e749a67f771f7cadd689bbbb4}\index{AWjWorldTileActor@{AWjWorldTileActor}!GetLifetimeReplicatedProps@{GetLifetimeReplicatedProps}}
+\index{GetLifetimeReplicatedProps@{GetLifetimeReplicatedProps}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{GetLifetimeReplicatedProps()}{GetLifetimeReplicatedProps()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_aed76ca0e749a67f771f7cadd689bbbb4} 
+void AWj\+World\+Tile\+Actor::\+\+Get\+Lifetime\+Replicated\+Props (\begin{DoxyParamCaption}\item[{TArray$<$ FLifetime\+Property $>$ \&}]{Out\+Lifetime\+Props}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_tile_actor_aef947c82ff9841ceb237639719693baa}\index{AWjWorldTileActor@{AWjWorldTileActor}!GetTileMesh@{GetTileMesh}}
+\index{GetTileMesh@{GetTileMesh}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{GetTileMesh()}{GetTileMesh()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_aef947c82ff9841ceb237639719693baa} 
+UStatic\+Mesh \texorpdfstring{$\ast$}{*} AWj\+World\+Tile\+Actor::\+\+Get\+Tile\+Mesh (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Developer\+Settings에서 타일 메시 로드 \Hypertarget{class_a_wj_world_tile_actor_a2b4311f97632b82c0832f03481b1c12c}\index{AWjWorldTileActor@{AWjWorldTileActor}!InitializeTile@{InitializeTile}}
+\index{InitializeTile@{InitializeTile}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{InitializeTile()}{InitializeTile()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_a2b4311f97632b82c0832f03481b1c12c} 
+void AWj\+World\+Tile\+Actor::\+\+Initialize\+Tile (\begin{DoxyParamCaption}\item[{const FVector \&}]{In\+Size}{, }\item[{const FVector \&}]{In\+Center\+Offset}{, }\item[{bool}]{b\+In\+Is\+White\+Tile}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_a_wj_world_tile_actor_ab457b59151a19e30bcc5ba3c9a212f09}\index{AWjWorldTileActor@{AWjWorldTileActor}!PostNetInit@{PostNetInit}}
+\index{PostNetInit@{PostNetInit}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{PostNetInit()}{PostNetInit()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_ab457b59151a19e30bcc5ba3c9a212f09} 
+void AWj\+World\+Tile\+Actor::\+\+Post\+Net\+Init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_tile_actor_aba43594f404f1cc6737e8b0e76b20792}\index{AWjWorldTileActor@{AWjWorldTileActor}!Tick@{Tick}}
+\index{Tick@{Tick}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{Tick()}{Tick()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_aba43594f404f1cc6737e8b0e76b20792} 
+void AWj\+World\+Tile\+Actor::\+\+Tick (\begin{DoxyParamCaption}\item[{float}]{Delta\+Time}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{class_a_wj_world_tile_actor_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_a_wj_world_tile_actor_a88c3b8993b81e128893513cc7b40f7c3}\index{AWjWorldTileActor@{AWjWorldTileActor}!bIsBombSignalOn@{bIsBombSignalOn}}
+\index{bIsBombSignalOn@{bIsBombSignalOn}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{bIsBombSignalOn}{bIsBombSignalOn}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_a88c3b8993b81e128893513cc7b40f7c3} 
+bool AWj\+World\+Tile\+Actor::\+b\+Is\+Bomb\+Signal\+On = false\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_tile_actor_aaa3ae6c0b26c3b9d5ed3d5ef466a2476}\index{AWjWorldTileActor@{AWjWorldTileActor}!bIsOverlapBricks@{bIsOverlapBricks}}
+\index{bIsOverlapBricks@{bIsOverlapBricks}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{bIsOverlapBricks}{bIsOverlapBricks}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_aaa3ae6c0b26c3b9d5ed3d5ef466a2476} 
+int32 AWj\+World\+Tile\+Actor::\+b\+Is\+Overlap\+Bricks\+[\doxymbox{\hyperlink{namespace_e_wj_world_direction_a516be08e8ee5444f5ec3eb0e357c0c26a59081b9bde9d7da5b6dfed0e017ff926}{EWj\+World\+Direction::\+\+Max}}]\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_tile_actor_a935fb6895c755b7d9da8c7fd4b665b71}\index{AWjWorldTileActor@{AWjWorldTileActor}!bIsWhiteTile@{bIsWhiteTile}}
+\index{bIsWhiteTile@{bIsWhiteTile}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{bIsWhiteTile}{bIsWhiteTile}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_a935fb6895c755b7d9da8c7fd4b665b71} 
+bool AWj\+World\+Tile\+Actor::\+b\+Is\+White\+Tile = true\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_tile_actor_a5cb27c5b065d611d2e0db50e2cc59935}\index{AWjWorldTileActor@{AWjWorldTileActor}!BombChargingTime@{BombChargingTime}}
+\index{BombChargingTime@{BombChargingTime}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{BombChargingTime}{BombChargingTime}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_a5cb27c5b065d611d2e0db50e2cc59935} 
+float AWj\+World\+Tile\+Actor::\+\+Bomb\+Charging\+Time = 3.\+0f\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_tile_actor_a5f0a308fbcd198602a2fd44ff2d6f65b}\index{AWjWorldTileActor@{AWjWorldTileActor}!CenterHitBoxComponent@{CenterHitBoxComponent}}
+\index{CenterHitBoxComponent@{CenterHitBoxComponent}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{CenterHitBoxComponent}{CenterHitBoxComponent}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_a5f0a308fbcd198602a2fd44ff2d6f65b} 
+TObject\+Ptr$<$UBox\+Component$>$ AWj\+World\+Tile\+Actor::\+\+Center\+Hit\+Box\+Component\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_tile_actor_a65f77e5fe031595591060e06b2e8d98d}\index{AWjWorldTileActor@{AWjWorldTileActor}!DefaultBaseColor@{DefaultBaseColor}}
+\index{DefaultBaseColor@{DefaultBaseColor}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{DefaultBaseColor}{DefaultBaseColor}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_a65f77e5fe031595591060e06b2e8d98d} 
+FLinear\+Color AWj\+World\+Tile\+Actor::\+\+Default\+Base\+Color\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_tile_actor_a9b9cf52d185ffefc99a520e3f6ad0f3e}\index{AWjWorldTileActor@{AWjWorldTileActor}!DynamicMaterial@{DynamicMaterial}}
+\index{DynamicMaterial@{DynamicMaterial}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{DynamicMaterial}{DynamicMaterial}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_a9b9cf52d185ffefc99a520e3f6ad0f3e} 
+TObject\+Ptr$<$UMaterial\+Instance\+Dynamic$>$ AWj\+World\+Tile\+Actor::\+\+Dynamic\+Material\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_tile_actor_a700055c0c7e619922a7332a7e54bb4b3}\index{AWjWorldTileActor@{AWjWorldTileActor}!ElapsedBombingTime@{ElapsedBombingTime}}
+\index{ElapsedBombingTime@{ElapsedBombingTime}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{ElapsedBombingTime}{ElapsedBombingTime}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_a700055c0c7e619922a7332a7e54bb4b3} 
+float AWj\+World\+Tile\+Actor::\+\+Elapsed\+Bombing\+Time = 0.\+0f\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_tile_actor_a65d97dd9856a5d1b2782e334113e6f19}\index{AWjWorldTileActor@{AWjWorldTileActor}!GameRule@{GameRule}}
+\index{GameRule@{GameRule}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{GameRule}{GameRule}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_a65d97dd9856a5d1b2782e334113e6f19} 
+TWeak\+Object\+Ptr$<$\doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall}{UWj\+World\+Game\+Rule\+Approaching\+Wall}}$>$ AWj\+World\+Tile\+Actor::\+\+Game\+Rule\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_tile_actor_ade13e9f4b9abafdf27a3e4ac6da3935f}\index{AWjWorldTileActor@{AWjWorldTileActor}!HitBoxComponents@{HitBoxComponents}}
+\index{HitBoxComponents@{HitBoxComponents}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{HitBoxComponents}{HitBoxComponents}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_ade13e9f4b9abafdf27a3e4ac6da3935f} 
+TObject\+Ptr$<$UBox\+Component$>$ AWj\+World\+Tile\+Actor::\+\+Hit\+Box\+Components\+[\doxymbox{\hyperlink{namespace_e_wj_world_direction_a516be08e8ee5444f5ec3eb0e357c0c26a59081b9bde9d7da5b6dfed0e017ff926}{EWj\+World\+Direction::\+\+Max}}]\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_tile_actor_ad2644651248bde3c67aa816e69846a24}\index{AWjWorldTileActor@{AWjWorldTileActor}!NiagaraSystem@{NiagaraSystem}}
+\index{NiagaraSystem@{NiagaraSystem}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{NiagaraSystem}{NiagaraSystem}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_ad2644651248bde3c67aa816e69846a24} 
+UNiagara\+System\texorpdfstring{$\ast$}{*} AWj\+World\+Tile\+Actor::\+\+Niagara\+System\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_tile_actor_ad015bdd2d9d7f9195e1b4994a3c6e355}\index{AWjWorldTileActor@{AWjWorldTileActor}!TileMeshComponent@{TileMeshComponent}}
+\index{TileMeshComponent@{TileMeshComponent}!AWjWorldTileActor@{AWjWorldTileActor}}
+\doxysubsubsection{\texorpdfstring{TileMeshComponent}{TileMeshComponent}}
+{\footnotesize\ttfamily \label{class_a_wj_world_tile_actor_ad015bdd2d9d7f9195e1b4994a3c6e355} 
+TObject\+Ptr$<$UStatic\+Mesh\+Component$>$ AWj\+World\+Tile\+Actor::\+\+Tile\+Mesh\+Component\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Wall/\+\doxymbox{\hyperlink{_wj_world_tile_actor_8h}{Wj\+World\+Tile\+Actor.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Wall/\+\doxymbox{\hyperlink{_wj_world_tile_actor_8cpp}{Wj\+World\+Tile\+Actor.\+cpp}}\end{DoxyCompactItemize}

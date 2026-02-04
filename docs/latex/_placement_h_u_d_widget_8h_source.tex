@@ -1,0 +1,63 @@
+\doxysection{Placement\+HUDWidget.\+h}
+\hypertarget{_placement_h_u_d_widget_8h_source}{}\label{_placement_h_u_d_widget_8h_source}\index{Source/WjWorld/UI/Lobby/PlacementHUDWidget.h@{Source/WjWorld/UI/Lobby/PlacementHUDWidget.h}}
+\doxymbox{\hyperlink{_placement_h_u_d_widget_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_user_widget_base_8h}{UI/WjWorldUserWidgetBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}PlacementHUDWidget.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }UWjWorldPlacementComponent;}
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWjWorldPlaceableObjectDataAsset}};}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }UScrollBox;}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }UButton;}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }UTextBlock;}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00019\ UCLASS()}
+\DoxyCodeLine{00020\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_placement_h_u_d_widget}{UPlacementHUDWidget}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_placement_h_u_d_widget_a68334b62b4e9ceecb4330ada4bbfb4e8}{NativeConstruct}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_placement_h_u_d_widget_a3f7153057072376ecf392ff7eefc827c}{SetPlacementComponent}}(UWjWorldPlacementComponent*\ InComponent);}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00032\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00033\ \ \ \ \ TObjectPtr<UScrollBox>\ \doxymbox{\hyperlink{class_u_placement_h_u_d_widget_acfaa52be63c5e6bd44ef47c25800066b}{CatalogScrollBox}};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00036\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00037\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_placement_h_u_d_widget_a3b4cbf16b0abfa89922391692eddc6f5}{ExitButton}};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00040\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00041\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_placement_h_u_d_widget_a0728db09df1dd6533290942cc2fffd1f}{DeleteModeButton}};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00044\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00045\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_placement_h_u_d_widget_afc7a57d357f416ad76f378b9a37c8e3c}{ControlsHintText}};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ private:}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ PopulateCatalog(\doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWjWorldPlaceableObjectDataAsset}}*\ Catalog);}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ OnExitClicked();}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{void}\ OnDeleteModeClicked();}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00058\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ OnCatalogButtonClicked();}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{void}\ OnCatalogItemClicked(FName\ ObjectId);}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00065\ \ \ \ \ TObjectPtr<UWjWorldPlacementComponent>\ PlacementComponent;}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00068\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00069\ \ \ \ \ TMap<TObjectPtr<UButton>,\ FName>\ ButtonToObjectIdMap;}
+\DoxyCodeLine{00070\ \};}
+
+\end{DoxyCode}

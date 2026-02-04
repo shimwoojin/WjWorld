@@ -1,0 +1,138 @@
+\doxysection{AWj\+World\+Placement\+Preview\+Actor Class Reference}
+\hypertarget{class_a_wj_world_placement_preview_actor}{}\label{class_a_wj_world_placement_preview_actor}\index{AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Placement\+Preview\+Actor.\+h$>$}
+
+Inheritance diagram for AWj\+World\+Placement\+Preview\+Actor:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_a_wj_world_placement_preview_actor}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_aa711464247ca92e6d2be0707a2bc32ea}{AWj\+World\+Placement\+Preview\+Actor}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_af366bd0446f05487119b4dad80323d7e}{Initialize\+Preview}} (const \doxymbox{\hyperlink{struct_f_placeable_object_definition}{FPlaceable\+Object\+Definition}} \&Definition)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a42f107f6c0151d70b4b45f40f8cd0e99}{Update\+Preview\+Transform}} (const FVector \&Location, const FRotator \&Rotation)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a845fc88e4b558354c1e06eee1eadc96c}{Set\+Preview\+Valid}} (bool b\+In\+Is\+Valid)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a17590fe23312003a3809cf1c5f63f2c8}{Rotate\+Preview}} (float Delta\+Yaw)
+\item 
+float \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a0a06804be49a5ecd5f29037caddfd73b}{Get\+Current\+Yaw}} () const
+\item 
+bool \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a50de3acdf94636de677d6e4fa052741c}{Is\+Preview\+Valid}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UStatic\+Mesh\+Component $>$ \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a38e4c8bc78c113ad7f94beae9eb02d0d}{Preview\+Mesh\+Component}}
+\item 
+TObject\+Ptr$<$ UMaterial\+Instance\+Dynamic $>$ \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a7d9823474146ac4b565cf34197898ced}{Dynamic\+Material}}
+\item 
+FLinear\+Color \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a6cd1358bb033da1e0dc3b1122ded8f91}{Valid\+Color}} = FLinear\+Color(0.\+0f, 1.\+0f, 0.\+0f, 0.\+5f)
+\item 
+FLinear\+Color \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_abc7ecce0211e6026b0778e3ce4bf27a0}{Invalid\+Color}} = FLinear\+Color(1.\+0f, 0.\+0f, 0.\+0f, 0.\+5f)
+\item 
+float \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a4ba9f05608d87ff32c93ceb69f4b00e0}{Preview\+Opacity}} = 0.\+5f
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+배치 프리뷰 액터 마우스를 따라다니며 유효/\+무효 색상을 표시 
+
+\label{doc-constructors}
+\Hypertarget{class_a_wj_world_placement_preview_actor_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_a_wj_world_placement_preview_actor_aa711464247ca92e6d2be0707a2bc32ea}\index{AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}!AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}}
+\index{AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}!AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}}
+\doxysubsubsection{\texorpdfstring{AWjWorldPlacementPreviewActor()}{AWjWorldPlacementPreviewActor()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placement_preview_actor_aa711464247ca92e6d2be0707a2bc32ea} 
+AWj\+World\+Placement\+Preview\+Actor::\+\+AWj\+World\+Placement\+Preview\+Actor (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_a_wj_world_placement_preview_actor_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_a_wj_world_placement_preview_actor_a0a06804be49a5ecd5f29037caddfd73b}\index{AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}!GetCurrentYaw@{GetCurrentYaw}}
+\index{GetCurrentYaw@{GetCurrentYaw}!AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}}
+\doxysubsubsection{\texorpdfstring{GetCurrentYaw()}{GetCurrentYaw()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placement_preview_actor_a0a06804be49a5ecd5f29037caddfd73b} 
+float AWj\+World\+Placement\+Preview\+Actor::\+\+Get\+Current\+Yaw (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+현재 Yaw 값 \Hypertarget{class_a_wj_world_placement_preview_actor_af366bd0446f05487119b4dad80323d7e}\index{AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}!InitializePreview@{InitializePreview}}
+\index{InitializePreview@{InitializePreview}!AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}}
+\doxysubsubsection{\texorpdfstring{InitializePreview()}{InitializePreview()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placement_preview_actor_af366bd0446f05487119b4dad80323d7e} 
+void AWj\+World\+Placement\+Preview\+Actor::\+\+Initialize\+Preview (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{struct_f_placeable_object_definition}{FPlaceable\+Object\+Definition}} \&}]{Definition}{}\end{DoxyParamCaption})}
+
+오브젝트 정의로 프리뷰 초기화 (메시 비동기 로드) \Hypertarget{class_a_wj_world_placement_preview_actor_a50de3acdf94636de677d6e4fa052741c}\index{AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}!IsPreviewValid@{IsPreviewValid}}
+\index{IsPreviewValid@{IsPreviewValid}!AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}}
+\doxysubsubsection{\texorpdfstring{IsPreviewValid()}{IsPreviewValid()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placement_preview_actor_a50de3acdf94636de677d6e4fa052741c} 
+bool AWj\+World\+Placement\+Preview\+Actor::\+\+Is\+Preview\+Valid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+유효 상태 \Hypertarget{class_a_wj_world_placement_preview_actor_a17590fe23312003a3809cf1c5f63f2c8}\index{AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}!RotatePreview@{RotatePreview}}
+\index{RotatePreview@{RotatePreview}!AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}}
+\doxysubsubsection{\texorpdfstring{RotatePreview()}{RotatePreview()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placement_preview_actor_a17590fe23312003a3809cf1c5f63f2c8} 
+void AWj\+World\+Placement\+Preview\+Actor::\+\+Rotate\+Preview (\begin{DoxyParamCaption}\item[{float}]{Delta\+Yaw}{}\end{DoxyParamCaption})}
+
+Yaw 회전 누적 \Hypertarget{class_a_wj_world_placement_preview_actor_a845fc88e4b558354c1e06eee1eadc96c}\index{AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}!SetPreviewValid@{SetPreviewValid}}
+\index{SetPreviewValid@{SetPreviewValid}!AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}}
+\doxysubsubsection{\texorpdfstring{SetPreviewValid()}{SetPreviewValid()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placement_preview_actor_a845fc88e4b558354c1e06eee1eadc96c} 
+void AWj\+World\+Placement\+Preview\+Actor::\+\+Set\+Preview\+Valid (\begin{DoxyParamCaption}\item[{bool}]{b\+In\+Is\+Valid}{}\end{DoxyParamCaption})}
+
+유효/\+무효 색상 전환 \Hypertarget{class_a_wj_world_placement_preview_actor_a42f107f6c0151d70b4b45f40f8cd0e99}\index{AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}!UpdatePreviewTransform@{UpdatePreviewTransform}}
+\index{UpdatePreviewTransform@{UpdatePreviewTransform}!AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}}
+\doxysubsubsection{\texorpdfstring{UpdatePreviewTransform()}{UpdatePreviewTransform()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placement_preview_actor_a42f107f6c0151d70b4b45f40f8cd0e99} 
+void AWj\+World\+Placement\+Preview\+Actor::\+\+Update\+Preview\+Transform (\begin{DoxyParamCaption}\item[{const FVector \&}]{Location}{, }\item[{const FRotator \&}]{Rotation}{}\end{DoxyParamCaption})}
+
+프리뷰 위치/\+회전 갱신 
+
+\label{doc-variable-members}
+\Hypertarget{class_a_wj_world_placement_preview_actor_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_a_wj_world_placement_preview_actor_a7d9823474146ac4b565cf34197898ced}\index{AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}!DynamicMaterial@{DynamicMaterial}}
+\index{DynamicMaterial@{DynamicMaterial}!AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}}
+\doxysubsubsection{\texorpdfstring{DynamicMaterial}{DynamicMaterial}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placement_preview_actor_a7d9823474146ac4b565cf34197898ced} 
+TObject\+Ptr$<$UMaterial\+Instance\+Dynamic$>$ AWj\+World\+Placement\+Preview\+Actor::\+\+Dynamic\+Material\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_placement_preview_actor_abc7ecce0211e6026b0778e3ce4bf27a0}\index{AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}!InvalidColor@{InvalidColor}}
+\index{InvalidColor@{InvalidColor}!AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}}
+\doxysubsubsection{\texorpdfstring{InvalidColor}{InvalidColor}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placement_preview_actor_abc7ecce0211e6026b0778e3ce4bf27a0} 
+FLinear\+Color AWj\+World\+Placement\+Preview\+Actor::\+\+Invalid\+Color = FLinear\+Color(1.\+0f, 0.\+0f, 0.\+0f, 0.\+5f)\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_placement_preview_actor_a38e4c8bc78c113ad7f94beae9eb02d0d}\index{AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}!PreviewMeshComponent@{PreviewMeshComponent}}
+\index{PreviewMeshComponent@{PreviewMeshComponent}!AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}}
+\doxysubsubsection{\texorpdfstring{PreviewMeshComponent}{PreviewMeshComponent}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placement_preview_actor_a38e4c8bc78c113ad7f94beae9eb02d0d} 
+TObject\+Ptr$<$UStatic\+Mesh\+Component$>$ AWj\+World\+Placement\+Preview\+Actor::\+\+Preview\+Mesh\+Component\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_placement_preview_actor_a4ba9f05608d87ff32c93ceb69f4b00e0}\index{AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}!PreviewOpacity@{PreviewOpacity}}
+\index{PreviewOpacity@{PreviewOpacity}!AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}}
+\doxysubsubsection{\texorpdfstring{PreviewOpacity}{PreviewOpacity}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placement_preview_actor_a4ba9f05608d87ff32c93ceb69f4b00e0} 
+float AWj\+World\+Placement\+Preview\+Actor::\+\+Preview\+Opacity = 0.\+5f\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_placement_preview_actor_a6cd1358bb033da1e0dc3b1122ded8f91}\index{AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}!ValidColor@{ValidColor}}
+\index{ValidColor@{ValidColor}!AWjWorldPlacementPreviewActor@{AWjWorldPlacementPreviewActor}}
+\doxysubsubsection{\texorpdfstring{ValidColor}{ValidColor}}
+{\footnotesize\ttfamily \label{class_a_wj_world_placement_preview_actor_a6cd1358bb033da1e0dc3b1122ded8f91} 
+FLinear\+Color AWj\+World\+Placement\+Preview\+Actor::\+\+Valid\+Color = FLinear\+Color(0.\+0f, 1.\+0f, 0.\+0f, 0.\+5f)\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Placement/\+\doxymbox{\hyperlink{_wj_world_placement_preview_actor_8h}{Wj\+World\+Placement\+Preview\+Actor.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Placement/\+\doxymbox{\hyperlink{_wj_world_placement_preview_actor_8cpp}{Wj\+World\+Placement\+Preview\+Actor.\+cpp}}\end{DoxyCompactItemize}

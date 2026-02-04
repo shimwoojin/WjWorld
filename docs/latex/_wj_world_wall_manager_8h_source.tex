@@ -1,0 +1,47 @@
+\doxysection{Wj\+World\+Wall\+Manager.\+h}
+\hypertarget{_wj_world_wall_manager_8h_source}{}\label{_wj_world_wall_manager_8h_source}\index{Source/WjWorld/GamePlay/Wall/WjWorldWallManager.h@{Source/WjWorld/GamePlay/Wall/WjWorldWallManager.h}}
+\doxymbox{\hyperlink{_wj_world_wall_manager_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}UObject/Object.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldWallManager.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall}{UWjWorldGameRuleApproachingWall}};}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00014\ UCLASS()}
+\DoxyCodeLine{00015\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_wall_manager}{UWjWorldWallManager}}\ :\ public\ UObject}
+\DoxyCodeLine{00016\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{static}\ int32\ MaxGameLevel\ =\ 10;}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{float}\ BrickMoveAllowedTimeMax\ =\ 5.0f;}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{float}\ BrickMoveAllowedTimeMin\ =\ 1.0f;}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{static}\ \doxymbox{\hyperlink{class_u_wj_world_wall_manager}{UWjWorldWallManager}}*\ \doxymbox{\hyperlink{class_u_wj_world_wall_manager_a205b61509276379b1facb7db726ad0b1}{CreateWallManager}}(UObject*\ Outer);}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_u_wj_world_wall_manager_a969db0c7b3cf7830f8b8dc60ba9784cc}{GetBrickMovementAllowedTime}}(int32\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ab3abd354688dcb957f27dd8a1af5b5e7}{BrickMoveSignalCount}});}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_wall_manager_a420067a357b4c778f23733e5e41cf2c0}{Tick}}(\textcolor{keywordtype}{float}\ DeltaTime);}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_wall_manager_a9c8b84b6e66f82ead0684608d08ecaf3}{WallMoveStart}}(\textcolor{keywordtype}{float}\ WallMoveSeconds);}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_wall_manager_a9587e60cdc09cadbdea77c0888f00a92}{IsWallMoving}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ bIsWallMoving;\ \}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ SetGameRule(\doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall}{UWjWorldGameRuleApproachingWall}}*\ InGameRule);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ OnWallMoveEnd();}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ PushCharactersInSafeZone();}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00038\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00039\ \ \ \ \ TWeakObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall}{UWjWorldGameRuleApproachingWall}}>\ GameRule;}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{float}\ WallMoveDurationSeconds\ =\ 5.0f;}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{float}\ WallMoveElapsedSeconds\ =\ 0.0f;}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{bool}\ bIsWallMoving\ =\ false;}
+\DoxyCodeLine{00044\ \};}
+
+\end{DoxyCode}

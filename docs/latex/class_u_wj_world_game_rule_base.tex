@@ -1,0 +1,268 @@
+\doxysection{UWj\+World\+Game\+Rule\+Base Class Reference}
+\hypertarget{class_u_wj_world_game_rule_base}{}\label{class_u_wj_world_game_rule_base}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Game\+Rule\+Base.\+h$>$}
+
+Inheritance diagram for UWj\+World\+Game\+Rule\+Base:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_u_wj_world_game_rule_base}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a6f8e0f1b98821229b24c2fecd5a9df19}{Initialize}} (\doxymbox{\hyperlink{class_a_wj_world_game_mode_play}{AWj\+World\+Game\+Mode\+Play}} \texorpdfstring{$\ast$}{*}In\+Game\+Mode)
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_ac05f38f32baecd50107359e0254c3c52}{On\+Game\+Ready}} ()
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a049b44d0b0a32a890d58f866f98b7821}{On\+Game\+Start}} ()
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a226c0e618ee08f44123e1a95d9b1213f}{On\+Game\+End\+Predict}} (float Seconds)
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_af35e4129d70e97f6061dcc7d141d5c2a}{On\+Game\+End}} ()
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a0db12030f099799b91e6a18dcf917f90}{On\+Player\+Joined}} (\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWj\+World\+Player\+State\+Play}} \texorpdfstring{$\ast$}{*}Player)
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_ab930230376f69ffb45dd4cd306544c5d}{On\+Player\+Left}} (\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWj\+World\+Player\+State\+Play}} \texorpdfstring{$\ast$}{*}Player)
+\item 
+virtual bool \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_ab03f9ec99b29c60c9c8da015ece91d3e}{Check\+Win\+Condition}} () const
+\item 
+virtual \doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWj\+World\+Player\+State\+Play}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_aebe46f808610fcdfea7ef15291904e1b}{Get\+Winner}} () const
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a7b0d89afe68ade01a5d05df040619156}{Tick\+Game\+Rule}} (float Delta\+Time)
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a16f0716eb64654b26b56c05112b70d79}{Begin\+Destroy}} () override
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a5dced7d956649a0a10e47ccdbcabad90}{Has\+Authority}} () const
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_game_mode_play}{AWj\+World\+Game\+Mode\+Play}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a21332ec2b8f14ed555fbe286027e513c}{Get\+Game\+Mode\+Play}} () const
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_game_state_play}{AWj\+World\+Game\+State\+Play}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a39827e7eeafa65353860b29f94202c79}{Get\+Game\+State\+Play}} () const
+\item 
+virtual bool \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_aeaee66281849cdde641252c596fe4a5a}{Predict\+Next\+Level\+Is\+Last}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_ac99d78d7e74b7b1a4d06ac5a6567ddb2}{Game\+Level\+Up}} (int32 New\+Level)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TWeak\+Object\+Ptr$<$ \doxymbox{\hyperlink{class_a_wj_world_game_mode_play}{AWj\+World\+Game\+Mode\+Play}} $>$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a255d277042a68f697f579f21ab582e1a}{Game\+Mode}}
+\item 
+TSubclass\+Of$<$ UWj\+World\+Game\+Data\+Component $>$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a96ca73919fc5cf009ff9d1167d042697}{Game\+Data\+Component\+Class}}
+\item 
+TSubclass\+Of$<$ UWj\+World\+Game\+Data\+Component $>$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a2ff20f4707783824d893bfa81c278e0f}{Player\+Data\+Component\+Class}}
+\item 
+float \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a25c4c3adc9dafe1b4df707bf3dc40adc}{Start\+Delay}} = 2.\+0f
+\item 
+FTimer\+Handle \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_aae96bc2b57198f3b67a01fc3fa3bdd71}{Delay\+Start\+Handle}}
+\item 
+FTimer\+Handle \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a12e89cfbe51172785d91747f5f4c3603}{Goto\+Waiting\+Room\+Handle}}
+\item 
+float \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_aa95ca7ebca82dbc13247fde5dc2edbc3}{Seconds\+For\+Game\+Start\+Count}} = 3.\+0f
+\item 
+float \doxymbox{\hyperlink{class_u_wj_world_game_rule_base_a5773435b2bd861858e02805fb54a95af}{Seconds\+For\+Goto\+Waiting\+Room}} = 3.\+0f
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+게임 규칙 베이스 클래스 Game\+Mode에서 \doxylink{class_u_wj_world_game_rule_base_a7b0d89afe68ade01a5d05df040619156}{Tick\+Game\+Rule()}을 통해 틱 호출 
+
+\label{doc-func-members}
+\Hypertarget{class_u_wj_world_game_rule_base_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_wj_world_game_rule_base_a16f0716eb64654b26b56c05112b70d79}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!BeginDestroy@{BeginDestroy}}
+\index{BeginDestroy@{BeginDestroy}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{BeginDestroy()}{BeginDestroy()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_a16f0716eb64654b26b56c05112b70d79} 
+void UWj\+World\+Game\+Rule\+Base::\+\+Begin\+Destroy (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_game_rule_base_ab03f9ec99b29c60c9c8da015ece91d3e}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!CheckWinCondition@{CheckWinCondition}}
+\index{CheckWinCondition@{CheckWinCondition}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{CheckWinCondition()}{CheckWinCondition()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_ab03f9ec99b29c60c9c8da015ece91d3e} 
+bool UWj\+World\+Game\+Rule\+Base::\+\+Check\+Win\+Condition (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a400d1e4aea150d4f697dc6407999bfbd}{UWj\+World\+Game\+Rule\+Approaching\+Wall}}.
+
+\Hypertarget{class_u_wj_world_game_rule_base_ac99d78d7e74b7b1a4d06ac5a6567ddb2}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!GameLevelUp@{GameLevelUp}}
+\index{GameLevelUp@{GameLevelUp}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{GameLevelUp()}{GameLevelUp()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_ac99d78d7e74b7b1a4d06ac5a6567ddb2} 
+void UWj\+World\+Game\+Rule\+Base::\+\+Game\+Level\+Up (\begin{DoxyParamCaption}\item[{int32}]{New\+Level}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_base_a21332ec2b8f14ed555fbe286027e513c}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!GetGameModePlay@{GetGameModePlay}}
+\index{GetGameModePlay@{GetGameModePlay}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{GetGameModePlay()}{GetGameModePlay()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_a21332ec2b8f14ed555fbe286027e513c} 
+\doxymbox{\hyperlink{class_a_wj_world_game_mode_play}{AWj\+World\+Game\+Mode\+Play}} \texorpdfstring{$\ast$}{*} UWj\+World\+Game\+Rule\+Base::\+\+Get\+Game\+Mode\+Play (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_u_wj_world_game_rule_base_a39827e7eeafa65353860b29f94202c79}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!GetGameStatePlay@{GetGameStatePlay}}
+\index{GetGameStatePlay@{GetGameStatePlay}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{GetGameStatePlay()}{GetGameStatePlay()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_a39827e7eeafa65353860b29f94202c79} 
+\doxymbox{\hyperlink{class_a_wj_world_game_state_play}{AWj\+World\+Game\+State\+Play}} \texorpdfstring{$\ast$}{*} UWj\+World\+Game\+Rule\+Base::\+\+Get\+Game\+State\+Play (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_u_wj_world_game_rule_base_aebe46f808610fcdfea7ef15291904e1b}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!GetWinner@{GetWinner}}
+\index{GetWinner@{GetWinner}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{GetWinner()}{GetWinner()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_aebe46f808610fcdfea7ef15291904e1b} 
+\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWj\+World\+Player\+State\+Play}} \texorpdfstring{$\ast$}{*} UWj\+World\+Game\+Rule\+Base::\+\+Get\+Winner (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a586d5fe7d29ceb7fbe976c34d2743e21}{UWj\+World\+Game\+Rule\+Approaching\+Wall}}.
+
+\Hypertarget{class_u_wj_world_game_rule_base_a5dced7d956649a0a10e47ccdbcabad90}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!HasAuthority@{HasAuthority}}
+\index{HasAuthority@{HasAuthority}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{HasAuthority()}{HasAuthority()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_a5dced7d956649a0a10e47ccdbcabad90} 
+bool UWj\+World\+Game\+Rule\+Base::\+\+Has\+Authority (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_u_wj_world_game_rule_base_a6f8e0f1b98821229b24c2fecd5a9df19}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_a6f8e0f1b98821229b24c2fecd5a9df19} 
+void UWj\+World\+Game\+Rule\+Base::\+\+Initialize (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_a_wj_world_game_mode_play}{AWj\+World\+Game\+Mode\+Play}} \texorpdfstring{$\ast$}{*}}]{In\+Game\+Mode}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a55d628529bf751c91ecdbc4aa6d6b6eb}{UWj\+World\+Game\+Rule\+Approaching\+Wall}}.
+
+\Hypertarget{class_u_wj_world_game_rule_base_af35e4129d70e97f6061dcc7d141d5c2a}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!OnGameEnd@{OnGameEnd}}
+\index{OnGameEnd@{OnGameEnd}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{OnGameEnd()}{OnGameEnd()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_af35e4129d70e97f6061dcc7d141d5c2a} 
+void UWj\+World\+Game\+Rule\+Base::\+\+On\+Game\+End (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a030b02482879c08cd2206487a7bd627d}{UWj\+World\+Game\+Rule\+Approaching\+Wall}}.
+
+\Hypertarget{class_u_wj_world_game_rule_base_a226c0e618ee08f44123e1a95d9b1213f}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!OnGameEndPredict@{OnGameEndPredict}}
+\index{OnGameEndPredict@{OnGameEndPredict}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{OnGameEndPredict()}{OnGameEndPredict()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_a226c0e618ee08f44123e1a95d9b1213f} 
+void UWj\+World\+Game\+Rule\+Base::\+\+On\+Game\+End\+Predict (\begin{DoxyParamCaption}\item[{float}]{Seconds}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_game_rule_base_ac05f38f32baecd50107359e0254c3c52}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!OnGameReady@{OnGameReady}}
+\index{OnGameReady@{OnGameReady}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{OnGameReady()}{OnGameReady()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_ac05f38f32baecd50107359e0254c3c52} 
+void UWj\+World\+Game\+Rule\+Base::\+\+On\+Game\+Ready (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a4a2ffb64cd62023fc41144a8e4159d13}{UWj\+World\+Game\+Rule\+Approaching\+Wall}}.
+
+\Hypertarget{class_u_wj_world_game_rule_base_a049b44d0b0a32a890d58f866f98b7821}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!OnGameStart@{OnGameStart}}
+\index{OnGameStart@{OnGameStart}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{OnGameStart()}{OnGameStart()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_a049b44d0b0a32a890d58f866f98b7821} 
+void UWj\+World\+Game\+Rule\+Base::\+\+On\+Game\+Start (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ae127086918459440004885a6573fd356}{UWj\+World\+Game\+Rule\+Approaching\+Wall}}.
+
+\Hypertarget{class_u_wj_world_game_rule_base_a0db12030f099799b91e6a18dcf917f90}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!OnPlayerJoined@{OnPlayerJoined}}
+\index{OnPlayerJoined@{OnPlayerJoined}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{OnPlayerJoined()}{OnPlayerJoined()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_a0db12030f099799b91e6a18dcf917f90} 
+void UWj\+World\+Game\+Rule\+Base::\+\+On\+Player\+Joined (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWj\+World\+Player\+State\+Play}} \texorpdfstring{$\ast$}{*}}]{Player}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a267f4fc225b52eaed9271921ebf7bdfb}{UWj\+World\+Game\+Rule\+Approaching\+Wall}}.
+
+\Hypertarget{class_u_wj_world_game_rule_base_ab930230376f69ffb45dd4cd306544c5d}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!OnPlayerLeft@{OnPlayerLeft}}
+\index{OnPlayerLeft@{OnPlayerLeft}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{OnPlayerLeft()}{OnPlayerLeft()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_ab930230376f69ffb45dd4cd306544c5d} 
+void UWj\+World\+Game\+Rule\+Base::\+\+On\+Player\+Left (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWj\+World\+Player\+State\+Play}} \texorpdfstring{$\ast$}{*}}]{Player}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a32003aa1aa10c6ab90f57d33ef842f57}{UWj\+World\+Game\+Rule\+Approaching\+Wall}}.
+
+\Hypertarget{class_u_wj_world_game_rule_base_aeaee66281849cdde641252c596fe4a5a}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!PredictNextLevelIsLast@{PredictNextLevelIsLast}}
+\index{PredictNextLevelIsLast@{PredictNextLevelIsLast}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{PredictNextLevelIsLast()}{PredictNextLevelIsLast()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_aeaee66281849cdde641252c596fe4a5a} 
+virtual bool UWj\+World\+Game\+Rule\+Base::\+\+Predict\+Next\+Level\+Is\+Last (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_game_rule_base_a7b0d89afe68ade01a5d05df040619156}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!TickGameRule@{TickGameRule}}
+\index{TickGameRule@{TickGameRule}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{TickGameRule()}{TickGameRule()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_a7b0d89afe68ade01a5d05df040619156} 
+void UWj\+World\+Game\+Rule\+Base::\+\+Tick\+Game\+Rule (\begin{DoxyParamCaption}\item[{float}]{Delta\+Time}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ac444df5653e8d72110232bd37f17c826}{UWj\+World\+Game\+Rule\+Approaching\+Wall}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{class_u_wj_world_game_rule_base_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_wj_world_game_rule_base_aae96bc2b57198f3b67a01fc3fa3bdd71}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!DelayStartHandle@{DelayStartHandle}}
+\index{DelayStartHandle@{DelayStartHandle}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{DelayStartHandle}{DelayStartHandle}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_aae96bc2b57198f3b67a01fc3fa3bdd71} 
+FTimer\+Handle UWj\+World\+Game\+Rule\+Base::\+\+Delay\+Start\+Handle\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_base_a96ca73919fc5cf009ff9d1167d042697}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!GameDataComponentClass@{GameDataComponentClass}}
+\index{GameDataComponentClass@{GameDataComponentClass}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{GameDataComponentClass}{GameDataComponentClass}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_a96ca73919fc5cf009ff9d1167d042697} 
+TSubclass\+Of$<$UWj\+World\+Game\+Data\+Component$>$ UWj\+World\+Game\+Rule\+Base::\+\+Game\+Data\+Component\+Class\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_base_a255d277042a68f697f579f21ab582e1a}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!GameMode@{GameMode}}
+\index{GameMode@{GameMode}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{GameMode}{GameMode}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_a255d277042a68f697f579f21ab582e1a} 
+TWeak\+Object\+Ptr$<$\doxymbox{\hyperlink{class_a_wj_world_game_mode_play}{AWj\+World\+Game\+Mode\+Play}}$>$ UWj\+World\+Game\+Rule\+Base::\+\+Game\+Mode\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_base_a12e89cfbe51172785d91747f5f4c3603}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!GotoWaitingRoomHandle@{GotoWaitingRoomHandle}}
+\index{GotoWaitingRoomHandle@{GotoWaitingRoomHandle}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{GotoWaitingRoomHandle}{GotoWaitingRoomHandle}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_a12e89cfbe51172785d91747f5f4c3603} 
+FTimer\+Handle UWj\+World\+Game\+Rule\+Base::\+\+Goto\+Waiting\+Room\+Handle\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_base_a2ff20f4707783824d893bfa81c278e0f}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!PlayerDataComponentClass@{PlayerDataComponentClass}}
+\index{PlayerDataComponentClass@{PlayerDataComponentClass}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{PlayerDataComponentClass}{PlayerDataComponentClass}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_a2ff20f4707783824d893bfa81c278e0f} 
+TSubclass\+Of$<$UWj\+World\+Game\+Data\+Component$>$ UWj\+World\+Game\+Rule\+Base::\+\+Player\+Data\+Component\+Class\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_base_aa95ca7ebca82dbc13247fde5dc2edbc3}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!SecondsForGameStartCount@{SecondsForGameStartCount}}
+\index{SecondsForGameStartCount@{SecondsForGameStartCount}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{SecondsForGameStartCount}{SecondsForGameStartCount}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_aa95ca7ebca82dbc13247fde5dc2edbc3} 
+float UWj\+World\+Game\+Rule\+Base::\+\+Seconds\+For\+Game\+Start\+Count = 3.\+0f\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_base_a5773435b2bd861858e02805fb54a95af}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!SecondsForGotoWaitingRoom@{SecondsForGotoWaitingRoom}}
+\index{SecondsForGotoWaitingRoom@{SecondsForGotoWaitingRoom}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{SecondsForGotoWaitingRoom}{SecondsForGotoWaitingRoom}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_a5773435b2bd861858e02805fb54a95af} 
+float UWj\+World\+Game\+Rule\+Base::\+\+Seconds\+For\+Goto\+Waiting\+Room = 3.\+0f\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_game_rule_base_a25c4c3adc9dafe1b4df707bf3dc40adc}\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!StartDelay@{StartDelay}}
+\index{StartDelay@{StartDelay}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\doxysubsubsection{\texorpdfstring{StartDelay}{StartDelay}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_rule_base_a25c4c3adc9dafe1b4df707bf3dc40adc} 
+float UWj\+World\+Game\+Rule\+Base::\+\+Start\+Delay = 2.\+0f\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Game\+Rule/\+\doxymbox{\hyperlink{_wj_world_game_rule_base_8h}{Wj\+World\+Game\+Rule\+Base.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Game\+Rule/\+\doxymbox{\hyperlink{_wj_world_game_rule_base_8cpp}{Wj\+World\+Game\+Rule\+Base.\+cpp}}\end{DoxyCompactItemize}

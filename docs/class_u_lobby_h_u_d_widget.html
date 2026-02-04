@@ -113,6 +113,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:ae0ce111cd6335b8627821038680865ab" id="r_ae0ce111cd6335b8627821038680865ab"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ae0ce111cd6335b8627821038680865ab">OnFindRoomClicked</a> ()</td></tr>
 <tr class="memitem:aa0aaca101acda5a9c87ed62f6fbb30c2" id="r_aa0aaca101acda5a9c87ed62f6fbb30c2"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aa0aaca101acda5a9c87ed62f6fbb30c2">OnDirectConnectClicked</a> ()</td></tr>
 <tr class="memitem:a292eaefd6d13a117b72c524663daa687" id="r_a292eaefd6d13a117b72c524663daa687"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a292eaefd6d13a117b72c524663daa687">OnSettingsClicked</a> ()</td></tr>
+<tr class="memitem:aa269eecf7eeba9a3e22270feae347f27" id="r_aa269eecf7eeba9a3e22270feae347f27"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aa269eecf7eeba9a3e22270feae347f27">OnProfileClicked</a> ()</td></tr>
+<tr class="memitem:a46ce835ca4fa5342ddb4301dfd791160" id="r_a46ce835ca4fa5342ddb4301dfd791160"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a46ce835ca4fa5342ddb4301dfd791160">OnPlacementModeClicked</a> ()</td></tr>
+<tr class="memitem:a84be21947d9e14c2c6d9bc606a371e64" id="r_a84be21947d9e14c2c6d9bc606a371e64"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a84be21947d9e14c2c6d9bc606a371e64">OnCosmeticClicked</a> ()</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -120,6 +123,11 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a09fca02b055e19887df25961e7b1a55f" id="r_a09fca02b055e19887df25961e7b1a55f"><td class="memItemLeft">TObjectPtr&lt; UButton &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a09fca02b055e19887df25961e7b1a55f">FindRoomButton</a></td></tr>
 <tr class="memitem:a5da82689672aab9464bc2e9956d049bc" id="r_a5da82689672aab9464bc2e9956d049bc"><td class="memItemLeft">TObjectPtr&lt; UButton &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a5da82689672aab9464bc2e9956d049bc">DirectConnectButton</a></td></tr>
 <tr class="memitem:a787a9949d541379d9d6ff3bc5ee0fe47" id="r_a787a9949d541379d9d6ff3bc5ee0fe47"><td class="memItemLeft">TObjectPtr&lt; UButton &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a787a9949d541379d9d6ff3bc5ee0fe47">SettingsButton</a></td></tr>
+<tr class="memitem:a49f2c564156fb553acbbfc142c8b94ea" id="r_a49f2c564156fb553acbbfc142c8b94ea"><td class="memItemLeft">TObjectPtr&lt; UButton &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a49f2c564156fb553acbbfc142c8b94ea">ProfileButton</a></td></tr>
+<tr class="memitem:afa6d620214646f51f726d8b22abe7490" id="r_afa6d620214646f51f726d8b22abe7490"><td class="memItemLeft">TObjectPtr&lt; UButton &gt;&#160;</td><td class="memItemRight"><a class="el" href="#afa6d620214646f51f726d8b22abe7490">PlacementModeButton</a></td></tr>
+<tr class="memitem:afa84338a5eddfb80a49e5d00b3c748a6" id="r_afa84338a5eddfb80a49e5d00b3c748a6"><td class="memItemLeft">TObjectPtr&lt; UButton &gt;&#160;</td><td class="memItemRight"><a class="el" href="#afa84338a5eddfb80a49e5d00b3c748a6">CosmeticButton</a></td></tr>
+<tr class="memitem:a983f1261d953d30056d40c0ff639f2c9" id="r_a983f1261d953d30056d40c0ff639f2c9"><td class="memItemLeft">TSubclassOf&lt; <a class="el" href="class_u_player_profile_widget.html">UPlayerProfileWidget</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a983f1261d953d30056d40c0ff639f2c9">ProfileWidgetClass</a></td></tr>
+<tr class="memitem:a40b13f001519ae20c6e28e35a731abff" id="r_a40b13f001519ae20c6e28e35a731abff"><td class="memItemLeft">TSubclassOf&lt; <a class="el" href="class_u_cosmetic_main_window.html">UCosmeticMainWindow</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a40b13f001519ae20c6e28e35a731abff">CosmeticWindowClass</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>로비 HUD 위젯</p>
@@ -127,7 +135,8 @@ Protected Attributes</h2></td></tr>
 <li>"방 만들기" 버튼</li>
 <li>"방 찾기" 버튼</li>
 <li>"직접 입장" 버튼 (NULL Subsystem용)</li>
-<li>"설정" 버튼 (추후) </li>
+<li>"설정" 버튼 (추후)</li>
+<li>"프로필" 버튼 </li>
 </ul>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="a828bde5e15431d48ce0cdf9506b82c75" name="a828bde5e15431d48ce0cdf9506b82c75"></a>
@@ -149,6 +158,31 @@ Protected Attributes</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a84be21947d9e14c2c6d9bc606a371e64" name="a84be21947d9e14c2c6d9bc606a371e64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84be21947d9e14c2c6d9bc606a371e64">&#9670;&#160;</a></span>OnCosmeticClicked()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ULobbyHUDWidget::OnCosmeticClicked </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -230,6 +264,56 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a46ce835ca4fa5342ddb4301dfd791160" name="a46ce835ca4fa5342ddb4301dfd791160"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46ce835ca4fa5342ddb4301dfd791160">&#9670;&#160;</a></span>OnPlacementModeClicked()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ULobbyHUDWidget::OnPlacementModeClicked </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa269eecf7eeba9a3e22270feae347f27" name="aa269eecf7eeba9a3e22270feae347f27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa269eecf7eeba9a3e22270feae347f27">&#9670;&#160;</a></span>OnProfileClicked()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ULobbyHUDWidget::OnProfileClicked </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a292eaefd6d13a117b72c524663daa687" name="a292eaefd6d13a117b72c524663daa687"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a292eaefd6d13a117b72c524663daa687">&#9670;&#160;</a></span>OnSettingsClicked()</h2>
 
@@ -256,6 +340,52 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a id="afa84338a5eddfb80a49e5d00b3c748a6" name="afa84338a5eddfb80a49e5d00b3c748a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa84338a5eddfb80a49e5d00b3c748a6">&#9670;&#160;</a></span>CosmeticButton</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TObjectPtr&lt;UButton&gt; ULobbyHUDWidget::CosmeticButton</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>코스메틱 버튼 </p>
+
+</div>
+</div>
+<a id="a40b13f001519ae20c6e28e35a731abff" name="a40b13f001519ae20c6e28e35a731abff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40b13f001519ae20c6e28e35a731abff">&#9670;&#160;</a></span>CosmeticWindowClass</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TSubclassOf&lt;<a class="el" href="class_u_cosmetic_main_window.html">UCosmeticMainWindow</a>&gt; ULobbyHUDWidget::CosmeticWindowClass</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>코스메틱 윈도우 클래스 (Blueprint에서 설정) </p>
+
+</div>
+</div>
 <a id="a5a239c793542e14e2b9301eabc578f1d" name="a5a239c793542e14e2b9301eabc578f1d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5a239c793542e14e2b9301eabc578f1d">&#9670;&#160;</a></span>CreateRoomButton</h2>
 
@@ -322,6 +452,75 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>방 찾기 버튼 </p>
+
+</div>
+</div>
+<a id="afa6d620214646f51f726d8b22abe7490" name="afa6d620214646f51f726d8b22abe7490"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa6d620214646f51f726d8b22abe7490">&#9670;&#160;</a></span>PlacementModeButton</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TObjectPtr&lt;UButton&gt; ULobbyHUDWidget::PlacementModeButton</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>배치 모드 버튼 </p>
+
+</div>
+</div>
+<a id="a49f2c564156fb553acbbfc142c8b94ea" name="a49f2c564156fb553acbbfc142c8b94ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49f2c564156fb553acbbfc142c8b94ea">&#9670;&#160;</a></span>ProfileButton</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TObjectPtr&lt;UButton&gt; ULobbyHUDWidget::ProfileButton</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>프로필 버튼 </p>
+
+</div>
+</div>
+<a id="a983f1261d953d30056d40c0ff639f2c9" name="a983f1261d953d30056d40c0ff639f2c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a983f1261d953d30056d40c0ff639f2c9">&#9670;&#160;</a></span>ProfileWidgetClass</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TSubclassOf&lt;<a class="el" href="class_u_player_profile_widget.html">UPlayerProfileWidget</a>&gt; ULobbyHUDWidget::ProfileWidgetClass</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>프로필 위젯 클래스 (Blueprint에서 설정) </p>
 
 </div>
 </div>

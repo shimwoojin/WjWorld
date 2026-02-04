@@ -109,10 +109,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:affd4b1b4610f2e965bac95582ec04f78" id="r_affd4b1b4610f2e965bac95582ec04f78"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#affd4b1b4610f2e965bac95582ec04f78">FindSessions</a> (int32 MaxSearchResults=100)</td></tr>
 <tr class="memitem:a32f197f8374246ca5cf86e1605456d49" id="r_a32f197f8374246ca5cf86e1605456d49"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a32f197f8374246ca5cf86e1605456d49">JoinSession</a> (int32 RoomIndex)</td></tr>
 <tr class="memitem:ab3cfbbaeeb116fb2fccbb1e29306bca1" id="r_ab3cfbbaeeb116fb2fccbb1e29306bca1"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ab3cfbbaeeb116fb2fccbb1e29306bca1">StartSession</a> ()</td></tr>
+<tr class="memitem:ac299fe26079bf1debb9379a9bb4af60a" id="r_ac299fe26079bf1debb9379a9bb4af60a"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ac299fe26079bf1debb9379a9bb4af60a">EndSession</a> ()</td></tr>
 <tr class="memitem:a4fbecb2c4677b89c93da574ba4a3a880" id="r_a4fbecb2c4677b89c93da574ba4a3a880"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a4fbecb2c4677b89c93da574ba4a3a880">DestroySession</a> ()</td></tr>
 <tr class="memitem:a31b432b8faf2bd085d9cd7bcac99009f" id="r_a31b432b8faf2bd085d9cd7bcac99009f"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a31b432b8faf2bd085d9cd7bcac99009f">IsInSession</a> () const</td></tr>
 <tr class="memitem:adc285ffe581170aa4cf4ee0a18c50c0f" id="r_adc285ffe581170aa4cf4ee0a18c50c0f"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#adc285ffe581170aa4cf4ee0a18c50c0f">IsHost</a> () const</td></tr>
 <tr class="memitem:a21352ba694d12881b0c39a28446c2d96" id="r_a21352ba694d12881b0c39a28446c2d96"><td class="memItemLeft">const <a class="el" href="struct_f_room_settings.html">FRoomSettings</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a21352ba694d12881b0c39a28446c2d96">GetLastRoomSettings</a> () const</td></tr>
+<tr class="memitem:a8098cdf9ef09766e1c3b7e101d965c9a" id="r_a8098cdf9ef09766e1c3b7e101d965c9a"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a8098cdf9ef09766e1c3b7e101d965c9a">CreateMigrationSession</a> (const <a class="el" href="struct_f_room_settings.html">FRoomSettings</a> &amp;Settings, const FString &amp;MigrationTag)</td></tr>
+<tr class="memitem:a4791df939a99711af8f689554158bb32" id="r_a4791df939a99711af8f689554158bb32"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a4791df939a99711af8f689554158bb32">FindMigrationSession</a> (const FString &amp;MigrationTag)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -121,6 +124,7 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:aabc4f41d007cfc1d6004275c5db20608" id="r_aabc4f41d007cfc1d6004275c5db20608"><td class="memItemLeft">FOnRoomJoined&#160;</td><td class="memItemRight"><a class="el" href="#aabc4f41d007cfc1d6004275c5db20608">OnRoomJoinedEvent</a></td></tr>
 <tr class="memitem:ab1155f138e56a4feebd8041aeb478ead" id="r_ab1155f138e56a4feebd8041aeb478ead"><td class="memItemLeft">FOnRoomDestroyed&#160;</td><td class="memItemRight"><a class="el" href="#ab1155f138e56a4feebd8041aeb478ead">OnRoomDestroyedEvent</a></td></tr>
 <tr class="memitem:a47cced85a2e73327b1c279f32603d5e2" id="r_a47cced85a2e73327b1c279f32603d5e2"><td class="memItemLeft">FOnRoomStarted&#160;</td><td class="memItemRight"><a class="el" href="#a47cced85a2e73327b1c279f32603d5e2">OnRoomStartedEvent</a></td></tr>
+<tr class="memitem:ad6e5c50f4e26af65301d8cb231018403" id="r_ad6e5c50f4e26af65301d8cb231018403"><td class="memItemLeft">FOnRoomEnded&#160;</td><td class="memItemRight"><a class="el" href="#ad6e5c50f4e26af65301d8cb231018403">OnRoomEndedEvent</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Online Subsystem Session 관리 클래스</p>
@@ -148,6 +152,35 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a8098cdf9ef09766e1c3b7e101d965c9a" name="a8098cdf9ef09766e1c3b7e101d965c9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8098cdf9ef09766e1c3b7e101d965c9a">&#9670;&#160;</a></span>CreateMigrationSession()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool USessionManager::CreateMigrationSession </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_f_room_settings.html">FRoomSettings</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>Settings</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const FString &amp;</td>          <td class="paramname"><span class="paramname"><em>MigrationTag</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>마이그레이션 세션 생성 (MIGRATION_TAG 커스텀 세팅 포함) </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Settings</td><td>방 설정 </td></tr>
+    <tr><td class="paramname">MigrationTag</td><td>마이그레이션 식별 태그 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>성공 여부 </dd></dl>
+
+</div>
+</div>
 <a id="ab58ff48bccaf5249d196d9768264a68e" name="ab58ff48bccaf5249d196d9768264a68e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab58ff48bccaf5249d196d9768264a68e">&#9670;&#160;</a></span>CreateSession()</h2>
 
@@ -187,6 +220,48 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>세션 나가기/방 파괴 </p><dl class="section return"><dt>Returns</dt><dd>성공 여부 </dd></dl>
+
+</div>
+</div>
+<a id="ac299fe26079bf1debb9379a9bb4af60a" name="ac299fe26079bf1debb9379a9bb4af60a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac299fe26079bf1debb9379a9bb4af60a">&#9670;&#160;</a></span>EndSession()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool USessionManager::EndSession </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>세션 종료 (InProgress 상태를 Ended로 변경) Play → WaitingRoom 복귀 시 호출하여 다시 StartSession 가능하게 함 </p><dl class="section return"><dt>Returns</dt><dd>성공 여부 </dd></dl>
+
+</div>
+</div>
+<a id="a4791df939a99711af8f689554158bb32" name="a4791df939a99711af8f689554158bb32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4791df939a99711af8f689554158bb32">&#9670;&#160;</a></span>FindMigrationSession()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool USessionManager::FindMigrationSession </td>
+          <td>(</td>
+          <td class="paramtype">const FString &amp;</td>          <td class="paramname"><span class="paramname"><em>MigrationTag</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>마이그레이션 세션 검색 (MIGRATION_TAG로 필터링) </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">MigrationTag</td><td>검색할 마이그레이션 태그 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>성공 여부 </dd></dl>
 
 </div>
 </div>
@@ -393,6 +468,20 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">FOnRoomDestroyed USessionManager::OnRoomDestroyedEvent</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad6e5c50f4e26af65301d8cb231018403" name="ad6e5c50f4e26af65301d8cb231018403"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6e5c50f4e26af65301d8cb231018403">&#9670;&#160;</a></span>OnRoomEndedEvent</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FOnRoomEnded USessionManager::OnRoomEndedEvent</td>
         </tr>
       </table>
 </div><div class="memdoc">

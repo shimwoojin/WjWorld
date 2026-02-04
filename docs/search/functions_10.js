@@ -1,20 +1,14 @@
 var searchData=
 [
-  ['serverrequestchangeteam_0',['ServerRequestChangeTeam',['../class_a_wj_world_player_controller_waiting_room.html#aa8f85195e65418178885736b6465d907',1,'AWjWorldPlayerControllerWaitingRoom']]],
-  ['serversetready_1',['ServerSetReady',['../class_a_wj_world_player_state_base.html#a7f70150be5d2584e8215608ab7e9779a',1,'AWjWorldPlayerStateBase']]],
-  ['servertoggleready_2',['ServerToggleReady',['../class_a_wj_world_player_controller_waiting_room.html#a5238667721c9b177c26d8bb17ac0c70f',1,'AWjWorldPlayerControllerWaitingRoom']]],
-  ['setcharacterviewmode_3',['SetCharacterViewMode',['../class_a_wj_world_character_base.html#a10d3770bc59c61b53da2682a7faae57b',1,'AWjWorldCharacterBase']]],
-  ['setinteractiontext_4',['SetInteractionText',['../class_u_interaction_widget.html#ae54705bbb780a0596b802a5ce20a5cb4',1,'UInteractionWidget']]],
-  ['setready_5',['SetReady',['../class_a_wj_world_player_state_base.html#aaead30ca588790b0eb5e047b25e22c31',1,'AWjWorldPlayerStateBase']]],
-  ['setroominfo_6',['SetRoomInfo',['../class_u_room_list_entry_widget.html#affafcbbd9087a92f0b99ea078a6bbd96',1,'URoomListEntryWidget']]],
-  ['setupinputbindings_7',['SetupInputBindings',['../class_a_wj_world_character_base.html#accfb44f05f97b60c21c14ca7c07c8104',1,'AWjWorldCharacterBase::SetupInputBindings()'],['../class_a_wj_world_character_lobby.html#ab405006578fda529eb2f38c358271a48',1,'AWjWorldCharacterLobby::SetupInputBindings()'],['../class_a_wj_world_character_waiting_room.html#ad0bd058c882e0acea548fa2e680aac25',1,'AWjWorldCharacterWaitingRoom::SetupInputBindings()']]],
-  ['setupplayerinputcomponent_8',['SetupPlayerInputComponent',['../class_a_wj_world_character_base.html#a8db3fd1326b0c7b43a2918902d3ffd1c',1,'AWjWorldCharacterBase']]],
-  ['showcreateroomwindow_9',['ShowCreateRoomWindow',['../class_a_wj_world_game_mode_lobby.html#a0bb530dba5fb150b97300008a2be6182',1,'AWjWorldGameModeLobby']]],
-  ['showlobbyhud_10',['ShowLobbyHUD',['../class_a_wj_world_h_u_d_lobby.html#a22f2e313a38667cf7faf2cd3679163af',1,'AWjWorldHUDLobby']]],
-  ['showpopup_11',['ShowPopup',['../class_u_create_room_window.html#a0d96241b8eb758652a10399f31553bcb',1,'UCreateRoomWindow::ShowPopup()'],['../class_u_room_list_window.html#a9daffd62c2d5771e3607a8cd28be3df3',1,'URoomListWindow::ShowPopup()']]],
-  ['showroomlistwindow_12',['ShowRoomListWindow',['../class_a_wj_world_game_mode_lobby.html#a38f53d22203fb1ef5dff8ecb49674a73',1,'AWjWorldGameModeLobby']]],
-  ['showwaitingroomhud_13',['ShowWaitingRoomHUD',['../class_a_wj_world_h_u_d_waiting_room.html#a60129cf85bfc592985ee19e1979341b9',1,'AWjWorldHUDWaitingRoom']]],
-  ['shutdown_14',['Shutdown',['../class_u_session_manager.html#a9d8be892168a95f0e7779d3992797a0c',1,'USessionManager::Shutdown()'],['../class_u_wj_world_game_instance.html#aaca0eb2176f39a9b3b3a45664d3e33eb',1,'UWjWorldGameInstance::Shutdown()']]],
-  ['startgame_15',['StartGame',['../class_a_wj_world_game_mode_waiting_room.html#ad37968927d0c301357b1639a3c8dedee',1,'AWjWorldGameModeWaitingRoom::StartGame()'],['../class_u_wj_world_game_instance.html#a5fd413aba23065c36389db78a31843f3',1,'UWjWorldGameInstance::StartGame()']]],
-  ['startsession_16',['StartSession',['../class_u_session_manager.html#ab3cfbbaeeb116fb2fccbb1e29306bca1',1,'USessionManager']]]
+  ['refreshcapture_0',['RefreshCapture',['../class_a_character_preview_actor.html#a386b09fdf3373d5582d9193276df17b1',1,'ACharacterPreviewActor']]],
+  ['removeplacedobjectat_1',['RemovePlacedObjectAt',['../class_a_wj_world_game_state_lobby.html#a39e1836213a2d253527bccba9b87413f',1,'AWjWorldGameStateLobby']]],
+  ['removeplayerstate_2',['RemovePlayerState',['../class_a_wj_world_game_state_waiting_room.html#aa1f8c774125543498bf66aaff699e049',1,'AWjWorldGameStateWaitingRoom']]],
+  ['requestchangeteam_3',['RequestChangeTeam',['../class_a_wj_world_player_controller_waiting_room.html#a6c8913daf80cebbfad204e244786c744',1,'AWjWorldPlayerControllerWaitingRoom']]],
+  ['requestcurrentstats_4',['RequestCurrentStats',['../class_u_wj_world_stats_subsystem.html#a84b7f414446ba66ce8b7657f5223cccd',1,'UWjWorldStatsSubsystem']]],
+  ['requestinventoryrefresh_5',['RequestInventoryRefresh',['../class_u_wj_world_cosmetic_subsystem.html#a38b24500c8bd7a3bb813ed168d2e03ce',1,'UWjWorldCosmeticSubsystem']]],
+  ['requestpurchase_6',['RequestPurchase',['../class_u_wj_world_purchase_subsystem.html#ad0373122ce80503bd45dd81984882306',1,'UWjWorldPurchaseSubsystem']]],
+  ['requestuserstats_7',['RequestUserStats',['../class_u_wj_world_stats_subsystem.html#afc343f85c3e97cc432f37ce43e1d0bed',1,'UWjWorldStatsSubsystem']]],
+  ['reset_8',['Reset',['../struct_f_cosmetic_loadout.html#a10397016f1368df3a4b1be29c67eb817',1,'FCosmeticLoadout::Reset()'],['../struct_f_wj_world_wall_description.html#ade9df2efe1e4d8fde702f311b1f8d17a',1,'FWjWorldWallDescription::Reset()'],['../struct_f_host_migration_context.html#a66692ac214e6b3244e980b526d58b7cd',1,'FHostMigrationContext::Reset()']]],
+  ['resetpreview_9',['ResetPreview',['../class_u_cosmetic_preview_panel.html#add7ccdaff220a690ff907da9603576e5',1,'UCosmeticPreviewPanel']]],
+  ['rotatepreview_10',['RotatePreview',['../class_a_wj_world_placement_preview_actor.html#a17590fe23312003a3809cf1c5f63f2c8',1,'AWjWorldPlacementPreviewActor::RotatePreview()'],['../class_u_cosmetic_preview_panel.html#aa2340025db774284dc49b59d0999465c',1,'UCosmeticPreviewPanel::RotatePreview()']]]
 ];

@@ -1,0 +1,177 @@
+\doxysection{UCosmetic\+Item\+Entry\+Widget Class Reference}
+\hypertarget{class_u_cosmetic_item_entry_widget}{}\label{class_u_cosmetic_item_entry_widget}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+
+
+{\ttfamily \+\#include $<$Cosmetic\+Item\+Entry\+Widget.\+h$>$}
+
+Inheritance diagram for UCosmetic\+Item\+Entry\+Widget:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_u_cosmetic_item_entry_widget}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a41c14ede8962b61da63ab201dc61136f}{Native\+Construct}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a18aa4bd9e5629cd95ebdd26838a17048}{Native\+Destruct}} () override
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a250ec19667f4c54d2b44791f59fe39e6}{Set\+Item\+Definition}} (const \doxymbox{\hyperlink{struct_f_cosmetic_item_definition}{FCosmetic\+Item\+Definition}} \&Def)
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_af43c3e450bb4631db272bdda7a2cb5d7}{Set\+Owned}} (bool b\+Owned)
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a7bd77f381ed1b76d69d9e2a69d8b949d}{Set\+Equipped}} (bool b\+Equipped)
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_acc7f604e524e818c22a464537b712ca6}{Set\+Selected}} (bool b\+Selected)
+\item 
+FName \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a47519866d277369812b3949323f2eda3}{Get\+Item\+Id}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FOn\+Cosmetic\+Item\+Clicked \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a946663dab9ba62da394f5ee95575a0a4}{On\+Item\+Clicked}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a463212786ceae7d05a52fe88575906ab}{On\+Item\+Button\+Clicked}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UImage $>$ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_abf85516d332ef6e5aba88ae2c61fee80}{Icon\+Image}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a0e02befd28774ac0216fc56cf007dca3}{Name\+Text}}
+\item 
+TObject\+Ptr$<$ UImage $>$ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_ace573b313ac21cc8d2ca05f575dd5065}{Rarity\+Bar}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a99531014647fe491819b8c16902e5250}{Price\+Text}}
+\item 
+TObject\+Ptr$<$ UBorder $>$ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_aec16939678bed4357cfa5bc8ebf15035}{Selection\+Border}}
+\item 
+TObject\+Ptr$<$ UImage $>$ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a7f41ad2918b38236356c9913dac99704}{Equipped\+Icon}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget_a86cbd911281fe81eaa3305cef2fed359}{Item\+Button}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+코스메틱 아이템 엔트리 위젯
+
+상점/\+인벤토리에서 개별 아이템을 표시하는 재사용 위젯
+\begin{DoxyItemize}
+\item 아이콘, 이름, 희귀도 바, 가격 표시
+\item 보유/\+장착/\+선택 상태 시각화 
+\end{DoxyItemize}
+
+\label{doc-func-members}
+\Hypertarget{class_u_cosmetic_item_entry_widget_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_cosmetic_item_entry_widget_a47519866d277369812b3949323f2eda3}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}!GetItemId@{GetItemId}}
+\index{GetItemId@{GetItemId}!UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+\doxysubsubsection{\texorpdfstring{GetItemId()}{GetItemId()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_item_entry_widget_a47519866d277369812b3949323f2eda3} 
+FName UCosmetic\+Item\+Entry\+Widget::\+\+Get\+Item\+Id (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+아이템 ID 반환 \Hypertarget{class_u_cosmetic_item_entry_widget_a41c14ede8962b61da63ab201dc61136f}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}!NativeConstruct@{NativeConstruct}}
+\index{NativeConstruct@{NativeConstruct}!UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+\doxysubsubsection{\texorpdfstring{NativeConstruct()}{NativeConstruct()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_item_entry_widget_a41c14ede8962b61da63ab201dc61136f} 
+void UCosmetic\+Item\+Entry\+Widget::\+\+Native\+Construct (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_cosmetic_item_entry_widget_a18aa4bd9e5629cd95ebdd26838a17048}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}!NativeDestruct@{NativeDestruct}}
+\index{NativeDestruct@{NativeDestruct}!UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+\doxysubsubsection{\texorpdfstring{NativeDestruct()}{NativeDestruct()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_item_entry_widget_a18aa4bd9e5629cd95ebdd26838a17048} 
+void UCosmetic\+Item\+Entry\+Widget::\+\+Native\+Destruct (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_cosmetic_item_entry_widget_a463212786ceae7d05a52fe88575906ab}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}!OnItemButtonClicked@{OnItemButtonClicked}}
+\index{OnItemButtonClicked@{OnItemButtonClicked}!UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+\doxysubsubsection{\texorpdfstring{OnItemButtonClicked()}{OnItemButtonClicked()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_item_entry_widget_a463212786ceae7d05a52fe88575906ab} 
+void UCosmetic\+Item\+Entry\+Widget::\+\+On\+Item\+Button\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_item_entry_widget_a7bd77f381ed1b76d69d9e2a69d8b949d}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}!SetEquipped@{SetEquipped}}
+\index{SetEquipped@{SetEquipped}!UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+\doxysubsubsection{\texorpdfstring{SetEquipped()}{SetEquipped()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_item_entry_widget_a7bd77f381ed1b76d69d9e2a69d8b949d} 
+void UCosmetic\+Item\+Entry\+Widget::\+\+Set\+Equipped (\begin{DoxyParamCaption}\item[{bool}]{b\+Equipped}{}\end{DoxyParamCaption})}
+
+장착 상태 설정 \Hypertarget{class_u_cosmetic_item_entry_widget_a250ec19667f4c54d2b44791f59fe39e6}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}!SetItemDefinition@{SetItemDefinition}}
+\index{SetItemDefinition@{SetItemDefinition}!UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+\doxysubsubsection{\texorpdfstring{SetItemDefinition()}{SetItemDefinition()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_item_entry_widget_a250ec19667f4c54d2b44791f59fe39e6} 
+void UCosmetic\+Item\+Entry\+Widget::\+\+Set\+Item\+Definition (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{struct_f_cosmetic_item_definition}{FCosmetic\+Item\+Definition}} \&}]{Def}{}\end{DoxyParamCaption})}
+
+아이템 정의 설정 \Hypertarget{class_u_cosmetic_item_entry_widget_af43c3e450bb4631db272bdda7a2cb5d7}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}!SetOwned@{SetOwned}}
+\index{SetOwned@{SetOwned}!UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+\doxysubsubsection{\texorpdfstring{SetOwned()}{SetOwned()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_item_entry_widget_af43c3e450bb4631db272bdda7a2cb5d7} 
+void UCosmetic\+Item\+Entry\+Widget::\+\+Set\+Owned (\begin{DoxyParamCaption}\item[{bool}]{b\+Owned}{}\end{DoxyParamCaption})}
+
+보유 상태 설정 \Hypertarget{class_u_cosmetic_item_entry_widget_acc7f604e524e818c22a464537b712ca6}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}!SetSelected@{SetSelected}}
+\index{SetSelected@{SetSelected}!UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+\doxysubsubsection{\texorpdfstring{SetSelected()}{SetSelected()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_item_entry_widget_acc7f604e524e818c22a464537b712ca6} 
+void UCosmetic\+Item\+Entry\+Widget::\+\+Set\+Selected (\begin{DoxyParamCaption}\item[{bool}]{b\+Selected}{}\end{DoxyParamCaption})}
+
+선택 상태 설정 
+
+\label{doc-variable-members}
+\Hypertarget{class_u_cosmetic_item_entry_widget_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_cosmetic_item_entry_widget_a7f41ad2918b38236356c9913dac99704}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}!EquippedIcon@{EquippedIcon}}
+\index{EquippedIcon@{EquippedIcon}!UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+\doxysubsubsection{\texorpdfstring{EquippedIcon}{EquippedIcon}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_item_entry_widget_a7f41ad2918b38236356c9913dac99704} 
+TObject\+Ptr$<$UImage$>$ UCosmetic\+Item\+Entry\+Widget::\+\+Equipped\+Icon\hspace{0.3cm}{\ttfamily [protected]}}
+
+장착 표시 아이콘 \Hypertarget{class_u_cosmetic_item_entry_widget_abf85516d332ef6e5aba88ae2c61fee80}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}!IconImage@{IconImage}}
+\index{IconImage@{IconImage}!UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+\doxysubsubsection{\texorpdfstring{IconImage}{IconImage}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_item_entry_widget_abf85516d332ef6e5aba88ae2c61fee80} 
+TObject\+Ptr$<$UImage$>$ UCosmetic\+Item\+Entry\+Widget::\+\+Icon\+Image\hspace{0.3cm}{\ttfamily [protected]}}
+
+아이콘 이미지 (128x128) \Hypertarget{class_u_cosmetic_item_entry_widget_a86cbd911281fe81eaa3305cef2fed359}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}!ItemButton@{ItemButton}}
+\index{ItemButton@{ItemButton}!UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+\doxysubsubsection{\texorpdfstring{ItemButton}{ItemButton}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_item_entry_widget_a86cbd911281fe81eaa3305cef2fed359} 
+TObject\+Ptr$<$UButton$>$ UCosmetic\+Item\+Entry\+Widget::\+\+Item\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+클릭 감지 버튼 \Hypertarget{class_u_cosmetic_item_entry_widget_a0e02befd28774ac0216fc56cf007dca3}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}!NameText@{NameText}}
+\index{NameText@{NameText}!UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+\doxysubsubsection{\texorpdfstring{NameText}{NameText}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_item_entry_widget_a0e02befd28774ac0216fc56cf007dca3} 
+TObject\+Ptr$<$UText\+Block$>$ UCosmetic\+Item\+Entry\+Widget::\+\+Name\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+아이템 이름 \Hypertarget{class_u_cosmetic_item_entry_widget_a946663dab9ba62da394f5ee95575a0a4}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}!OnItemClicked@{OnItemClicked}}
+\index{OnItemClicked@{OnItemClicked}!UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+\doxysubsubsection{\texorpdfstring{OnItemClicked}{OnItemClicked}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_item_entry_widget_a946663dab9ba62da394f5ee95575a0a4} 
+FOn\+Cosmetic\+Item\+Clicked UCosmetic\+Item\+Entry\+Widget::\+\+On\+Item\+Clicked}
+
+아이템 클릭 델리게이트 \Hypertarget{class_u_cosmetic_item_entry_widget_a99531014647fe491819b8c16902e5250}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}!PriceText@{PriceText}}
+\index{PriceText@{PriceText}!UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+\doxysubsubsection{\texorpdfstring{PriceText}{PriceText}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_item_entry_widget_a99531014647fe491819b8c16902e5250} 
+TObject\+Ptr$<$UText\+Block$>$ UCosmetic\+Item\+Entry\+Widget::\+\+Price\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+가격 또는 "{}보유중"{} 텍스트 \Hypertarget{class_u_cosmetic_item_entry_widget_ace573b313ac21cc8d2ca05f575dd5065}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}!RarityBar@{RarityBar}}
+\index{RarityBar@{RarityBar}!UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+\doxysubsubsection{\texorpdfstring{RarityBar}{RarityBar}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_item_entry_widget_ace573b313ac21cc8d2ca05f575dd5065} 
+TObject\+Ptr$<$UImage$>$ UCosmetic\+Item\+Entry\+Widget::\+\+Rarity\+Bar\hspace{0.3cm}{\ttfamily [protected]}}
+
+희귀도 색상 바 \Hypertarget{class_u_cosmetic_item_entry_widget_aec16939678bed4357cfa5bc8ebf15035}\index{UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}!SelectionBorder@{SelectionBorder}}
+\index{SelectionBorder@{SelectionBorder}!UCosmeticItemEntryWidget@{UCosmeticItemEntryWidget}}
+\doxysubsubsection{\texorpdfstring{SelectionBorder}{SelectionBorder}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_item_entry_widget_aec16939678bed4357cfa5bc8ebf15035} 
+TObject\+Ptr$<$UBorder$>$ UCosmetic\+Item\+Entry\+Widget::\+\+Selection\+Border\hspace{0.3cm}{\ttfamily [protected]}}
+
+선택 하이라이트 테두리 
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Cosmetic/\+\doxymbox{\hyperlink{_cosmetic_item_entry_widget_8h}{Cosmetic\+Item\+Entry\+Widget.\+h}}\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Cosmetic/\+\doxymbox{\hyperlink{_cosmetic_item_entry_widget_8cpp}{Cosmetic\+Item\+Entry\+Widget.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,85 @@
+\doxysection{UPlacement\+HUDWidget Class Reference}
+\hypertarget{class_u_placement_h_u_d_widget}{}\label{class_u_placement_h_u_d_widget}\index{UPlacementHUDWidget@{UPlacementHUDWidget}}
+
+
+{\ttfamily \+\#include $<$Placement\+HUDWidget.\+h$>$}
+
+Inheritance diagram for UPlacement\+HUDWidget:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_u_placement_h_u_d_widget}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_placement_h_u_d_widget_a68334b62b4e9ceecb4330ada4bbfb4e8}{Native\+Construct}} () override
+\item 
+void \doxymbox{\hyperlink{class_u_placement_h_u_d_widget_a3f7153057072376ecf392ff7eefc827c}{Set\+Placement\+Component}} (UWj\+World\+Placement\+Component \texorpdfstring{$\ast$}{*}In\+Component)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UScroll\+Box $>$ \doxymbox{\hyperlink{class_u_placement_h_u_d_widget_acfaa52be63c5e6bd44ef47c25800066b}{Catalog\+Scroll\+Box}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_placement_h_u_d_widget_a3b4cbf16b0abfa89922391692eddc6f5}{Exit\+Button}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_placement_h_u_d_widget_a0728db09df1dd6533290942cc2fffd1f}{Delete\+Mode\+Button}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_placement_h_u_d_widget_afc7a57d357f416ad76f378b9a37c8e3c}{Controls\+Hint\+Text}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+배치 모드 전용 HUD 위젯 카탈로그 표시, 삭제 모드 토글, 조작 안내 
+
+\label{doc-func-members}
+\Hypertarget{class_u_placement_h_u_d_widget_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_placement_h_u_d_widget_a68334b62b4e9ceecb4330ada4bbfb4e8}\index{UPlacementHUDWidget@{UPlacementHUDWidget}!NativeConstruct@{NativeConstruct}}
+\index{NativeConstruct@{NativeConstruct}!UPlacementHUDWidget@{UPlacementHUDWidget}}
+\doxysubsubsection{\texorpdfstring{NativeConstruct()}{NativeConstruct()}}
+{\footnotesize\ttfamily \label{class_u_placement_h_u_d_widget_a68334b62b4e9ceecb4330ada4bbfb4e8} 
+void UPlacement\+HUDWidget::\+\+Native\+Construct (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_placement_h_u_d_widget_a3f7153057072376ecf392ff7eefc827c}\index{UPlacementHUDWidget@{UPlacementHUDWidget}!SetPlacementComponent@{SetPlacementComponent}}
+\index{SetPlacementComponent@{SetPlacementComponent}!UPlacementHUDWidget@{UPlacementHUDWidget}}
+\doxysubsubsection{\texorpdfstring{SetPlacementComponent()}{SetPlacementComponent()}}
+{\footnotesize\ttfamily \label{class_u_placement_h_u_d_widget_a3f7153057072376ecf392ff7eefc827c} 
+void UPlacement\+HUDWidget::\+\+Set\+Placement\+Component (\begin{DoxyParamCaption}\item[{UWj\+World\+Placement\+Component \texorpdfstring{$\ast$}{*}}]{In\+Component}{}\end{DoxyParamCaption})}
+
+Placement\+Component 참조 설정 및 카탈로그 표시 
+
+\label{doc-variable-members}
+\Hypertarget{class_u_placement_h_u_d_widget_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_placement_h_u_d_widget_acfaa52be63c5e6bd44ef47c25800066b}\index{UPlacementHUDWidget@{UPlacementHUDWidget}!CatalogScrollBox@{CatalogScrollBox}}
+\index{CatalogScrollBox@{CatalogScrollBox}!UPlacementHUDWidget@{UPlacementHUDWidget}}
+\doxysubsubsection{\texorpdfstring{CatalogScrollBox}{CatalogScrollBox}}
+{\footnotesize\ttfamily \label{class_u_placement_h_u_d_widget_acfaa52be63c5e6bd44ef47c25800066b} 
+TObject\+Ptr$<$UScroll\+Box$>$ UPlacement\+HUDWidget::\+\+Catalog\+Scroll\+Box\hspace{0.3cm}{\ttfamily [protected]}}
+
+카탈로그 스크롤 박스 \Hypertarget{class_u_placement_h_u_d_widget_afc7a57d357f416ad76f378b9a37c8e3c}\index{UPlacementHUDWidget@{UPlacementHUDWidget}!ControlsHintText@{ControlsHintText}}
+\index{ControlsHintText@{ControlsHintText}!UPlacementHUDWidget@{UPlacementHUDWidget}}
+\doxysubsubsection{\texorpdfstring{ControlsHintText}{ControlsHintText}}
+{\footnotesize\ttfamily \label{class_u_placement_h_u_d_widget_afc7a57d357f416ad76f378b9a37c8e3c} 
+TObject\+Ptr$<$UText\+Block$>$ UPlacement\+HUDWidget::\+\+Controls\+Hint\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+조작 안내 텍스트 \Hypertarget{class_u_placement_h_u_d_widget_a0728db09df1dd6533290942cc2fffd1f}\index{UPlacementHUDWidget@{UPlacementHUDWidget}!DeleteModeButton@{DeleteModeButton}}
+\index{DeleteModeButton@{DeleteModeButton}!UPlacementHUDWidget@{UPlacementHUDWidget}}
+\doxysubsubsection{\texorpdfstring{DeleteModeButton}{DeleteModeButton}}
+{\footnotesize\ttfamily \label{class_u_placement_h_u_d_widget_a0728db09df1dd6533290942cc2fffd1f} 
+TObject\+Ptr$<$UButton$>$ UPlacement\+HUDWidget::\+\+Delete\+Mode\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+삭제 모드 버튼 \Hypertarget{class_u_placement_h_u_d_widget_a3b4cbf16b0abfa89922391692eddc6f5}\index{UPlacementHUDWidget@{UPlacementHUDWidget}!ExitButton@{ExitButton}}
+\index{ExitButton@{ExitButton}!UPlacementHUDWidget@{UPlacementHUDWidget}}
+\doxysubsubsection{\texorpdfstring{ExitButton}{ExitButton}}
+{\footnotesize\ttfamily \label{class_u_placement_h_u_d_widget_a3b4cbf16b0abfa89922391692eddc6f5} 
+TObject\+Ptr$<$UButton$>$ UPlacement\+HUDWidget::\+\+Exit\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+나가기 버튼 
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Lobby/\+\doxymbox{\hyperlink{_placement_h_u_d_widget_8h}{Placement\+HUDWidget.\+h}}\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Lobby/\+\doxymbox{\hyperlink{_placement_h_u_d_widget_8cpp}{Placement\+HUDWidget.\+cpp}}\end{DoxyCompactItemize}

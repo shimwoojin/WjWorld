@@ -1,0 +1,91 @@
+\doxysection{Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Wall/\+\+Wj\+World\+Brick\+Component.h File Reference}
+\hypertarget{_wj_world_brick_component_8h}{}\label{_wj_world_brick_component_8h}\index{Source/WjWorld/GamePlay/Wall/WjWorldBrickComponent.h@{Source/WjWorld/GamePlay/Wall/WjWorldBrickComponent.h}}
+{\ttfamily \+\#include "{}Core\+Minimal.\+h"{}}\newline
+{\ttfamily \+\#include "{}Components/\+\+Scene\+Component.\+h"{}}\newline
+{\ttfamily \+\#include "{}Core/\+\+Components/\+\+Wj\+World\+Gameplay\+Scene\+Component.\+h"{}}\newline
+{\ttfamily \+\#include "{}Wj\+Types.\+h"{}}\newline
+{\ttfamily \+\#include "{}Wj\+World\+Brick\+Component.\+generated.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \doxymbox{\hyperlink{struct_f_wj_world_brick_properties}{FWj\+World\+Brick\+Properties}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7}{EWj\+World\+Brick\+Type}} :\+ uint8 \{ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7aeb6d8ae6f20283755b339c0dc273988b}{Standard}} = 1
+, \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7ae7f88ae03dba148b8660029cbdfddee3}{Explosive}}
+, \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7adefe967ad0373b2274fc298f19125ca7}{Moving}}
+, \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7a5da2d980c7c4678e0a8e9d991a0e2b2c}{Destructible}}
+ \}
+\item 
+enum class \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1362ea0e6f3c47bca0082f11ae30b218}{EWj\+World\+Brick\+Move\+Type}} :\+ uint8 \{ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1362ea0e6f3c47bca0082f11ae30b218aeb6d8ae6f20283755b339c0dc273988b}{Standard}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{_wj_world_brick_component_8h_aa9323cb8ad2c0acc81bde7a15dc2f817}{DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+Two\+Params}} (FOn\+Wall\+Collision, UWj\+World\+Brick\+Component \texorpdfstring{$\ast$}{*}, Collided\+Brick, const FVector \&, Wall\+Direction)
+\end{DoxyCompactItemize}
+
+
+\label{doc-enum-members}
+\Hypertarget{_wj_world_brick_component_8h_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{_wj_world_brick_component_8h_a1362ea0e6f3c47bca0082f11ae30b218}\index{WjWorldBrickComponent.h@{WjWorldBrickComponent.h}!EWjWorldBrickMoveType@{EWjWorldBrickMoveType}}
+\index{EWjWorldBrickMoveType@{EWjWorldBrickMoveType}!WjWorldBrickComponent.h@{WjWorldBrickComponent.h}}
+\doxysubsubsection{\texorpdfstring{EWjWorldBrickMoveType}{EWjWorldBrickMoveType}}
+{\footnotesize\ttfamily \label{_wj_world_brick_component_8h_a1362ea0e6f3c47bca0082f11ae30b218} 
+enum class \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1362ea0e6f3c47bca0082f11ae30b218}{EWj\+World\+Brick\+Move\+Type}} :\+ uint8\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Standard@{Standard}!WjWorldBrickComponent.h@{WjWorldBrickComponent.h}}
+\index{WjWorldBrickComponent.h@{WjWorldBrickComponent.h}!Standard@{Standard}}
+}\Hypertarget{_wj_world_brick_component_8h_a1362ea0e6f3c47bca0082f11ae30b218aeb6d8ae6f20283755b339c0dc273988b}\label{_wj_world_brick_component_8h_a1362ea0e6f3c47bca0082f11ae30b218aeb6d8ae6f20283755b339c0dc273988b} 
+Standard&\\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7}\index{WjWorldBrickComponent.h@{WjWorldBrickComponent.h}!EWjWorldBrickType@{EWjWorldBrickType}}
+\index{EWjWorldBrickType@{EWjWorldBrickType}!WjWorldBrickComponent.h@{WjWorldBrickComponent.h}}
+\doxysubsubsection{\texorpdfstring{EWjWorldBrickType}{EWjWorldBrickType}}
+{\footnotesize\ttfamily \label{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7} 
+enum class \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7}{EWj\+World\+Brick\+Type}} :\+ uint8\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Standard@{Standard}!WjWorldBrickComponent.h@{WjWorldBrickComponent.h}}
+\index{WjWorldBrickComponent.h@{WjWorldBrickComponent.h}!Standard@{Standard}}
+}\Hypertarget{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7aeb6d8ae6f20283755b339c0dc273988b}\label{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7aeb6d8ae6f20283755b339c0dc273988b} 
+Standard&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Explosive@{Explosive}!WjWorldBrickComponent.h@{WjWorldBrickComponent.h}}
+\index{WjWorldBrickComponent.h@{WjWorldBrickComponent.h}!Explosive@{Explosive}}
+}\Hypertarget{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7ae7f88ae03dba148b8660029cbdfddee3}\label{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7ae7f88ae03dba148b8660029cbdfddee3} 
+Explosive&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Moving@{Moving}!WjWorldBrickComponent.h@{WjWorldBrickComponent.h}}
+\index{WjWorldBrickComponent.h@{WjWorldBrickComponent.h}!Moving@{Moving}}
+}\Hypertarget{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7adefe967ad0373b2274fc298f19125ca7}\label{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7adefe967ad0373b2274fc298f19125ca7} 
+Moving&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Destructible@{Destructible}!WjWorldBrickComponent.h@{WjWorldBrickComponent.h}}
+\index{WjWorldBrickComponent.h@{WjWorldBrickComponent.h}!Destructible@{Destructible}}
+}\Hypertarget{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7a5da2d980c7c4678e0a8e9d991a0e2b2c}\label{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7a5da2d980c7c4678e0a8e9d991a0e2b2c} 
+Destructible&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\label{doc-func-members}
+\Hypertarget{_wj_world_brick_component_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{_wj_world_brick_component_8h_aa9323cb8ad2c0acc81bde7a15dc2f817}\index{WjWorldBrickComponent.h@{WjWorldBrickComponent.h}!DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams}}
+\index{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams}!WjWorldBrickComponent.h@{WjWorldBrickComponent.h}}
+\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams()}}
+{\footnotesize\ttfamily \label{_wj_world_brick_component_8h_aa9323cb8ad2c0acc81bde7a15dc2f817} 
+DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+Two\+Params (\begin{DoxyParamCaption}\item[{FOn\+Wall\+Collision}]{}{, }\item[{UWj\+World\+Brick\+Component \texorpdfstring{$\ast$}{*}}]{}{, }\item[{Collided\+Brick}]{}{, }\item[{const FVector \&}]{}{, }\item[{Wall\+Direction}]{}{}\end{DoxyParamCaption})}
+

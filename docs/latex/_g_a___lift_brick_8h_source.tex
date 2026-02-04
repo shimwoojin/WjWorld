@@ -1,0 +1,62 @@
+\doxysection{GA\+\_\+\+Lift\+Brick.\+h}
+\hypertarget{_g_a___lift_brick_8h_source}{}\label{_g_a___lift_brick_8h_source}\index{Source/WjWorld/AbilitySystem/Abilities/GA\_LiftBrick.h@{Source/WjWorld/AbilitySystem/Abilities/GA\_LiftBrick.h}}
+\doxymbox{\hyperlink{_g_a___lift_brick_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_gameplay_ability_base_8h}{AbilitySystem/Abilities/WjWorldGameplayAbilityBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_wall_description_data_asset_8h}{GamePlay/Wall/WjWorldWallDescriptionDataAsset.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_brick_component_8h}{GamePlay/Wall/WjWorldBrickComponent.h}}"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}GA\_LiftBrick.generated.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_brick_preview_actor}{AWjWorldBrickPreviewActor}};}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00022\ UCLASS(Abstract)}
+\DoxyCodeLine{00023\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_g_a___lift_brick_a9c3adba4445a4d637cbc0299aa0d7aba}{UGA\_LiftBrick}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_ad7322fe328393ab6e7dcf9bd1c4097f8}{UWjWorldGameplayAbilityBase}}}
+\DoxyCodeLine{00024\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ \doxymbox{\hyperlink{class_u_g_a___lift_brick_a9c3adba4445a4d637cbc0299aa0d7aba}{UGA\_LiftBrick}}();}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{virtual}\ FText\ \doxymbox{\hyperlink{class_u_g_a___lift_brick_a6d2c8ea087568a5798bca099b1723cbb}{GetPromptDescription}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_g_a___lift_brick_a72eeabcacf602f608bbff0afea4355fa}{ActivateAbility}}(\textcolor{keyword}{const}\ FGameplayAbilitySpecHandle\ Handle,\ \textcolor{keyword}{const}\ FGameplayAbilityActorInfo*\ ActorInfo,\ \textcolor{keyword}{const}\ FGameplayAbilityActivationInfo\ ActivationInfo,\ \textcolor{keyword}{const}\ FGameplayEventData*\ TriggerEventData)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_g_a___lift_brick_afb248e3af78d93cf9bc79b3c3797f205}{EndAbility}}(\textcolor{keyword}{const}\ FGameplayAbilitySpecHandle\ Handle,\ \textcolor{keyword}{const}\ FGameplayAbilityActorInfo*\ ActorInfo,\ \textcolor{keyword}{const}\ FGameplayAbilityActivationInfo\ ActivationInfo,\ \textcolor{keywordtype}{bool}\ bReplicateEndAbility,\ \textcolor{keywordtype}{bool}\ bWasCancelled)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00036\ \ \ \ \ FVector\ CalculatePickupLocation()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00037\ \ \ \ \ FVector\ CalculatePreviewLocation()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{bool}\ CheckPreviewValid()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{void}\ SpawnPreviewActor();}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ DestroyPreviewActor();}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{void}\ OnConfirmCallback();}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{void}\ OnCancelCallback();}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_brick_preview_actor_abec8ee90521ea9c2fc95b7ddf9efb0d5}{UpdatePreviewLocation}}();}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ SpawnBrickAtLocation(\textcolor{keyword}{const}\ FVector\&\ Location);}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00055\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00056\ \ \ \ \ TObjectPtr<AWjWorldBrickPreviewActor>\ PreviewActor;}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWjWorldWallDescription}}\ CachedWallDesc;}
+\DoxyCodeLine{00059\ \ \ \ \ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties}{FWjWorldBrickProperties}}\ LiftedBrickProperties;}
+\DoxyCodeLine{00060\ \ \ \ \ FVector\ OriginalBrickLocation;}
+\DoxyCodeLine{00061\ \ \ \ \ FIntPoint\ OriginalGridIndex;}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{bool}\ bHasLiftedBrick\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ FTimerHandle\ PreviewUpdateTimerHandle;}
+\DoxyCodeLine{00065\ \};}
+
+\end{DoxyCode}

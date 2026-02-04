@@ -1,0 +1,165 @@
+\doxysection{UWj\+World\+Gameplay\+Ability\+Base Class Reference}
+\hypertarget{class_u_wj_world_gameplay_ability_base}{}\label{class_u_wj_world_gameplay_ability_base}\index{UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Gameplay\+Ability\+Base.\+h$>$}
+
+Inheritance diagram for UWj\+World\+Gameplay\+Ability\+Base:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.886598cm]{class_u_wj_world_gameplay_ability_base}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_ad7322fe328393ab6e7dcf9bd1c4097f8}{UWj\+World\+Gameplay\+Ability\+Base}} ()
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a7d145e5a27753da9e9292cd56d2d146f}{Apply\+Cooldown}} (const FGameplay\+Ability\+Spec\+Handle Handle, const FGameplay\+Ability\+Actor\+Info \texorpdfstring{$\ast$}{*}Actor\+Info, const FGameplay\+Ability\+Activation\+Info Activation\+Info) const override
+\item 
+virtual const FGameplay\+Tag\+Container \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_ae7436e7fc243130b9cee911023e7d71f}{Get\+Cooldown\+Tags}} () const override
+\item 
+virtual bool \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a6d7f9f2e094eeb6f77fd496acb5e6c3f}{Is\+Charge\+Based}} () const
+\item 
+virtual int32 \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a4d60b2169c22d0a049807c41de0cadd4}{Get\+Current\+Charges}} () const
+\item 
+virtual int32 \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a7bd14d94cd14baf7e8f66b7112a0b2c1}{Get\+Max\+Charges}} () const
+\item 
+virtual float \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a5f53940eca5f3cd0930079bbf9aaa693}{Get\+Charge\+Refill\+Time\+Remaining}} () const
+\item 
+virtual FText \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_aae3cf2fb33aa85b5a76843d0952a39b6}{Get\+Prompt\+Description}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FText \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a521ca3f0274e28edde5d44e75d8299b1}{Ability\+Name}}
+\item 
+TObject\+Ptr$<$ UTexture2D $>$ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_aa39d1ebfb973d1e3f3b744170c98c3ad}{Ability\+Icon}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+float \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a7e6fa17e98744690454009d3a3543b2d}{Cooldown\+Duration}} = 0.f
+\item 
+FGameplay\+Tag\+Container \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_aafbad2cffd2117eb21c5d0fa0ed3629c}{Cooldown\+Tags}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+프로젝트 어빌리티 베이스 클래스
+\begin{DoxyItemize}
+\item 쿨다운 지원 (Cooldown\+Duration + Cooldown\+Tags → GE\+\_\+\+Ability\+Cooldown)
+\item 제거 상태 차단 (State.\+Eliminated) 
+\end{DoxyItemize}
+
+\label{doc-constructors}
+\Hypertarget{class_u_wj_world_gameplay_ability_base_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_u_wj_world_gameplay_ability_base_ad7322fe328393ab6e7dcf9bd1c4097f8}\index{UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}!UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}}
+\index{UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}!UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}}
+\doxysubsubsection{\texorpdfstring{UWjWorldGameplayAbilityBase()}{UWjWorldGameplayAbilityBase()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_gameplay_ability_base_ad7322fe328393ab6e7dcf9bd1c4097f8} 
+UWj\+World\+Gameplay\+Ability\+Base::\+\+UWj\+World\+Gameplay\+Ability\+Base (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_u_wj_world_gameplay_ability_base_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_wj_world_gameplay_ability_base_a7d145e5a27753da9e9292cd56d2d146f}\index{UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}!ApplyCooldown@{ApplyCooldown}}
+\index{ApplyCooldown@{ApplyCooldown}!UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}}
+\doxysubsubsection{\texorpdfstring{ApplyCooldown()}{ApplyCooldown()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_gameplay_ability_base_a7d145e5a27753da9e9292cd56d2d146f} 
+void UWj\+World\+Gameplay\+Ability\+Base::\+\+Apply\+Cooldown (\begin{DoxyParamCaption}\item[{const FGameplay\+Ability\+Spec\+Handle}]{Handle}{, }\item[{const FGameplay\+Ability\+Actor\+Info \texorpdfstring{$\ast$}{*}}]{Actor\+Info}{, }\item[{const FGameplay\+Ability\+Activation\+Info}]{Activation\+Info}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_gameplay_ability_base_a5f53940eca5f3cd0930079bbf9aaa693}\index{UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}!GetChargeRefillTimeRemaining@{GetChargeRefillTimeRemaining}}
+\index{GetChargeRefillTimeRemaining@{GetChargeRefillTimeRemaining}!UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}}
+\doxysubsubsection{\texorpdfstring{GetChargeRefillTimeRemaining()}{GetChargeRefillTimeRemaining()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_gameplay_ability_base_a5f53940eca5f3cd0930079bbf9aaa693} 
+virtual float UWj\+World\+Gameplay\+Ability\+Base::\+\+Get\+Charge\+Refill\+Time\+Remaining (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented in \doxymbox{\hyperlink{class_u_g_a___spawn_brick_af62c7815934ba66522d0a65d89b8fb65}{UGA\+\_\+\+Spawn\+Brick}}.
+
+\Hypertarget{class_u_wj_world_gameplay_ability_base_ae7436e7fc243130b9cee911023e7d71f}\index{UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}!GetCooldownTags@{GetCooldownTags}}
+\index{GetCooldownTags@{GetCooldownTags}!UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}}
+\doxysubsubsection{\texorpdfstring{GetCooldownTags()}{GetCooldownTags()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_gameplay_ability_base_ae7436e7fc243130b9cee911023e7d71f} 
+const FGameplay\+Tag\+Container \texorpdfstring{$\ast$}{*} UWj\+World\+Gameplay\+Ability\+Base::\+\+Get\+Cooldown\+Tags (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_gameplay_ability_base_a4d60b2169c22d0a049807c41de0cadd4}\index{UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}!GetCurrentCharges@{GetCurrentCharges}}
+\index{GetCurrentCharges@{GetCurrentCharges}!UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}}
+\doxysubsubsection{\texorpdfstring{GetCurrentCharges()}{GetCurrentCharges()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_gameplay_ability_base_a4d60b2169c22d0a049807c41de0cadd4} 
+virtual int32 UWj\+World\+Gameplay\+Ability\+Base::\+\+Get\+Current\+Charges (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented in \doxymbox{\hyperlink{class_u_g_a___spawn_brick_a92ac350d635859d22b8a7e8188b45204}{UGA\+\_\+\+Spawn\+Brick}}.
+
+\Hypertarget{class_u_wj_world_gameplay_ability_base_a7bd14d94cd14baf7e8f66b7112a0b2c1}\index{UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}!GetMaxCharges@{GetMaxCharges}}
+\index{GetMaxCharges@{GetMaxCharges}!UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}}
+\doxysubsubsection{\texorpdfstring{GetMaxCharges()}{GetMaxCharges()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_gameplay_ability_base_a7bd14d94cd14baf7e8f66b7112a0b2c1} 
+virtual int32 UWj\+World\+Gameplay\+Ability\+Base::\+\+Get\+Max\+Charges (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented in \doxymbox{\hyperlink{class_u_g_a___spawn_brick_ad8c6151bb5ccaafbe7635ef61ba92980}{UGA\+\_\+\+Spawn\+Brick}}.
+
+\Hypertarget{class_u_wj_world_gameplay_ability_base_aae3cf2fb33aa85b5a76843d0952a39b6}\index{UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}!GetPromptDescription@{GetPromptDescription}}
+\index{GetPromptDescription@{GetPromptDescription}!UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}}
+\doxysubsubsection{\texorpdfstring{GetPromptDescription()}{GetPromptDescription()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_gameplay_ability_base_aae3cf2fb33aa85b5a76843d0952a39b6} 
+virtual FText UWj\+World\+Gameplay\+Ability\+Base::\+\+Get\+Prompt\+Description (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Confirm/\+\+Cancel 프롬프트 설명 텍스트 (빈 값이면 프롬프트 표시 안 함) 
+
+Reimplemented in \doxymbox{\hyperlink{class_u_g_a___lift_brick_a6d2c8ea087568a5798bca099b1723cbb}{UGA\+\_\+\+Lift\+Brick}}, and \doxymbox{\hyperlink{class_u_g_a___spawn_brick_a667a3866a69af8ef513249ae113d471d}{UGA\+\_\+\+Spawn\+Brick}}.
+
+\Hypertarget{class_u_wj_world_gameplay_ability_base_a6d7f9f2e094eeb6f77fd496acb5e6c3f}\index{UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}!IsChargeBased@{IsChargeBased}}
+\index{IsChargeBased@{IsChargeBased}!UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}}
+\doxysubsubsection{\texorpdfstring{IsChargeBased()}{IsChargeBased()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_gameplay_ability_base_a6d7f9f2e094eeb6f77fd496acb5e6c3f} 
+virtual bool UWj\+World\+Gameplay\+Ability\+Base::\+\+Is\+Charge\+Based (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented in \doxymbox{\hyperlink{class_u_g_a___spawn_brick_a4465f3e0d751bf4c2e1a19589af66ac5}{UGA\+\_\+\+Spawn\+Brick}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{class_u_wj_world_gameplay_ability_base_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_wj_world_gameplay_ability_base_aa39d1ebfb973d1e3f3b744170c98c3ad}\index{UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}!AbilityIcon@{AbilityIcon}}
+\index{AbilityIcon@{AbilityIcon}!UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}}
+\doxysubsubsection{\texorpdfstring{AbilityIcon}{AbilityIcon}}
+{\footnotesize\ttfamily \label{class_u_wj_world_gameplay_ability_base_aa39d1ebfb973d1e3f3b744170c98c3ad} 
+TObject\+Ptr$<$UTexture2D$>$ UWj\+World\+Gameplay\+Ability\+Base::\+\+Ability\+Icon}
+
+\Hypertarget{class_u_wj_world_gameplay_ability_base_a521ca3f0274e28edde5d44e75d8299b1}\index{UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}!AbilityName@{AbilityName}}
+\index{AbilityName@{AbilityName}!UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}}
+\doxysubsubsection{\texorpdfstring{AbilityName}{AbilityName}}
+{\footnotesize\ttfamily \label{class_u_wj_world_gameplay_ability_base_a521ca3f0274e28edde5d44e75d8299b1} 
+FText UWj\+World\+Gameplay\+Ability\+Base::\+\+Ability\+Name}
+
+\Hypertarget{class_u_wj_world_gameplay_ability_base_a7e6fa17e98744690454009d3a3543b2d}\index{UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}!CooldownDuration@{CooldownDuration}}
+\index{CooldownDuration@{CooldownDuration}!UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}}
+\doxysubsubsection{\texorpdfstring{CooldownDuration}{CooldownDuration}}
+{\footnotesize\ttfamily \label{class_u_wj_world_gameplay_ability_base_a7e6fa17e98744690454009d3a3543b2d} 
+float UWj\+World\+Gameplay\+Ability\+Base::\+\+Cooldown\+Duration = 0.f\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_wj_world_gameplay_ability_base_aafbad2cffd2117eb21c5d0fa0ed3629c}\index{UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}!CooldownTags@{CooldownTags}}
+\index{CooldownTags@{CooldownTags}!UWjWorldGameplayAbilityBase@{UWjWorldGameplayAbilityBase}}
+\doxysubsubsection{\texorpdfstring{CooldownTags}{CooldownTags}}
+{\footnotesize\ttfamily \label{class_u_wj_world_gameplay_ability_base_aafbad2cffd2117eb21c5d0fa0ed3629c} 
+FGameplay\+Tag\+Container UWj\+World\+Gameplay\+Ability\+Base::\+\+Cooldown\+Tags\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Ability\+System/\+\+Abilities/\+\doxymbox{\hyperlink{_wj_world_gameplay_ability_base_8h}{Wj\+World\+Gameplay\+Ability\+Base.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Ability\+System/\+\+Abilities/\+\doxymbox{\hyperlink{_wj_world_gameplay_ability_base_8cpp}{Wj\+World\+Gameplay\+Ability\+Base.\+cpp}}\end{DoxyCompactItemize}

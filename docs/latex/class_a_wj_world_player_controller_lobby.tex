@@ -15,6 +15,8 @@ Inheritance diagram for AWj\+World\+Player\+Controller\+Lobby:\+\begin{figure}[H
 \item 
 \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a4bd4b731d6d0b6f24bb80a0f1b22db52}{AWj\+World\+Player\+Controller\+Lobby}} ()
 \item 
+UWj\+World\+Placement\+Component \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a63edb9ba38870d2e5b95487cb5d5a143}{Get\+Placement\+Component}} () const
+\item 
 void \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a44b7d1f4d1771a2958577abdb5078d93}{Open\+Room\+List}} ()
 \item 
 void \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a78f923bf76121a46dc1f69673ead2873}{Open\+Create\+Room}} ()
@@ -27,6 +29,26 @@ void \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a78f923bf7612
 void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a9f54609e2389a05ceecfda4d692b6e11}{Check\+Input\+Mode}} ()
 \item 
 void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_aa497bc09d850e10891a40ef9fb7a9016}{Change\+Character\+View\+Mode}} (int32 In\+View\+Mode)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_af2f84b216c2519d4736feaa65be5b41c}{Server\+Travel\+Waiting\+Room}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a3c509112f1f97d2ac52e8611040806af}{Cosmetic\+\_\+\+Grant\+Item}} (FString Item\+Id)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_ad253dda2d9cff5026c61161f5bbb8991}{Cosmetic\+\_\+\+Grant\+All}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_af57a7b343a75f3707e0a328ae08a2329}{Cosmetic\+\_\+\+Clear\+Inventory}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a0506c084330637d9bbf633c43f5eecd5}{Cosmetic\+\_\+\+Print\+Inventory}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a79ffaf474dd3e8b20745c3da035e40e7}{Cosmetic\+\_\+\+Print\+Loadout}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a6cedcb2154acc3bb923c9eb37e24c95c}{Cosmetic\+\_\+\+Equip}} (int32 Slot\+Index, FString Item\+Id)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a39a33c2746443f17ed1f15efd948b5e9}{Cosmetic\+\_\+\+Unequip}} (int32 Slot\+Index)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a2578c356c89b8a1c36b81f0e5852b3dd}{Cosmetic\+\_\+\+Refresh\+Inventory}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a0ddfb88f4c166428205938a3211c2475}{Cosmetic\+\_\+\+Open\+Shop}} ()
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
@@ -50,7 +72,8 @@ void \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a1a23990cdf77
 \begin{DoxyItemize}
 \item 로비 화면의 입력 처리
 \item 로비 UI 관리
-\item 매치메이킹 및 모드 선택 관리 
+\item 매치메이킹 및 모드 선택 관리
+\item 오브젝트 배치 시스템 관리 
 \end{DoxyItemize}
 
 \label{doc-constructors}
@@ -83,7 +106,13 @@ Reimplemented from \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_
 {\footnotesize\ttfamily \label{class_a_wj_world_player_controller_lobby_a1a23990cdf7793d8b9019e1f929bd99f} 
 void AWj\+World\+Player\+Controller\+Lobby::\+\+Create\+Lobby\+UI (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
-로비 UI 생성 \Hypertarget{class_a_wj_world_player_controller_lobby_a0845c1b791db95d1221a89913ff231ad}\index{AWjWorldPlayerControllerLobby@{AWjWorldPlayerControllerLobby}!InitializeController@{InitializeController}}
+로비 UI 생성 \Hypertarget{class_a_wj_world_player_controller_lobby_a63edb9ba38870d2e5b95487cb5d5a143}\index{AWjWorldPlayerControllerLobby@{AWjWorldPlayerControllerLobby}!GetPlacementComponent@{GetPlacementComponent}}
+\index{GetPlacementComponent@{GetPlacementComponent}!AWjWorldPlayerControllerLobby@{AWjWorldPlayerControllerLobby}}
+\doxysubsubsection{\texorpdfstring{GetPlacementComponent()}{GetPlacementComponent()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_lobby_a63edb9ba38870d2e5b95487cb5d5a143} 
+UWj\+World\+Placement\+Component \texorpdfstring{$\ast$}{*} AWj\+World\+Player\+Controller\+Lobby::\+\+Get\+Placement\+Component (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+배치 컴포넌트 getter \Hypertarget{class_a_wj_world_player_controller_lobby_a0845c1b791db95d1221a89913ff231ad}\index{AWjWorldPlayerControllerLobby@{AWjWorldPlayerControllerLobby}!InitializeController@{InitializeController}}
 \index{InitializeController@{InitializeController}!AWjWorldPlayerControllerLobby@{AWjWorldPlayerControllerLobby}}
 \doxysubsubsection{\texorpdfstring{InitializeController()}{InitializeController()}}
 {\footnotesize\ttfamily \label{class_a_wj_world_player_controller_lobby_a0845c1b791db95d1221a89913ff231ad} 

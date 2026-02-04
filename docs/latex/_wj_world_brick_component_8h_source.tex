@@ -1,0 +1,160 @@
+\doxysection{Wj\+World\+Brick\+Component.\+h}
+\hypertarget{_wj_world_brick_component_8h_source}{}\label{_wj_world_brick_component_8h_source}\index{Source/WjWorld/GamePlay/Wall/WjWorldBrickComponent.h@{Source/WjWorld/GamePlay/Wall/WjWorldBrickComponent.h}}
+\doxymbox{\hyperlink{_wj_world_brick_component_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Components/SceneComponent.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_gameplay_scene_component_8h}{Core/Components/WjWorldGameplaySceneComponent.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_types_8h}{WjTypes.h}}"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}WjWorldBrickComponent.generated.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_brick_movement}{UWjWorldBrickMovement}};}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }UBoxComponent;}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_brick_actor}{AWjWorldBrickActor}};}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \doxymbox{\hyperlink{_wj_world_brick_component_8h_aa9323cb8ad2c0acc81bde7a15dc2f817}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams}}(FOnWallCollision,\ UWjWorldBrickComponent*,\ CollidedBrick,\ \textcolor{keyword}{const}\ FVector\&,\ WallDirection);}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ UENUM()}
+\DoxyCodeLine{00018\ enum\ class\ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7}{EWjWorldBrickType}}\ :\ uint8}
+\DoxyCodeLine{00019\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7aeb6d8ae6f20283755b339c0dc273988b}{Standard}}\ =\ 1,}
+\DoxyCodeLine{00021\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7ae7f88ae03dba148b8660029cbdfddee3}{Explosive}},}
+\DoxyCodeLine{00022\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7adefe967ad0373b2274fc298f19125ca7}{Moving}},}
+\DoxyCodeLine{00023\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7a5da2d980c7c4678e0a8e9d991a0e2b2c}{Destructible}}}
+\DoxyCodeLine{00024\ \};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ UENUM()}
+\DoxyCodeLine{00027\ enum\ class\ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1362ea0e6f3c47bca0082f11ae30b218}{EWjWorldBrickMoveType}}\ :\ uint8}
+\DoxyCodeLine{00028\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7aeb6d8ae6f20283755b339c0dc273988b}{Standard}},}
+\DoxyCodeLine{00030\ \};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ USTRUCT(BlueprintType)}
+\DoxyCodeLine{00034\ struct\ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties}{FWjWorldBrickProperties}}}
+\DoxyCodeLine{00035\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ FColor\ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties_a5134d3f0350f41d6b546642836d7c345}{GetColorWithBrickType}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00039\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (\doxymbox{\hyperlink{struct_f_wj_world_brick_properties_aa50379b67d3a9c1c04983e64df8e5804}{BrickType}})}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7aeb6d8ae6f20283755b339c0dc273988b}{EWjWorldBrickType::Standard}}:}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FColor::White;}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7ae7f88ae03dba148b8660029cbdfddee3}{EWjWorldBrickType::Explosive}}:}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FColor::Red;}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7adefe967ad0373b2274fc298f19125ca7}{EWjWorldBrickType::Moving}}:}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FColor::Blue;}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7a5da2d980c7c4678e0a8e9d991a0e2b2c}{EWjWorldBrickType::Destructible}}:}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FColor::Black;}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FColor::White;}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \ \ \}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \ \ UPROPERTY(EditAnywhere)}
+\DoxyCodeLine{00056\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7}{EWjWorldBrickType}}\ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties_aa50379b67d3a9c1c04983e64df8e5804}{BrickType}}\ =\ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7}{EWjWorldBrickType}}::\doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7aeb6d8ae6f20283755b339c0dc273988b}{Standard}};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ UPROPERTY(EditAnywhere)}
+\DoxyCodeLine{00059\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1362ea0e6f3c47bca0082f11ae30b218}{EWjWorldBrickMoveType}}\ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties_af5170cae8f7f3a871e1d9a72492209a6}{BrickMoveType}}\ =\ \doxymbox{\hyperlink{_wj_world_brick_component_8h_a1362ea0e6f3c47bca0082f11ae30b218}{EWjWorldBrickMoveType}}::\doxymbox{\hyperlink{_wj_world_brick_component_8h_a1a982a61fafaa5a29bef9ff776ff91c7aeb6d8ae6f20283755b339c0dc273988b}{Standard}};}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ UPROPERTY(EditAnywhere)}
+\DoxyCodeLine{00062\ \ \ \ \ FVector\ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties_ab88471ed6c2c13a087df1f6d5d459000}{Size}}\ =\ FVector(100.0,\ 100.0,\ 100.0);}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ UPROPERTY(EditAnywhere)}
+\DoxyCodeLine{00065\ \ \ \ \ FColor\ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties_ac40645b3646408e3830037a67bf16a4a}{Color}}\ =\ FColor::White;}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00068\ \ \ \ \ FIntPoint\ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties_a844c0293173f6dc28af2c8a984e789d3}{SpawnedGridPosition}}\ =\ FIntPoint::ZeroValue;}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00071\ \ \ \ \ FVector\ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties_ae7f24732f1e185003304b7d895df822d}{CenterOffset}}\ =\ FVector::ZeroVector;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00074\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties_a950085de1a5bbdcbd0038b94273af98b}{RowNum}}\ =\ 0;}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00077\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties_a12d4ca77de497e71f00c68ea5068f80e}{ColumnNum}}\ =\ 0;}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ UPROPERTY(EditAnywhere)}
+\DoxyCodeLine{00080\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties_ad647c8e4006c995725a6ca499c5491b4}{MaxHP}}\ =\ 1;}
+\DoxyCodeLine{00081\ \};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ UCLASS(\ ClassGroup=(Custom),\ meta=(BlueprintSpawnableComponent)\ )}
+\DoxyCodeLine{00084\ class\ WJWORLD\_API\ UWjWorldBrickComponent\ :\ public\ UWjWorldGameplaySceneComponent}
+\DoxyCodeLine{00085\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keyword}{static}\ UStaticMesh*\ GetBrickMesh();}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{float}\ HitBoxSize\ =\ 5.0f;}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \textcolor{keyword}{public}:\ }
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{comment}{//\ Sets\ default\ values\ for\ this\ component's\ properties}}
+\DoxyCodeLine{00095\ \ \ \ \ UWjWorldBrickComponent();}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{void}\ InitializeBrick(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties}{FWjWorldBrickProperties}}\&\ InBrickProperties);}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties}{FWjWorldBrickProperties}}\&\ GetBrickProperties()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ BrickProperties;\ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{void}\ ReserveDestroyBrick(\textcolor{keywordtype}{float}\ AfterSeconds);}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{comment}{//\ HP\ 시스템}}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{void}\ ApplyDamage(int32\ DamageAmount);}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{comment}{//\ 충돌\ 처리}}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordtype}{void}\ HandleWallCollision(\textcolor{keyword}{const}\ FVector\&\ WallDirection);}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordtype}{void}\ PushInDirection(\textcolor{keyword}{const}\ FVector\&\ Direction,\ \textcolor{keywordtype}{float}\ MoveTime);}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{comment}{//\ 델리게이트}}
+\DoxyCodeLine{00109\ \ \ \ \ UPROPERTY(BlueprintAssignable)}
+\DoxyCodeLine{00110\ \ \ \ \ FOnWallCollision\ OnWallCollision;}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ \doxymbox{\hyperlink{class_u_wj_world_brick_movement}{UWjWorldBrickMovement}}*\ GetBrickMovement()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ BrickMovement;\ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{comment}{//\ Called\ when\ the\ game\ starts}}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_brick_actor_a411bdcb34b335c1352576820a660e5ac}{BeginPlay}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ EndPlay(EEndPlayReason::Type\ Reason)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnRegister()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ GetLifetimeReplicatedProps(TArray<\ FLifetimeProperty\ >\&\ OutLifetimeProps)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00121\ \ \ \ \ }
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{keyword}{public}:\ }
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{comment}{//\ Called\ every\ frame}}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ TickComponent(\textcolor{keywordtype}{float}\ DeltaTime,\ ELevelTick\ TickType,\ FActorComponentTickFunction*\ ThisTickFunction)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00127\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordtype}{void}\ OnBrickMovementSignal(int32\ BrickMoveSignalCount);}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordtype}{void}\ Explode();}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordtype}{void}\ DestroyBrick();}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordtype}{void}\ OnRep\_CurrentHP();}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateDamageVisuals();}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00137\ \ \ \ \ UPROPERTY(VisibleAnywhere,\ BlueprintReadOnly,\ meta\ =\ (AllowPrivateAccess\ =\ \textcolor{stringliteral}{"{}true"{}}))}
+\DoxyCodeLine{00138\ \ \ \ \ TObjectPtr<UBoxComponent>\ CenterHitBoxComponent;}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00141\ \ \ \ \ TObjectPtr<UStaticMeshComponent>\ BrickMeshComponent;}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \ \ UPROPERTY(Replicated,\ EditAnywhere,\ BlueprintReadWrite,\ meta\ =\ (AllowPrivateAccess\ =\ \textcolor{stringliteral}{"{}true"{}}))}
+\DoxyCodeLine{00144\ \ \ \ \ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties}{FWjWorldBrickProperties}}\ BrickProperties;}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00147\ \ \ \ \ TObjectPtr<UWjWorldBrickMovement>\ BrickMovement;}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ OnRep\_CurrentHP)}
+\DoxyCodeLine{00150\ \ \ \ \ int32\ CurrentHP\ =\ 1;}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \ \ FTimerHandle\ DestroyHandle;}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \ \ \ \ int32\ CurrentBrickMoveSignalCount\ =\ 0;}
+\DoxyCodeLine{00155\ \};}
+
+\end{DoxyCode}

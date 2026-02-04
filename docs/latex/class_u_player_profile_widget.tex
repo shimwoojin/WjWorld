@@ -1,0 +1,106 @@
+\doxysection{UPlayer\+Profile\+Widget Class Reference}
+\hypertarget{class_u_player_profile_widget}{}\label{class_u_player_profile_widget}\index{UPlayerProfileWidget@{UPlayerProfileWidget}}
+
+
+{\ttfamily \+\#include $<$Player\+Profile\+Widget.\+h$>$}
+
+Inheritance diagram for UPlayer\+Profile\+Widget:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_u_player_profile_widget}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_player_profile_widget_a24bd7ef254db5cfe5332af799926305b}{Native\+Construct}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_player_profile_widget_acc2f04d98fba7a9e2f091ae6365dcebb}{Native\+Destruct}} () override
+\item 
+void \doxymbox{\hyperlink{class_u_player_profile_widget_a79620767478cc964adc7d5956a960230}{Show\+Local\+Profile}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_player_profile_widget_ab4d3efe7159fa2c840b392a4a0d3aa7d}{Show\+Player\+Profile}} (const FUnique\+Net\+Id\+Repl \&Player\+Id, const FText \&Player\+Name, const \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmetic\+Loadout}} \&Loadout)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UImage $>$ \doxymbox{\hyperlink{class_u_player_profile_widget_aac2d81b41bbfd68cb47d4f4b5fc5a0e2}{Character\+Preview\+Image}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_player_profile_widget_a2d31079d6b806e50f9c9946538c25353}{Player\+Name\+Text}}
+\item 
+TObject\+Ptr$<$ UVertical\+Box $>$ \doxymbox{\hyperlink{class_u_player_profile_widget_a45a6c5c2682a0bb447660fcbe4836b08}{Stats\+Container}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_player_profile_widget_a495c019b6596635feb5c9e16cfe862d7}{Close\+Button}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+플레이어 프로필 위젯
+\begin{DoxyItemize}
+\item 3D 캐릭터 프리뷰 (코스메틱 포함)
+\item 플레이어 이름
+\item 미니게임별 스탯 표시 
+\end{DoxyItemize}
+
+\label{doc-func-members}
+\Hypertarget{class_u_player_profile_widget_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_player_profile_widget_a24bd7ef254db5cfe5332af799926305b}\index{UPlayerProfileWidget@{UPlayerProfileWidget}!NativeConstruct@{NativeConstruct}}
+\index{NativeConstruct@{NativeConstruct}!UPlayerProfileWidget@{UPlayerProfileWidget}}
+\doxysubsubsection{\texorpdfstring{NativeConstruct()}{NativeConstruct()}}
+{\footnotesize\ttfamily \label{class_u_player_profile_widget_a24bd7ef254db5cfe5332af799926305b} 
+void UPlayer\+Profile\+Widget::\+\+Native\+Construct (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_player_profile_widget_acc2f04d98fba7a9e2f091ae6365dcebb}\index{UPlayerProfileWidget@{UPlayerProfileWidget}!NativeDestruct@{NativeDestruct}}
+\index{NativeDestruct@{NativeDestruct}!UPlayerProfileWidget@{UPlayerProfileWidget}}
+\doxysubsubsection{\texorpdfstring{NativeDestruct()}{NativeDestruct()}}
+{\footnotesize\ttfamily \label{class_u_player_profile_widget_acc2f04d98fba7a9e2f091ae6365dcebb} 
+void UPlayer\+Profile\+Widget::\+\+Native\+Destruct (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_player_profile_widget_a79620767478cc964adc7d5956a960230}\index{UPlayerProfileWidget@{UPlayerProfileWidget}!ShowLocalProfile@{ShowLocalProfile}}
+\index{ShowLocalProfile@{ShowLocalProfile}!UPlayerProfileWidget@{UPlayerProfileWidget}}
+\doxysubsubsection{\texorpdfstring{ShowLocalProfile()}{ShowLocalProfile()}}
+{\footnotesize\ttfamily \label{class_u_player_profile_widget_a79620767478cc964adc7d5956a960230} 
+void UPlayer\+Profile\+Widget::\+\+Show\+Local\+Profile (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+로컬 플레이어 프로필 표시 \Hypertarget{class_u_player_profile_widget_ab4d3efe7159fa2c840b392a4a0d3aa7d}\index{UPlayerProfileWidget@{UPlayerProfileWidget}!ShowPlayerProfile@{ShowPlayerProfile}}
+\index{ShowPlayerProfile@{ShowPlayerProfile}!UPlayerProfileWidget@{UPlayerProfileWidget}}
+\doxysubsubsection{\texorpdfstring{ShowPlayerProfile()}{ShowPlayerProfile()}}
+{\footnotesize\ttfamily \label{class_u_player_profile_widget_ab4d3efe7159fa2c840b392a4a0d3aa7d} 
+void UPlayer\+Profile\+Widget::\+\+Show\+Player\+Profile (\begin{DoxyParamCaption}\item[{const FUnique\+Net\+Id\+Repl \&}]{Player\+Id}{, }\item[{const FText \&}]{Player\+Name}{, }\item[{const \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmetic\+Loadout}} \&}]{Loadout}{}\end{DoxyParamCaption})}
+
+타 플레이어 프로필 표시 
+
+\label{doc-variable-members}
+\Hypertarget{class_u_player_profile_widget_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_player_profile_widget_aac2d81b41bbfd68cb47d4f4b5fc5a0e2}\index{UPlayerProfileWidget@{UPlayerProfileWidget}!CharacterPreviewImage@{CharacterPreviewImage}}
+\index{CharacterPreviewImage@{CharacterPreviewImage}!UPlayerProfileWidget@{UPlayerProfileWidget}}
+\doxysubsubsection{\texorpdfstring{CharacterPreviewImage}{CharacterPreviewImage}}
+{\footnotesize\ttfamily \label{class_u_player_profile_widget_aac2d81b41bbfd68cb47d4f4b5fc5a0e2} 
+TObject\+Ptr$<$UImage$>$ UPlayer\+Profile\+Widget::\+\+Character\+Preview\+Image\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_player_profile_widget_a495c019b6596635feb5c9e16cfe862d7}\index{UPlayerProfileWidget@{UPlayerProfileWidget}!CloseButton@{CloseButton}}
+\index{CloseButton@{CloseButton}!UPlayerProfileWidget@{UPlayerProfileWidget}}
+\doxysubsubsection{\texorpdfstring{CloseButton}{CloseButton}}
+{\footnotesize\ttfamily \label{class_u_player_profile_widget_a495c019b6596635feb5c9e16cfe862d7} 
+TObject\+Ptr$<$UButton$>$ UPlayer\+Profile\+Widget::\+\+Close\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_player_profile_widget_a2d31079d6b806e50f9c9946538c25353}\index{UPlayerProfileWidget@{UPlayerProfileWidget}!PlayerNameText@{PlayerNameText}}
+\index{PlayerNameText@{PlayerNameText}!UPlayerProfileWidget@{UPlayerProfileWidget}}
+\doxysubsubsection{\texorpdfstring{PlayerNameText}{PlayerNameText}}
+{\footnotesize\ttfamily \label{class_u_player_profile_widget_a2d31079d6b806e50f9c9946538c25353} 
+TObject\+Ptr$<$UText\+Block$>$ UPlayer\+Profile\+Widget::\+\+Player\+Name\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_player_profile_widget_a45a6c5c2682a0bb447660fcbe4836b08}\index{UPlayerProfileWidget@{UPlayerProfileWidget}!StatsContainer@{StatsContainer}}
+\index{StatsContainer@{StatsContainer}!UPlayerProfileWidget@{UPlayerProfileWidget}}
+\doxysubsubsection{\texorpdfstring{StatsContainer}{StatsContainer}}
+{\footnotesize\ttfamily \label{class_u_player_profile_widget_a45a6c5c2682a0bb447660fcbe4836b08} 
+TObject\+Ptr$<$UVertical\+Box$>$ UPlayer\+Profile\+Widget::\+\+Stats\+Container\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Profile/\+\doxymbox{\hyperlink{_player_profile_widget_8h}{Player\+Profile\+Widget.\+h}}\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Profile/\+\doxymbox{\hyperlink{_player_profile_widget_8cpp}{Player\+Profile\+Widget.\+cpp}}\end{DoxyCompactItemize}

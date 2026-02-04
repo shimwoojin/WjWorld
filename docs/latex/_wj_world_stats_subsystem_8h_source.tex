@@ -1,0 +1,80 @@
+\doxysection{Wj\+World\+Stats\+Subsystem.\+h}
+\hypertarget{_wj_world_stats_subsystem_8h_source}{}\label{_wj_world_stats_subsystem_8h_source}\index{Source/WjWorld/Stats/WjWorldStatsSubsystem.h@{Source/WjWorld/Stats/WjWorldStatsSubsystem.h}}
+\doxymbox{\hyperlink{_wj_world_stats_subsystem_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Subsystems/GameInstanceSubsystem.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}GameFramework/OnlineReplStructs.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldStatsSubsystem.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \doxymbox{\hyperlink{_wj_world_stats_subsystem_8h_a7f04ce738734e8f67e2d7d2ce1acf8ff}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE}}(FOnLocalStatsReady);}
+\DoxyCodeLine{00011\ \doxymbox{\hyperlink{_wj_world_stats_subsystem_8h_a7b25020780c6879cdb54444d77f4213d}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnUserStatsReceived,\ \textcolor{keyword}{const}\ FUniqueNetIdRepl\&,\ UserId);}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00019\ UCLASS()}
+\DoxyCodeLine{00020\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem}{UWjWorldStatsSubsystem}}\ :\ public\ UGameInstanceSubsystem}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_a5b65f54631b15aaedfbe1401cf5cf172}{Initialize}}(FSubsystemCollectionBase\&\ Collection)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_a028336cd7006832a9cb521a746a257a4}{Deinitialize}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/\ 로컬\ 플레이어\ 스탯\ -\/-\/-\/-\/}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00031\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Stats"{}})}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_a84b7f414446ba66ce8b7657f5223cccd}{RequestCurrentStats}}();}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00035\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Stats"{}})}
+\DoxyCodeLine{00036\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_afe1a02d40ec997b861d25800d9e33315}{GetLocalStat}}(FName\ StatName)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00039\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Stats"{}})}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_af6e8e16ad190044da13d2a0586c3ddf5}{IncrementLocalStat}}(FName\ StatName,\ int32\ Delta\ =\ 1);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00043\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Stats"{}})}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_ab0a54c28f3c805f5d97ab18ef2186d06}{StoreStats}}();}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/\ 타\ 플레이어\ 스탯\ (비동기)\ -\/-\/-\/-\/}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00049\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Stats"{}})}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_afc343f85c3e97cc432f37ce43e1d0bed}{RequestUserStats}}(\textcolor{keyword}{const}\ FUniqueNetIdRepl\&\ UserId);}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00053\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Stats"{}})}
+\DoxyCodeLine{00054\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_a1438530f8801b24fedb3f8043be708e5}{GetUserStat}}(\textcolor{keyword}{const}\ FUniqueNetIdRepl\&\ UserId,\ FName\ StatName)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00057\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Stats"{}})}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_aefac722fa58ca16d67c656563b0686c4}{IsUserStatsReady}}(\textcolor{keyword}{const}\ FUniqueNetIdRepl\&\ UserId)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/\ 델리게이트\ -\/-\/-\/-\/}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}Stats"{}})}
+\DoxyCodeLine{00063\ \ \ \ \ FOnLocalStatsReady\ \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_adbe14c5893a21d2d87c5861e64604688}{OnLocalStatsReady}};}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}Stats"{}})}
+\DoxyCodeLine{00066\ \ \ \ \ FOnUserStatsReceived\ \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_a004bddd1e1a3d42880df5184a4268d9e}{OnUserStatsReceived}};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ private:}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordtype}{void}\ SaveLocalStatsToConfig();}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{void}\ LoadLocalStatsFromConfig();}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#if\ WITH\_STEAM}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{void}\ OnSteamUserStatsReceived(uint64\ SteamId,\ \textcolor{keywordtype}{bool}\ bSuccess);}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{void}\ OnSteamUserStatsStored(uint64\ SteamId,\ \textcolor{keywordtype}{bool}\ bSuccess);}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{bool}\ bLocalStatsLoaded\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00084\ \ \ \ \ TMap<FName,\ int32>\ LocalStats;}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00087\ \ \ \ \ TMap<FString,\ TMap<FName,\ int32>>\ UserStatsCache;}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00090\ \ \ \ \ TSet<FString>\ ReadyUserIds;}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ FString\ StatsConfigSection;}
+\DoxyCodeLine{00093\ \};}
+
+\end{DoxyCode}

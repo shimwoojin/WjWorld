@@ -12,6 +12,7 @@ var class_u_waiting_room_h_u_d_widget =
     [ "LeaveButton", "class_u_waiting_room_h_u_d_widget.html#a04a3362d6ba4b1c18c00bbc1dbda00ee", null ],
     [ "PlayerCountText", "class_u_waiting_room_h_u_d_widget.html#a4a17126c6a594000b9d0705620393700", null ],
     [ "PlayerListContainer", "class_u_waiting_room_h_u_d_widget.html#a90cbbb5f781432b66160bc4a760a2222", null ],
+    [ "ProfileWidgetClass", "class_u_waiting_room_h_u_d_widget.html#a6ec50bef5623789d22149768b081725c", null ],
     [ "ReadyButton", "class_u_waiting_room_h_u_d_widget.html#ac41ff74540551276855a46122e70ba46", null ],
     [ "ReadyButtonText", "class_u_waiting_room_h_u_d_widget.html#ae7ddcefe7617f4dbc1b4e13583ada0c2", null ],
     [ "RoomNameText", "class_u_waiting_room_h_u_d_widget.html#a7aa064d6cd051ef7b8c708d051ed2eea", null ],

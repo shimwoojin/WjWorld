@@ -1,0 +1,101 @@
+\doxysection{UGameplay\+Global\+HUDWidget Class Reference}
+\hypertarget{class_u_gameplay_global_h_u_d_widget}{}\label{class_u_gameplay_global_h_u_d_widget}\index{UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}}
+
+
+{\ttfamily \+\#include $<$Gameplay\+Global\+HUDWidget.\+h$>$}
+
+Inheritance diagram for UGameplay\+Global\+HUDWidget:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_u_gameplay_global_h_u_d_widget}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget_afb2fe575f0635b11bacf317bc6bb6c39}{Start\+Count\+Down}} (float Count\+Down)
+\item 
+void \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget_a7b5e42f4700af72e75206ddcacf14d58}{End\+Count\+Down}} (float Count\+Down)
+\item 
+void \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget_af32da2ee9d5c7c39f27d96e45564b07d}{Show\+Game\+Result\+Text}} (const FString \&Result\+Text, float Duration=3.\+0f)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget_ae32a9955073f5c32c71624930a4ac968}{Native\+Construct}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget_ac4425ad8fb6e22ba9e36dc4570f39c62}{Native\+Tick}} (const FGeometry \&My\+Geometry, float In\+Delta\+Time) override
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget_ae3bd45b8893309da04c2c5ad7c84b74a}{Game\+Start\+Count\+Text}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget_aa03384294ab96617cdfb45d3803e3fd6}{Game\+End\+Count\+Text}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget_ac9d0399c8f83cdab52a07420677b46ca}{Game\+Result\+Text}}
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{class_u_gameplay_global_h_u_d_widget_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_gameplay_global_h_u_d_widget_a7b5e42f4700af72e75206ddcacf14d58}\index{UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}!EndCountDown@{EndCountDown}}
+\index{EndCountDown@{EndCountDown}!UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}}
+\doxysubsubsection{\texorpdfstring{EndCountDown()}{EndCountDown()}}
+{\footnotesize\ttfamily \label{class_u_gameplay_global_h_u_d_widget_a7b5e42f4700af72e75206ddcacf14d58} 
+void UGameplay\+Global\+HUDWidget::\+\+End\+Count\+Down (\begin{DoxyParamCaption}\item[{float}]{Count\+Down}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_gameplay_global_h_u_d_widget_ae32a9955073f5c32c71624930a4ac968}\index{UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}!NativeConstruct@{NativeConstruct}}
+\index{NativeConstruct@{NativeConstruct}!UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}}
+\doxysubsubsection{\texorpdfstring{NativeConstruct()}{NativeConstruct()}}
+{\footnotesize\ttfamily \label{class_u_gameplay_global_h_u_d_widget_ae32a9955073f5c32c71624930a4ac968} 
+void UGameplay\+Global\+HUDWidget::\+\+Native\+Construct (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_gameplay_global_h_u_d_widget_ac4425ad8fb6e22ba9e36dc4570f39c62}\index{UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}!NativeTick@{NativeTick}}
+\index{NativeTick@{NativeTick}!UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}}
+\doxysubsubsection{\texorpdfstring{NativeTick()}{NativeTick()}}
+{\footnotesize\ttfamily \label{class_u_gameplay_global_h_u_d_widget_ac4425ad8fb6e22ba9e36dc4570f39c62} 
+void UGameplay\+Global\+HUDWidget::\+\+Native\+Tick (\begin{DoxyParamCaption}\item[{const FGeometry \&}]{My\+Geometry}{, }\item[{float}]{In\+Delta\+Time}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_gameplay_global_h_u_d_widget_af32da2ee9d5c7c39f27d96e45564b07d}\index{UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}!ShowGameResultText@{ShowGameResultText}}
+\index{ShowGameResultText@{ShowGameResultText}!UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}}
+\doxysubsubsection{\texorpdfstring{ShowGameResultText()}{ShowGameResultText()}}
+{\footnotesize\ttfamily \label{class_u_gameplay_global_h_u_d_widget_af32da2ee9d5c7c39f27d96e45564b07d} 
+void UGameplay\+Global\+HUDWidget::\+\+Show\+Game\+Result\+Text (\begin{DoxyParamCaption}\item[{const FString \&}]{Result\+Text}{, }\item[{float}]{Duration}{ = {\ttfamily 3.0f}}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_gameplay_global_h_u_d_widget_afb2fe575f0635b11bacf317bc6bb6c39}\index{UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}!StartCountDown@{StartCountDown}}
+\index{StartCountDown@{StartCountDown}!UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}}
+\doxysubsubsection{\texorpdfstring{StartCountDown()}{StartCountDown()}}
+{\footnotesize\ttfamily \label{class_u_gameplay_global_h_u_d_widget_afb2fe575f0635b11bacf317bc6bb6c39} 
+void UGameplay\+Global\+HUDWidget::\+\+Start\+Count\+Down (\begin{DoxyParamCaption}\item[{float}]{Count\+Down}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{class_u_gameplay_global_h_u_d_widget_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_gameplay_global_h_u_d_widget_aa03384294ab96617cdfb45d3803e3fd6}\index{UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}!GameEndCountText@{GameEndCountText}}
+\index{GameEndCountText@{GameEndCountText}!UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}}
+\doxysubsubsection{\texorpdfstring{GameEndCountText}{GameEndCountText}}
+{\footnotesize\ttfamily \label{class_u_gameplay_global_h_u_d_widget_aa03384294ab96617cdfb45d3803e3fd6} 
+TObject\+Ptr$<$UText\+Block$>$ UGameplay\+Global\+HUDWidget::\+\+Game\+End\+Count\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_gameplay_global_h_u_d_widget_ac9d0399c8f83cdab52a07420677b46ca}\index{UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}!GameResultText@{GameResultText}}
+\index{GameResultText@{GameResultText}!UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}}
+\doxysubsubsection{\texorpdfstring{GameResultText}{GameResultText}}
+{\footnotesize\ttfamily \label{class_u_gameplay_global_h_u_d_widget_ac9d0399c8f83cdab52a07420677b46ca} 
+TObject\+Ptr$<$UText\+Block$>$ UGameplay\+Global\+HUDWidget::\+\+Game\+Result\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_gameplay_global_h_u_d_widget_ae3bd45b8893309da04c2c5ad7c84b74a}\index{UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}!GameStartCountText@{GameStartCountText}}
+\index{GameStartCountText@{GameStartCountText}!UGameplayGlobalHUDWidget@{UGameplayGlobalHUDWidget}}
+\doxysubsubsection{\texorpdfstring{GameStartCountText}{GameStartCountText}}
+{\footnotesize\ttfamily \label{class_u_gameplay_global_h_u_d_widget_ae3bd45b8893309da04c2c5ad7c84b74a} 
+TObject\+Ptr$<$UText\+Block$>$ UGameplay\+Global\+HUDWidget::\+\+Game\+Start\+Count\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+HUD/\+\doxymbox{\hyperlink{_gameplay_global_h_u_d_widget_8h}{Gameplay\+Global\+HUDWidget.\+h}}\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+HUD/\+\doxymbox{\hyperlink{_gameplay_global_h_u_d_widget_8cpp}{Gameplay\+Global\+HUDWidget.\+cpp}}\end{DoxyCompactItemize}

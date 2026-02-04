@@ -1,0 +1,241 @@
+\doxysection{AWj\+World\+Character\+Play Class Reference}
+\hypertarget{class_a_wj_world_character_play}{}\label{class_a_wj_world_character_play}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Character\+Play.\+h$>$}
+
+Inheritance diagram for AWj\+World\+Character\+Play:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_a_wj_world_character_play}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_character_play_a8915cc410fb0a63dd17eb4a1ee7483a2}{AWj\+World\+Character\+Play}} ()
+\item 
+virtual UAbility\+System\+Component \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_wj_world_character_play_aa59592c2cbe6b9abfe2637e8df7f12b8}{Get\+Ability\+System\+Component}} () const override
+\item 
+\doxymbox{\hyperlink{class_u_wj_world_ability_system_component}{UWj\+World\+Ability\+System\+Component}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_wj_world_character_play_ac4a8d78a937c9a56aae23fbaf4684860}{Get\+WJAbility\+System\+Component}} () const
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_play_aeb70e38019e2800e5f4dbc603f9043b2}{Get\+Lifetime\+Replicated\+Props}} (TArray$<$ FLifetime\+Property $>$ \&Out\+Lifetime\+Props) const override
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_character_play_a16e2c4c576127eaca3652aa6cf604aba}{On\+Eliminated}} ()
+\item 
+bool \doxymbox{\hyperlink{class_a_wj_world_character_play_a3440879f4a4d7006e31deb6d022a73be}{Is\+Eliminated}} () const
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_character_play_acdedfc3cd736266d7ed5f2587e1dedce}{Show\+Ability\+Prompt}} (const FText \&Confirm\+Key\+Name, const FText \&Cancel\+Key\+Name, const FText \&Description)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_character_play_a2bd7467a5f44ac0b3f4a3313eeaee6f8}{Hide\+Ability\+Prompt}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_a_wj_world_character_base}{AWj\+World\+Character\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_character_base_a89132c9b76acde3a302c706d1931769a}{AWj\+World\+Character\+Base}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_character_base_aea545fa94580dbb8ef63571ca6f30e20}{Set\+Character\+View\+Mode}} (\doxymbox{\hyperlink{_wj_camera_types_8h_a3a319438a0221a6fe61b590733aa450a}{ECharacter\+Camera\+Mode}} New\+View\+Mode)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_character_base_a0090cb0b54ce850e04cb8268de590284}{Set\+Character\+View\+Mode}} (const FGameplay\+Tag \&New\+View\+Mode)
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a645d77e1ca3055c7b4450aa4d5eb111b}{Tick}} (float Delta\+Time) override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a8db3fd1326b0c7b43a2918902d3ffd1c}{Setup\+Player\+Input\+Component}} (class UInput\+Component \texorpdfstring{$\ast$}{*}Player\+Input\+Component) override
+\item 
+TObject\+Ptr$<$ UGameplay\+Camera\+Component $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a37598085f9ad1a4c22117c219844d7d9}{Get\+Game\+Play\+Camera}} ()
+\item 
+UInput\+Mapping\+Context \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_wj_world_character_base_a81631a3a599046bf627cf7d608cdf77f}{Get\+Default\+Mapping\+Context}} () const
+\item 
+UWj\+World\+Cosmetic\+Component \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_wj_world_character_base_a41d508753a4083abaef3233100ca0957}{Get\+Cosmetic\+Component}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8 \doxymbox{\hyperlink{class_a_wj_world_character_play_a541bc60ca53d4e87a62c4c898a11d945}{b\+Setup\+Data\+Asset\+Call}}:\+1
+\begin{DoxyCompactList}\small\item\em UCharacter\+Play\+Setup\+Data\+Asset::\+\+Initialize의 성공적인 호출 여부 \end{DoxyCompactList}\item 
+uint8 \doxymbox{\hyperlink{class_a_wj_world_character_play_abc2bc9ab41388b67ec40801a1449bafa}{b\+Setup\+Data\+Asset\+Final}}:\+1
+\begin{DoxyCompactList}\small\item\em \doxylink{class_u_character_play_setup_data_asset_a99af618188e077abe95e1537cdd2993d}{UCharacter\+Play\+Setup\+Data\+Asset::\+\+Initialize} 호출 이후 비동기 초기화까지 전부 확인된지 여부 \end{DoxyCompactList}\item 
+FOn\+Dead\+Stack\+Counthanged \doxymbox{\hyperlink{class_a_wj_world_character_play_ae5beecdd1d8e530a18fd2cfcc02872b5}{On\+Dead\+Stack\+Count\+Changed}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \doxymbox{\hyperlink{class_a_wj_world_character_base}{AWj\+World\+Character\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+FOn\+Character\+View\+Mode\+Changed \doxymbox{\hyperlink{class_a_wj_world_character_base_ade363b8269f3199fff404e8dfefe27a2}{On\+Character\+View\+Mode\+Changed}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_play_a652ec81b7c9e82214614f11c5453f907}{Post\+Initialize\+Components}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_play_a367e459594df99f7ccbcf4252cb056cc}{On\+Rep\+\_\+\+Player\+State}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_play_a2bac2ed41ac307ff190e52f2d654866b}{Possessed\+By}} (AController \texorpdfstring{$\ast$}{*}New\+Controller) override
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_character_play_ac69540a09e7919944447af34bbfdb6aa}{On\+Rep\+\_\+\+Is\+Eliminated}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_character_play_aa0f7de868216d85e20d5aaecae062489}{Handle\+Elimination\+Effects}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \doxymbox{\hyperlink{class_a_wj_world_character_base}{AWj\+World\+Character\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a38194801545a2d8433deb48ce36300d9}{Begin\+Play}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a6970818ef125ea9ce78baa7ae4247fca}{Initialize\+Character}} ()
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_accfb44f05f97b60c21c14ca7c07c8104}{Setup\+Input\+Bindings}} (class UInput\+Component \texorpdfstring{$\ast$}{*}Player\+Input\+Component)
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_ae0763ed841b7861571568921978c477e}{Move}} (const FInput\+Action\+Value \&Value)
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_character_base_a91d6696a44335c36fa3dcd8dd5d94395}{Interact}} (const FInput\+Action\+Value \&Value)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_a_wj_world_character_base}{AWj\+World\+Character\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UGameplay\+Camera\+Component $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a1e0d571d583e75bdfacbb250be2eb13f}{Game\+Play\+Camera}}
+\item 
+TSoft\+Object\+Ptr$<$ USkeletal\+Mesh $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a6a4c84e9691b5d7ae7c26a3504e5ec42}{Default\+Skeletal\+Mesh}}
+\item 
+TSoft\+Class\+Ptr$<$ UAnim\+Instance $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a6f9a2a10161b54d7eb04ef0553ad0ce1}{Default\+Anim\+Blueprint\+Class}}
+\item 
+TSoft\+Object\+Ptr$<$ UInput\+Mapping\+Context $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a176f4d6ce4609a4820bcd7de6e8997ea}{Default\+Mapping\+Context}}
+\item 
+TObject\+Ptr$<$ UWj\+World\+Cosmetic\+Component $>$ \doxymbox{\hyperlink{class_a_wj_world_character_base_a9a560bb4c3f5eb7769914966dd639430}{Cosmetic\+Component}}
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{class_a_wj_world_character_play_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_a_wj_world_character_play_a8915cc410fb0a63dd17eb4a1ee7483a2}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\doxysubsubsection{\texorpdfstring{AWjWorldCharacterPlay()}{AWjWorldCharacterPlay()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_play_a8915cc410fb0a63dd17eb4a1ee7483a2} 
+AWj\+World\+Character\+Play::\+\+AWj\+World\+Character\+Play (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_a_wj_world_character_play_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_a_wj_world_character_play_aa59592c2cbe6b9abfe2637e8df7f12b8}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!GetAbilitySystemComponent@{GetAbilitySystemComponent}}
+\index{GetAbilitySystemComponent@{GetAbilitySystemComponent}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\doxysubsubsection{\texorpdfstring{GetAbilitySystemComponent()}{GetAbilitySystemComponent()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_play_aa59592c2cbe6b9abfe2637e8df7f12b8} 
+UAbility\+System\+Component \texorpdfstring{$\ast$}{*} AWj\+World\+Character\+Play::\+\+Get\+Ability\+System\+Component (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_character_play_aeb70e38019e2800e5f4dbc603f9043b2}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!GetLifetimeReplicatedProps@{GetLifetimeReplicatedProps}}
+\index{GetLifetimeReplicatedProps@{GetLifetimeReplicatedProps}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\doxysubsubsection{\texorpdfstring{GetLifetimeReplicatedProps()}{GetLifetimeReplicatedProps()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_play_aeb70e38019e2800e5f4dbc603f9043b2} 
+void AWj\+World\+Character\+Play::\+\+Get\+Lifetime\+Replicated\+Props (\begin{DoxyParamCaption}\item[{TArray$<$ FLifetime\+Property $>$ \&}]{Out\+Lifetime\+Props}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_character_play_ac4a8d78a937c9a56aae23fbaf4684860}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!GetWJAbilitySystemComponent@{GetWJAbilitySystemComponent}}
+\index{GetWJAbilitySystemComponent@{GetWJAbilitySystemComponent}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\doxysubsubsection{\texorpdfstring{GetWJAbilitySystemComponent()}{GetWJAbilitySystemComponent()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_play_ac4a8d78a937c9a56aae23fbaf4684860} 
+\doxymbox{\hyperlink{class_u_wj_world_ability_system_component}{UWj\+World\+Ability\+System\+Component}} \texorpdfstring{$\ast$}{*} AWj\+World\+Character\+Play::\+\+Get\+WJAbility\+System\+Component (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_a_wj_world_character_play_aa0f7de868216d85e20d5aaecae062489}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!HandleEliminationEffects@{HandleEliminationEffects}}
+\index{HandleEliminationEffects@{HandleEliminationEffects}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\doxysubsubsection{\texorpdfstring{HandleEliminationEffects()}{HandleEliminationEffects()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_play_aa0f7de868216d85e20d5aaecae062489} 
+void AWj\+World\+Character\+Play::\+\+Handle\+Elimination\+Effects (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_character_play_a2bd7467a5f44ac0b3f4a3313eeaee6f8}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!HideAbilityPrompt@{HideAbilityPrompt}}
+\index{HideAbilityPrompt@{HideAbilityPrompt}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\doxysubsubsection{\texorpdfstring{HideAbilityPrompt()}{HideAbilityPrompt()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_play_a2bd7467a5f44ac0b3f4a3313eeaee6f8} 
+void AWj\+World\+Character\+Play::\+\+Hide\+Ability\+Prompt (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_a_wj_world_character_play_a3440879f4a4d7006e31deb6d022a73be}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!IsEliminated@{IsEliminated}}
+\index{IsEliminated@{IsEliminated}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\doxysubsubsection{\texorpdfstring{IsEliminated()}{IsEliminated()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_play_a3440879f4a4d7006e31deb6d022a73be} 
+bool AWj\+World\+Character\+Play::\+\+Is\+Eliminated (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_a_wj_world_character_play_a16e2c4c576127eaca3652aa6cf604aba}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!OnEliminated@{OnEliminated}}
+\index{OnEliminated@{OnEliminated}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\doxysubsubsection{\texorpdfstring{OnEliminated()}{OnEliminated()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_play_a16e2c4c576127eaca3652aa6cf604aba} 
+void AWj\+World\+Character\+Play::\+\+On\+Eliminated (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_a_wj_world_character_play_ac69540a09e7919944447af34bbfdb6aa}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!OnRep\_IsEliminated@{OnRep\_IsEliminated}}
+\index{OnRep\_IsEliminated@{OnRep\_IsEliminated}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\doxysubsubsection{\texorpdfstring{OnRep\_IsEliminated()}{OnRep\_IsEliminated()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_play_ac69540a09e7919944447af34bbfdb6aa} 
+void AWj\+World\+Character\+Play::\+\+On\+Rep\+\_\+\+Is\+Eliminated (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_a_wj_world_character_play_a367e459594df99f7ccbcf4252cb056cc}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!OnRep\_PlayerState@{OnRep\_PlayerState}}
+\index{OnRep\_PlayerState@{OnRep\_PlayerState}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\doxysubsubsection{\texorpdfstring{OnRep\_PlayerState()}{OnRep\_PlayerState()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_play_a367e459594df99f7ccbcf4252cb056cc} 
+void AWj\+World\+Character\+Play::\+\+On\+Rep\+\_\+\+Player\+State (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_a_wj_world_character_base_a25cd0af46e146c8e95e87c640cd5b593}{AWj\+World\+Character\+Base}}.
+
+\Hypertarget{class_a_wj_world_character_play_a2bac2ed41ac307ff190e52f2d654866b}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!PossessedBy@{PossessedBy}}
+\index{PossessedBy@{PossessedBy}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\doxysubsubsection{\texorpdfstring{PossessedBy()}{PossessedBy()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_play_a2bac2ed41ac307ff190e52f2d654866b} 
+void AWj\+World\+Character\+Play::\+\+Possessed\+By (\begin{DoxyParamCaption}\item[{AController \texorpdfstring{$\ast$}{*}}]{New\+Controller}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_a_wj_world_character_base_ab7642bf2689f3be3aa21eb28aecffa69}{AWj\+World\+Character\+Base}}.
+
+\Hypertarget{class_a_wj_world_character_play_a652ec81b7c9e82214614f11c5453f907}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!PostInitializeComponents@{PostInitializeComponents}}
+\index{PostInitializeComponents@{PostInitializeComponents}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\doxysubsubsection{\texorpdfstring{PostInitializeComponents()}{PostInitializeComponents()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_play_a652ec81b7c9e82214614f11c5453f907} 
+void AWj\+World\+Character\+Play::\+\+Post\+Initialize\+Components (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_a_wj_world_character_base_a5ebcfc311e7cd5b917dafe7846af70e7}{AWj\+World\+Character\+Base}}.
+
+\Hypertarget{class_a_wj_world_character_play_acdedfc3cd736266d7ed5f2587e1dedce}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!ShowAbilityPrompt@{ShowAbilityPrompt}}
+\index{ShowAbilityPrompt@{ShowAbilityPrompt}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\doxysubsubsection{\texorpdfstring{ShowAbilityPrompt()}{ShowAbilityPrompt()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_play_acdedfc3cd736266d7ed5f2587e1dedce} 
+void AWj\+World\+Character\+Play::\+\+Show\+Ability\+Prompt (\begin{DoxyParamCaption}\item[{const FText \&}]{Confirm\+Key\+Name}{, }\item[{const FText \&}]{Cancel\+Key\+Name}{, }\item[{const FText \&}]{Description}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{class_a_wj_world_character_play_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_a_wj_world_character_play_a541bc60ca53d4e87a62c4c898a11d945}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!bSetupDataAssetCall@{bSetupDataAssetCall}}
+\index{bSetupDataAssetCall@{bSetupDataAssetCall}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\doxysubsubsection{\texorpdfstring{bSetupDataAssetCall}{bSetupDataAssetCall}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_play_a541bc60ca53d4e87a62c4c898a11d945} 
+uint8 AWj\+World\+Character\+Play::\+b\+Setup\+Data\+Asset\+Call}
+
+
+
+UCharacter\+Play\+Setup\+Data\+Asset::\+\+Initialize의 성공적인 호출 여부 
+
+\Hypertarget{class_a_wj_world_character_play_abc2bc9ab41388b67ec40801a1449bafa}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!bSetupDataAssetFinal@{bSetupDataAssetFinal}}
+\index{bSetupDataAssetFinal@{bSetupDataAssetFinal}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\doxysubsubsection{\texorpdfstring{bSetupDataAssetFinal}{bSetupDataAssetFinal}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_play_abc2bc9ab41388b67ec40801a1449bafa} 
+uint8 AWj\+World\+Character\+Play::\+b\+Setup\+Data\+Asset\+Final}
+
+
+
+\doxylink{class_u_character_play_setup_data_asset_a99af618188e077abe95e1537cdd2993d}{UCharacter\+Play\+Setup\+Data\+Asset::\+\+Initialize} 호출 이후 비동기 초기화까지 전부 확인된지 여부 
+
+\Hypertarget{class_a_wj_world_character_play_ae5beecdd1d8e530a18fd2cfcc02872b5}\index{AWjWorldCharacterPlay@{AWjWorldCharacterPlay}!OnDeadStackCountChanged@{OnDeadStackCountChanged}}
+\index{OnDeadStackCountChanged@{OnDeadStackCountChanged}!AWjWorldCharacterPlay@{AWjWorldCharacterPlay}}
+\doxysubsubsection{\texorpdfstring{OnDeadStackCountChanged}{OnDeadStackCountChanged}}
+{\footnotesize\ttfamily \label{class_a_wj_world_character_play_ae5beecdd1d8e530a18fd2cfcc02872b5} 
+FOn\+Dead\+Stack\+Counthanged AWj\+World\+Character\+Play::\+\+On\+Dead\+Stack\+Count\+Changed}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Play/\+\doxymbox{\hyperlink{_wj_world_character_play_8h}{Wj\+World\+Character\+Play.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Play/\+\doxymbox{\hyperlink{_wj_world_character_play_8cpp}{Wj\+World\+Character\+Play.\+cpp}}\end{DoxyCompactItemize}

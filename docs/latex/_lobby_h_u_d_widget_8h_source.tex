@@ -11,44 +11,77 @@
 \DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}LobbyHUDWidget.generated.h"{}}}
 \DoxyCodeLine{00008\ }
 \DoxyCodeLine{00009\ \textcolor{keyword}{class\ }UButton;}
-\DoxyCodeLine{00010\ }
-\DoxyCodeLine{00020\ UCLASS()}
-\DoxyCodeLine{00021\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget}{ULobbyHUDWidget}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}}
-\DoxyCodeLine{00022\ \{}
-\DoxyCodeLine{00023\ \ \ \ \ GENERATED\_BODY()}
-\DoxyCodeLine{00024\ \ \ \ \ }
-\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a828bde5e15431d48ce0cdf9506b82c75}{NativeConstruct}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_player_profile_widget}{UPlayerProfileWidget}};}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_cosmetic_main_window}{UCosmeticMainWindow}};}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00023\ UCLASS()}
+\DoxyCodeLine{00024\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget}{ULobbyHUDWidget}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}}
+\DoxyCodeLine{00025\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ GENERATED\_BODY()}
 \DoxyCodeLine{00027\ }
-\DoxyCodeLine{00028\ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00029\ \ \ \ \ \textcolor{comment}{//\string~\ UI\ 위젯\ 바인딩\ (Blueprint에서\ 설정)}}
+\DoxyCodeLine{00028\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_cosmetic_main_window_a8d18c8fe1e532aedfc1d510eb9ef9623}{NativeConstruct}}()\ \textcolor{keyword}{override};}
 \DoxyCodeLine{00030\ }
-\DoxyCodeLine{00032\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
-\DoxyCodeLine{00033\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a5a239c793542e14e2b9301eabc578f1d}{CreateRoomButton}};}
-\DoxyCodeLine{00034\ }
-\DoxyCodeLine{00036\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
-\DoxyCodeLine{00037\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a09fca02b055e19887df25961e7b1a55f}{FindRoomButton}};}
-\DoxyCodeLine{00038\ }
-\DoxyCodeLine{00040\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
-\DoxyCodeLine{00041\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a5da82689672aab9464bc2e9956d049bc}{DirectConnectButton}};}
-\DoxyCodeLine{00042\ }
-\DoxyCodeLine{00044\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
-\DoxyCodeLine{00045\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a787a9949d541379d9d6ff3bc5ee0fe47}{SettingsButton}};}
-\DoxyCodeLine{00046\ }
-\DoxyCodeLine{00047\ protected:}
-\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{//\string~\ 버튼\ 클릭\ 이벤트}}
+\DoxyCodeLine{00031\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\string~\ UI\ 위젯\ 바인딩\ (Blueprint에서\ 설정)}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00035\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00036\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a5a239c793542e14e2b9301eabc578f1d}{CreateRoomButton}};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00039\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00040\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a09fca02b055e19887df25961e7b1a55f}{FindRoomButton}};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00043\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00044\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a5da82689672aab9464bc2e9956d049bc}{DirectConnectButton}};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00047\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00048\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a787a9949d541379d9d6ff3bc5ee0fe47}{SettingsButton}};}
 \DoxyCodeLine{00049\ }
-\DoxyCodeLine{00050\ \ \ \ \ UFUNCTION()}
-\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a81e19792628edf395ac8f09dfa771f81}{OnCreateRoomClicked}}();}
-\DoxyCodeLine{00052\ }
-\DoxyCodeLine{00053\ \ \ \ \ UFUNCTION()}
-\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_ae0ce111cd6335b8627821038680865ab}{OnFindRoomClicked}}();}
-\DoxyCodeLine{00055\ }
-\DoxyCodeLine{00056\ \ \ \ \ UFUNCTION()}
-\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_aa0aaca101acda5a9c87ed62f6fbb30c2}{OnDirectConnectClicked}}();}
-\DoxyCodeLine{00058\ }
-\DoxyCodeLine{00059\ \ \ \ \ UFUNCTION()}
-\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a292eaefd6d13a117b72c524663daa687}{OnSettingsClicked}}();}
-\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00051\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00052\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a49f2c564156fb553acbbfc142c8b94ea}{ProfileButton}};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00055\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00056\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_afa6d620214646f51f726d8b22abe7490}{PlacementModeButton}};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00059\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00060\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_afa84338a5eddfb80a49e5d00b3c748a6}{CosmeticButton}};}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00063\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Profile"{}})}
+\DoxyCodeLine{00064\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_u_player_profile_widget}{UPlayerProfileWidget}}>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a983f1261d953d30056d40c0ff639f2c9}{ProfileWidgetClass}};}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00067\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00068\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_u_cosmetic_main_window}{UCosmeticMainWindow}}>\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a40b13f001519ae20c6e28e35a731abff}{CosmeticWindowClass}};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ protected:}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{comment}{//\string~\ 버튼\ 클릭\ 이벤트}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a81e19792628edf395ac8f09dfa771f81}{OnCreateRoomClicked}}();}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_ae0ce111cd6335b8627821038680865ab}{OnFindRoomClicked}}();}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_aa0aaca101acda5a9c87ed62f6fbb30c2}{OnDirectConnectClicked}}();}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a292eaefd6d13a117b72c524663daa687}{OnSettingsClicked}}();}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_aa269eecf7eeba9a3e22270feae347f27}{OnProfileClicked}}();}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a46ce835ca4fa5342ddb4301dfd791160}{OnPlacementModeClicked}}();}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a84be21947d9e14c2c6d9bc606a371e64}{OnCosmeticClicked}}();}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ private:}
+\DoxyCodeLine{00095\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00096\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_player_profile_widget}{UPlayerProfileWidget}}>\ ProfileWidgetInstance;}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00099\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_cosmetic_main_window}{UCosmeticMainWindow}}>\ CosmeticWindowInstance;}
+\DoxyCodeLine{00100\ \};}
 
 \end{DoxyCode}

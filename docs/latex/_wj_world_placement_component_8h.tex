@@ -1,0 +1,77 @@
+\doxysection{Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Placement/\+\+Wj\+World\+Placement\+Component.h File Reference}
+\hypertarget{_wj_world_placement_component_8h}{}\label{_wj_world_placement_component_8h}\index{Source/WjWorld/GamePlay/Placement/WjWorldPlacementComponent.h@{Source/WjWorld/GamePlay/Placement/WjWorldPlacementComponent.h}}
+{\ttfamily \+\#include "{}Core\+Minimal.\+h"{}}\newline
+{\ttfamily \+\#include "{}Components/\+\+Actor\+Component.\+h"{}}\newline
+{\ttfamily \+\#include "{}Input\+Action.\+h"{}}\newline
+{\ttfamily \+\#include "{}Wj\+World\+Placement\+Component.\+generated.\+h"{}}\newline
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0e}{EPlacement\+Mode}} :\+ uint8 \{ \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0ea6adf97f83acf6453d4a6a4b1070f3754}{None}}
+, \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0ea2a091546824ff9510ac3923076f8acdc}{Placing}}
+, \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0eaffbb410a55bb31f801dea6387e2745ac}{Deleting}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baf06cdd3a3fa9e9e929a5d126f589e}{DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param}} (FOn\+Placement\+Mode\+Changed, \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0e}{EPlacement\+Mode}}, New\+Mode)
+\item 
+\doxymbox{\hyperlink{_wj_world_placement_component_8h_abebf07c0bc3e1961e05b9b8567554b5c}{DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE}} (FOn\+Object\+Placed)
+\item 
+\doxymbox{\hyperlink{_wj_world_placement_component_8h_aa21e86789a8c75878fd55cd06faf2985}{DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE}} (FOn\+Object\+Deleted)
+\end{DoxyCompactItemize}
+
+
+\label{doc-enum-members}
+\Hypertarget{_wj_world_placement_component_8h_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0e}\index{WjWorldPlacementComponent.h@{WjWorldPlacementComponent.h}!EPlacementMode@{EPlacementMode}}
+\index{EPlacementMode@{EPlacementMode}!WjWorldPlacementComponent.h@{WjWorldPlacementComponent.h}}
+\doxysubsubsection{\texorpdfstring{EPlacementMode}{EPlacementMode}}
+{\footnotesize\ttfamily \label{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0e} 
+enum class \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0e}{EPlacement\+Mode}} :\+ uint8\hspace{0.3cm}{\ttfamily [strong]}}
+
+배치 모드 상태 \begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{None@{None}!WjWorldPlacementComponent.h@{WjWorldPlacementComponent.h}}
+\index{WjWorldPlacementComponent.h@{WjWorldPlacementComponent.h}!None@{None}}
+}\Hypertarget{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0ea6adf97f83acf6453d4a6a4b1070f3754}\label{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0ea6adf97f83acf6453d4a6a4b1070f3754} 
+None&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Placing@{Placing}!WjWorldPlacementComponent.h@{WjWorldPlacementComponent.h}}
+\index{WjWorldPlacementComponent.h@{WjWorldPlacementComponent.h}!Placing@{Placing}}
+}\Hypertarget{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0ea2a091546824ff9510ac3923076f8acdc}\label{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0ea2a091546824ff9510ac3923076f8acdc} 
+Placing&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Deleting@{Deleting}!WjWorldPlacementComponent.h@{WjWorldPlacementComponent.h}}
+\index{WjWorldPlacementComponent.h@{WjWorldPlacementComponent.h}!Deleting@{Deleting}}
+}\Hypertarget{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0eaffbb410a55bb31f801dea6387e2745ac}\label{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0eaffbb410a55bb31f801dea6387e2745ac} 
+Deleting&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\label{doc-func-members}
+\Hypertarget{_wj_world_placement_component_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{_wj_world_placement_component_8h_aa21e86789a8c75878fd55cd06faf2985}\index{WjWorldPlacementComponent.h@{WjWorldPlacementComponent.h}!DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE}}
+\index{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE}!WjWorldPlacementComponent.h@{WjWorldPlacementComponent.h}}
+\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{_wj_world_placement_component_8h_aa21e86789a8c75878fd55cd06faf2985} 
+DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE (\begin{DoxyParamCaption}\item[{FOn\+Object\+Deleted}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{_wj_world_placement_component_8h_abebf07c0bc3e1961e05b9b8567554b5c}\index{WjWorldPlacementComponent.h@{WjWorldPlacementComponent.h}!DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE}}
+\index{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE}!WjWorldPlacementComponent.h@{WjWorldPlacementComponent.h}}
+\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{_wj_world_placement_component_8h_abebf07c0bc3e1961e05b9b8567554b5c} 
+DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE (\begin{DoxyParamCaption}\item[{FOn\+Object\+Placed}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{_wj_world_placement_component_8h_a0baf06cdd3a3fa9e9e929a5d126f589e}\index{WjWorldPlacementComponent.h@{WjWorldPlacementComponent.h}!DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}
+\index{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}!WjWorldPlacementComponent.h@{WjWorldPlacementComponent.h}}
+\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}}
+{\footnotesize\ttfamily \label{_wj_world_placement_component_8h_a0baf06cdd3a3fa9e9e929a5d126f589e} 
+DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param (\begin{DoxyParamCaption}\item[{FOn\+Placement\+Mode\+Changed}]{}{, }\item[{\doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0e}{EPlacement\+Mode}}}]{}{, }\item[{New\+Mode}]{}{}\end{DoxyParamCaption})}
+

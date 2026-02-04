@@ -1,0 +1,105 @@
+\doxysection{Wj\+World\+Game\+State\+Play.\+h}
+\hypertarget{_wj_world_game_state_play_8h_source}{}\label{_wj_world_game_state_play_8h_source}\index{Source/WjWorld/Core/Play/WjWorldGameStatePlay.h@{Source/WjWorld/Core/Play/WjWorldGameStatePlay.h}}
+\doxymbox{\hyperlink{_wj_world_game_state_play_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_game_state_base_8h}{Core/Base/WjWorldGameStateBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_core_types_8h}{Core/WjWorldCoreTypes.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldGameStatePlay.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }UWjWorldGameDataComponent;}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00015\ UCLASS()}
+\DoxyCodeLine{00016\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a758ec04f0392cfa200f62d9f65270bbd}{AWjWorldGameStatePlay}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_game_state_base}{AWjWorldGameStateBase}}}
+\DoxyCodeLine{00017\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00019\ \ \ \ \ }
+\DoxyCodeLine{00020\ \ \ \ \ friend\ class\ \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a8fc2a61efd9e923158d3311cec5243c7}{UWjWorldGameRuleBase}};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ public:}
+\DoxyCodeLine{00023\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a758ec04f0392cfa200f62d9f65270bbd}{AWjWorldGameStatePlay}}();}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_play_ab8b2445e41497cd1bf814c8a438ab8c8}{GetLifetimeReplicatedProps}}(TArray<\ FLifetimeProperty\ >\&\ OutLifetimeProps)\ const\ override;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ virtual\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_play_aa2bafe3280c68a0427a5ff517bb1722e}{HasMatchStarted}}()\ const\ override;}
+\DoxyCodeLine{00028\ \ \ \ \ virtual\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a84c1690265816ed826f9984399b7d7f8}{HasMatchEnded}}()\ const\ override;}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a84e9c6b4b9b03086b0642c66b723a560}{GameStartWithCountdown}}(\textcolor{keywordtype}{float}\ CountdownTime);}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_play_ad1fc366c053574029cf46246a3eb069a}{GameEndWithCountdown}}(\textcolor{keywordtype}{float}\ CountdownTime);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_core_types_8h_a110fd991750d11dddc7f1f886cdb8dd5}{EGamePhase}}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_play_aa4ba0845188c0335c54592b3d7bb2cff}{GetGamePhase}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CurrentPhase;\ \}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ SetGamePhase(\doxymbox{\hyperlink{_wj_world_core_types_8h_a110fd991750d11dddc7f1f886cdb8dd5}{EGamePhase}}\ NewPhase);}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{comment}{//\ 게임\ 결과\ 설정\ (서버에서\ 호출)}}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ SetGameResult(\textcolor{keyword}{const}\ FString\&\ WinnerName,\ \textcolor{keywordtype}{bool}\ bHasWinner);}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{void}\ SetGameRuleClass(TSubclassOf<UWjWorldGameRuleBase>\ InGameRuleClass);}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{comment}{//\ 게임\ 결과\ 조회}}
+\DoxyCodeLine{00042\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Game\ Result"{}})}
+\DoxyCodeLine{00043\ \ \ \ \ FString\ \doxymbox{\hyperlink{class_a_wj_world_game_state_play_aab4161170ed1bce3bcae226e3c39472b}{GetWinnerName}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ WinnerPlayerName;\ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Game\ Result"{}})}
+\DoxyCodeLine{00046\ \ \ \ \ bool\ \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a80c089b21fe8136400bf56ac4f5485f6}{HasWinner}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ bGameHasWinner;\ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{comment}{//\ 게임별\ 데이터는\ 컴포넌트로}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00051\ \ \ \ \ T*\ \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a26dbdea9093a950e61a77a3dd1227697}{GetGameData}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FindComponentByClass<T>();\ \}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ UWjWorldGameDataComponent*\ AddGameDataComponent(TSubclassOf<UWjWorldGameDataComponent>\ InDataComponentClass);}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00056\ \ \ \ \ void\ OnRep\_GamePhase();}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ OnRep\_IsGameStartCountDownReady();}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{void}\ OnRep\_IsGameEndCountDownReady();}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{void}\ OnRep\_GameResult();}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ OnRep\_GameRuleClass();}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ private:}
+\DoxyCodeLine{00071\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00072\ \ \ \ \ TObjectPtr<UWjWorldGameDataComponent>\ GameDataComponent;}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{comment}{//\ 공통\ 데이터\ (모든\ 미니게임)}}
+\DoxyCodeLine{00075\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ OnRep\_GamePhase)}
+\DoxyCodeLine{00076\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_core_types_8h_a110fd991750d11dddc7f1f886cdb8dd5}{EGamePhase}}\ CurrentPhase;\ \ \textcolor{comment}{//\ Ready,\ Playing,\ Finished}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ OnRep\_IsGameStartCountDownReady)}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{bool}\ bIsGameStartCountDownReady;}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \ \ UPROPERTY(Replicated)}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{float}\ StartCountDownTime;}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ OnRep\_IsGameEndCountDownReady)}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordtype}{bool}\ bIsGameEndCountDownReady;}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \ \ UPROPERTY(Replicated)}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordtype}{float}\ EndCountDownTime;}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{comment}{//\ 게임\ 결과\ (승자\ 정보)}}
+\DoxyCodeLine{00091\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ OnRep\_GameResult)}
+\DoxyCodeLine{00092\ \ \ \ \ FString\ WinnerPlayerName;}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ OnRep\_GameResult)}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordtype}{bool}\ bGameHasWinner\ =\ false;}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ OnRep\_GameResult)}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{bool}\ bGameResultReady\ =\ false;}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ OnRep\_GameRuleClass)}
+\DoxyCodeLine{00101\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_u_wj_world_game_rule_base}{UWjWorldGameRuleBase}}>\ GameRuleClass;}
+\DoxyCodeLine{00102\ \};}
+
+\end{DoxyCode}

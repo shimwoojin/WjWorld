@@ -1,0 +1,81 @@
+\doxysection{Wj\+World\+Brick\+Movement.\+h}
+\hypertarget{_wj_world_brick_movement_8h_source}{}\label{_wj_world_brick_movement_8h_source}\index{Source/WjWorld/GamePlay/Wall/WjWorldBrickMovement.h@{Source/WjWorld/GamePlay/Wall/WjWorldBrickMovement.h}}
+\doxymbox{\hyperlink{_wj_world_brick_movement_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}UObject/Object.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldBrickMovement.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }UWjWorldBrickComponent;}
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall}{UWjWorldGameRuleApproachingWall}};}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_wall_manager}{UWjWorldWallManager}};}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ UENUM()}
+\DoxyCodeLine{00014\ enum\ class\ \doxymbox{\hyperlink{_wj_world_brick_movement_8h_a4445c351e8e75d81d6d71eaec2e96879}{EWjWorldBrickMovementDirection}}\ :\ uint8}
+\DoxyCodeLine{00015\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_brick_movement_8h_a4445c351e8e75d81d6d71eaec2e96879a258f49887ef8d14ac268c92b02503aaa}{Up}},}
+\DoxyCodeLine{00017\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_brick_movement_8h_a4445c351e8e75d81d6d71eaec2e96879a92b09c7c48c520c3c55e497875da437c}{Right}},}
+\DoxyCodeLine{00018\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_brick_movement_8h_a4445c351e8e75d81d6d71eaec2e96879a08a38277b0309070706f6652eeae9a53}{Down}},}
+\DoxyCodeLine{00019\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_brick_movement_8h_a4445c351e8e75d81d6d71eaec2e96879a945d5e233cf7d6240f6b783b36a374ff}{Left}}}
+\DoxyCodeLine{00020\ \};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00025\ UCLASS()}
+\DoxyCodeLine{00026\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_brick_movement}{UWjWorldBrickMovement}}\ :\ public\ UObject}
+\DoxyCodeLine{00027\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00029\ \ \ \ \ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_brick_movement_a8f74a87566c084b2388be7340604bb8b}{Initialize}}(UWjWorldBrickComponent*\ InBrickComponent,\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall}{UWjWorldGameRuleApproachingWall}}*\ InGameRule);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_wall_manager_a420067a357b4c778f23733e5e41cf2c0}{Tick}}(\textcolor{keywordtype}{float}\ DeltaTime);}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_brick_movement_a558d2a31776a585ed258eb37e0ea5652}{MoveBrick}}(\textcolor{keywordtype}{float}\ InMoveAllowTime);}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_brick_movement_a1983afa44fd2d5ddc3ce2bc35dea664e}{PushBrick}}(\textcolor{keyword}{const}\ FVector\&\ Direction,\ \textcolor{keywordtype}{float}\ InMoveAllowTime);}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_brick_movement_aa005b8a5b3002f1a9f8d007a8b0cef5a}{ExecutePush}}(\textcolor{keyword}{const}\ FVector\&\ Direction,\ \textcolor{keywordtype}{float}\ InMoveAllowTime);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{virtual}\ FVector\ \doxymbox{\hyperlink{class_u_wj_world_brick_movement_afe5766d1292ac72ce91fc66f9245c635}{GetMovementVector}}(\textcolor{keywordtype}{bool}\ bIsNew\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{virtual}\ TArray<EWjWorldBrickMovementDirection>\ \doxymbox{\hyperlink{class_u_wj_world_brick_movement_a0c46f3758500a727dcc7c7dc31fb7ec7}{GetNextDirections}}();}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ FVector\ \doxymbox{\hyperlink{class_u_wj_world_brick_movement_a0581f267410ca31ad9795df0dc9fd08e}{GetLastMovementVector}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ LastMovementVector;\ \}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_brick_movement_a96e48da27cd2d11e344cabdf46030eaa}{IsMoving}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ bIsMoving;\ \}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{comment}{//\ 연쇄\ 밀림\ 체크:\ 해당\ 방향으로\ 밀릴\ 수\ 있는지\ 확인\ (재귀적으로\ 체크)}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{bool}\ CanPushInDirection(\textcolor{keyword}{const}\ FVector\&\ Direction,\ TArray<UWjWorldBrickComponent*>\&\ OutBricksToMove);}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{void}\ CheckCollisionWithOtherBricks();}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ NotifyCollisionToBrick(\textcolor{keyword}{class}\ UWjWorldBrickComponent*\ OtherBrick,\ \textcolor{keyword}{const}\ FVector\&\ Direction);}
+\DoxyCodeLine{00050\ \ \ \ \ UWjWorldBrickComponent*\ FindBrickAtLocation(\textcolor{keyword}{const}\ FVector\&\ Location);}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsLocationBlocked(\textcolor{keyword}{const}\ FVector\&\ Location);}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00054\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00055\ \ \ \ \ TWeakObjectPtr<UWjWorldBrickComponent>\ BrickComponent;}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00058\ \ \ \ \ TWeakObjectPtr<AActor>\ TargetActor;}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00061\ \ \ \ \ TWeakObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall}{UWjWorldGameRuleApproachingWall}}>\ GameRule;}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00064\ \ \ \ \ TWeakObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_wall_manager}{UWjWorldWallManager}}>\ WallManger;}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ FIntPoint\ CurrentGridPosition;}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ FVector\ StartLocation;}
+\DoxyCodeLine{00069\ \ \ \ \ FVector\ EndLocation;}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ FVector\ MovementVector;}
+\DoxyCodeLine{00072\ \ \ \ \ FVector\ LastMovementVector;}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{float}\ MoveAllowTime\ =\ 1.0f;}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{float}\ MoveElapsedTime\ =\ 0.0f;}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{bool}\ bIsMoving\ =\ false;}
+\DoxyCodeLine{00078\ \};}
+
+\end{DoxyCode}

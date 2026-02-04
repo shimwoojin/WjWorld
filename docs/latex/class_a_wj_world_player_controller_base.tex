@@ -7,7 +7,7 @@
 Inheritance diagram for AWj\+World\+Player\+Controller\+Base:\+\begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[height=3.000000cm]{class_a_wj_world_player_controller_base}
+\includegraphics[height=2.323651cm]{class_a_wj_world_player_controller_base}
 \end{center}
 \end{figure}
 \doxysubsubsection*{Public Member Functions}
@@ -18,6 +18,26 @@ Inheritance diagram for AWj\+World\+Player\+Controller\+Base:\+\begin{figure}[H]
 void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a9f54609e2389a05ceecfda4d692b6e11}{Check\+Input\+Mode}} ()
 \item 
 void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_aa497bc09d850e10891a40ef9fb7a9016}{Change\+Character\+View\+Mode}} (int32 In\+View\+Mode)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_af2f84b216c2519d4736feaa65be5b41c}{Server\+Travel\+Waiting\+Room}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a3c509112f1f97d2ac52e8611040806af}{Cosmetic\+\_\+\+Grant\+Item}} (FString Item\+Id)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_ad253dda2d9cff5026c61161f5bbb8991}{Cosmetic\+\_\+\+Grant\+All}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_af57a7b343a75f3707e0a328ae08a2329}{Cosmetic\+\_\+\+Clear\+Inventory}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a0506c084330637d9bbf633c43f5eecd5}{Cosmetic\+\_\+\+Print\+Inventory}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a79ffaf474dd3e8b20745c3da035e40e7}{Cosmetic\+\_\+\+Print\+Loadout}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a6cedcb2154acc3bb923c9eb37e24c95c}{Cosmetic\+\_\+\+Equip}} (int32 Slot\+Index, FString Item\+Id)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a39a33c2746443f17ed1f15efd948b5e9}{Cosmetic\+\_\+\+Unequip}} (int32 Slot\+Index)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a2578c356c89b8a1c36b81f0e5852b3dd}{Cosmetic\+\_\+\+Refresh\+Inventory}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_player_controller_base_a0ddfb88f4c166428205938a3211c2475}{Cosmetic\+\_\+\+Open\+Shop}} ()
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
@@ -75,7 +95,61 @@ void AWj\+World\+Player\+Controller\+Base::\+\+Change\+Character\+View\+Mode (\b
 {\footnotesize\ttfamily \label{class_a_wj_world_player_controller_base_a9f54609e2389a05ceecfda4d692b6e11} 
 void AWj\+World\+Player\+Controller\+Base::\+\+Check\+Input\+Mode (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
 
-\Hypertarget{class_a_wj_world_player_controller_base_a6d65e79630d3a58f0b941f6099170969}\index{AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}!InitializeController@{InitializeController}}
+\Hypertarget{class_a_wj_world_player_controller_base_af57a7b343a75f3707e0a328ae08a2329}\index{AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}!Cosmetic\_ClearInventory@{Cosmetic\_ClearInventory}}
+\index{Cosmetic\_ClearInventory@{Cosmetic\_ClearInventory}!AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}}
+\doxysubsubsection{\texorpdfstring{Cosmetic\_ClearInventory()}{Cosmetic\_ClearInventory()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_base_af57a7b343a75f3707e0a328ae08a2329} 
+void AWj\+World\+Player\+Controller\+Base::\+\+Cosmetic\+\_\+\+Clear\+Inventory (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+인벤토리 초기화 \Hypertarget{class_a_wj_world_player_controller_base_a6cedcb2154acc3bb923c9eb37e24c95c}\index{AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}!Cosmetic\_Equip@{Cosmetic\_Equip}}
+\index{Cosmetic\_Equip@{Cosmetic\_Equip}!AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}}
+\doxysubsubsection{\texorpdfstring{Cosmetic\_Equip()}{Cosmetic\_Equip()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_base_a6cedcb2154acc3bb923c9eb37e24c95c} 
+void AWj\+World\+Player\+Controller\+Base::\+\+Cosmetic\+\_\+\+Equip (\begin{DoxyParamCaption}\item[{int32}]{Slot\+Index}{, }\item[{FString}]{Item\+Id}{}\end{DoxyParamCaption})}
+
+특정 슬롯에 아이템 장착 (1=Head, 2=Body, 3=Back, 4=Effect) \Hypertarget{class_a_wj_world_player_controller_base_ad253dda2d9cff5026c61161f5bbb8991}\index{AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}!Cosmetic\_GrantAll@{Cosmetic\_GrantAll}}
+\index{Cosmetic\_GrantAll@{Cosmetic\_GrantAll}!AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}}
+\doxysubsubsection{\texorpdfstring{Cosmetic\_GrantAll()}{Cosmetic\_GrantAll()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_base_ad253dda2d9cff5026c61161f5bbb8991} 
+void AWj\+World\+Player\+Controller\+Base::\+\+Cosmetic\+\_\+\+Grant\+All (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+모든 카탈로그 아이템을 인벤토리에 추가 \Hypertarget{class_a_wj_world_player_controller_base_a3c509112f1f97d2ac52e8611040806af}\index{AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}!Cosmetic\_GrantItem@{Cosmetic\_GrantItem}}
+\index{Cosmetic\_GrantItem@{Cosmetic\_GrantItem}!AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}}
+\doxysubsubsection{\texorpdfstring{Cosmetic\_GrantItem()}{Cosmetic\_GrantItem()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_base_a3c509112f1f97d2ac52e8611040806af} 
+void AWj\+World\+Player\+Controller\+Base::\+\+Cosmetic\+\_\+\+Grant\+Item (\begin{DoxyParamCaption}\item[{FString}]{Item\+Id}{}\end{DoxyParamCaption})}
+
+특정 아이템을 인벤토리에 추가 (테스트용) \Hypertarget{class_a_wj_world_player_controller_base_a0ddfb88f4c166428205938a3211c2475}\index{AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}!Cosmetic\_OpenShop@{Cosmetic\_OpenShop}}
+\index{Cosmetic\_OpenShop@{Cosmetic\_OpenShop}!AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}}
+\doxysubsubsection{\texorpdfstring{Cosmetic\_OpenShop()}{Cosmetic\_OpenShop()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_base_a0ddfb88f4c166428205938a3211c2475} 
+void AWj\+World\+Player\+Controller\+Base::\+\+Cosmetic\+\_\+\+Open\+Shop (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+코스메틱 상점 UI 열기 \Hypertarget{class_a_wj_world_player_controller_base_a0506c084330637d9bbf633c43f5eecd5}\index{AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}!Cosmetic\_PrintInventory@{Cosmetic\_PrintInventory}}
+\index{Cosmetic\_PrintInventory@{Cosmetic\_PrintInventory}!AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}}
+\doxysubsubsection{\texorpdfstring{Cosmetic\_PrintInventory()}{Cosmetic\_PrintInventory()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_base_a0506c084330637d9bbf633c43f5eecd5} 
+void AWj\+World\+Player\+Controller\+Base::\+\+Cosmetic\+\_\+\+Print\+Inventory (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+인벤토리 상태 출력 \Hypertarget{class_a_wj_world_player_controller_base_a79ffaf474dd3e8b20745c3da035e40e7}\index{AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}!Cosmetic\_PrintLoadout@{Cosmetic\_PrintLoadout}}
+\index{Cosmetic\_PrintLoadout@{Cosmetic\_PrintLoadout}!AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}}
+\doxysubsubsection{\texorpdfstring{Cosmetic\_PrintLoadout()}{Cosmetic\_PrintLoadout()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_base_a79ffaf474dd3e8b20745c3da035e40e7} 
+void AWj\+World\+Player\+Controller\+Base::\+\+Cosmetic\+\_\+\+Print\+Loadout (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+로드아웃 상태 출력 \Hypertarget{class_a_wj_world_player_controller_base_a2578c356c89b8a1c36b81f0e5852b3dd}\index{AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}!Cosmetic\_RefreshInventory@{Cosmetic\_RefreshInventory}}
+\index{Cosmetic\_RefreshInventory@{Cosmetic\_RefreshInventory}!AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}}
+\doxysubsubsection{\texorpdfstring{Cosmetic\_RefreshInventory()}{Cosmetic\_RefreshInventory()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_base_a2578c356c89b8a1c36b81f0e5852b3dd} 
+void AWj\+World\+Player\+Controller\+Base::\+\+Cosmetic\+\_\+\+Refresh\+Inventory (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+Steam 인벤토리 갱신 요청 \Hypertarget{class_a_wj_world_player_controller_base_a39a33c2746443f17ed1f15efd948b5e9}\index{AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}!Cosmetic\_Unequip@{Cosmetic\_Unequip}}
+\index{Cosmetic\_Unequip@{Cosmetic\_Unequip}!AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}}
+\doxysubsubsection{\texorpdfstring{Cosmetic\_Unequip()}{Cosmetic\_Unequip()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_base_a39a33c2746443f17ed1f15efd948b5e9} 
+void AWj\+World\+Player\+Controller\+Base::\+\+Cosmetic\+\_\+\+Unequip (\begin{DoxyParamCaption}\item[{int32}]{Slot\+Index}{}\end{DoxyParamCaption})}
+
+특정 슬롯 장착 해제 \Hypertarget{class_a_wj_world_player_controller_base_a6d65e79630d3a58f0b941f6099170969}\index{AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}!InitializeController@{InitializeController}}
 \index{InitializeController@{InitializeController}!AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}}
 \doxysubsubsection{\texorpdfstring{InitializeController()}{InitializeController()}}
 {\footnotesize\ttfamily \label{class_a_wj_world_player_controller_base_a6d65e79630d3a58f0b941f6099170969} 
@@ -94,6 +168,12 @@ void AWj\+World\+Player\+Controller\+Base::\+\+Initialize\+UI (\begin{DoxyParamC
 UI 초기화 
 
 Reimplemented in \doxymbox{\hyperlink{class_a_wj_world_player_controller_lobby_a21eb7141349255cb377531d47a32341f}{AWj\+World\+Player\+Controller\+Lobby}}, and \doxymbox{\hyperlink{class_a_wj_world_player_controller_waiting_room_a5994cdea8794b3076a81561c4e427817}{AWj\+World\+Player\+Controller\+Waiting\+Room}}.
+
+\Hypertarget{class_a_wj_world_player_controller_base_af2f84b216c2519d4736feaa65be5b41c}\index{AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}!ServerTravelWaitingRoom@{ServerTravelWaitingRoom}}
+\index{ServerTravelWaitingRoom@{ServerTravelWaitingRoom}!AWjWorldPlayerControllerBase@{AWjWorldPlayerControllerBase}}
+\doxysubsubsection{\texorpdfstring{ServerTravelWaitingRoom()}{ServerTravelWaitingRoom()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_player_controller_base_af2f84b216c2519d4736feaa65be5b41c} 
+void AWj\+World\+Player\+Controller\+Base::\+\+Server\+Travel\+Waiting\+Room (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
 
 
 

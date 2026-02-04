@@ -1,0 +1,129 @@
+\doxysection{FHost\+Migration\+Context Struct Reference}
+\hypertarget{struct_f_host_migration_context}{}\label{struct_f_host_migration_context}\index{FHostMigrationContext@{FHostMigrationContext}}
+
+
+{\ttfamily \+\#include $<$Session\+Types.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{struct_f_host_migration_context_a66692ac214e6b3244e980b526d58b7cd}{Reset}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \doxymbox{\hyperlink{struct_f_host_migration_context_abf789697e2a5c7db7e600a574fee834a}{b\+Is\+Migrating}} = false
+\item 
+bool \doxymbox{\hyperlink{struct_f_host_migration_context_a8ea950edc9b326dc8e128d452e670587}{b\+Is\+New\+Host}} = false
+\item 
+\doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} \doxymbox{\hyperlink{struct_f_host_migration_context_aef7c54ffcb93190718c2bec4f5497c1f}{Cached\+Room\+Settings}}
+\item 
+FString \doxymbox{\hyperlink{struct_f_host_migration_context_a4a5d427ef2deaa74d515bd44129ee538}{Migration\+Session\+Tag}}
+\item 
+TArray$<$ \doxymbox{\hyperlink{struct_f_player_display_info}{FPlayer\+Display\+Info}} $>$ \doxymbox{\hyperlink{struct_f_host_migration_context_a318c8fa5d2753f5a8b8cd76bb8f5d375}{Cached\+Player\+List}}
+\item 
+int32 \doxymbox{\hyperlink{struct_f_host_migration_context_ae9f18f5046df7cc1a1f79d3060b3aac9}{Local\+Player\+ID}} = -\/1
+\item 
+double \doxymbox{\hyperlink{struct_f_host_migration_context_a6fa88c85171727c45c0fc9e6befdc53a}{Migration\+Start\+Time}} = 0.\+0
+\item 
+int32 \doxymbox{\hyperlink{struct_f_host_migration_context_a66fc9b0e32aa4ff172b86b9c2abcd480}{Retry\+Count}} = 0
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr int32 \doxymbox{\hyperlink{struct_f_host_migration_context_a099e9730580d4d0e46b7f0b7c98e427f}{Max\+Retry\+Count}} = 10
+\item 
+static constexpr float \doxymbox{\hyperlink{struct_f_host_migration_context_a80de23349901582bddc7fe8e848a22ca}{Retry\+Interval}} = 2.\+0f
+\item 
+static constexpr float \doxymbox{\hyperlink{struct_f_host_migration_context_a4e1d7ae8d8b8967775dc05a3c8819c2d}{Migration\+Timeout}} = 30.\+0f
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+호스트 마이그레이션 컨텍스트 마이그레이션 진행 중 필요한 모든 상태를 보관 
+
+\label{doc-func-members}
+\Hypertarget{struct_f_host_migration_context_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_f_host_migration_context_a66692ac214e6b3244e980b526d58b7cd}\index{FHostMigrationContext@{FHostMigrationContext}!Reset@{Reset}}
+\index{Reset@{Reset}!FHostMigrationContext@{FHostMigrationContext}}
+\doxysubsubsection{\texorpdfstring{Reset()}{Reset()}}
+{\footnotesize\ttfamily \label{struct_f_host_migration_context_a66692ac214e6b3244e980b526d58b7cd} 
+void FHost\+Migration\+Context::\+\+Reset (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+상태 초기화 
+
+\label{doc-variable-members}
+\Hypertarget{struct_f_host_migration_context_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_f_host_migration_context_abf789697e2a5c7db7e600a574fee834a}\index{FHostMigrationContext@{FHostMigrationContext}!bIsMigrating@{bIsMigrating}}
+\index{bIsMigrating@{bIsMigrating}!FHostMigrationContext@{FHostMigrationContext}}
+\doxysubsubsection{\texorpdfstring{bIsMigrating}{bIsMigrating}}
+{\footnotesize\ttfamily \label{struct_f_host_migration_context_abf789697e2a5c7db7e600a574fee834a} 
+bool FHost\+Migration\+Context::\+b\+Is\+Migrating = false}
+
+마이그레이션 진행 중 여부 \Hypertarget{struct_f_host_migration_context_a8ea950edc9b326dc8e128d452e670587}\index{FHostMigrationContext@{FHostMigrationContext}!bIsNewHost@{bIsNewHost}}
+\index{bIsNewHost@{bIsNewHost}!FHostMigrationContext@{FHostMigrationContext}}
+\doxysubsubsection{\texorpdfstring{bIsNewHost}{bIsNewHost}}
+{\footnotesize\ttfamily \label{struct_f_host_migration_context_a8ea950edc9b326dc8e128d452e670587} 
+bool FHost\+Migration\+Context::\+b\+Is\+New\+Host = false}
+
+이 클라이언트가 새 호스트인지 \Hypertarget{struct_f_host_migration_context_a318c8fa5d2753f5a8b8cd76bb8f5d375}\index{FHostMigrationContext@{FHostMigrationContext}!CachedPlayerList@{CachedPlayerList}}
+\index{CachedPlayerList@{CachedPlayerList}!FHostMigrationContext@{FHostMigrationContext}}
+\doxysubsubsection{\texorpdfstring{CachedPlayerList}{CachedPlayerList}}
+{\footnotesize\ttfamily \label{struct_f_host_migration_context_a318c8fa5d2753f5a8b8cd76bb8f5d375} 
+TArray$<$\doxymbox{\hyperlink{struct_f_player_display_info}{FPlayer\+Display\+Info}}$>$ FHost\+Migration\+Context::\+\+Cached\+Player\+List}
+
+캐시된 플레이어 목록 \Hypertarget{struct_f_host_migration_context_aef7c54ffcb93190718c2bec4f5497c1f}\index{FHostMigrationContext@{FHostMigrationContext}!CachedRoomSettings@{CachedRoomSettings}}
+\index{CachedRoomSettings@{CachedRoomSettings}!FHostMigrationContext@{FHostMigrationContext}}
+\doxysubsubsection{\texorpdfstring{CachedRoomSettings}{CachedRoomSettings}}
+{\footnotesize\ttfamily \label{struct_f_host_migration_context_aef7c54ffcb93190718c2bec4f5497c1f} 
+\doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} FHost\+Migration\+Context::\+\+Cached\+Room\+Settings}
+
+캐시된 방 설정 \Hypertarget{struct_f_host_migration_context_ae9f18f5046df7cc1a1f79d3060b3aac9}\index{FHostMigrationContext@{FHostMigrationContext}!LocalPlayerID@{LocalPlayerID}}
+\index{LocalPlayerID@{LocalPlayerID}!FHostMigrationContext@{FHostMigrationContext}}
+\doxysubsubsection{\texorpdfstring{LocalPlayerID}{LocalPlayerID}}
+{\footnotesize\ttfamily \label{struct_f_host_migration_context_ae9f18f5046df7cc1a1f79d3060b3aac9} 
+int32 FHost\+Migration\+Context::\+\+Local\+Player\+ID = -\/1}
+
+로컬 플레이어 ID \Hypertarget{struct_f_host_migration_context_a099e9730580d4d0e46b7f0b7c98e427f}\index{FHostMigrationContext@{FHostMigrationContext}!MaxRetryCount@{MaxRetryCount}}
+\index{MaxRetryCount@{MaxRetryCount}!FHostMigrationContext@{FHostMigrationContext}}
+\doxysubsubsection{\texorpdfstring{MaxRetryCount}{MaxRetryCount}}
+{\footnotesize\ttfamily \label{struct_f_host_migration_context_a099e9730580d4d0e46b7f0b7c98e427f} 
+int32 FHost\+Migration\+Context::\+\+Max\+Retry\+Count = 10\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+최대 재시도 횟수 \Hypertarget{struct_f_host_migration_context_a4a5d427ef2deaa74d515bd44129ee538}\index{FHostMigrationContext@{FHostMigrationContext}!MigrationSessionTag@{MigrationSessionTag}}
+\index{MigrationSessionTag@{MigrationSessionTag}!FHostMigrationContext@{FHostMigrationContext}}
+\doxysubsubsection{\texorpdfstring{MigrationSessionTag}{MigrationSessionTag}}
+{\footnotesize\ttfamily \label{struct_f_host_migration_context_a4a5d427ef2deaa74d515bd44129ee538} 
+FString FHost\+Migration\+Context::\+\+Migration\+Session\+Tag}
+
+마이그레이션 세션 식별 태그 (모든 클라이언트 동일 생성) \Hypertarget{struct_f_host_migration_context_a6fa88c85171727c45c0fc9e6befdc53a}\index{FHostMigrationContext@{FHostMigrationContext}!MigrationStartTime@{MigrationStartTime}}
+\index{MigrationStartTime@{MigrationStartTime}!FHostMigrationContext@{FHostMigrationContext}}
+\doxysubsubsection{\texorpdfstring{MigrationStartTime}{MigrationStartTime}}
+{\footnotesize\ttfamily \label{struct_f_host_migration_context_a6fa88c85171727c45c0fc9e6befdc53a} 
+double FHost\+Migration\+Context::\+\+Migration\+Start\+Time = 0.\+0}
+
+마이그레이션 시작 시각 \Hypertarget{struct_f_host_migration_context_a4e1d7ae8d8b8967775dc05a3c8819c2d}\index{FHostMigrationContext@{FHostMigrationContext}!MigrationTimeout@{MigrationTimeout}}
+\index{MigrationTimeout@{MigrationTimeout}!FHostMigrationContext@{FHostMigrationContext}}
+\doxysubsubsection{\texorpdfstring{MigrationTimeout}{MigrationTimeout}}
+{\footnotesize\ttfamily \label{struct_f_host_migration_context_a4e1d7ae8d8b8967775dc05a3c8819c2d} 
+float FHost\+Migration\+Context::\+\+Migration\+Timeout = 30.\+0f\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+마이그레이션 타임아웃 (초) \Hypertarget{struct_f_host_migration_context_a66fc9b0e32aa4ff172b86b9c2abcd480}\index{FHostMigrationContext@{FHostMigrationContext}!RetryCount@{RetryCount}}
+\index{RetryCount@{RetryCount}!FHostMigrationContext@{FHostMigrationContext}}
+\doxysubsubsection{\texorpdfstring{RetryCount}{RetryCount}}
+{\footnotesize\ttfamily \label{struct_f_host_migration_context_a66fc9b0e32aa4ff172b86b9c2abcd480} 
+int32 FHost\+Migration\+Context::\+\+Retry\+Count = 0}
+
+재시도 횟수 \Hypertarget{struct_f_host_migration_context_a80de23349901582bddc7fe8e848a22ca}\index{FHostMigrationContext@{FHostMigrationContext}!RetryInterval@{RetryInterval}}
+\index{RetryInterval@{RetryInterval}!FHostMigrationContext@{FHostMigrationContext}}
+\doxysubsubsection{\texorpdfstring{RetryInterval}{RetryInterval}}
+{\footnotesize\ttfamily \label{struct_f_host_migration_context_a80de23349901582bddc7fe8e848a22ca} 
+float FHost\+Migration\+Context::\+\+Retry\+Interval = 2.\+0f\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+재시도 간격 (초) 
+
+The documentation for this struct was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Network/\+\doxymbox{\hyperlink{_session_types_8h}{Session\+Types.\+h}}\end{DoxyCompactItemize}

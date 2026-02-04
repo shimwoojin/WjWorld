@@ -1,0 +1,72 @@
+\doxysection{Player\+Profile\+Widget.\+h}
+\hypertarget{_player_profile_widget_8h_source}{}\label{_player_profile_widget_8h_source}\index{Source/WjWorld/UI/Profile/PlayerProfileWidget.h@{Source/WjWorld/UI/Profile/PlayerProfileWidget.h}}
+\doxymbox{\hyperlink{_player_profile_widget_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_user_widget_base_8h}{UI/WjWorldUserWidgetBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}GameFramework/OnlineReplStructs.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h}{Cosmetic/WjWorldCosmeticTypes.h}}"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}PlayerProfileWidget.generated.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }UImage;}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }UTextBlock;}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }UVerticalBox;}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }UButton;}
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_character_preview_actor}{ACharacterPreviewActor}};}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00023\ UCLASS()}
+\DoxyCodeLine{00024\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_player_profile_widget}{UPlayerProfileWidget}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}}
+\DoxyCodeLine{00025\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_player_profile_widget_a24bd7ef254db5cfe5332af799926305b}{NativeConstruct}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_player_profile_widget_acc2f04d98fba7a9e2f091ae6365dcebb}{NativeDestruct}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00033\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Profile"{}})}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_player_profile_widget_a79620767478cc964adc7d5956a960230}{ShowLocalProfile}}();}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00037\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Profile"{}})}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_player_profile_widget_ab4d3efe7159fa2c840b392a4a0d3aa7d}{ShowPlayerProfile}}(\textcolor{keyword}{const}\ FUniqueNetIdRepl\&\ PlayerId,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FText\&\ PlayerName,}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmeticLoadout}}\&\ Loadout);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00043\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00044\ \ \ \ \ TObjectPtr<UImage>\ \doxymbox{\hyperlink{class_u_player_profile_widget_aac2d81b41bbfd68cb47d4f4b5fc5a0e2}{CharacterPreviewImage}};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00047\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_player_profile_widget_a2d31079d6b806e50f9c9946538c25353}{PlayerNameText}};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00050\ \ \ \ \ TObjectPtr<UVerticalBox>\ \doxymbox{\hyperlink{class_u_player_profile_widget_a45a6c5c2682a0bb447660fcbe4836b08}{StatsContainer}};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00053\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_player_profile_widget_a495c019b6596635feb5c9e16cfe862d7}{CloseButton}};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ private:}
+\DoxyCodeLine{00056\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ OnCloseClicked();}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{void}\ OnUserStatsReceived(const\ FUniqueNetIdRepl\&\ UserId);}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{void}\ PopulateLocalStats();}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{void}\ PopulateUserStats(const\ FUniqueNetIdRepl\&\ UserId);}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{void}\ CreatePreviewActor(const\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmeticLoadout}}\&\ Loadout);}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ DestroyPreviewActor();}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{void}\ ApplyRenderTargetToImage();}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00074\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_a_character_preview_actor}{ACharacterPreviewActor}}>\ PreviewActor;}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00077\ \ \ \ \ FUniqueNetIdRepl\ PendingUserId;}
+\DoxyCodeLine{00078\ \};}
+
+\end{DoxyCode}

@@ -12,36 +12,64 @@
 \DoxyCodeLine{00008\ }
 \DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_create_room_window}{UCreateRoomWindow}};}
 \DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_room_list_window}{URoomListWindow}};}
-\DoxyCodeLine{00011\ }
-\DoxyCodeLine{00019\ UCLASS()}
-\DoxyCodeLine{00020\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a2fa71f2c241659a75d88c1375ee99064}{AWjWorldGameModeLobby}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_base_a490046ce96deebf80d8f351c4831b6f9}{AWjWorldGameModeBase}}}
-\DoxyCodeLine{00021\ \{}
-\DoxyCodeLine{00022\ \ \ \ \ GENERATED\_BODY()}
-\DoxyCodeLine{00023\ \ \ \ \ }
-\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00025\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a2fa71f2c241659a75d88c1375ee99064}{AWjWorldGameModeLobby}}();}
-\DoxyCodeLine{00026\ }
-\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a0219569a8a01f9bca235725fdc638f8b}{BeginPlay}}()\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00028\ }
-\DoxyCodeLine{00030\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Lobby"{}})}
-\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a0bb530dba5fb150b97300008a2be6182}{ShowCreateRoomWindow}}();}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_game_state_lobby}{AWjWorldGameStateLobby}};}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWjWorldPlaceableObjectDataAsset}};}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00023\ UCLASS()}
+\DoxyCodeLine{00024\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a2fa71f2c241659a75d88c1375ee99064}{AWjWorldGameModeLobby}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_base_a490046ce96deebf80d8f351c4831b6f9}{AWjWorldGameModeBase}}}
+\DoxyCodeLine{00025\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a2fa71f2c241659a75d88c1375ee99064}{AWjWorldGameModeLobby}}();}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a0219569a8a01f9bca235725fdc638f8b}{BeginPlay}}()\ \textcolor{keyword}{override};}
 \DoxyCodeLine{00032\ }
-\DoxyCodeLine{00034\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Lobby"{}})}
-\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a38f53d22203fb1ef5dff8ecb49674a73}{ShowRoomListWindow}}();}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{comment}{//\string~\ 멀티플레이\ 오버라이드}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_ae77af4559a06c9539a2e416414df962b}{PostLogin}}(APlayerController*\ NewPlayer)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_ad0c2e38503ffb1c61b6c13863794ecbd}{Logout}}(AController*\ Exiting)\ \textcolor{keyword}{override};}
 \DoxyCodeLine{00036\ }
-\DoxyCodeLine{00037\ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00039\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}UI"{}})}
-\DoxyCodeLine{00040\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_u_create_room_window}{UCreateRoomWindow}}>\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a6ce0e20aa8b5db2e579be08b83dc9c3e}{CreateRoomWindowClass}};}
-\DoxyCodeLine{00041\ }
-\DoxyCodeLine{00043\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}UI"{}})}
-\DoxyCodeLine{00044\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_u_room_list_window}{URoomListWindow}}>\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_aa3d95a551113708bb11113988dd8f302}{RoomListWindowClass}};}
-\DoxyCodeLine{00045\ }
-\DoxyCodeLine{00046\ private:}
-\DoxyCodeLine{00048\ \ \ \ \ UPROPERTY()}
-\DoxyCodeLine{00049\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_create_room_window}{UCreateRoomWindow}}>\ CreateRoomWindowInstance;}
-\DoxyCodeLine{00050\ }
-\DoxyCodeLine{00052\ \ \ \ \ UPROPERTY()}
-\DoxyCodeLine{00053\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_room_list_window}{URoomListWindow}}>\ RoomListWindowInstance;}
-\DoxyCodeLine{00054\ \};}
+\DoxyCodeLine{00038\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Lobby"{}})}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a0bb530dba5fb150b97300008a2be6182}{ShowCreateRoomWindow}}();}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00042\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Lobby"{}})}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a38f53d22203fb1ef5dff8ecb49674a73}{ShowRoomListWindow}}();}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00046\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Lobby|Placement"{}})}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a4593794a87fe36ef1dc0ecf2a3497605}{EnterPlacementMode}}();}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00050\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Lobby|Placement"{}})}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_aa8bfce81b32378d3af2f61dab3ede537}{ExitPlacementMode}}();}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00054\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Lobby"{}})}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a458f1714dc66d79c9ee58d7f3dbf9a49}{IsHost}}(APlayerController*\ PC)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00058\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby}{AWjWorldGameStateLobby}}*\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a56c9c5ea4ae5b211bf8479926ecd2028}{GetLobbyGameState}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00061\ \ \ \ \ \doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWjWorldPlaceableObjectDataAsset}}*\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a537954d6eab97a6d7fd55847618f547f}{GetCatalog}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CachedCatalog;\ \}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00065\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}UI"{}})}
+\DoxyCodeLine{00066\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_u_create_room_window}{UCreateRoomWindow}}>\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_a6ce0e20aa8b5db2e579be08b83dc9c3e}{CreateRoomWindowClass}};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00069\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}UI"{}})}
+\DoxyCodeLine{00070\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_u_room_list_window}{URoomListWindow}}>\ \doxymbox{\hyperlink{class_a_wj_world_game_mode_lobby_aa3d95a551113708bb11113988dd8f302}{RoomListWindowClass}};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ private:}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{void}\ LoadCatalog();}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{void}\ LoadHostLayoutToGameState();}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{void}\ InitializeNewPlayer(APlayerController*\ NewPlayer);}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00083\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00084\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_create_room_window}{UCreateRoomWindow}}>\ CreateRoomWindowInstance;}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00087\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00088\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_room_list_window}{URoomListWindow}}>\ RoomListWindowInstance;}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00091\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00092\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWjWorldPlaceableObjectDataAsset}}>\ CachedCatalog;}
+\DoxyCodeLine{00093\ \};}
 
 \end{DoxyCode}

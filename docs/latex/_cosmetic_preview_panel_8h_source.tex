@@ -1,0 +1,77 @@
+\doxysection{Cosmetic\+Preview\+Panel.\+h}
+\hypertarget{_cosmetic_preview_panel_8h_source}{}\label{_cosmetic_preview_panel_8h_source}\index{Source/WjWorld/UI/Cosmetic/CosmeticPreviewPanel.h@{Source/WjWorld/UI/Cosmetic/CosmeticPreviewPanel.h}}
+\doxymbox{\hyperlink{_cosmetic_preview_panel_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_user_widget_base_8h}{UI/WjWorldUserWidgetBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h}{Cosmetic/WjWorldCosmeticTypes.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}CosmeticPreviewPanel.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }UImage;}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }UButton;}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_character_preview_actor}{ACharacterPreviewActor}};}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00022\ UCLASS()}
+\DoxyCodeLine{00023\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_cosmetic_preview_panel}{UCosmeticPreviewPanel}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}}
+\DoxyCodeLine{00024\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_cosmetic_preview_panel_a399fc30c2e2dd3f6f81c1c46c504f056}{NativeConstruct}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_cosmetic_preview_panel_a95b7ea1ae90068bad7e5e267c0b192fa}{NativeDestruct}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00032\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_cosmetic_preview_panel_a3976b6ff3fa14a2ac8911f0e88db4316}{ShowCurrentLoadout}}();}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00036\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_cosmetic_preview_panel_afc5cdf6971b43a23b81d0674a52bc176}{PreviewItem}}(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ CosmeticSlot,\ FName\ ItemId);}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00040\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_cosmetic_preview_panel_add7ccdaff220a690ff907da9603576e5}{ResetPreview}}();}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00044\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_cosmetic_preview_panel_aa2340025db774284dc49b59d0999465c}{RotatePreview}}(\textcolor{keywordtype}{float}\ DeltaYaw);}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00049\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00050\ \ \ \ \ TObjectPtr<UImage>\ \doxymbox{\hyperlink{class_u_cosmetic_preview_panel_ac52065eb6ae8da59d5b82ed8a31aac60}{PreviewImage}};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00053\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00054\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_cosmetic_preview_panel_a468ec3153306f54cd001eee3562f7a11}{RotateLeftButton}};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00057\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00058\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_cosmetic_preview_panel_af681d43496db8aeb44bc67336f7b0ce9}{RotateRightButton}};}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00061\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Preview"{}})}
+\DoxyCodeLine{00062\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_a_character_preview_actor}{ACharacterPreviewActor}}>\ \doxymbox{\hyperlink{class_u_cosmetic_preview_panel_ab48fa94b87b644bc5a9afe6ed09cd978}{PreviewActorClass}};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_cosmetic_preview_panel_ad0b7e4d6ac6264ea353f276f88d726b5}{OnRotateLeftClicked}}();}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_cosmetic_preview_panel_af91493b8f781d220de83897aa37e6e40}{OnRotateRightClicked}}();}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ private:}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{void}\ CreatePreviewActor();}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{void}\ DestroyPreviewActor();}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{void}\ ApplyRenderTargetToImage();}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00081\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00082\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_a_character_preview_actor}{ACharacterPreviewActor}}>\ PreviewActor;}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00085\ \ \ \ \ \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmeticLoadout}}\ OriginalLoadout;}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00088\ \ \ \ \ \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmeticLoadout}}\ PreviewLoadout;}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordtype}{bool}\ bIsTryingOn\ =\ false;}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00094\ \ \ \ \ static\ constexpr\ \textcolor{keywordtype}{float}\ RotateAngle\ =\ 45.f;}
+\DoxyCodeLine{00095\ \};}
+
+\end{DoxyCode}

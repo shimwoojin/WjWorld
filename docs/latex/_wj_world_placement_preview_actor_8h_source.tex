@@ -1,0 +1,64 @@
+\doxysection{Wj\+World\+Placement\+Preview\+Actor.\+h}
+\hypertarget{_wj_world_placement_preview_actor_8h_source}{}\label{_wj_world_placement_preview_actor_8h_source}\index{Source/WjWorld/GamePlay/Placement/WjWorldPlacementPreviewActor.h@{Source/WjWorld/GamePlay/Placement/WjWorldPlacementPreviewActor.h}}
+\doxymbox{\hyperlink{_wj_world_placement_preview_actor_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}GameFramework/Actor.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}Engine/StreamableManager.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_placeable_object_data_asset_8h}{DataAsset/WjWorldPlaceableObjectDataAsset.h}}"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}WjWorldPlacementPreviewActor.generated.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }UStaticMeshComponent;}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }UMaterialInstanceDynamic;}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00018\ UCLASS()}
+\DoxyCodeLine{00019\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_aa711464247ca92e6d2be0707a2bc32ea}{AWjWorldPlacementPreviewActor}}\ :\ public\ AActor}
+\DoxyCodeLine{00020\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_aa711464247ca92e6d2be0707a2bc32ea}{AWjWorldPlacementPreviewActor}}();}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_af366bd0446f05487119b4dad80323d7e}{InitializePreview}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_placeable_object_definition}{FPlaceableObjectDefinition}}\&\ Definition);}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a42f107f6c0151d70b4b45f40f8cd0e99}{UpdatePreviewTransform}}(\textcolor{keyword}{const}\ FVector\&\ Location,\ \textcolor{keyword}{const}\ FRotator\&\ Rotation);}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a845fc88e4b558354c1e06eee1eadc96c}{SetPreviewValid}}(\textcolor{keywordtype}{bool}\ bInIsValid);}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a17590fe23312003a3809cf1c5f63f2c8}{RotatePreview}}(\textcolor{keywordtype}{float}\ DeltaYaw);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a0a06804be49a5ecd5f29037caddfd73b}{GetCurrentYaw}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CurrentYaw;\ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a50de3acdf94636de677d6e4fa052741c}{IsPreviewValid}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ bIsValid;\ \}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00045\ \ \ \ \ UPROPERTY(VisibleAnywhere)}
+\DoxyCodeLine{00046\ \ \ \ \ TObjectPtr<UStaticMeshComponent>\ \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a38e4c8bc78c113ad7f94beae9eb02d0d}{PreviewMeshComponent}};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00049\ \ \ \ \ TObjectPtr<UMaterialInstanceDynamic>\ \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a7d9823474146ac4b565cf34197898ced}{DynamicMaterial}};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Preview"{}})}
+\DoxyCodeLine{00052\ \ \ \ \ FLinearColor\ \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a6cd1358bb033da1e0dc3b1122ded8f91}{ValidColor}}\ =\ FLinearColor(0.0f,\ 1.0f,\ 0.0f,\ 0.5f);}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Preview"{}})}
+\DoxyCodeLine{00055\ \ \ \ \ FLinearColor\ \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_abc7ecce0211e6026b0778e3ce4bf27a0}{InvalidColor}}\ =\ FLinearColor(1.0f,\ 0.0f,\ 0.0f,\ 0.5f);}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Preview"{}})}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor_a4ba9f05608d87ff32c93ceb69f4b00e0}{PreviewOpacity}}\ =\ 0.5f;}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ private:}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{void}\ OnMeshLoaded();}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ FStreamableManager\ StreamableManager;}
+\DoxyCodeLine{00064\ \ \ \ \ TSharedPtr<FStreamableHandle>\ MeshLoadHandle;}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{float}\ CurrentYaw\ =\ 0.0f;}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{bool}\ bIsValid\ =\ true;}
+\DoxyCodeLine{00067\ \ \ \ \ FVector\ CachedScale\ =\ FVector::OneVector;}
+\DoxyCodeLine{00068\ \};}
+
+\end{DoxyCode}

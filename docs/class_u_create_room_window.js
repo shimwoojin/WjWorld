@@ -5,6 +5,7 @@ var class_u_create_room_window =
     [ "OnCancelClicked", "class_u_create_room_window.html#a6ae13c407e281de805418264497f3d72", null ],
     [ "OnCreateClicked", "class_u_create_room_window.html#afe0673466defaaffd5db623cde361a80", null ],
     [ "OnDecreasePlayersClicked", "class_u_create_room_window.html#aa00f195627ac45f75a8b130a49878fb7", null ],
+    [ "OnGameModeSelectionChanged", "class_u_create_room_window.html#a2149ae5ff424adac75125e972906ab52", null ],
     [ "OnIncreasePlayersClicked", "class_u_create_room_window.html#a6dee420d89dbb49ec100efb241f238e6", null ],
     [ "OnPrivateCheckBoxChanged", "class_u_create_room_window.html#a7bdee353da78d24ab338df3ad0819d11", null ],
     [ "OnRoomCreated", "class_u_create_room_window.html#afa7ef3ca9f2dc3cec0594b65514ddda4", null ],

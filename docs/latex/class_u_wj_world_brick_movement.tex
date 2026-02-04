@@ -1,0 +1,106 @@
+\doxysection{UWj\+World\+Brick\+Movement Class Reference}
+\hypertarget{class_u_wj_world_brick_movement}{}\label{class_u_wj_world_brick_movement}\index{UWjWorldBrickMovement@{UWjWorldBrickMovement}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Brick\+Movement.\+h$>$}
+
+Inheritance diagram for UWj\+World\+Brick\+Movement:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_u_wj_world_brick_movement}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_brick_movement_a8f74a87566c084b2388be7340604bb8b}{Initialize}} (UWj\+World\+Brick\+Component \texorpdfstring{$\ast$}{*}In\+Brick\+Component, \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall}{UWj\+World\+Game\+Rule\+Approaching\+Wall}} \texorpdfstring{$\ast$}{*}In\+Game\+Rule)
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_brick_movement_af28bb975f8618d0b371266d510b6dd68}{Tick}} (float Delta\+Time)
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_brick_movement_a558d2a31776a585ed258eb37e0ea5652}{Move\+Brick}} (float In\+Move\+Allow\+Time)
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_brick_movement_a1983afa44fd2d5ddc3ce2bc35dea664e}{Push\+Brick}} (const FVector \&Direction, float In\+Move\+Allow\+Time)
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_brick_movement_aa005b8a5b3002f1a9f8d007a8b0cef5a}{Execute\+Push}} (const FVector \&Direction, float In\+Move\+Allow\+Time)
+\item 
+virtual FVector \doxymbox{\hyperlink{class_u_wj_world_brick_movement_afe5766d1292ac72ce91fc66f9245c635}{Get\+Movement\+Vector}} (bool b\+Is\+New=true)
+\item 
+virtual TArray$<$ \doxymbox{\hyperlink{_wj_world_brick_movement_8h_a4445c351e8e75d81d6d71eaec2e96879}{EWj\+World\+Brick\+Movement\+Direction}} $>$ \doxymbox{\hyperlink{class_u_wj_world_brick_movement_a0c46f3758500a727dcc7c7dc31fb7ec7}{Get\+Next\+Directions}} ()
+\item 
+FVector \doxymbox{\hyperlink{class_u_wj_world_brick_movement_a0581f267410ca31ad9795df0dc9fd08e}{Get\+Last\+Movement\+Vector}} () const
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_brick_movement_a96e48da27cd2d11e344cabdf46030eaa}{Is\+Moving}} () const
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_brick_movement_a0280a6f4dd08fa57ad8dcea12c9c0576}{Can\+Push\+In\+Direction}} (const FVector \&Direction, TArray$<$ UWj\+World\+Brick\+Component \texorpdfstring{$\ast$}{*} $>$ \&Out\+Bricks\+To\+Move)
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{class_u_wj_world_brick_movement_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_wj_world_brick_movement_a0280a6f4dd08fa57ad8dcea12c9c0576}\index{UWjWorldBrickMovement@{UWjWorldBrickMovement}!CanPushInDirection@{CanPushInDirection}}
+\index{CanPushInDirection@{CanPushInDirection}!UWjWorldBrickMovement@{UWjWorldBrickMovement}}
+\doxysubsubsection{\texorpdfstring{CanPushInDirection()}{CanPushInDirection()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_movement_a0280a6f4dd08fa57ad8dcea12c9c0576} 
+bool UWj\+World\+Brick\+Movement::\+\+Can\+Push\+In\+Direction (\begin{DoxyParamCaption}\item[{const FVector \&}]{Direction}{, }\item[{TArray$<$ UWj\+World\+Brick\+Component \texorpdfstring{$\ast$}{*} $>$ \&}]{Out\+Bricks\+To\+Move}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_wj_world_brick_movement_aa005b8a5b3002f1a9f8d007a8b0cef5a}\index{UWjWorldBrickMovement@{UWjWorldBrickMovement}!ExecutePush@{ExecutePush}}
+\index{ExecutePush@{ExecutePush}!UWjWorldBrickMovement@{UWjWorldBrickMovement}}
+\doxysubsubsection{\texorpdfstring{ExecutePush()}{ExecutePush()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_movement_aa005b8a5b3002f1a9f8d007a8b0cef5a} 
+void UWj\+World\+Brick\+Movement::\+\+Execute\+Push (\begin{DoxyParamCaption}\item[{const FVector \&}]{Direction}{, }\item[{float}]{In\+Move\+Allow\+Time}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_wj_world_brick_movement_a0581f267410ca31ad9795df0dc9fd08e}\index{UWjWorldBrickMovement@{UWjWorldBrickMovement}!GetLastMovementVector@{GetLastMovementVector}}
+\index{GetLastMovementVector@{GetLastMovementVector}!UWjWorldBrickMovement@{UWjWorldBrickMovement}}
+\doxysubsubsection{\texorpdfstring{GetLastMovementVector()}{GetLastMovementVector()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_movement_a0581f267410ca31ad9795df0dc9fd08e} 
+FVector UWj\+World\+Brick\+Movement::\+\+Get\+Last\+Movement\+Vector (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_u_wj_world_brick_movement_afe5766d1292ac72ce91fc66f9245c635}\index{UWjWorldBrickMovement@{UWjWorldBrickMovement}!GetMovementVector@{GetMovementVector}}
+\index{GetMovementVector@{GetMovementVector}!UWjWorldBrickMovement@{UWjWorldBrickMovement}}
+\doxysubsubsection{\texorpdfstring{GetMovementVector()}{GetMovementVector()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_movement_afe5766d1292ac72ce91fc66f9245c635} 
+FVector UWj\+World\+Brick\+Movement::\+\+Get\+Movement\+Vector (\begin{DoxyParamCaption}\item[{bool}]{b\+Is\+New}{ = {\ttfamily true}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_brick_movement_a0c46f3758500a727dcc7c7dc31fb7ec7}\index{UWjWorldBrickMovement@{UWjWorldBrickMovement}!GetNextDirections@{GetNextDirections}}
+\index{GetNextDirections@{GetNextDirections}!UWjWorldBrickMovement@{UWjWorldBrickMovement}}
+\doxysubsubsection{\texorpdfstring{GetNextDirections()}{GetNextDirections()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_movement_a0c46f3758500a727dcc7c7dc31fb7ec7} 
+TArray$<$ \doxymbox{\hyperlink{_wj_world_brick_movement_8h_a4445c351e8e75d81d6d71eaec2e96879}{EWj\+World\+Brick\+Movement\+Direction}} $>$ UWj\+World\+Brick\+Movement::\+\+Get\+Next\+Directions (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_brick_movement_a8f74a87566c084b2388be7340604bb8b}\index{UWjWorldBrickMovement@{UWjWorldBrickMovement}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!UWjWorldBrickMovement@{UWjWorldBrickMovement}}
+\doxysubsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_movement_a8f74a87566c084b2388be7340604bb8b} 
+void UWj\+World\+Brick\+Movement::\+\+Initialize (\begin{DoxyParamCaption}\item[{UWj\+World\+Brick\+Component \texorpdfstring{$\ast$}{*}}]{In\+Brick\+Component}{, }\item[{\doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall}{UWj\+World\+Game\+Rule\+Approaching\+Wall}} \texorpdfstring{$\ast$}{*}}]{In\+Game\+Rule}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_wj_world_brick_movement_a96e48da27cd2d11e344cabdf46030eaa}\index{UWjWorldBrickMovement@{UWjWorldBrickMovement}!IsMoving@{IsMoving}}
+\index{IsMoving@{IsMoving}!UWjWorldBrickMovement@{UWjWorldBrickMovement}}
+\doxysubsubsection{\texorpdfstring{IsMoving()}{IsMoving()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_movement_a96e48da27cd2d11e344cabdf46030eaa} 
+bool UWj\+World\+Brick\+Movement::\+\+Is\+Moving (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_u_wj_world_brick_movement_a558d2a31776a585ed258eb37e0ea5652}\index{UWjWorldBrickMovement@{UWjWorldBrickMovement}!MoveBrick@{MoveBrick}}
+\index{MoveBrick@{MoveBrick}!UWjWorldBrickMovement@{UWjWorldBrickMovement}}
+\doxysubsubsection{\texorpdfstring{MoveBrick()}{MoveBrick()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_movement_a558d2a31776a585ed258eb37e0ea5652} 
+void UWj\+World\+Brick\+Movement::\+\+Move\+Brick (\begin{DoxyParamCaption}\item[{float}]{In\+Move\+Allow\+Time}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_wj_world_brick_movement_a1983afa44fd2d5ddc3ce2bc35dea664e}\index{UWjWorldBrickMovement@{UWjWorldBrickMovement}!PushBrick@{PushBrick}}
+\index{PushBrick@{PushBrick}!UWjWorldBrickMovement@{UWjWorldBrickMovement}}
+\doxysubsubsection{\texorpdfstring{PushBrick()}{PushBrick()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_movement_a1983afa44fd2d5ddc3ce2bc35dea664e} 
+void UWj\+World\+Brick\+Movement::\+\+Push\+Brick (\begin{DoxyParamCaption}\item[{const FVector \&}]{Direction}{, }\item[{float}]{In\+Move\+Allow\+Time}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_wj_world_brick_movement_af28bb975f8618d0b371266d510b6dd68}\index{UWjWorldBrickMovement@{UWjWorldBrickMovement}!Tick@{Tick}}
+\index{Tick@{Tick}!UWjWorldBrickMovement@{UWjWorldBrickMovement}}
+\doxysubsubsection{\texorpdfstring{Tick()}{Tick()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_movement_af28bb975f8618d0b371266d510b6dd68} 
+void UWj\+World\+Brick\+Movement::\+\+Tick (\begin{DoxyParamCaption}\item[{float}]{Delta\+Time}{}\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Wall/\+\doxymbox{\hyperlink{_wj_world_brick_movement_8h}{Wj\+World\+Brick\+Movement.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Wall/\+\doxymbox{\hyperlink{_wj_world_brick_movement_8cpp}{Wj\+World\+Brick\+Movement.\+cpp}}\end{DoxyCompactItemize}

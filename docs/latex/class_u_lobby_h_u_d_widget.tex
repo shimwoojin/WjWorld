@@ -25,6 +25,12 @@ void \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_ae0ce111cd6335b862782103868
 void \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_aa0aaca101acda5a9c87ed62f6fbb30c2}{On\+Direct\+Connect\+Clicked}} ()
 \item 
 void \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a292eaefd6d13a117b72c524663daa687}{On\+Settings\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_aa269eecf7eeba9a3e22270feae347f27}{On\+Profile\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a46ce835ca4fa5342ddb4301dfd791160}{On\+Placement\+Mode\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a84be21947d9e14c2c6d9bc606a371e64}{On\+Cosmetic\+Clicked}} ()
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
@@ -36,6 +42,16 @@ TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a09f
 TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a5da82689672aab9464bc2e9956d049bc}{Direct\+Connect\+Button}}
 \item 
 TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a787a9949d541379d9d6ff3bc5ee0fe47}{Settings\+Button}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a49f2c564156fb553acbbfc142c8b94ea}{Profile\+Button}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_afa6d620214646f51f726d8b22abe7490}{Placement\+Mode\+Button}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_afa84338a5eddfb80a49e5d00b3c748a6}{Cosmetic\+Button}}
+\item 
+TSubclass\+Of$<$ \doxymbox{\hyperlink{class_u_player_profile_widget}{UPlayer\+Profile\+Widget}} $>$ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a983f1261d953d30056d40c0ff639f2c9}{Profile\+Widget\+Class}}
+\item 
+TSubclass\+Of$<$ \doxymbox{\hyperlink{class_u_cosmetic_main_window}{UCosmetic\+Main\+Window}} $>$ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a40b13f001519ae20c6e28e35a731abff}{Cosmetic\+Window\+Class}}
 \end{DoxyCompactItemize}
 
 
@@ -47,7 +63,8 @@ TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a787
 \item "{}방 만들기"{} 버튼
 \item "{}방 찾기"{} 버튼
 \item "{}직접 입장"{} 버튼 (NULL Subsystem용)
-\item "{}설정"{} 버튼 (추후) 
+\item "{}설정"{} 버튼 (추후)
+\item "{}프로필"{} 버튼 
 \end{DoxyItemize}
 
 \label{doc-func-members}
@@ -58,6 +75,12 @@ TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_lobby_h_u_d_widget_a787
 \doxysubsubsection{\texorpdfstring{NativeConstruct()}{NativeConstruct()}}
 {\footnotesize\ttfamily \label{class_u_lobby_h_u_d_widget_a828bde5e15431d48ce0cdf9506b82c75} 
 void ULobby\+HUDWidget::\+\+Native\+Construct (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_lobby_h_u_d_widget_a84be21947d9e14c2c6d9bc606a371e64}\index{ULobbyHUDWidget@{ULobbyHUDWidget}!OnCosmeticClicked@{OnCosmeticClicked}}
+\index{OnCosmeticClicked@{OnCosmeticClicked}!ULobbyHUDWidget@{ULobbyHUDWidget}}
+\doxysubsubsection{\texorpdfstring{OnCosmeticClicked()}{OnCosmeticClicked()}}
+{\footnotesize\ttfamily \label{class_u_lobby_h_u_d_widget_a84be21947d9e14c2c6d9bc606a371e64} 
+void ULobby\+HUDWidget::\+\+On\+Cosmetic\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 \Hypertarget{class_u_lobby_h_u_d_widget_a81e19792628edf395ac8f09dfa771f81}\index{ULobbyHUDWidget@{ULobbyHUDWidget}!OnCreateRoomClicked@{OnCreateRoomClicked}}
 \index{OnCreateRoomClicked@{OnCreateRoomClicked}!ULobbyHUDWidget@{ULobbyHUDWidget}}
@@ -77,6 +100,18 @@ void ULobby\+HUDWidget::\+\+On\+Direct\+Connect\+Clicked (\begin{DoxyParamCaptio
 {\footnotesize\ttfamily \label{class_u_lobby_h_u_d_widget_ae0ce111cd6335b8627821038680865ab} 
 void ULobby\+HUDWidget::\+\+On\+Find\+Room\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
+\Hypertarget{class_u_lobby_h_u_d_widget_a46ce835ca4fa5342ddb4301dfd791160}\index{ULobbyHUDWidget@{ULobbyHUDWidget}!OnPlacementModeClicked@{OnPlacementModeClicked}}
+\index{OnPlacementModeClicked@{OnPlacementModeClicked}!ULobbyHUDWidget@{ULobbyHUDWidget}}
+\doxysubsubsection{\texorpdfstring{OnPlacementModeClicked()}{OnPlacementModeClicked()}}
+{\footnotesize\ttfamily \label{class_u_lobby_h_u_d_widget_a46ce835ca4fa5342ddb4301dfd791160} 
+void ULobby\+HUDWidget::\+\+On\+Placement\+Mode\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_lobby_h_u_d_widget_aa269eecf7eeba9a3e22270feae347f27}\index{ULobbyHUDWidget@{ULobbyHUDWidget}!OnProfileClicked@{OnProfileClicked}}
+\index{OnProfileClicked@{OnProfileClicked}!ULobbyHUDWidget@{ULobbyHUDWidget}}
+\doxysubsubsection{\texorpdfstring{OnProfileClicked()}{OnProfileClicked()}}
+{\footnotesize\ttfamily \label{class_u_lobby_h_u_d_widget_aa269eecf7eeba9a3e22270feae347f27} 
+void ULobby\+HUDWidget::\+\+On\+Profile\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
 \Hypertarget{class_u_lobby_h_u_d_widget_a292eaefd6d13a117b72c524663daa687}\index{ULobbyHUDWidget@{ULobbyHUDWidget}!OnSettingsClicked@{OnSettingsClicked}}
 \index{OnSettingsClicked@{OnSettingsClicked}!ULobbyHUDWidget@{ULobbyHUDWidget}}
 \doxysubsubsection{\texorpdfstring{OnSettingsClicked()}{OnSettingsClicked()}}
@@ -88,7 +123,19 @@ void ULobby\+HUDWidget::\+\+On\+Settings\+Clicked (\begin{DoxyParamCaption}{}{}\
 \label{doc-variable-members}
 \Hypertarget{class_u_lobby_h_u_d_widget_doc-variable-members}
 \doxysubsection{Member Data Documentation}
-\Hypertarget{class_u_lobby_h_u_d_widget_a5a239c793542e14e2b9301eabc578f1d}\index{ULobbyHUDWidget@{ULobbyHUDWidget}!CreateRoomButton@{CreateRoomButton}}
+\Hypertarget{class_u_lobby_h_u_d_widget_afa84338a5eddfb80a49e5d00b3c748a6}\index{ULobbyHUDWidget@{ULobbyHUDWidget}!CosmeticButton@{CosmeticButton}}
+\index{CosmeticButton@{CosmeticButton}!ULobbyHUDWidget@{ULobbyHUDWidget}}
+\doxysubsubsection{\texorpdfstring{CosmeticButton}{CosmeticButton}}
+{\footnotesize\ttfamily \label{class_u_lobby_h_u_d_widget_afa84338a5eddfb80a49e5d00b3c748a6} 
+TObject\+Ptr$<$UButton$>$ ULobby\+HUDWidget::\+\+Cosmetic\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+코스메틱 버튼 \Hypertarget{class_u_lobby_h_u_d_widget_a40b13f001519ae20c6e28e35a731abff}\index{ULobbyHUDWidget@{ULobbyHUDWidget}!CosmeticWindowClass@{CosmeticWindowClass}}
+\index{CosmeticWindowClass@{CosmeticWindowClass}!ULobbyHUDWidget@{ULobbyHUDWidget}}
+\doxysubsubsection{\texorpdfstring{CosmeticWindowClass}{CosmeticWindowClass}}
+{\footnotesize\ttfamily \label{class_u_lobby_h_u_d_widget_a40b13f001519ae20c6e28e35a731abff} 
+TSubclass\+Of$<$\doxymbox{\hyperlink{class_u_cosmetic_main_window}{UCosmetic\+Main\+Window}}$>$ ULobby\+HUDWidget::\+\+Cosmetic\+Window\+Class\hspace{0.3cm}{\ttfamily [protected]}}
+
+코스메틱 윈도우 클래스 (Blueprint에서 설정) \Hypertarget{class_u_lobby_h_u_d_widget_a5a239c793542e14e2b9301eabc578f1d}\index{ULobbyHUDWidget@{ULobbyHUDWidget}!CreateRoomButton@{CreateRoomButton}}
 \index{CreateRoomButton@{CreateRoomButton}!ULobbyHUDWidget@{ULobbyHUDWidget}}
 \doxysubsubsection{\texorpdfstring{CreateRoomButton}{CreateRoomButton}}
 {\footnotesize\ttfamily \label{class_u_lobby_h_u_d_widget_a5a239c793542e14e2b9301eabc578f1d} 
@@ -106,7 +153,25 @@ TObject\+Ptr$<$UButton$>$ ULobby\+HUDWidget::\+\+Direct\+Connect\+Button\hspace{
 {\footnotesize\ttfamily \label{class_u_lobby_h_u_d_widget_a09fca02b055e19887df25961e7b1a55f} 
 TObject\+Ptr$<$UButton$>$ ULobby\+HUDWidget::\+\+Find\+Room\+Button\hspace{0.3cm}{\ttfamily [protected]}}
 
-방 찾기 버튼 \Hypertarget{class_u_lobby_h_u_d_widget_a787a9949d541379d9d6ff3bc5ee0fe47}\index{ULobbyHUDWidget@{ULobbyHUDWidget}!SettingsButton@{SettingsButton}}
+방 찾기 버튼 \Hypertarget{class_u_lobby_h_u_d_widget_afa6d620214646f51f726d8b22abe7490}\index{ULobbyHUDWidget@{ULobbyHUDWidget}!PlacementModeButton@{PlacementModeButton}}
+\index{PlacementModeButton@{PlacementModeButton}!ULobbyHUDWidget@{ULobbyHUDWidget}}
+\doxysubsubsection{\texorpdfstring{PlacementModeButton}{PlacementModeButton}}
+{\footnotesize\ttfamily \label{class_u_lobby_h_u_d_widget_afa6d620214646f51f726d8b22abe7490} 
+TObject\+Ptr$<$UButton$>$ ULobby\+HUDWidget::\+\+Placement\+Mode\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+배치 모드 버튼 \Hypertarget{class_u_lobby_h_u_d_widget_a49f2c564156fb553acbbfc142c8b94ea}\index{ULobbyHUDWidget@{ULobbyHUDWidget}!ProfileButton@{ProfileButton}}
+\index{ProfileButton@{ProfileButton}!ULobbyHUDWidget@{ULobbyHUDWidget}}
+\doxysubsubsection{\texorpdfstring{ProfileButton}{ProfileButton}}
+{\footnotesize\ttfamily \label{class_u_lobby_h_u_d_widget_a49f2c564156fb553acbbfc142c8b94ea} 
+TObject\+Ptr$<$UButton$>$ ULobby\+HUDWidget::\+\+Profile\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+프로필 버튼 \Hypertarget{class_u_lobby_h_u_d_widget_a983f1261d953d30056d40c0ff639f2c9}\index{ULobbyHUDWidget@{ULobbyHUDWidget}!ProfileWidgetClass@{ProfileWidgetClass}}
+\index{ProfileWidgetClass@{ProfileWidgetClass}!ULobbyHUDWidget@{ULobbyHUDWidget}}
+\doxysubsubsection{\texorpdfstring{ProfileWidgetClass}{ProfileWidgetClass}}
+{\footnotesize\ttfamily \label{class_u_lobby_h_u_d_widget_a983f1261d953d30056d40c0ff639f2c9} 
+TSubclass\+Of$<$\doxymbox{\hyperlink{class_u_player_profile_widget}{UPlayer\+Profile\+Widget}}$>$ ULobby\+HUDWidget::\+\+Profile\+Widget\+Class\hspace{0.3cm}{\ttfamily [protected]}}
+
+프로필 위젯 클래스 (Blueprint에서 설정) \Hypertarget{class_u_lobby_h_u_d_widget_a787a9949d541379d9d6ff3bc5ee0fe47}\index{ULobbyHUDWidget@{ULobbyHUDWidget}!SettingsButton@{SettingsButton}}
 \index{SettingsButton@{SettingsButton}!ULobbyHUDWidget@{ULobbyHUDWidget}}
 \doxysubsubsection{\texorpdfstring{SettingsButton}{SettingsButton}}
 {\footnotesize\ttfamily \label{class_u_lobby_h_u_d_widget_a787a9949d541379d9d6ff3bc5ee0fe47} 

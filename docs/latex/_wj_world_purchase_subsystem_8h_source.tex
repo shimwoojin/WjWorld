@@ -1,0 +1,77 @@
+\doxysection{Wj\+World\+Purchase\+Subsystem.\+h}
+\hypertarget{_wj_world_purchase_subsystem_8h_source}{}\label{_wj_world_purchase_subsystem_8h_source}\index{Source/WjWorld/Cosmetic/WjWorldPurchaseSubsystem.h@{Source/WjWorld/Cosmetic/WjWorldPurchaseSubsystem.h}}
+\doxymbox{\hyperlink{_wj_world_purchase_subsystem_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Subsystems/GameInstanceSubsystem.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldPurchaseSubsystem.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#if\ WITH\_STEAM}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}steam/steam\_api.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem}{UWjWorldCosmeticSubsystem}};}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00018\ UENUM(BlueprintType)}
+\DoxyCodeLine{00019\ enum\ class\ \doxymbox{\hyperlink{_wj_world_purchase_subsystem_8h_a15acf98b582e7cf7a17c121e5ca78399}{EPurchaseState}}\ :\ uint8}
+\DoxyCodeLine{00020\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ Idle\ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_wj_world_purchase_subsystem_8h_a15acf98b582e7cf7a17c121e5ca78399aa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Idle"{}}),}
+\DoxyCodeLine{00022\ \ \ \ \ Pending\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_purchase_subsystem_8h_a15acf98b582e7cf7a17c121e5ca78399aa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Pending"{}}),}
+\DoxyCodeLine{00023\ \ \ \ \ Completed\ \ \ \doxymbox{\hyperlink{_wj_world_purchase_subsystem_8h_a15acf98b582e7cf7a17c121e5ca78399aa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Completed"{}}),}
+\DoxyCodeLine{00024\ \ \ \ \ Failed\ \ \ \ \ \ \doxymbox{\hyperlink{_wj_world_purchase_subsystem_8h_a15acf98b582e7cf7a17c121e5ca78399aa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Failed"{}}),}
+\DoxyCodeLine{00025\ \};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \doxymbox{\hyperlink{_wj_world_purchase_subsystem_8h_abf164adb0f05abc64dbab8f27b507662}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams}}(FOnPurchaseComplete,\ FName,\ ItemId,\ \textcolor{keywordtype}{bool},\ bSuccess);}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00035\ UCLASS()}
+\DoxyCodeLine{00036\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_purchase_subsystem}{UWjWorldPurchaseSubsystem}}\ :\ public\ UGameInstanceSubsystem}
+\DoxyCodeLine{00037\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_ae3ef1484ed0fb7c151d703f72b635f3d}{Initialize}}(FSubsystemCollectionBase\&\ Collection)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_aaafa520a2b8b04b86f6c39003eeb075f}{Deinitialize}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00049\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Purchase"{}})}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_purchase_subsystem_ad0373122ce80503bd45dd81984882306}{RequestPurchase}}(FName\ ItemId);}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00053\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Purchase"{}})}
+\DoxyCodeLine{00054\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_purchase_subsystem_8h_a15acf98b582e7cf7a17c121e5ca78399}{EPurchaseState}}\ \doxymbox{\hyperlink{class_u_wj_world_purchase_subsystem_ab31da866d3a25e75b77d957cf30e7584}{GetPurchaseState}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CurrentState;\ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00057\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Purchase"{}})}
+\DoxyCodeLine{00058\ \ \ \ \ bool\ \doxymbox{\hyperlink{class_u_wj_world_purchase_subsystem_a22d585f894151caaf95fb741f47e4988}{IsPurchasePending}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CurrentState\ ==\ EPurchaseState::Pending;\ \}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00061\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}Purchase"{}})}
+\DoxyCodeLine{00062\ \ \ \ \ FOnPurchaseComplete\ \doxymbox{\hyperlink{class_u_wj_world_purchase_subsystem_a9e35b37b30a001728d1aafd624542d50}{OnPurchaseComplete}};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ private:}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{void}\ HandlePurchaseResult(\textcolor{keywordtype}{bool}\ bSuccess);}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{void}\ RefreshInventoryAfterPurchase();}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{void}\ PollPurchaseResult();}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{void}\ StartPurchasePolling();}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{void}\ StopPurchasePolling();}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_purchase_subsystem_8h_a15acf98b582e7cf7a17c121e5ca78399}{EPurchaseState}}\ CurrentState\ =\ \doxymbox{\hyperlink{_wj_world_purchase_subsystem_8h_a15acf98b582e7cf7a17c121e5ca78399}{EPurchaseState}}::Idle;}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00083\ \ \ \ \ FName\ PendingItemId;}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#if\ WITH\_STEAM}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00087\ \ \ \ \ SteamInventoryResult\_t\ PurchaseResultHandle\ =\ k\_SteamInventoryResultInvalid;}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00091\ \ \ \ \ FTimerHandle\ PurchasePollTimerHandle;}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordtype}{float}\ PurchaseTimeoutSeconds\ =\ 300.0f;}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{float}\ PurchaseStartTime\ =\ 0.0f;}
+\DoxyCodeLine{00098\ \};}
+
+\end{DoxyCode}

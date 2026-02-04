@@ -1,4 +1,21 @@
 var searchData=
 [
-  ['targetlevelname_0',['TargetLevelName',['../class_a_interactable_portal.html#aa0fe7813d09b91c74be40de7417623c9',1,'AInteractablePortal']]]
+  ['rarity_0',['Rarity',['../struct_f_cosmetic_item_definition.html#ac2d12a7e9873b0775cb275f524548096',1,'FCosmeticItemDefinition']]],
+  ['raritybar_1',['RarityBar',['../class_u_cosmetic_item_entry_widget.html#ace573b313ac21cc8d2ca05f575dd5065',1,'UCosmeticItemEntryWidget']]],
+  ['readybutton_2',['ReadyButton',['../class_u_waiting_room_h_u_d_widget.html#ac41ff74540551276855a46122e70ba46',1,'UWaitingRoomHUDWidget']]],
+  ['readybuttontext_3',['ReadyButtonText',['../class_u_waiting_room_h_u_d_widget.html#ae7ddcefe7617f4dbc1b4e13583ada0c2',1,'UWaitingRoomHUDWidget']]],
+  ['refreshbutton_4',['RefreshButton',['../class_u_room_list_window.html#af8e1bcefb15f0884e5cbe442964e50d1',1,'URoomListWindow']]],
+  ['retrycount_5',['RetryCount',['../struct_f_host_migration_context.html#a66fc9b0e32aa4ff172b86b9c2abcd480',1,'FHostMigrationContext']]],
+  ['retryinterval_6',['RetryInterval',['../struct_f_host_migration_context.html#a80de23349901582bddc7fe8e848a22ca',1,'FHostMigrationContext']]],
+  ['roomlistentrywidgetclass_7',['RoomListEntryWidgetClass',['../class_u_room_list_window.html#ad885bb485fcb7372a15b7f4bce6b7142',1,'URoomListWindow']]],
+  ['roomlistscrollbox_8',['RoomListScrollBox',['../class_u_room_list_window.html#aff4a2d142c6d66ea21e7953698b4b3ba',1,'URoomListWindow']]],
+  ['roomlistwindowclass_9',['RoomListWindowClass',['../class_a_wj_world_game_mode_lobby.html#aa3d95a551113708bb11113988dd8f302',1,'AWjWorldGameModeLobby']]],
+  ['roomname_10',['RoomName',['../struct_f_room_settings.html#aea3c222f30b1ea0d2202edb8a4ee39ff',1,'FRoomSettings::RoomName'],['../struct_f_room_info.html#a4192099c991f1997115408521c9d2b4a',1,'FRoomInfo::RoomName']]],
+  ['roomnametext_11',['RoomNameText',['../class_u_room_list_entry_widget.html#a06112a73a67e7f150687bf249238a98e',1,'URoomListEntryWidget::RoomNameText'],['../class_u_waiting_room_h_u_d_widget.html#a7aa064d6cd051ef7b8c708d051ed2eea',1,'UWaitingRoomHUDWidget::RoomNameText']]],
+  ['roomnametextbox_12',['RoomNameTextBox',['../class_u_create_room_window.html#a49f1deee79bf0a2c3caa47742f27d4b4',1,'UCreateRoomWindow']]],
+  ['roomsettings_13',['RoomSettings',['../class_a_wj_world_game_state_waiting_room.html#a42968a86fcc6cf99ed53bb710db1bcae',1,'AWjWorldGameStateWaitingRoom']]],
+  ['rotateleftbutton_14',['RotateLeftButton',['../class_u_cosmetic_preview_panel.html#a468ec3153306f54cd001eee3562f7a11',1,'UCosmeticPreviewPanel']]],
+  ['rotaterightbutton_15',['RotateRightButton',['../class_u_cosmetic_preview_panel.html#af681d43496db8aeb44bc67336f7b0ce9',1,'UCosmeticPreviewPanel']]],
+  ['rotationsnapdegrees_16',['RotationSnapDegrees',['../struct_f_placeable_object_definition.html#a55c7e155e8e7b44ad4fbef8f9bbd57c9',1,'FPlaceableObjectDefinition']]],
+  ['rownum_17',['RowNum',['../struct_f_wj_world_brick_properties.html#a950085de1a5bbdcbd0038b94273af98b',1,'FWjWorldBrickProperties::RowNum'],['../struct_f_wj_world_wall_description.html#a385aa550239cdf450bf9679919c98dbb',1,'FWjWorldWallDescription::RowNum']]]
 ];

@@ -1,0 +1,140 @@
+\doxysection{Wj\+World\+Placement\+Component.\+h}
+\hypertarget{_wj_world_placement_component_8h_source}{}\label{_wj_world_placement_component_8h_source}\index{Source/WjWorld/GamePlay/Placement/WjWorldPlacementComponent.h@{Source/WjWorld/GamePlay/Placement/WjWorldPlacementComponent.h}}
+\doxymbox{\hyperlink{_wj_world_placement_component_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Components/ActorComponent.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}InputAction.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldPlacementComponent.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_placement_preview_actor}{AWjWorldPlacementPreviewActor}};}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_placed_object_actor}{AWjWorldPlacedObjectActor}};}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_game_state_lobby}{AWjWorldGameStateLobby}};}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWjWorldPlaceableObjectDataAsset}};}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }UInputMappingContext;}
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }UInputAction;}
+\DoxyCodeLine{00016\ \textcolor{keyword}{struct\ }\doxymbox{\hyperlink{struct_f_placeable_object_definition}{FPlaceableObjectDefinition}};}
+\DoxyCodeLine{00017\ \textcolor{keyword}{struct\ }FInputActionValue;}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00022\ UENUM(BlueprintType)}
+\DoxyCodeLine{00023\ enum\ class\ \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0e}{EPlacementMode}}\ :\ uint8}
+\DoxyCodeLine{00024\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0ea6adf97f83acf6453d4a6a4b1070f3754}{None}},}
+\DoxyCodeLine{00026\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0ea2a091546824ff9510ac3923076f8acdc}{Placing}},}
+\DoxyCodeLine{00027\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0eaffbb410a55bb31f801dea6387e2745ac}{Deleting}}}
+\DoxyCodeLine{00028\ \};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baf06cdd3a3fa9e9e929a5d126f589e}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnPlacementModeChanged,\ \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0e}{EPlacementMode}},\ NewMode);}
+\DoxyCodeLine{00031\ \doxymbox{\hyperlink{_wj_world_placement_component_8h_abebf07c0bc3e1961e05b9b8567554b5c}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE}}(FOnObjectPlaced);}
+\DoxyCodeLine{00032\ \doxymbox{\hyperlink{_wj_world_placement_component_8h_abebf07c0bc3e1961e05b9b8567554b5c}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE}}(FOnObjectDeleted);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00038\ UCLASS(ClassGroup=(Custom),\ meta=(BlueprintSpawnableComponent))}
+\DoxyCodeLine{00039\ \textcolor{keyword}{class\ }WJWORLD\_API\ UWjWorldPlacementComponent\ :\ \textcolor{keyword}{public}\ UActorComponent}
+\DoxyCodeLine{00040\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ public:}
+\DoxyCodeLine{00044\ \ \ \ \ UWjWorldPlacementComponent();}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{comment}{//\string~\ 모드\ 전환}}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{void}\ EnterPlacementMode();}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{void}\ ExitPlacementMode();}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ ToggleDeleteMode();}
+\DoxyCodeLine{00050\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0e}{EPlacementMode}}\ GetCurrentMode()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CurrentMode;\ \}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{comment}{//\string~\ 오브젝트\ 조작}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{void}\ SelectObject(FName\ ObjectId);}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ RotatePreview();}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{void}\ ConfirmPlacement();}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{void}\ DeleteHoveredObject();}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{comment}{//\string~\ 카탈로그}}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ SetCatalog(UWjWorldPlaceableObjectDataAsset*\ InCatalog);}
+\DoxyCodeLine{00060\ \ \ \ \ UWjWorldPlaceableObjectDataAsset*\ GetCatalog()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Catalog;\ \}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{comment}{//\string~\ 저장/로드}}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{void}\ SaveLayout();}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{void}\ LoadLayout();}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{comment}{//\string~\ 델리게이트}}
+\DoxyCodeLine{00067\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}Placement"{}})}
+\DoxyCodeLine{00068\ \ \ \ \ FOnPlacementModeChanged\ OnPlacementModeChanged;}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}Placement"{}})}
+\DoxyCodeLine{00071\ \ \ \ \ FOnObjectPlaced\ OnObjectPlaced;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}Placement"{}})}
+\DoxyCodeLine{00074\ \ \ \ \ FOnObjectDeleted\ OnObjectDeleted;}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{comment}{//\string~\ 입력\ 에셋\ (에디터에서\ 설정)}}
+\DoxyCodeLine{00077\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Input"{}})}
+\DoxyCodeLine{00078\ \ \ \ \ TObjectPtr<UInputMappingContext>\ PlacementMappingContext;}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Input"{}})}
+\DoxyCodeLine{00081\ \ \ \ \ TObjectPtr<UInputAction>\ ConfirmAction;}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Input"{}})}
+\DoxyCodeLine{00084\ \ \ \ \ TObjectPtr<UInputAction>\ CancelAction;}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Input"{}})}
+\DoxyCodeLine{00087\ \ \ \ \ TObjectPtr<UInputAction>\ RotateAction;}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Input"{}})}
+\DoxyCodeLine{00090\ \ \ \ \ TObjectPtr<UInputAction>\ DeleteAction;}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ protected:}
+\DoxyCodeLine{00093\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ TickComponent(\textcolor{keywordtype}{float}\ DeltaTime,\ ELevelTick\ TickType,\ FActorComponentTickFunction*\ ThisTickFunction)\ override;}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ private:}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{bool}\ TraceGroundUnderMouse(FHitResult\&\ OutHit)\ const;}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsPlacementLocationValid(const\ FVector\&\ Location)\ const;}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00103\ \ \ \ \ AWjWorldPlacedObjectActor*\ TraceForPlacedObject()\ const;}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordtype}{void}\ DestroyPreview();}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordtype}{void}\ LoadInputSettings();}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordtype}{void}\ EnsureCatalogLoaded();}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordtype}{void}\ BindInputActions();}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordtype}{void}\ UnbindInputActions();}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordtype}{void}\ OnConfirmAction(const\ FInputActionValue\&\ Value);}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordtype}{void}\ OnCancelAction(const\ FInputActionValue\&\ Value);}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{void}\ OnRotateAction(const\ FInputActionValue\&\ Value);}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordtype}{void}\ OnDeleteAction(const\ FInputActionValue\&\ Value);}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \ \ APlayerController*\ GetPlayerController()\ const;}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00127\ \ \ \ \ AWjWorldGameStateLobby*\ GetLobbyGameState()\ const;}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00130\ \ \ \ \ int32\ FindPlacedObjectIndex(AWjWorldPlacedObjectActor*\ Actor)\ const;}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00133\ \ \ \ \ TObjectPtr<UWjWorldPlaceableObjectDataAsset>\ Catalog;}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00136\ \ \ \ \ TObjectPtr<AWjWorldPlacementPreviewActor>\ PreviewActor;}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00139\ \ \ \ \ TObjectPtr<AWjWorldPlacedObjectActor>\ HoveredObject;}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \ \ \ \ FName\ SelectedObjectId;}
+\DoxyCodeLine{00142\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0e}{EPlacementMode}}\ CurrentMode\ =\ \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0e}{EPlacementMode}}::\doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0ea6adf97f83acf6453d4a6a4b1070f3754}{None}};}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \ \ \ \ static\ const\ FString\ SaveSlotName;}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordtype}{bool}\ bCurrentPreviewValid\ =\ false;}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00150\ \ \ \ \ static\ constexpr\ \textcolor{keywordtype}{float}\ TraceDistance\ =\ 10000.0f;}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00153\ \ \ \ \ static\ constexpr\ \textcolor{keywordtype}{float}\ OverlapCheckRadius\ =\ 50.0f;}
+\DoxyCodeLine{00154\ \};}
+
+\end{DoxyCode}

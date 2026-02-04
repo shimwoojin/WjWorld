@@ -1,0 +1,150 @@
+\doxysection{FCosmetic\+Item\+Definition Struct Reference}
+\hypertarget{struct_f_cosmetic_item_definition}{}\label{struct_f_cosmetic_item_definition}\index{FCosmeticItemDefinition@{FCosmeticItemDefinition}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Cosmetic\+Data\+Asset.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a17f34a3146fcef260d154550e6435868}{Is\+Valid}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FName \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_abb4adee6ebb5e3b58e33d8772b68d1dd}{Item\+Id}}
+\item 
+int32 \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_af51c73a10cb56a03f5504f82c9559e43}{Steam\+Item\+Def\+Id}} = 0
+\item 
+FText \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a284b3acb5ac38f6a720b1472a0f8ce62}{Display\+Name}}
+\item 
+FText \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a111db8186963d23f782b294af152b61c}{Description}}
+\item 
+\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmetic\+Slot}} \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a675d04ea3707aaffdbbe554454a2b0db}{Slot}} = ECosmetic\+Slot::\+\+None
+\item 
+\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_af3b6fbfb2df313f7e1012e2cb7ac931c}{ECosmetic\+Rarity}} \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_ac2d12a7e9873b0775cb275f524548096}{Rarity}} = ECosmetic\+Rarity::\+\+Common
+\item 
+TSoft\+Object\+Ptr$<$ USkeletal\+Mesh $>$ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a04fed83e9eb9e9a5d50f2b636aff93f5}{Skeletal\+Mesh}}
+\item 
+TSoft\+Object\+Ptr$<$ UStatic\+Mesh $>$ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a5b07fe1dc34f1880a436e77a1c2c5bee}{Static\+Mesh}}
+\item 
+TSoft\+Object\+Ptr$<$ UTexture2D $>$ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_acc656d870336a71c7f8b1da77752054b}{Icon}}
+\item 
+int32 \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a80082559945da38d9b53f5a4ec71b0c0}{Price}} = 0
+\item 
+FName \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_ade59dab0752b559df49a0a19b0936e5b}{Attach\+Socket\+Name}}
+\item 
+FVector \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_ab0bdf04ed6675313f5837fa9da3ab7b0}{Attach\+Location\+Offset}} = FVector::\+\+Zero\+Vector
+\item 
+FRotator \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a54fa3dda46e59f1e11e27e0bf2cf66dc}{Attach\+Rotation\+Offset}} = FRotator::\+\+Zero\+Rotator
+\item 
+FVector \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a86cb22f34165fca629cee5289a8f25fe}{Attach\+Scale}} = FVector::\+\+One\+Vector
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+개별 코스메틱 아이템 정의 \doxylink{struct_f_cosmetic_item_definition_abb4adee6ebb5e3b58e33d8772b68d1dd}{Item\+Id(\+FName)}를 중간 키로 사용하여 Steam Item\+Def\+Id와 비주얼 에셋을 매핑 
+
+\label{doc-func-members}
+\Hypertarget{struct_f_cosmetic_item_definition_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_f_cosmetic_item_definition_a17f34a3146fcef260d154550e6435868}\index{FCosmeticItemDefinition@{FCosmeticItemDefinition}!IsValid@{IsValid}}
+\index{IsValid@{IsValid}!FCosmeticItemDefinition@{FCosmeticItemDefinition}}
+\doxysubsubsection{\texorpdfstring{IsValid()}{IsValid()}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_item_definition_a17f34a3146fcef260d154550e6435868} 
+bool FCosmetic\+Item\+Definition::\+\+Is\+Valid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{struct_f_cosmetic_item_definition_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_f_cosmetic_item_definition_ab0bdf04ed6675313f5837fa9da3ab7b0}\index{FCosmeticItemDefinition@{FCosmeticItemDefinition}!AttachLocationOffset@{AttachLocationOffset}}
+\index{AttachLocationOffset@{AttachLocationOffset}!FCosmeticItemDefinition@{FCosmeticItemDefinition}}
+\doxysubsubsection{\texorpdfstring{AttachLocationOffset}{AttachLocationOffset}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_item_definition_ab0bdf04ed6675313f5837fa9da3ab7b0} 
+FVector FCosmetic\+Item\+Definition::\+\+Attach\+Location\+Offset = FVector::\+\+Zero\+Vector}
+
+부착 시 상대 위치 오프셋 \Hypertarget{struct_f_cosmetic_item_definition_a54fa3dda46e59f1e11e27e0bf2cf66dc}\index{FCosmeticItemDefinition@{FCosmeticItemDefinition}!AttachRotationOffset@{AttachRotationOffset}}
+\index{AttachRotationOffset@{AttachRotationOffset}!FCosmeticItemDefinition@{FCosmeticItemDefinition}}
+\doxysubsubsection{\texorpdfstring{AttachRotationOffset}{AttachRotationOffset}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_item_definition_a54fa3dda46e59f1e11e27e0bf2cf66dc} 
+FRotator FCosmetic\+Item\+Definition::\+\+Attach\+Rotation\+Offset = FRotator::\+\+Zero\+Rotator}
+
+부착 시 상대 회전 오프셋 \Hypertarget{struct_f_cosmetic_item_definition_a86cb22f34165fca629cee5289a8f25fe}\index{FCosmeticItemDefinition@{FCosmeticItemDefinition}!AttachScale@{AttachScale}}
+\index{AttachScale@{AttachScale}!FCosmeticItemDefinition@{FCosmeticItemDefinition}}
+\doxysubsubsection{\texorpdfstring{AttachScale}{AttachScale}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_item_definition_a86cb22f34165fca629cee5289a8f25fe} 
+FVector FCosmetic\+Item\+Definition::\+\+Attach\+Scale = FVector::\+\+One\+Vector}
+
+부착 시 스케일 \Hypertarget{struct_f_cosmetic_item_definition_ade59dab0752b559df49a0a19b0936e5b}\index{FCosmeticItemDefinition@{FCosmeticItemDefinition}!AttachSocketName@{AttachSocketName}}
+\index{AttachSocketName@{AttachSocketName}!FCosmeticItemDefinition@{FCosmeticItemDefinition}}
+\doxysubsubsection{\texorpdfstring{AttachSocketName}{AttachSocketName}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_item_definition_ade59dab0752b559df49a0a19b0936e5b} 
+FName FCosmetic\+Item\+Definition::\+\+Attach\+Socket\+Name}
+
+부착 소켓 이름 (비어있으면 슬롯 기본값 사용) \Hypertarget{struct_f_cosmetic_item_definition_a111db8186963d23f782b294af152b61c}\index{FCosmeticItemDefinition@{FCosmeticItemDefinition}!Description@{Description}}
+\index{Description@{Description}!FCosmeticItemDefinition@{FCosmeticItemDefinition}}
+\doxysubsubsection{\texorpdfstring{Description}{Description}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_item_definition_a111db8186963d23f782b294af152b61c} 
+FText FCosmetic\+Item\+Definition::\+\+Description}
+
+설명 \Hypertarget{struct_f_cosmetic_item_definition_a284b3acb5ac38f6a720b1472a0f8ce62}\index{FCosmeticItemDefinition@{FCosmeticItemDefinition}!DisplayName@{DisplayName}}
+\index{DisplayName@{DisplayName}!FCosmeticItemDefinition@{FCosmeticItemDefinition}}
+\doxysubsubsection{\texorpdfstring{DisplayName}{DisplayName}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_item_definition_a284b3acb5ac38f6a720b1472a0f8ce62} 
+FText FCosmetic\+Item\+Definition::\+\+Display\+Name}
+
+표시 이름 \Hypertarget{struct_f_cosmetic_item_definition_acc656d870336a71c7f8b1da77752054b}\index{FCosmeticItemDefinition@{FCosmeticItemDefinition}!Icon@{Icon}}
+\index{Icon@{Icon}!FCosmeticItemDefinition@{FCosmeticItemDefinition}}
+\doxysubsubsection{\texorpdfstring{Icon}{Icon}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_item_definition_acc656d870336a71c7f8b1da77752054b} 
+TSoft\+Object\+Ptr$<$UTexture2D$>$ FCosmetic\+Item\+Definition::\+\+Icon}
+
+아이콘 텍스처 (UI용) \Hypertarget{struct_f_cosmetic_item_definition_abb4adee6ebb5e3b58e33d8772b68d1dd}\index{FCosmeticItemDefinition@{FCosmeticItemDefinition}!ItemId@{ItemId}}
+\index{ItemId@{ItemId}!FCosmeticItemDefinition@{FCosmeticItemDefinition}}
+\doxysubsubsection{\texorpdfstring{ItemId}{ItemId}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_item_definition_abb4adee6ebb5e3b58e33d8772b68d1dd} 
+FName FCosmetic\+Item\+Definition::\+\+Item\+Id}
+
+플랫폼 독립적 아이템 식별자 (중간 키) \Hypertarget{struct_f_cosmetic_item_definition_a80082559945da38d9b53f5a4ec71b0c0}\index{FCosmeticItemDefinition@{FCosmeticItemDefinition}!Price@{Price}}
+\index{Price@{Price}!FCosmeticItemDefinition@{FCosmeticItemDefinition}}
+\doxysubsubsection{\texorpdfstring{Price}{Price}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_item_definition_a80082559945da38d9b53f5a4ec71b0c0} 
+int32 FCosmetic\+Item\+Definition::\+\+Price = 0}
+
+가격 (상점 표시용, 실제 결제는 Steam 처리) \Hypertarget{struct_f_cosmetic_item_definition_ac2d12a7e9873b0775cb275f524548096}\index{FCosmeticItemDefinition@{FCosmeticItemDefinition}!Rarity@{Rarity}}
+\index{Rarity@{Rarity}!FCosmeticItemDefinition@{FCosmeticItemDefinition}}
+\doxysubsubsection{\texorpdfstring{Rarity}{Rarity}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_item_definition_ac2d12a7e9873b0775cb275f524548096} 
+\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_af3b6fbfb2df313f7e1012e2cb7ac931c}{ECosmetic\+Rarity}} FCosmetic\+Item\+Definition::\+\+Rarity = ECosmetic\+Rarity::\+\+Common}
+
+희귀도 \Hypertarget{struct_f_cosmetic_item_definition_a04fed83e9eb9e9a5d50f2b636aff93f5}\index{FCosmeticItemDefinition@{FCosmeticItemDefinition}!SkeletalMesh@{SkeletalMesh}}
+\index{SkeletalMesh@{SkeletalMesh}!FCosmeticItemDefinition@{FCosmeticItemDefinition}}
+\doxysubsubsection{\texorpdfstring{SkeletalMesh}{SkeletalMesh}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_item_definition_a04fed83e9eb9e9a5d50f2b636aff93f5} 
+TSoft\+Object\+Ptr$<$USkeletal\+Mesh$>$ FCosmetic\+Item\+Definition::\+\+Skeletal\+Mesh}
+
+메시 에셋 (비동기 로드용) \Hypertarget{struct_f_cosmetic_item_definition_a675d04ea3707aaffdbbe554454a2b0db}\index{FCosmeticItemDefinition@{FCosmeticItemDefinition}!Slot@{Slot}}
+\index{Slot@{Slot}!FCosmeticItemDefinition@{FCosmeticItemDefinition}}
+\doxysubsubsection{\texorpdfstring{Slot}{Slot}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_item_definition_a675d04ea3707aaffdbbe554454a2b0db} 
+\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmetic\+Slot}} FCosmetic\+Item\+Definition::\+\+Slot = ECosmetic\+Slot::\+\+None}
+
+장착 슬롯 \Hypertarget{struct_f_cosmetic_item_definition_a5b07fe1dc34f1880a436e77a1c2c5bee}\index{FCosmeticItemDefinition@{FCosmeticItemDefinition}!StaticMesh@{StaticMesh}}
+\index{StaticMesh@{StaticMesh}!FCosmeticItemDefinition@{FCosmeticItemDefinition}}
+\doxysubsubsection{\texorpdfstring{StaticMesh}{StaticMesh}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_item_definition_a5b07fe1dc34f1880a436e77a1c2c5bee} 
+TSoft\+Object\+Ptr$<$UStatic\+Mesh$>$ FCosmetic\+Item\+Definition::\+\+Static\+Mesh}
+
+스태틱 메시 에셋 (Back, Effect 등 슬롯용) \Hypertarget{struct_f_cosmetic_item_definition_af51c73a10cb56a03f5504f82c9559e43}\index{FCosmeticItemDefinition@{FCosmeticItemDefinition}!SteamItemDefId@{SteamItemDefId}}
+\index{SteamItemDefId@{SteamItemDefId}!FCosmeticItemDefinition@{FCosmeticItemDefinition}}
+\doxysubsubsection{\texorpdfstring{SteamItemDefId}{SteamItemDefId}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_item_definition_af51c73a10cb56a03f5504f82c9559e43} 
+int32 FCosmetic\+Item\+Definition::\+\+Steam\+Item\+Def\+Id = 0}
+
+Steam Inventory Item Definition ID (플랫폼 종속) 
+
+The documentation for this struct was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Cosmetic/\+\doxymbox{\hyperlink{_wj_world_cosmetic_data_asset_8h}{Wj\+World\+Cosmetic\+Data\+Asset.\+h}}\end{DoxyCompactItemize}

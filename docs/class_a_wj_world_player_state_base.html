@@ -97,16 +97,23 @@ $(function(){initNavTree('class_a_wj_world_player_state_base.html','','class_a_w
 Inheritance diagram for AWjWorldPlayerStateBase:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="class_a_wj_world_player_state_base.png" alt=""/>
- </div></div>
+  <img src="class_a_wj_world_player_state_base.png" usemap="#AWjWorldPlayerStateBase_map" alt=""/>
+  <map id="AWjWorldPlayerStateBase_map" name="AWjWorldPlayerStateBase_map">
+<area href="class_a_wj_world_player_state_play.html" alt="AWjWorldPlayerStatePlay" shape="rect" coords="0,112,161,136"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5877bdc9ae35b3f744973f85073dce11" id="r_a5877bdc9ae35b3f744973f85073dce11"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a5877bdc9ae35b3f744973f85073dce11">AWjWorldPlayerStateBase</a> ()</td></tr>
+<tr class="memitem:a45980a4f2372dbb5c7fb95379110cf2c" id="r_a45980a4f2372dbb5c7fb95379110cf2c"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#a45980a4f2372dbb5c7fb95379110cf2c">BeginPlay</a> () override</td></tr>
 <tr class="memitem:a27214a1a235bd4bcf1cf8c8cd7ce855c" id="r_a27214a1a235bd4bcf1cf8c8cd7ce855c"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#a27214a1a235bd4bcf1cf8c8cd7ce855c">GetLifetimeReplicatedProps</a> (TArray&lt; FLifetimeProperty &gt; &amp;OutLifetimeProps) const override</td></tr>
 <tr class="memitem:a520d555bb723e97cd2c033018febb4d7" id="r_a520d555bb723e97cd2c033018febb4d7"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a520d555bb723e97cd2c033018febb4d7">ToggleReady</a> ()</td></tr>
 <tr class="memitem:aaead30ca588790b0eb5e047b25e22c31" id="r_aaead30ca588790b0eb5e047b25e22c31"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aaead30ca588790b0eb5e047b25e22c31">SetReady</a> (bool bNewReady)</td></tr>
 <tr class="memitem:a629b859c75b31cfa4d1e42fe244522d9" id="r_a629b859c75b31cfa4d1e42fe244522d9"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a629b859c75b31cfa4d1e42fe244522d9">IsReady</a> () const</td></tr>
+<tr class="memitem:ae3df275958adae919936ed26c67b48c6" id="r_ae3df275958adae919936ed26c67b48c6"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ae3df275958adae919936ed26c67b48c6">SetCosmeticLoadout</a> (const <a class="el" href="struct_f_cosmetic_loadout.html">FCosmeticLoadout</a> &amp;InLoadout)</td></tr>
+<tr class="memitem:a4363067164e113c3bb8319c04f0e84ab" id="r_a4363067164e113c3bb8319c04f0e84ab"><td class="memItemLeft">const <a class="el" href="struct_f_cosmetic_loadout.html">FCosmeticLoadout</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a4363067164e113c3bb8319c04f0e84ab">GetCosmeticLoadout</a> () const</td></tr>
+<tr class="memitem:a93822153262533b897c4b9f401048c46" id="r_a93822153262533b897c4b9f401048c46"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a93822153262533b897c4b9f401048c46">OnPawnSet</a> (APawn *OldPawn, APawn *NewPawn)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -115,19 +122,23 @@ Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:ac595f61c17c052ff911f35731630e800" id="r_ac595f61c17c052ff911f35731630e800"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#ac595f61c17c052ff911f35731630e800">OnCosmeticLoadoutUpdated</a> ()</td></tr>
+<tr class="memitem:a6784381022510c31b8dedb38df3b66c8" id="r_a6784381022510c31b8dedb38df3b66c8"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a6784381022510c31b8dedb38df3b66c8">OnRep_CosmeticLoadout</a> ()</td></tr>
 <tr class="memitem:ab100f8b6fe343ca4eedc6bc27cf0952d" id="r_ab100f8b6fe343ca4eedc6bc27cf0952d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ab100f8b6fe343ca4eedc6bc27cf0952d">OnRep_IsReady</a> ()</td></tr>
 <tr class="memitem:a7dda8d62160253f30fd5b183769f3761" id="r_a7dda8d62160253f30fd5b183769f3761"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#a7dda8d62160253f30fd5b183769f3761">OnRep_PlayerName</a> () override</td></tr>
-<tr class="memitem:a7f70150be5d2584e8215608ab7e9779a" id="r_a7f70150be5d2584e8215608ab7e9779a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a7f70150be5d2584e8215608ab7e9779a">ServerSetReady</a> (bool bNewReady)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a3559a140fa4222a1ff157bbe96088996" id="r_a3559a140fa4222a1ff157bbe96088996"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a3559a140fa4222a1ff157bbe96088996">bIsReady</a> = false</td></tr>
+<tr class="memitem:aa2957199a81bd8e6cc1e24d12ff0ee40" id="r_aa2957199a81bd8e6cc1e24d12ff0ee40"><td class="memItemLeft"><a class="el" href="struct_f_cosmetic_loadout.html">FCosmeticLoadout</a>&#160;</td><td class="memItemRight"><a class="el" href="#aa2957199a81bd8e6cc1e24d12ff0ee40">CosmeticLoadout</a></td></tr>
+<tr class="memitem:a038eee25c22b16fd88f1640721348061" id="r_a038eee25c22b16fd88f1640721348061"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a038eee25c22b16fd88f1640721348061">bPendingCosmeticApply</a> = false</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>기본 플레이어 상태 클래스</p>
 <p>역할:</p><ul>
 <li>플레이어 준비 상태 관리 (Replicated)</li>
-<li>플레이어 정보 저장 </li>
+<li>플레이어 정보 저장</li>
+<li>코스메틱 로드아웃 관리 (Replicated) </li>
 </ul>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5877bdc9ae35b3f744973f85073dce11" name="a5877bdc9ae35b3f744973f85073dce11"></a>
@@ -148,6 +159,57 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a45980a4f2372dbb5c7fb95379110cf2c" name="a45980a4f2372dbb5c7fb95379110cf2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45980a4f2372dbb5c7fb95379110cf2c">&#9670;&#160;</a></span>BeginPlay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldPlayerStateBase::BeginPlay </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4363067164e113c3bb8319c04f0e84ab" name="a4363067164e113c3bb8319c04f0e84ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4363067164e113c3bb8319c04f0e84ab">&#9670;&#160;</a></span>GetCosmeticLoadout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="struct_f_cosmetic_loadout.html">FCosmeticLoadout</a> &amp; AWjWorldPlayerStateBase::GetCosmeticLoadout </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>현재 코스메틱 로드아웃 반환 </p>
+
+</div>
+</div>
 <a id="a27214a1a235bd4bcf1cf8c8cd7ce855c" name="a27214a1a235bd4bcf1cf8c8cd7ce855c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a27214a1a235bd4bcf1cf8c8cd7ce855c">&#9670;&#160;</a></span>GetLifetimeReplicatedProps()</h2>
 
@@ -170,6 +232,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="class_a_wj_world_player_state_play.html#ab896409902e2370be7c16840dc3b76cf">AWjWorldPlayerStatePlay</a>.</p>
 
 </div>
 </div>
@@ -196,6 +260,81 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>준비 상태 가져오기 </p>
+
+</div>
+</div>
+<a id="ac595f61c17c052ff911f35731630e800" name="ac595f61c17c052ff911f35731630e800"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac595f61c17c052ff911f35731630e800">&#9670;&#160;</a></span>OnCosmeticLoadoutUpdated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldPlayerStateBase::OnCosmeticLoadoutUpdated </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>코스메틱 로드아웃 업데이트 시 Pawn의 CosmeticComponent에 적용 </p>
+
+<p>Reimplemented in <a class="el" href="class_a_wj_world_player_state_play.html#a466ee6ab5d0a7e2af69ccb7be15f6193">AWjWorldPlayerStatePlay</a>.</p>
+
+</div>
+</div>
+<a id="a93822153262533b897c4b9f401048c46" name="a93822153262533b897c4b9f401048c46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93822153262533b897c4b9f401048c46">&#9670;&#160;</a></span>OnPawnSet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldPlayerStateBase::OnPawnSet </td>
+          <td>(</td>
+          <td class="paramtype">APawn *</td>          <td class="paramname"><span class="paramname"><em>OldPawn</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">APawn *</td>          <td class="paramname"><span class="paramname"><em>NewPawn</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pawn이 설정되면 대기 중인 코스메틱 적용 </p>
+
+</div>
+</div>
+<a id="a6784381022510c31b8dedb38df3b66c8" name="a6784381022510c31b8dedb38df3b66c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6784381022510c31b8dedb38df3b66c8">&#9670;&#160;</a></span>OnRep_CosmeticLoadout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AWjWorldPlayerStateBase::OnRep_CosmeticLoadout </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -249,28 +388,21 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a7f70150be5d2584e8215608ab7e9779a" name="a7f70150be5d2584e8215608ab7e9779a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f70150be5d2584e8215608ab7e9779a">&#9670;&#160;</a></span>ServerSetReady()</h2>
+<a id="ae3df275958adae919936ed26c67b48c6" name="ae3df275958adae919936ed26c67b48c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3df275958adae919936ed26c67b48c6">&#9670;&#160;</a></span>SetCosmeticLoadout()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void AWjWorldPlayerStateBase::ServerSetReady </td>
+          <td class="memname">void AWjWorldPlayerStateBase::SetCosmeticLoadout </td>
           <td>(</td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>bNewReady</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="struct_f_cosmetic_loadout.html">FCosmeticLoadout</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>InLoadout</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
+<p>코스메틱 로드아웃 설정 (서버에서 호출) </p>
 
 </div>
 </div>
@@ -331,6 +463,52 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>준비 상태 (Server → All Clients) </p>
+
+</div>
+</div>
+<a id="a038eee25c22b16fd88f1640721348061" name="a038eee25c22b16fd88f1640721348061"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a038eee25c22b16fd88f1640721348061">&#9670;&#160;</a></span>bPendingCosmeticApply</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool AWjWorldPlayerStateBase::bPendingCosmeticApply = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Pawn이 설정되기 전에 코스메틱 적용 대기 플래그 </p>
+
+</div>
+</div>
+<a id="aa2957199a81bd8e6cc1e24d12ff0ee40" name="aa2957199a81bd8e6cc1e24d12ff0ee40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2957199a81bd8e6cc1e24d12ff0ee40">&#9670;&#160;</a></span>CosmeticLoadout</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_f_cosmetic_loadout.html">FCosmeticLoadout</a> AWjWorldPlayerStateBase::CosmeticLoadout</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>리플리케이션되는 코스메틱 로드아웃 </p>
 
 </div>
 </div>

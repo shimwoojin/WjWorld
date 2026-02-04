@@ -1,0 +1,141 @@
+\doxysection{UWj\+World\+Brick\+Spawner Class Reference}
+\hypertarget{class_u_wj_world_brick_spawner}{}\label{class_u_wj_world_brick_spawner}\index{UWjWorldBrickSpawner@{UWjWorldBrickSpawner}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Brick\+Spawner.\+h$>$}
+
+Inheritance diagram for UWj\+World\+Brick\+Spawner:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_u_wj_world_brick_spawner}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a86724505afcd178077396fbc1e294bd9}{Spawn\+Bricks\+Random\+Map\+Async}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a0ed1a8946864585d0723bf0339747909}{Spawn\+Bricks\+From\+Wall\+Name\+Async}} (const FString \&Wall\+Name)
+\item 
+const TArray$<$ FInt\+Point $>$ \& \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_ae01284dc2b984ae3e2b6d6215a4f58ed}{Get\+Start\+Safe\+Zone\+Points}} ()
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_ac967202e837a8898ce78794453b2deed}{Tick}} (float Delta\+Time) override
+\item 
+virtual UWorld \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a1d9b6f768cca4cd0ef2e275d8ff63792}{Get\+Tickable\+Game\+Object\+World}} () const
+\item 
+virtual TStat\+Id \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a0fb20bc77da4e55d6902f165c55399a3}{Get\+Stat\+Id}} () const override
+\item 
+virtual bool \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a4f189397864280df9c700b563db51b22}{Is\+Tickable}} () const override
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a51804552191b2bbf7b8ababa4ac965b5}{Set\+Tickable}} (bool b\+In\+Tickable)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \doxymbox{\hyperlink{class_u_wj_world_brick_spawner}{UWj\+World\+Brick\+Spawner}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a89e98ecd95a35aecee19aece6deab22e}{Create\+Brick\+Spawner}} (UObject \texorpdfstring{$\ast$}{*}Outer, TSoft\+Object\+Ptr$<$ \doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset}{UWj\+World\+Wall\+Description\+Data\+Asset}} $>$ Wall\+Desc\+Data\+Asset)
+\item 
+static \doxymbox{\hyperlink{class_a_wj_world_brick_actor}{AWj\+World\+Brick\+Actor}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_abf9b4cab1a4a67749d7900e4c913715e}{Spawn\+Brick\+Actor}} (UWorld \texorpdfstring{$\ast$}{*}World, const \doxymbox{\hyperlink{struct_f_wj_world_brick_properties}{FWj\+World\+Brick\+Properties}} \&Brick\+Properties, int32 Column\+Index, int32 Row\+Index)
+\item 
+static FVector \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_aac1e8c2088cd122b7ea0c4bd47cafc89}{Calculate\+Brick\+Position}} (int32 Brick\+Col\+Index, int32 Brick\+Row\+Index, int32 Col\+Num, int32 Row\+Num, const FVector \&Wall\+Origin, const FVector \&Brick\+Size)
+\item 
+static FInt\+Point \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a09494d26770e1c35ea2ecabad86648eb}{Calculate\+Brick\+Grid\+Index}} (const FVector \&World\+Location, int32 Col\+Num, int32 Row\+Num, const FVector \&Wall\+Origin, const FVector \&Brick\+Size)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FOn\+Wall\+Spawn\+Finished \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a2afa4ad20ffbcfa684a039e115825ff9}{On\+Wall\+Spawn\+Finished}}
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{class_u_wj_world_brick_spawner_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_wj_world_brick_spawner_a09494d26770e1c35ea2ecabad86648eb}\index{UWjWorldBrickSpawner@{UWjWorldBrickSpawner}!CalculateBrickGridIndex@{CalculateBrickGridIndex}}
+\index{CalculateBrickGridIndex@{CalculateBrickGridIndex}!UWjWorldBrickSpawner@{UWjWorldBrickSpawner}}
+\doxysubsubsection{\texorpdfstring{CalculateBrickGridIndex()}{CalculateBrickGridIndex()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_spawner_a09494d26770e1c35ea2ecabad86648eb} 
+FInt\+Point UWj\+World\+Brick\+Spawner::\+\+Calculate\+Brick\+Grid\+Index (\begin{DoxyParamCaption}\item[{const FVector \&}]{World\+Location}{, }\item[{int32}]{Col\+Num}{, }\item[{int32}]{Row\+Num}{, }\item[{const FVector \&}]{Wall\+Origin}{, }\item[{const FVector \&}]{Brick\+Size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\Hypertarget{class_u_wj_world_brick_spawner_aac1e8c2088cd122b7ea0c4bd47cafc89}\index{UWjWorldBrickSpawner@{UWjWorldBrickSpawner}!CalculateBrickPosition@{CalculateBrickPosition}}
+\index{CalculateBrickPosition@{CalculateBrickPosition}!UWjWorldBrickSpawner@{UWjWorldBrickSpawner}}
+\doxysubsubsection{\texorpdfstring{CalculateBrickPosition()}{CalculateBrickPosition()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_spawner_aac1e8c2088cd122b7ea0c4bd47cafc89} 
+FVector UWj\+World\+Brick\+Spawner::\+\+Calculate\+Brick\+Position (\begin{DoxyParamCaption}\item[{int32}]{Brick\+Col\+Index}{, }\item[{int32}]{Brick\+Row\+Index}{, }\item[{int32}]{Col\+Num}{, }\item[{int32}]{Row\+Num}{, }\item[{const FVector \&}]{Wall\+Origin}{, }\item[{const FVector \&}]{Brick\+Size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\Hypertarget{class_u_wj_world_brick_spawner_a89e98ecd95a35aecee19aece6deab22e}\index{UWjWorldBrickSpawner@{UWjWorldBrickSpawner}!CreateBrickSpawner@{CreateBrickSpawner}}
+\index{CreateBrickSpawner@{CreateBrickSpawner}!UWjWorldBrickSpawner@{UWjWorldBrickSpawner}}
+\doxysubsubsection{\texorpdfstring{CreateBrickSpawner()}{CreateBrickSpawner()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_spawner_a89e98ecd95a35aecee19aece6deab22e} 
+\doxymbox{\hyperlink{class_u_wj_world_brick_spawner}{UWj\+World\+Brick\+Spawner}} \texorpdfstring{$\ast$}{*} UWj\+World\+Brick\+Spawner::\+\+Create\+Brick\+Spawner (\begin{DoxyParamCaption}\item[{UObject \texorpdfstring{$\ast$}{*}}]{Outer}{, }\item[{TSoft\+Object\+Ptr$<$ \doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset}{UWj\+World\+Wall\+Description\+Data\+Asset}} $>$}]{Wall\+Desc\+Data\+Asset}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\Hypertarget{class_u_wj_world_brick_spawner_ae01284dc2b984ae3e2b6d6215a4f58ed}\index{UWjWorldBrickSpawner@{UWjWorldBrickSpawner}!GetStartSafeZonePoints@{GetStartSafeZonePoints}}
+\index{GetStartSafeZonePoints@{GetStartSafeZonePoints}!UWjWorldBrickSpawner@{UWjWorldBrickSpawner}}
+\doxysubsubsection{\texorpdfstring{GetStartSafeZonePoints()}{GetStartSafeZonePoints()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_spawner_ae01284dc2b984ae3e2b6d6215a4f58ed} 
+const TArray$<$ FInt\+Point $>$ \& UWj\+World\+Brick\+Spawner::\+\+Get\+Start\+Safe\+Zone\+Points (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_wj_world_brick_spawner_a0fb20bc77da4e55d6902f165c55399a3}\index{UWjWorldBrickSpawner@{UWjWorldBrickSpawner}!GetStatId@{GetStatId}}
+\index{GetStatId@{GetStatId}!UWjWorldBrickSpawner@{UWjWorldBrickSpawner}}
+\doxysubsubsection{\texorpdfstring{GetStatId()}{GetStatId()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_spawner_a0fb20bc77da4e55d6902f165c55399a3} 
+TStat\+Id UWj\+World\+Brick\+Spawner::\+\+Get\+Stat\+Id (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_brick_spawner_a1d9b6f768cca4cd0ef2e275d8ff63792}\index{UWjWorldBrickSpawner@{UWjWorldBrickSpawner}!GetTickableGameObjectWorld@{GetTickableGameObjectWorld}}
+\index{GetTickableGameObjectWorld@{GetTickableGameObjectWorld}!UWjWorldBrickSpawner@{UWjWorldBrickSpawner}}
+\doxysubsubsection{\texorpdfstring{GetTickableGameObjectWorld()}{GetTickableGameObjectWorld()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_spawner_a1d9b6f768cca4cd0ef2e275d8ff63792} 
+UWorld \texorpdfstring{$\ast$}{*} UWj\+World\+Brick\+Spawner::\+\+Get\+Tickable\+Game\+Object\+World (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_brick_spawner_a4f189397864280df9c700b563db51b22}\index{UWjWorldBrickSpawner@{UWjWorldBrickSpawner}!IsTickable@{IsTickable}}
+\index{IsTickable@{IsTickable}!UWjWorldBrickSpawner@{UWjWorldBrickSpawner}}
+\doxysubsubsection{\texorpdfstring{IsTickable()}{IsTickable()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_spawner_a4f189397864280df9c700b563db51b22} 
+bool UWj\+World\+Brick\+Spawner::\+\+Is\+Tickable (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_brick_spawner_a51804552191b2bbf7b8ababa4ac965b5}\index{UWjWorldBrickSpawner@{UWjWorldBrickSpawner}!SetTickable@{SetTickable}}
+\index{SetTickable@{SetTickable}!UWjWorldBrickSpawner@{UWjWorldBrickSpawner}}
+\doxysubsubsection{\texorpdfstring{SetTickable()}{SetTickable()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_spawner_a51804552191b2bbf7b8ababa4ac965b5} 
+void UWj\+World\+Brick\+Spawner::\+\+Set\+Tickable (\begin{DoxyParamCaption}\item[{bool}]{b\+In\+Tickable}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_wj_world_brick_spawner_abf9b4cab1a4a67749d7900e4c913715e}\index{UWjWorldBrickSpawner@{UWjWorldBrickSpawner}!SpawnBrickActor@{SpawnBrickActor}}
+\index{SpawnBrickActor@{SpawnBrickActor}!UWjWorldBrickSpawner@{UWjWorldBrickSpawner}}
+\doxysubsubsection{\texorpdfstring{SpawnBrickActor()}{SpawnBrickActor()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_spawner_abf9b4cab1a4a67749d7900e4c913715e} 
+\doxymbox{\hyperlink{class_a_wj_world_brick_actor}{AWj\+World\+Brick\+Actor}} \texorpdfstring{$\ast$}{*} UWj\+World\+Brick\+Spawner::\+\+Spawn\+Brick\+Actor (\begin{DoxyParamCaption}\item[{UWorld \texorpdfstring{$\ast$}{*}}]{World}{, }\item[{const \doxymbox{\hyperlink{struct_f_wj_world_brick_properties}{FWj\+World\+Brick\+Properties}} \&}]{Brick\+Properties}{, }\item[{int32}]{Column\+Index}{, }\item[{int32}]{Row\+Index}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\Hypertarget{class_u_wj_world_brick_spawner_a0ed1a8946864585d0723bf0339747909}\index{UWjWorldBrickSpawner@{UWjWorldBrickSpawner}!SpawnBricksFromWallNameAsync@{SpawnBricksFromWallNameAsync}}
+\index{SpawnBricksFromWallNameAsync@{SpawnBricksFromWallNameAsync}!UWjWorldBrickSpawner@{UWjWorldBrickSpawner}}
+\doxysubsubsection{\texorpdfstring{SpawnBricksFromWallNameAsync()}{SpawnBricksFromWallNameAsync()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_spawner_a0ed1a8946864585d0723bf0339747909} 
+void UWj\+World\+Brick\+Spawner::\+\+Spawn\+Bricks\+From\+Wall\+Name\+Async (\begin{DoxyParamCaption}\item[{const FString \&}]{Wall\+Name}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_wj_world_brick_spawner_a86724505afcd178077396fbc1e294bd9}\index{UWjWorldBrickSpawner@{UWjWorldBrickSpawner}!SpawnBricksRandomMapAsync@{SpawnBricksRandomMapAsync}}
+\index{SpawnBricksRandomMapAsync@{SpawnBricksRandomMapAsync}!UWjWorldBrickSpawner@{UWjWorldBrickSpawner}}
+\doxysubsubsection{\texorpdfstring{SpawnBricksRandomMapAsync()}{SpawnBricksRandomMapAsync()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_spawner_a86724505afcd178077396fbc1e294bd9} 
+void UWj\+World\+Brick\+Spawner::\+\+Spawn\+Bricks\+Random\+Map\+Async (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_u_wj_world_brick_spawner_ac967202e837a8898ce78794453b2deed}\index{UWjWorldBrickSpawner@{UWjWorldBrickSpawner}!Tick@{Tick}}
+\index{Tick@{Tick}!UWjWorldBrickSpawner@{UWjWorldBrickSpawner}}
+\doxysubsubsection{\texorpdfstring{Tick()}{Tick()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_spawner_ac967202e837a8898ce78794453b2deed} 
+void UWj\+World\+Brick\+Spawner::\+\+Tick (\begin{DoxyParamCaption}\item[{float}]{Delta\+Time}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{class_u_wj_world_brick_spawner_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_wj_world_brick_spawner_a2afa4ad20ffbcfa684a039e115825ff9}\index{UWjWorldBrickSpawner@{UWjWorldBrickSpawner}!OnWallSpawnFinished@{OnWallSpawnFinished}}
+\index{OnWallSpawnFinished@{OnWallSpawnFinished}!UWjWorldBrickSpawner@{UWjWorldBrickSpawner}}
+\doxysubsubsection{\texorpdfstring{OnWallSpawnFinished}{OnWallSpawnFinished}}
+{\footnotesize\ttfamily \label{class_u_wj_world_brick_spawner_a2afa4ad20ffbcfa684a039e115825ff9} 
+FOn\+Wall\+Spawn\+Finished UWj\+World\+Brick\+Spawner::\+\+On\+Wall\+Spawn\+Finished}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Wall/\+\doxymbox{\hyperlink{_wj_world_brick_spawner_8h}{Wj\+World\+Brick\+Spawner.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Wall/\+\doxymbox{\hyperlink{_wj_world_brick_spawner_8cpp}{Wj\+World\+Brick\+Spawner.\+cpp}}\end{DoxyCompactItemize}

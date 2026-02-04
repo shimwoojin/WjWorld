@@ -1,0 +1,95 @@
+\doxysection{Wj\+World\+Game\+Rule\+Approaching\+Wall.\+h}
+\hypertarget{_wj_world_game_rule_approaching_wall_8h_source}{}\label{_wj_world_game_rule_approaching_wall_8h_source}\index{Source/WjWorld/Core/GameRule/WjWorldGameRuleApproachingWall.h@{Source/WjWorld/Core/GameRule/WjWorldGameRuleApproachingWall.h}}
+\doxymbox{\hyperlink{_wj_world_game_rule_approaching_wall_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_game_rule_base_8h}{Core/GameRule/WjWorldGameRuleBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_wall_description_data_asset_8h}{GamePlay/Wall/WjWorldWallDescriptionDataAsset.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldGameRuleApproachingWall.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_brick_spawner}{UWjWorldBrickSpawner}};}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_wall_manager}{UWjWorldWallManager}};}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_character_play}{AWjWorldCharacterPlay}};}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00017\ UCLASS(Blueprintable)}
+\DoxyCodeLine{00018\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall}{UWjWorldGameRuleApproachingWall}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base}{UWjWorldGameRuleBase}}}
+\DoxyCodeLine{00019\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a55d628529bf751c91ecdbc4aa6d6b6eb}{Initialize}}(\doxymbox{\hyperlink{class_a_wj_world_game_mode_play}{AWjWorldGameModePlay}}*\ InGameMode)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a4a2ffb64cd62023fc41144a8e4159d13}{OnGameReady}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ae127086918459440004885a6573fd356}{OnGameStart}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a030b02482879c08cd2206487a7bd627d}{OnGameEnd}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a267f4fc225b52eaed9271921ebf7bdfb}{OnPlayerJoined}}(\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWjWorldPlayerStatePlay}}*\ Player)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a32003aa1aa10c6ab90f57d33ef842f57}{OnPlayerLeft}}(\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWjWorldPlayerStatePlay}}*\ Player)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{comment}{//\ 승리\ 조건}}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a400d1e4aea150d4f697dc6407999bfbd}{CheckWinCondition}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{virtual}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWjWorldPlayerStatePlay}}*\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a586d5fe7d29ceb7fbe976c34d2743e21}{GetWinner}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{comment}{//\ 플레이어\ 제거\ 처리}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a4ec15df2182c98ee834d765746956288}{OnPlayerEliminated}}(\doxymbox{\hyperlink{class_a_wj_world_character_play}{AWjWorldCharacterPlay}}*\ EliminatedCharacter);}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{comment}{//\ 생존자\ 수\ 반환}}
+\DoxyCodeLine{00038\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a4887e230f5d469095040515a589185dc}{GetAlivePlayerCount}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a484a13eb7e9cf4424a40c2573292e4f0}{AlivePlayerCount}};\ \}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{const}\ TSet<FIntPoint>\&\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a727c912df1a1eafa203e7036909c5163}{GetFloodFillPoints}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a8d63c09147c591f648c1819777bcf29e}{FloodFillPoints}};\ \}}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{const}\ TSet<FIntPoint>\&\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_aaf5ad6cd0096fc28436e224828487b6a}{GetCurrentSafeZonePoints}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ad01608a3f2866afdc898ca5dd58f4671}{CurrentSafeZonePoints}};\ \}}
+\DoxyCodeLine{00042\ \ \ \ \ TObjectPtr<UWjWorldWallManager>\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_af32d076fd5e24cd75073d4855696116e}{GetWallManager}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a26f90d5f71d2df7b64516c849fd2c799}{WallManager}};\ \}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWjWorldWallDescription}}\&\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_aca3c85a254ccdc0f14caa73a6df4e983}{GetWallDesc}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a71e420c110161db13c94e33a4c1bf91c}{WallDesc}};\ \}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ TickGameRule(\textcolor{keywordtype}{float}\ DeltaTime)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ InternalGameReadyProcess();}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{void}\ InternalGameStartProcess();}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00054\ \ \ \ \ void\ OnWallSpawnFinished(const\ TArray<FVector>\&\ InSafeZones,\ const\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWjWorldWallDescription}}\&\ Desc);}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{void}\ ShrinkSafeZones(\textcolor{keywordtype}{bool}\&\ bAnySafeZoneExist);}
+\DoxyCodeLine{00057\ \ \ \ \ virtual\ \textcolor{keywordtype}{bool}\ PredictNextLevelIsLast()\ override;}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateGameData();}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ protected:}
+\DoxyCodeLine{00062\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00063\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_wall_manager}{UWjWorldWallManager}}>\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a26f90d5f71d2df7b64516c849fd2c799}{WallManager}};}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00066\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_brick_spawner}{UWjWorldBrickSpawner}}>\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a0fe2a0efabb345d2b25f1e6d105ebdf8}{BrickSpawner}};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00069\ \ \ \ \ \doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWjWorldWallDescription}}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a71e420c110161db13c94e33a4c1bf91c}{WallDesc}};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ TSet<FIntPoint>\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ad01608a3f2866afdc898ca5dd58f4671}{CurrentSafeZonePoints}};}
+\DoxyCodeLine{00072\ \ \ \ \ TSet<FIntPoint>\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a8d63c09147c591f648c1819777bcf29e}{FloodFillPoints}};}
+\DoxyCodeLine{00073\ \ \ \ \ TArray<FVector>\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ac2b75e5e5c2abc5bbc35cb1f0280b117}{SpawnSafeZones}};}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_aae406a86db236f536a4f583697f562a0}{bIsWallSpawned}}\ =\ false;}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_aa2bbf33d66beb258ee99dc4391b3d496}{bIsGameStarted}}\ =\ false;}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ab81d56f2c15425988352b658926c760b}{bIsGameReady}}\ =\ false;}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a2e5877caad7b5f755069fe82afafa771}{bGameStartInternalProcessDone}}\ =\ false;}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_acdc7ae62474cc50a2374ed4799346d0a}{bGameOverConditionMet}}\ =\ false;}
+\DoxyCodeLine{00079\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ab3abd354688dcb957f27dd8a1af5b5e7}{BrickMoveSignalCount}}\ =\ 0;}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a6acd779e3156da3e76df00b3b7658bbe}{TimeSinceLastBrickMoveSignal}}\ =\ 0.0f;}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a1150501b274a91e4f83553f83e8a00f9}{BrickMoveSignalInterval}}\ =\ 12.0f;}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{comment}{//\ 플레이어\ 추적}}
+\DoxyCodeLine{00084\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00085\ \ \ \ \ TArray<TWeakObjectPtr<\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWjWorldPlayerStatePlay}}>>\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_ae0019f1cc7e20034f72292a6de6696f3}{AlivePlayers}};}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00088\ \ \ \ \ TWeakObjectPtr<\doxymbox{\hyperlink{class_a_wj_world_player_state_play}{AWjWorldPlayerStatePlay}}>\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a22214003fe65c956d71fbd51e718d1ee}{WinnerPlayer}};}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a484a13eb7e9cf4424a40c2573292e4f0}{AlivePlayerCount}}\ =\ 0;}
+\DoxyCodeLine{00091\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall_a8b75a57eee4d5e27cb4ce962fd9c81a8}{TotalPlayerCount}}\ =\ 0;}
+\DoxyCodeLine{00092\ \};}
+
+\end{DoxyCode}

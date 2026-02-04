@@ -1,0 +1,61 @@
+\doxysection{Wj\+World\+Minigame\+Data\+Asset.\+h}
+\hypertarget{_wj_world_minigame_data_asset_8h_source}{}\label{_wj_world_minigame_data_asset_8h_source}\index{Source/WjWorld/DataAsset/WjWorldMinigameDataAsset.h@{Source/WjWorld/DataAsset/WjWorldMinigameDataAsset.h}}
+\doxymbox{\hyperlink{_wj_world_minigame_data_asset_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Engine/DataAsset.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_game_rule_base_8h}{Core/GameRule/WjWorldGameRuleBase.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldMinigameDataAsset.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00013\ USTRUCT(BlueprintType)}
+\DoxyCodeLine{00014\ struct\ \doxymbox{\hyperlink{struct_f_wj_world_minigame_map_option}{FWjWorldMinigameMapOption}}}
+\DoxyCodeLine{00015\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \ \ \ \ }
+\DoxyCodeLine{00019\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Minigame"{}})}
+\DoxyCodeLine{00020\ \ \ \ \ FText\ \doxymbox{\hyperlink{struct_f_wj_world_minigame_map_option_a1b7a7edb7583c868900e966c9fd47511}{DisplayName}};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00023\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Minigame"{}})}
+\DoxyCodeLine{00024\ \ \ \ \ FString\ \doxymbox{\hyperlink{struct_f_wj_world_minigame_map_option_acdeae0a7dfa42b3405d19a2bed784f7e}{OptionValue}};}
+\DoxyCodeLine{00025\ \};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00030\ USTRUCT(BlueprintType)}
+\DoxyCodeLine{00031\ struct\ \doxymbox{\hyperlink{struct_f_wj_world_minigame_definition}{FWjWorldMinigameDefinition}}}
+\DoxyCodeLine{00032\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ }
+\DoxyCodeLine{00036\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Minigame"{}})}
+\DoxyCodeLine{00037\ \ \ \ \ FText\ \doxymbox{\hyperlink{struct_f_wj_world_minigame_definition_afb12eac3e26db4b5e687376b13b804c9}{DisplayName}};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00040\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Minigame"{}})}
+\DoxyCodeLine{00041\ \ \ \ \ FName\ \doxymbox{\hyperlink{struct_f_wj_world_minigame_definition_a5404ce8c7a07b1bb20a0cc9830cd4435}{GameModeId}};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00044\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Minigame"{}})}
+\DoxyCodeLine{00045\ \ \ \ \ FString\ \doxymbox{\hyperlink{struct_f_wj_world_minigame_definition_ab4bb45c3118ea5ea5a6dde9051073673}{LevelPath}};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00048\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Minigame"{}})}
+\DoxyCodeLine{00049\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_u_wj_world_game_rule_base}{UWjWorldGameRuleBase}}>\ \doxymbox{\hyperlink{struct_f_wj_world_minigame_definition_ac70475c644db9f6f12d271c9af2a5690}{GameRuleClass}};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00052\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Minigame"{}})}
+\DoxyCodeLine{00053\ \ \ \ \ TArray<\doxymbox{\hyperlink{struct_f_wj_world_minigame_map_option}{FWjWorldMinigameMapOption}}>\ \doxymbox{\hyperlink{struct_f_wj_world_minigame_definition_aede5c1b942ab5104a60e9ea21bada4eb}{MapOptions}};}
+\DoxyCodeLine{00054\ \};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00061\ UCLASS(BlueprintType)}
+\DoxyCodeLine{00062\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_minigame_data_asset}{UWjWorldMinigameDataAsset}}\ :\ public\ UPrimaryDataAsset}
+\DoxyCodeLine{00063\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00068\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Minigame"{}})}
+\DoxyCodeLine{00069\ \ \ \ \ TArray<\doxymbox{\hyperlink{struct_f_wj_world_minigame_definition}{FWjWorldMinigameDefinition}}>\ \doxymbox{\hyperlink{class_u_wj_world_minigame_data_asset_ab431645608a8ad55475d83f1a0884a78}{Minigames}};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00072\ \ \ \ \ const\ \doxymbox{\hyperlink{struct_f_wj_world_minigame_definition}{FWjWorldMinigameDefinition}}*\ \doxymbox{\hyperlink{class_u_wj_world_minigame_data_asset_ac146da61d92a87dfbdada9ae53cbd74c}{FindByGameModeId}}(FName\ GameModeId)\ const;}
+\DoxyCodeLine{00073\ \};}
+
+\end{DoxyCode}

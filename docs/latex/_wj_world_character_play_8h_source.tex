@@ -1,0 +1,90 @@
+\doxysection{Wj\+World\+Character\+Play.\+h}
+\hypertarget{_wj_world_character_play_8h_source}{}\label{_wj_world_character_play_8h_source}\index{Source/WjWorld/Core/Play/WjWorldCharacterPlay.h@{Source/WjWorld/Core/Play/WjWorldCharacterPlay.h}}
+\doxymbox{\hyperlink{_wj_world_character_play_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_character_base_8h}{Core/Base/WjWorldCharacterBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}AbilitySystemInterface.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldCharacterPlay.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_ability_system_component}{UWjWorldAbilitySystemComponent}};}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_character_play_setup_data_asset}{UCharacterPlaySetupDataAsset}};}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }UBoxComponent;}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }UWidgetComponent;}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_ability_prompt_widget}{UAbilityPromptWidget}};}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \doxymbox{\hyperlink{_wj_world_character_play_8h_a50dc26c2ff31387b8c33865ff0edc423}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnDeadStackCounthanged,\ int32,\ NewDeadStackCount);}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00021\ UCLASS()}
+\DoxyCodeLine{00022\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_character_play_a8915cc410fb0a63dd17eb4a1ee7483a2}{AWjWorldCharacterPlay}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a89132c9b76acde3a302c706d1931769a}{AWjWorldCharacterBase}},\ public\ IAbilitySystemInterface}
+\DoxyCodeLine{00023\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_character_play_a8915cc410fb0a63dd17eb4a1ee7483a2}{AWjWorldCharacterPlay}}();}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00030\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00031\ \ \ \ \ uint8\ \doxymbox{\hyperlink{class_a_wj_world_character_play_a541bc60ca53d4e87a62c4c898a11d945}{bSetupDataAssetCall}}:1;}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00034\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00035\ \ \ \ \ uint8\ \doxymbox{\hyperlink{class_a_wj_world_character_play_abc2bc9ab41388b67ec40801a1449bafa}{bSetupDataAssetFinal}}:1;}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ protected:}
+\DoxyCodeLine{00038\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_play_a652ec81b7c9e82214614f11c5453f907}{PostInitializeComponents}}()\ override;}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ public:}
+\DoxyCodeLine{00041\ \ \ \ \ virtual\ UAbilitySystemComponent*\ \doxymbox{\hyperlink{class_a_wj_world_character_play_aa59592c2cbe6b9abfe2637e8df7f12b8}{GetAbilitySystemComponent}}()\ const\ override;}
+\DoxyCodeLine{00042\ \ \ \ \ \doxymbox{\hyperlink{class_u_wj_world_ability_system_component}{UWjWorldAbilitySystemComponent}}*\ \doxymbox{\hyperlink{class_a_wj_world_character_play_ac4a8d78a937c9a56aae23fbaf4684860}{GetWJAbilitySystemComponent}}()\ const;}
+\DoxyCodeLine{00043\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_play_aeb70e38019e2800e5f4dbc603f9043b2}{GetLifetimeReplicatedProps}}(TArray<FLifetimeProperty>\&\ OutLifetimeProps)\ const\ override;}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{comment}{//\ 사망\ 처리}}
+\DoxyCodeLine{00046\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Death"{}})}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_play_a16e2c4c576127eaca3652aa6cf604aba}{OnEliminated}}();}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Death"{}})}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_a_wj_world_character_play_a3440879f4a4d7006e31deb6d022a73be}{IsEliminated}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ bIsEliminated;\ \}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{comment}{//\ 어빌리티\ 프롬프트\ 표시/숨김}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{void}\ ShowAbilityPrompt(\textcolor{keyword}{const}\ FText\&\ ConfirmKeyName,\ \textcolor{keyword}{const}\ FText\&\ CancelKeyName,\ \textcolor{keyword}{const}\ FText\&\ Description);}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ HideAbilityPrompt();}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnRep\_PlayerState()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ PossessedBy(AController*\ NewController)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00061\ \ \ \ \ void\ OnRep\_IsEliminated();}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{comment}{//\ 사망\ 시\ 클라이언트에서\ 호출되는\ 로직}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{void}\ HandleEliminationEffects();}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ private:}
+\DoxyCodeLine{00067\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ OnSetupDataAssetLoaded(const\ FSoftObjectPath\&\ Path,\ UObject*\ Object);}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ GasInputPressed(int32\ InputID)\ override;}
+\DoxyCodeLine{00071\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ GasInputReleased(int32\ InputID)\ override;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ public:}
+\DoxyCodeLine{00074\ \ \ \ \ FOnDeadStackCounthanged\ \doxymbox{\hyperlink{class_a_wj_world_character_play_ae5beecdd1d8e530a18fd2cfcc02872b5}{OnDeadStackCountChanged}};}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ private:}
+\DoxyCodeLine{00077\ \ \ \ \ TWeakObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_ability_system_component}{UWjWorldAbilitySystemComponent}}>\ AbilitySystemComponent;}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ category\ =\ \textcolor{stringliteral}{"{}DataAsset"{}},\ meta\ =\ (AllowPrivateAccess\ =\ true))}
+\DoxyCodeLine{00080\ \ \ \ \ TSoftObjectPtr<\doxymbox{\hyperlink{class_u_character_play_setup_data_asset}{UCharacterPlaySetupDataAsset}}>\ SetupDataAsset;}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{comment}{//\ 사망\ 상태\ (리플리케이션)}}
+\DoxyCodeLine{00083\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ \doxymbox{\hyperlink{class_a_wj_world_character_play_ac69540a09e7919944447af34bbfdb6aa}{OnRep\_IsEliminated}})}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordtype}{bool}\ bIsEliminated\ =\ false;}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{comment}{//\ 어빌리티\ 프롬프트\ WidgetComponent}}
+\DoxyCodeLine{00087\ \ \ \ \ UPROPERTY(VisibleAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}UI"{}},\ meta\ =\ (AllowPrivateAccess\ =\ true))}
+\DoxyCodeLine{00088\ \ \ \ \ TObjectPtr<UWidgetComponent>\ AbilityPromptComponent;}
+\DoxyCodeLine{00089\ \};}
+
+\end{DoxyCode}

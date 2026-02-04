@@ -28,6 +28,20 @@ bool \doxymbox{\hyperlink{class_u_wj_world_game_instance_a28ee05ff3fc5c9a122a410
 bool \doxymbox{\hyperlink{class_u_wj_world_game_instance_a5fd413aba23065c36389db78a31843f3}{Start\+Game}} ()
 \item 
 bool \doxymbox{\hyperlink{class_u_wj_world_game_instance_ae73cafba9b06d6f43a7ad5a356366ddf}{Leave\+Room}} ()
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_game_instance_a570818799e2642eede973b7304bab1d0}{End\+Game}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_game_instance_af5e6980796e7a6165cff420a1300b39a}{Cache\+Player\+List}} (const TArray$<$ \doxymbox{\hyperlink{struct_f_player_display_info}{FPlayer\+Display\+Info}} $>$ \&Player\+List)
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_game_instance_a399e5190b784525c8e5ec08aa3464509}{Cache\+Room\+Settings}} (const \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} \&Settings)
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_game_instance_a59822103171ca15e6a4f67f64cafb87c}{Is\+Migrating}} () const
+\item 
+\doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1e}{EHost\+Migration\+State}} \doxymbox{\hyperlink{class_u_wj_world_game_instance_a6950736a62f668c2b5874712f7914d31}{Get\+Migration\+State}} () const
+\item 
+\doxymbox{\hyperlink{struct_f_host_migration_context}{FHost\+Migration\+Context}} \& \doxymbox{\hyperlink{class_u_wj_world_game_instance_a649189e28c325c04a5dd158818c4611c}{Get\+Migration\+Context}} ()
+\item 
+const \doxymbox{\hyperlink{struct_f_host_migration_context}{FHost\+Migration\+Context}} \& \doxymbox{\hyperlink{class_u_wj_world_game_instance_ad8350e971a0f51415d63ec929f85e6f1}{Get\+Migration\+Context}} () const
 \end{DoxyCompactItemize}
 
 
@@ -38,37 +52,83 @@ bool \doxymbox{\hyperlink{class_u_wj_world_game_instance_ae73cafba9b06d6f43a7ad5
 \begin{DoxyItemize}
 \item 게임 전역 데이터 관리
 \item Session\+Manager 소유 및 접근 제공
-\item 레벨 간 데이터 유지 
+\item 레벨 간 데이터 유지
+\item 호스트 마이그레이션 관리 
 \end{DoxyItemize}
 
 \label{doc-func-members}
 \Hypertarget{class_u_wj_world_game_instance_doc-func-members}
 \doxysubsection{Member Function Documentation}
-\Hypertarget{class_u_wj_world_game_instance_a325364952578abd0bff3788a09a0279b}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!CreateRoom@{CreateRoom}}
+\Hypertarget{class_u_wj_world_game_instance_af5e6980796e7a6165cff420a1300b39a}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!CachePlayerList@{CachePlayerList}}
+\index{CachePlayerList@{CachePlayerList}!UWjWorldGameInstance@{UWjWorldGameInstance}}
+\doxysubsubsection{\texorpdfstring{CachePlayerList()}{CachePlayerList()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_instance_af5e6980796e7a6165cff420a1300b39a} 
+void UWj\+World\+Game\+Instance::\+\+Cache\+Player\+List (\begin{DoxyParamCaption}\item[{const TArray$<$ \doxymbox{\hyperlink{struct_f_player_display_info}{FPlayer\+Display\+Info}} $>$ \&}]{Player\+List}{}\end{DoxyParamCaption})}
+
+플레이어 목록 캐시 \Hypertarget{class_u_wj_world_game_instance_a399e5190b784525c8e5ec08aa3464509}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!CacheRoomSettings@{CacheRoomSettings}}
+\index{CacheRoomSettings@{CacheRoomSettings}!UWjWorldGameInstance@{UWjWorldGameInstance}}
+\doxysubsubsection{\texorpdfstring{CacheRoomSettings()}{CacheRoomSettings()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_instance_a399e5190b784525c8e5ec08aa3464509} 
+void UWj\+World\+Game\+Instance::\+\+Cache\+Room\+Settings (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} \&}]{Settings}{}\end{DoxyParamCaption})}
+
+방 설정 캐시 \Hypertarget{class_u_wj_world_game_instance_a325364952578abd0bff3788a09a0279b}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!CreateRoom@{CreateRoom}}
 \index{CreateRoom@{CreateRoom}!UWjWorldGameInstance@{UWjWorldGameInstance}}
 \doxysubsubsection{\texorpdfstring{CreateRoom()}{CreateRoom()}}
 {\footnotesize\ttfamily \label{class_u_wj_world_game_instance_a325364952578abd0bff3788a09a0279b} 
 bool UWj\+World\+Game\+Instance::\+\+Create\+Room (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}} \&}]{Settings}{}\end{DoxyParamCaption})}
 
+\Hypertarget{class_u_wj_world_game_instance_a570818799e2642eede973b7304bab1d0}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!EndGame@{EndGame}}
+\index{EndGame@{EndGame}!UWjWorldGameInstance@{UWjWorldGameInstance}}
+\doxysubsubsection{\texorpdfstring{EndGame()}{EndGame()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_instance_a570818799e2642eede973b7304bab1d0} 
+bool UWj\+World\+Game\+Instance::\+\+End\+Game (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+게임 종료 래퍼. Play → Waiting\+Room 복귀 전에 호출. \begin{DoxyReturn}{Returns}
+성공 여부 
+\end{DoxyReturn}
 \Hypertarget{class_u_wj_world_game_instance_a4f3514320f6aa5de29c0718f1b536015}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!FindRooms@{FindRooms}}
 \index{FindRooms@{FindRooms}!UWjWorldGameInstance@{UWjWorldGameInstance}}
 \doxysubsubsection{\texorpdfstring{FindRooms()}{FindRooms()}}
 {\footnotesize\ttfamily \label{class_u_wj_world_game_instance_a4f3514320f6aa5de29c0718f1b536015} 
 bool UWj\+World\+Game\+Instance::\+\+Find\+Rooms (\begin{DoxyParamCaption}\item[{int32}]{Max\+Results}{ = {\ttfamily 100}}\end{DoxyParamCaption})}
 
-\Hypertarget{class_u_wj_world_game_instance_ac2613d2e0482c2e2a39d4614e2bdf315}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!GetSessionManager@{GetSessionManager}}
+\Hypertarget{class_u_wj_world_game_instance_a649189e28c325c04a5dd158818c4611c}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!GetMigrationContext@{GetMigrationContext}}
+\index{GetMigrationContext@{GetMigrationContext}!UWjWorldGameInstance@{UWjWorldGameInstance}}
+\doxysubsubsection{\texorpdfstring{GetMigrationContext()}{GetMigrationContext()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_instance_a649189e28c325c04a5dd158818c4611c} 
+\doxymbox{\hyperlink{struct_f_host_migration_context}{FHost\+Migration\+Context}} \& UWj\+World\+Game\+Instance::\+\+Get\+Migration\+Context (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+마이그레이션 컨텍스트 접근 \Hypertarget{class_u_wj_world_game_instance_ad8350e971a0f51415d63ec929f85e6f1}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!GetMigrationContext@{GetMigrationContext}}
+\index{GetMigrationContext@{GetMigrationContext}!UWjWorldGameInstance@{UWjWorldGameInstance}}
+\doxysubsubsection{\texorpdfstring{GetMigrationContext()}{GetMigrationContext()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_instance_ad8350e971a0f51415d63ec929f85e6f1} 
+const \doxymbox{\hyperlink{struct_f_host_migration_context}{FHost\+Migration\+Context}} \& UWj\+World\+Game\+Instance::\+\+Get\+Migration\+Context (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_u_wj_world_game_instance_a6950736a62f668c2b5874712f7914d31}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!GetMigrationState@{GetMigrationState}}
+\index{GetMigrationState@{GetMigrationState}!UWjWorldGameInstance@{UWjWorldGameInstance}}
+\doxysubsubsection{\texorpdfstring{GetMigrationState()}{GetMigrationState()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_instance_a6950736a62f668c2b5874712f7914d31} 
+\doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1e}{EHost\+Migration\+State}} UWj\+World\+Game\+Instance::\+\+Get\+Migration\+State (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+현재 마이그레이션 상태 \Hypertarget{class_u_wj_world_game_instance_ac2613d2e0482c2e2a39d4614e2bdf315}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!GetSessionManager@{GetSessionManager}}
 \index{GetSessionManager@{GetSessionManager}!UWjWorldGameInstance@{UWjWorldGameInstance}}
 \doxysubsubsection{\texorpdfstring{GetSessionManager()}{GetSessionManager()}}
 {\footnotesize\ttfamily \label{class_u_wj_world_game_instance_ac2613d2e0482c2e2a39d4614e2bdf315} 
 \doxymbox{\hyperlink{class_u_session_manager}{USession\+Manager}} \texorpdfstring{$\ast$}{*} UWj\+World\+Game\+Instance::\+\+Get\+Session\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
-Session\+Manager 가져오기 (블루프린트/\+\+C++ 모두 접근 가능) \Hypertarget{class_u_wj_world_game_instance_a1d4d1b588c7fdc9990268930bb3eb8fb}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!Init@{Init}}
+\Hypertarget{class_u_wj_world_game_instance_a1d4d1b588c7fdc9990268930bb3eb8fb}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!Init@{Init}}
 \index{Init@{Init}!UWjWorldGameInstance@{UWjWorldGameInstance}}
 \doxysubsubsection{\texorpdfstring{Init()}{Init()}}
 {\footnotesize\ttfamily \label{class_u_wj_world_game_instance_a1d4d1b588c7fdc9990268930bb3eb8fb} 
 void UWj\+World\+Game\+Instance::\+\+Init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
-\Hypertarget{class_u_wj_world_game_instance_a28ee05ff3fc5c9a122a41014478c9507}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!JoinRoom@{JoinRoom}}
+\Hypertarget{class_u_wj_world_game_instance_a59822103171ca15e6a4f67f64cafb87c}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!IsMigrating@{IsMigrating}}
+\index{IsMigrating@{IsMigrating}!UWjWorldGameInstance@{UWjWorldGameInstance}}
+\doxysubsubsection{\texorpdfstring{IsMigrating()}{IsMigrating()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_game_instance_a59822103171ca15e6a4f67f64cafb87c} 
+bool UWj\+World\+Game\+Instance::\+\+Is\+Migrating (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+마이그레이션 진행 중 여부 \Hypertarget{class_u_wj_world_game_instance_a28ee05ff3fc5c9a122a41014478c9507}\index{UWjWorldGameInstance@{UWjWorldGameInstance}!JoinRoom@{JoinRoom}}
 \index{JoinRoom@{JoinRoom}!UWjWorldGameInstance@{UWjWorldGameInstance}}
 \doxysubsubsection{\texorpdfstring{JoinRoom()}{JoinRoom()}}
 {\footnotesize\ttfamily \label{class_u_wj_world_game_instance_a28ee05ff3fc5c9a122a41014478c9507} 

@@ -1,0 +1,67 @@
+\doxysection{Ability\+Slot\+Widget.\+h}
+\hypertarget{_ability_slot_widget_8h_source}{}\label{_ability_slot_widget_8h_source}\index{Source/WjWorld/UI/Ability/AbilitySlotWidget.h@{Source/WjWorld/UI/Ability/AbilitySlotWidget.h}}
+\doxymbox{\hyperlink{_ability_slot_widget_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Blueprint/UserWidget.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}AbilitySlotWidget.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }UImage;}
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }UTextBlock;}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base}{UWjWorldGameplayAbilityBase}};}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }UAbilitySystemComponent;}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00019\ UCLASS()}
+\DoxyCodeLine{00020\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_ability_slot_widget}{UAbilitySlotWidget}}\ :\ public\ UUserWidget}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadWrite,\ Category\ =\ \textcolor{stringliteral}{"{}Ability"{}})}
+\DoxyCodeLine{00027\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base}{UWjWorldGameplayAbilityBase}}>\ \doxymbox{\hyperlink{class_u_ability_slot_widget_adc7e11b35221de863bb7f46aaf5ea619}{AbilityClass}};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ protected:}
+\DoxyCodeLine{00030\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_ability_slot_widget_aa869a50dc8fd14b3e887965f7e7d95b6}{NativeConstruct}}()\ override;}
+\DoxyCodeLine{00031\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_ability_slot_widget_ad209a8387d7547d1a632476df2c56a21}{NativeTick}}(const\ FGeometry\&\ MyGeometry,\ \textcolor{keywordtype}{float}\ InDeltaTime)\ override;}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ private:}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{bool}\ TryCacheAbilityInstance();}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00038\ \ \ \ \ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base}{UWjWorldGameplayAbilityBase}}*\ FindAbilityInstance(UAbilitySystemComponent*\ ASC)\ const;}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00041\ \ \ \ \ FText\ ResolveKeyBindText()\ const;}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateCooldownDisplay(\textcolor{keywordtype}{float}\ DeltaTime);}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateChargeDisplay();}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{void}\ InitializeIcon();}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ protected:}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{comment}{//\ BindWidget\ 요소\ (UMG\ Blueprint에서\ 바인딩)}}
+\DoxyCodeLine{00052\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00053\ \ \ \ \ TObjectPtr<UImage>\ \doxymbox{\hyperlink{class_u_ability_slot_widget_aa30f31633431f5a30556f1e5d9a4f5e4}{AbilityIconImage}};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00056\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_ability_slot_widget_a1f25a183171e71ecabdcf714cfd48b00}{KeyBindText}};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00059\ \ \ \ \ TObjectPtr<UImage>\ \doxymbox{\hyperlink{class_u_ability_slot_widget_a6431892343d1fb6dcbc3ba47d81e37f0}{CooldownOverlay}};}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00062\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_ability_slot_widget_a1cffe6cfe83b4d18af087da176bb7652}{CooldownText}};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00065\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_ability_slot_widget_a232901fb4bb41cb4503e3b159d29b112}{ChargeCountText}};}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ private:}
+\DoxyCodeLine{00069\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00070\ \ \ \ \ TWeakObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base}{UWjWorldGameplayAbilityBase}}>\ CachedAbilityInstance;}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{bool}\ bAbilityCached\ =\ false;}
+\DoxyCodeLine{00074\ \};}
+
+\end{DoxyCode}

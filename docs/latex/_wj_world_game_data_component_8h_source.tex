@@ -1,0 +1,116 @@
+\doxysection{Wj\+World\+Game\+Data\+Component.\+h}
+\hypertarget{_wj_world_game_data_component_8h_source}{}\label{_wj_world_game_data_component_8h_source}\index{Source/WjWorld/Core/GameData/WjWorldGameDataComponent.h@{Source/WjWorld/Core/GameData/WjWorldGameDataComponent.h}}
+\doxymbox{\hyperlink{_wj_world_game_data_component_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Components/ActorComponent.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}GameplayTagContainer.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}WjWorldGameDataComponent.generated.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ UCLASS(\ Blueprintable,\ ClassGroup=(Custom),\ meta=(BlueprintSpawnableComponent)\ )}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }WJWORLD\_API\ UWjWorldGameDataComponent\ :\ \textcolor{keyword}{public}\ UActorComponent}
+\DoxyCodeLine{00014\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ public:}
+\DoxyCodeLine{00018\ \ \ \ \ template<typename\ T>}
+\DoxyCodeLine{00019\ \ \ \ \ const\ T*\ GetValue(const\ FGameplayTag\&\ InTag)\ const;}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{void}\ GetValueInt(const\ FGameplayTag\&\ InTag,\ int32\&\ OutValue,\ \textcolor{keywordtype}{bool}\&\ bFound)\ const;}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{void}\ GetValueFloat(const\ FGameplayTag\&\ InTag,\ \textcolor{keywordtype}{float}\&\ OutValue,\ \textcolor{keywordtype}{bool}\&\ bFound)\ const;}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ GetValueString(const\ FGameplayTag\&\ InTag,\ FString\&\ OutValue,\ \textcolor{keywordtype}{bool}\&\ bFound)\ const;}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ template<typename\ T>}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{void}\ SetValue(const\ FGameplayTag\&\ InTag,\ const\ T\&\ InValue);}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ SetValueInt(const\ FGameplayTag\&\ InTag,\ int32\ InValue);}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ SetValueFloat(const\ FGameplayTag\&\ InTag,\ \textcolor{keywordtype}{float}\ InValue);}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ SetValueString(const\ FGameplayTag\&\ InTag,\ const\ FString\&\ InValue);}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ template<typename\ T>}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ RemoveValue(const\ FGameplayTag\&\ InTag);}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ RemoveValueInt(const\ FGameplayTag\&\ InTag);}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ RemoveValueFloat(const\ FGameplayTag\&\ InTag);}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ RemoveValueString(const\ FGameplayTag\&\ InTag);}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ protected:}
+\DoxyCodeLine{00040\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00041\ \ \ \ \ TMap<FGameplayTag,\ int32>\ IntDataMap;}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00044\ \ \ \ \ TMap<FGameplayTag,\ \textcolor{keywordtype}{float}>\ FloatDataMap;}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00047\ \ \ \ \ TMap<FGameplayTag,\ FString>\ StringDataMap;}
+\DoxyCodeLine{00048\ \};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ template<typename\ T>}
+\DoxyCodeLine{00051\ inline\ const\ T*\ UWjWorldGameDataComponent::GetValue(const\ FGameplayTag\&\ InTag)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00052\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ int32>)}
+\DoxyCodeLine{00054\ \ \ \ \ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (IntDataMap.Contains(InTag))}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&IntDataMap[InTag];}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ float>)}
+\DoxyCodeLine{00061\ \ \ \ \ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (FloatDataMap.Contains(InTag))}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&FloatDataMap[InTag];}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ FString>)}
+\DoxyCodeLine{00068\ \ \ \ \ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (StringDataMap.Contains(InTag))}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&StringDataMap[InTag];}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00076\ \}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00079\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ UWjWorldGameDataComponent::SetValue(\textcolor{keyword}{const}\ FGameplayTag\&\ InTag,\ \textcolor{keyword}{const}\ T\&\ InValue)}
+\DoxyCodeLine{00080\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ int32>)}
+\DoxyCodeLine{00082\ \ \ \ \ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ IntDataMap.Add(InTag,\ InValue);}
+\DoxyCodeLine{00084\ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ float>)}
+\DoxyCodeLine{00086\ \ \ \ \ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ FloatDataMap.Add(InTag,\ InValue);}
+\DoxyCodeLine{00088\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ FString>)}
+\DoxyCodeLine{00090\ \ \ \ \ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ StringDataMap.Add(InTag,\ InValue);}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00096\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ UWjWorldGameDataComponent::RemoveValue(\textcolor{keyword}{const}\ FGameplayTag\&\ InTag)}
+\DoxyCodeLine{00097\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ int32>)}
+\DoxyCodeLine{00099\ \ \ \ \ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ IntDataMap.Remove(InTag);}
+\DoxyCodeLine{00101\ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ float>)}
+\DoxyCodeLine{00103\ \ \ \ \ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ FloatDataMap.Remove(InTag);}
+\DoxyCodeLine{00105\ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ FString>)}
+\DoxyCodeLine{00107\ \ \ \ \ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ StringDataMap.Remove(InTag);}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \}}
+
+\end{DoxyCode}

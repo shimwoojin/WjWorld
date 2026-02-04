@@ -1,0 +1,136 @@
+\doxysection{Wj\+World\+Developer\+Settings.\+h}
+\hypertarget{_wj_world_developer_settings_8h_source}{}\label{_wj_world_developer_settings_8h_source}\index{Source/WjWorld/Setting/WjWorldDeveloperSettings.h@{Source/WjWorld/Setting/WjWorldDeveloperSettings.h}}
+\doxymbox{\hyperlink{_wj_world_developer_settings_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Engine/DeveloperSettingsBackedByCVars.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldDeveloperSettings.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_tile_actor}{AWjWorldTileActor}};}
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }UNiagaraSystem;}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }UGeometryCollection;}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_minigame_data_asset}{UWjWorldMinigameDataAsset}};}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWjWorldPlaceableObjectDataAsset}};}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset}{UWjWorldCosmeticCatalogDataAsset}};}
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset}{UWjWorldWallDescriptionDataAsset}};}
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }UInputMappingContext;}
+\DoxyCodeLine{00017\ \textcolor{keyword}{class\ }UInputAction;}
+\DoxyCodeLine{00018\ \textcolor{keyword}{class\ }USkeletalMesh;}
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }UStaticMesh;}
+\DoxyCodeLine{00020\ \textcolor{keyword}{class\ }UAnimInstance;}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00026\ UCLASS(config\ =\ \doxymbox{\hyperlink{class_wj_world}{WjWorld}},\ defaultconfig,\ meta\ =\ (DisplayName\ =\ \textcolor{stringliteral}{"{}WjWorld"{}}))}
+\DoxyCodeLine{00027\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings}{UWjWorldDeveloperSettings}}\ :\ public\ UDeveloperSettingsBackedByCVars}
+\DoxyCodeLine{00028\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\ Project\ Settings에서\ "{}Project"{}\ 섹션에\ 표시}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{virtual}\ FName\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_af06c73c28c7c7414963af6a3d43db6ec}{GetContainerName}}()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ TEXT(\textcolor{stringliteral}{"{}Project"{}});\ \}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{virtual}\ FName\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_aadedd88ad0a9d5fd04c7e472d263ba25}{GetCategoryName}}()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ TEXT(\textcolor{stringliteral}{"{}WjWorld"{}});\ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{virtual}\ FName\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a4c6a27ae0ff5cd11ae3d8912fc0d608e}{GetSectionName}}()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ TEXT(\textcolor{stringliteral}{"{}WjWorld"{}});\ \}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{comment}{//\ ==========\ Maps\ ==========}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00040\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ Category\ =\ \textcolor{stringliteral}{"{}Maps"{}})}
+\DoxyCodeLine{00041\ \ \ \ \ FSoftObjectPath\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_ae50e8fb613c402a08fb97e6419241d24}{LobbyMapPath}}\ =\ FSoftObjectPath(TEXT(\textcolor{stringliteral}{"{}/Game/Map/02-\/1\_Lobby"{}}));}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00044\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ NoClear,\ Category\ =\ \textcolor{stringliteral}{"{}Maps"{}})}
+\DoxyCodeLine{00045\ \ \ \ \ TSoftClassPtr<AGameModeBase>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a383e44cd6986cbe2cae5b3a6ed4241b0}{WaitingRoomGameModeClass}};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00048\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ NoClear,\ Category\ =\ \textcolor{stringliteral}{"{}Maps"{}})}
+\DoxyCodeLine{00049\ \ \ \ \ TSoftClassPtr<AGameModeBase>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a33f9e07cec7c9b8c075b56e8114bfb9e}{PlayGameModeClass}};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{comment}{//\ ==========\ Character\ Defaults\ ==========}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00054\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ Category\ =\ \textcolor{stringliteral}{"{}Character|Default"{}})}
+\DoxyCodeLine{00055\ \ \ \ \ TSoftObjectPtr<USkeletalMesh>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a05cfff1bec13db1f330aa361325b9958}{DefaultCharacterMesh}};}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00058\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ Category\ =\ \textcolor{stringliteral}{"{}Character|Default"{}})}
+\DoxyCodeLine{00059\ \ \ \ \ TSoftClassPtr<UAnimInstance>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a4abbfdfce00098b1f226e2a674c8a2a3}{DefaultAnimBlueprintClass}};}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00062\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ Category\ =\ \textcolor{stringliteral}{"{}Character|Default"{}})}
+\DoxyCodeLine{00063\ \ \ \ \ TSoftObjectPtr<UInputMappingContext>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_ae819ee86d631859ad332a5b070fc8752}{DefaultInputMappingContext}};}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{comment}{//\ ==========\ Approaching\ Wall\ ==========}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ NoClear,\ Category\ =\ \textcolor{stringliteral}{"{}Approaching\ Wall|Tile"{}})}
+\DoxyCodeLine{00068\ \ \ \ \ TSoftClassPtr<\doxymbox{\hyperlink{class_a_wj_world_tile_actor}{AWjWorldTileActor}}>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_af79c28835e4a4532cc4535b6d231ed93}{TileActorClass}};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ UPROPERTY(EditAnywhere,\ Category\ =\ \textcolor{stringliteral}{"{}Approaching\ Wall|Brick"{}})}
+\DoxyCodeLine{00071\ \ \ \ \ TSoftObjectPtr<UNiagaraSystem>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_aa14b4966206d7a42de87205c6157274a}{BrickDestroyEffect}};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ UPROPERTY(EditAnywhere,\ Category\ =\ \textcolor{stringliteral}{"{}Approaching\ Wall|Brick"{}})}
+\DoxyCodeLine{00074\ \ \ \ \ TSoftObjectPtr<UNiagaraSystem>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a0d9b9cb018c29b9b2977c19b25473e6e}{BrickExplosionEffect}};}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{comment}{//\ Destructible\ 벽돌\ 기본\ 내구도}}
+\DoxyCodeLine{00077\ \ \ \ \ UPROPERTY(EditAnywhere,\ Category\ =\ \textcolor{stringliteral}{"{}Approaching\ Wall|Brick|Destructible"{}},\ meta\ =\ (ClampMin\ =\ \textcolor{stringliteral}{"{}1"{}}))}
+\DoxyCodeLine{00078\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a73dcd6757bc997ede6cb00c2cd381808}{DestructibleBrickDefaultHP}}\ =\ 3;}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{comment}{//\ Destructible\ 벽돌\ 파쇄\ GeometryCollection\ 에셋}}
+\DoxyCodeLine{00081\ \ \ \ \ UPROPERTY(EditAnywhere,\ Category\ =\ \textcolor{stringliteral}{"{}Approaching\ Wall|Brick|Destructible"{}})}
+\DoxyCodeLine{00082\ \ \ \ \ TSoftObjectPtr<UGeometryCollection>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a1892dab8a6b4ee8db37abb51d060e88a}{DestructibleBrickFractureCollection}};}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{comment}{//\ 파쇄\ 파편\ 자동\ 제거까지의\ 수명\ (초)}}
+\DoxyCodeLine{00085\ \ \ \ \ UPROPERTY(EditAnywhere,\ Category\ =\ \textcolor{stringliteral}{"{}Approaching\ Wall|Brick|Destructible"{}},\ meta\ =\ (ClampMin\ =\ \textcolor{stringliteral}{"{}0.1"{}}))}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a1404aa2eb1bcb365e20e79ab2cbeaf24}{DestructibleBrickFractureLifetime}}\ =\ 3.0f;}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00089\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ Category\ =\ \textcolor{stringliteral}{"{}Approaching\ Wall|Mesh"{}})}
+\DoxyCodeLine{00090\ \ \ \ \ TSoftObjectPtr<UStaticMesh>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a7f8dc1ca4f88cf4f49a81663f76805bb}{BrickMesh}};}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00093\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ Category\ =\ \textcolor{stringliteral}{"{}Approaching\ Wall|Mesh"{}})}
+\DoxyCodeLine{00094\ \ \ \ \ TSoftObjectPtr<UStaticMesh>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a31733424f9294568ebcb4ace751c9fcb}{TileMesh}};}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00097\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ NoClear,\ Category\ =\ \textcolor{stringliteral}{"{}Approaching\ Wall"{}})}
+\DoxyCodeLine{00098\ \ \ \ \ TSoftObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset}{UWjWorldWallDescriptionDataAsset}}>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a741c31b9419bcf35ec1f0f59ec2e3094}{WallDescriptionAsset}};}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{comment}{//\ ==========\ Minigame\ ==========}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00103\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ NoClear,\ Category\ =\ \textcolor{stringliteral}{"{}Minigame"{}})}
+\DoxyCodeLine{00104\ \ \ \ \ TSoftObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_minigame_data_asset}{UWjWorldMinigameDataAsset}}>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a443dcfa371db37377cea84ccc2ab437d}{MinigameCatalog}};}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{comment}{//\ ==========\ Cosmetic\ ==========}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00109\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ NoClear,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00110\ \ \ \ \ TSoftObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset}{UWjWorldCosmeticCatalogDataAsset}}>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a072d58e7ead6da288b15e6b83ab09485}{CosmeticCatalog}};}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{comment}{//\ ==========\ Placement\ ==========}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00115\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ NoClear,\ Category\ =\ \textcolor{stringliteral}{"{}Placement"{}})}
+\DoxyCodeLine{00116\ \ \ \ \ TSoftObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWjWorldPlaceableObjectDataAsset}}>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a058ca64bb41cc65816a5af4a6261da19}{PlaceableObjectCatalog}};}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00119\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ NoClear,\ Category\ =\ \textcolor{stringliteral}{"{}Placement|Input"{}})}
+\DoxyCodeLine{00120\ \ \ \ \ TSoftObjectPtr<UInputMappingContext>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a8c14745669bbcd3faf0d38cb1d978a25}{PlacementMappingContext}};}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{comment}{//\ ==========\ Helper\ Functions\ ==========}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00125\ \ \ \ \ FString\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a25c5d0050827780ee48920c2cf78ecb6}{GetLobbyMapPath}}()\ const;}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00128\ \ \ \ \ FString\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a78e3611e7ca4a08c2a4f0efe7271073a}{GetWaitingRoomOpenLevelURL}}()\ const;}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00131\ \ \ \ \ FString\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_af875cc79f6b309ed1eb78d2f0e2ae219}{GetWaitingRoomServerTravelURL}}()\ const;}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00134\ \ \ \ \ FString\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_ac3ea03cbdf409493e862191b6db12990}{GetPlayServerTravelURL}}(const\ FString\&\ LevelPath,\ const\ FString\&\ GameModeId)\ const;}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{comment}{//\ 배치\ 확정\ 입력\ 액션\ (LMB)}}
+\DoxyCodeLine{00137\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ NoClear,\ Category\ =\ \textcolor{stringliteral}{"{}Placement|Input"{}})}
+\DoxyCodeLine{00138\ \ \ \ \ TSoftObjectPtr<UInputAction>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_ac0b2cf1c63d81c28d621d468958bec3c}{PlacementConfirmAction}};}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{comment}{//\ 배치\ 취소\ 입력\ 액션\ (ESC)}}
+\DoxyCodeLine{00141\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ NoClear,\ Category\ =\ \textcolor{stringliteral}{"{}Placement|Input"{}})}
+\DoxyCodeLine{00142\ \ \ \ \ TSoftObjectPtr<UInputAction>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a47522ebccdfa706c578890b26420de08}{PlacementCancelAction}};}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{comment}{//\ 회전\ 입력\ 액션\ (R)}}
+\DoxyCodeLine{00145\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ NoClear,\ Category\ =\ \textcolor{stringliteral}{"{}Placement|Input"{}})}
+\DoxyCodeLine{00146\ \ \ \ \ TSoftObjectPtr<UInputAction>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a2324c8b24ca6867dd353cb8f9376242e}{PlacementRotateAction}};}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{comment}{//\ 삭제\ 입력\ 액션\ (DEL)}}
+\DoxyCodeLine{00149\ \ \ \ \ UPROPERTY(config,\ EditAnywhere,\ NoClear,\ Category\ =\ \textcolor{stringliteral}{"{}Placement|Input"{}})}
+\DoxyCodeLine{00150\ \ \ \ \ TSoftObjectPtr<UInputAction>\ \doxymbox{\hyperlink{class_u_wj_world_developer_settings_a6c24c9c1d6e98682099dff163db6d1bd}{PlacementDeleteAction}};}
+\DoxyCodeLine{00151\ \};}
+
+\end{DoxyCode}

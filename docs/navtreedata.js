@@ -25,14 +25,24 @@
 var NAVTREE =
 [
   [ "WjWorld", "index.html", [
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
+      [ "Namespace Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Functions", "namespacemembers_func.html", null ],
+        [ "Enumerations", "namespacemembers_enum.html", null ],
+        [ "Enumerator", "namespacemembers_eval.html", null ]
+      ] ]
+    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
-        [ "Functions", "functions_func.html", null ],
-        [ "Variables", "functions_vars.html", null ]
+        [ "Functions", "functions_func.html", "functions_func" ],
+        [ "Variables", "functions_vars.html", "functions_vars" ],
+        [ "Related Symbols", "functions_rela.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -49,9 +59,13 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_create_room_window_8cpp.html",
-"class_a_wj_world_h_u_d_lobby.html#a6f9269f6cce22fbf13a4ed6f5ee91876",
-"functions_k.html"
+"_ability_prompt_widget_8cpp.html",
+"_wj_world_cosmetic_types_8h_source.html",
+"class_a_wj_world_character_play.html",
+"class_a_wj_world_tile_actor.html#a65d97dd9856a5d1b2782e334113e6f19",
+"class_u_player_profile_widget.html",
+"class_u_wj_world_game_rule_base.html#a2ff20f4707783824d893bfa81c278e0f",
+"struct_f_cosmetic_loadout.html#a50f993965763ee4572e31648fd2ff287"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

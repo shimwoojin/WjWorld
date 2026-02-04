@@ -1,0 +1,35 @@
+\doxysection{Wj\+World\+Gameplay\+Camera\+Component.\+h}
+\hypertarget{_wj_world_gameplay_camera_component_8h_source}{}\label{_wj_world_gameplay_camera_component_8h_source}\index{Source/WjWorld/GamePlay/Camera/WjWorldGameplayCameraComponent.h@{Source/WjWorld/GamePlay/Camera/WjWorldGameplayCameraComponent.h}}
+\doxymbox{\hyperlink{_wj_world_gameplay_camera_component_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\#include\ "{}GameFramework/GameplayCameraComponent.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}GameplayTagContainer.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}Components/SceneComponent.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}WjWorldGameplayCameraComponent.generated.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \doxymbox{\hyperlink{_wj_world_gameplay_camera_component_8h_a61c1f1a4c6b2dd67f7d619ebac06bfb6}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FCameraModeSetSignature,\ \textcolor{keyword}{const}\ FGameplayTag\&,\ CameraMode);}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{struct\ }FGameplayTag;}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00018\ UCLASS()}
+\DoxyCodeLine{00019\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_camera_component}{UWjWorldGameplayCameraComponent}}\ \textcolor{comment}{/*:\ public\ UGameplayCameraComponent*/}\ :\ public\ USceneComponent}
+\DoxyCodeLine{00020\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00022\ \ \ \ \ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{const}\ FGameplayTag\&\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_camera_component_a760ceaa94b44c732f072bd3050020691}{GetCurrentCameraMode}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_camera_component_ad397a81b9e8e7a07e211f76883a6847d}{SetCameraMode}}(\textcolor{keyword}{const}\ FGameplayTag\&\ InCameraModeTag);}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00028\ \ \ \ \ FGameplayTag\ CurrentCameraMode;}
+\DoxyCodeLine{00029\ \ \ \ \ }
+\DoxyCodeLine{00030\ \ \ \ \ UPROPERTY(BlueprintAssignable)}
+\DoxyCodeLine{00031\ \ \ \ \ FCameraModeSetSignature\ OnCameraModeSetted;}
+\DoxyCodeLine{00032\ \};}
+
+\end{DoxyCode}

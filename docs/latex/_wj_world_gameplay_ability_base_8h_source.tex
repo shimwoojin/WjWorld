@@ -1,0 +1,54 @@
+\doxysection{Wj\+World\+Gameplay\+Ability\+Base.\+h}
+\hypertarget{_wj_world_gameplay_ability_base_8h_source}{}\label{_wj_world_gameplay_ability_base_8h_source}\index{Source/WjWorld/AbilitySystem/Abilities/WjWorldGameplayAbilityBase.h@{Source/WjWorld/AbilitySystem/Abilities/WjWorldGameplayAbilityBase.h}}
+\doxymbox{\hyperlink{_wj_world_gameplay_ability_base_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Abilities/GameplayAbility.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}Engine/Texture2D.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldGameplayAbilityBase.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00015\ UCLASS(Abstract)}
+\DoxyCodeLine{00016\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_ad7322fe328393ab6e7dcf9bd1c4097f8}{UWjWorldGameplayAbilityBase}}\ :\ public\ UGameplayAbility}
+\DoxyCodeLine{00017\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \ \ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_ad7322fe328393ab6e7dcf9bd1c4097f8}{UWjWorldGameplayAbilityBase}}();}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a7d145e5a27753da9e9292cd56d2d146f}{ApplyCooldown}}(\textcolor{keyword}{const}\ FGameplayAbilitySpecHandle\ Handle,\ \textcolor{keyword}{const}\ FGameplayAbilityActorInfo*\ ActorInfo,\ \textcolor{keyword}{const}\ FGameplayAbilityActivationInfo\ ActivationInfo)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ FGameplayTagContainer*\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_ae7436e7fc243130b9cee911023e7d71f}{GetCooldownTags}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{comment}{//\ UI\ 메타데이터}}
+\DoxyCodeLine{00027\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}UI"{}})}
+\DoxyCodeLine{00028\ \ \ \ \ FText\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a521ca3f0274e28edde5d44e75d8299b1}{AbilityName}};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}UI"{}})}
+\DoxyCodeLine{00031\ \ \ \ \ TObjectPtr<UTexture2D>\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_aa39d1ebfb973d1e3f3b744170c98c3ad}{AbilityIcon}};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{comment}{//\ 충전\ 시스템\ (하위\ 클래스에서\ 선택적\ 오버라이드)}}
+\DoxyCodeLine{00034\ \ \ \ \ virtual\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a6d7f9f2e094eeb6f77fd496acb5e6c3f}{IsChargeBased}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{virtual}\ int32\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a4d60b2169c22d0a049807c41de0cadd4}{GetCurrentCharges}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 0;\ \}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{virtual}\ int32\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a7bd14d94cd14baf7e8f66b7112a0b2c1}{GetMaxCharges}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 0;\ \}}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a5f53940eca5f3cd0930079bbf9aaa693}{GetChargeRefillTimeRemaining}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 0.f;\ \}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{virtual}\ FText\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_aae3cf2fb33aa85b5a76843d0952a39b6}{GetPromptDescription}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FText::GetEmpty();\ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{comment}{//\ 쿨다운\ 시간\ (0이면\ 쿨다운\ 없음)}}
+\DoxyCodeLine{00044\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Cooldown"{}})}
+\DoxyCodeLine{00045\ \ \ \ \ float\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_a7e6fa17e98744690454009d3a3543b2d}{CooldownDuration}}\ =\ 0.f;}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{comment}{//\ 쿨다운\ 중\ 부여될\ 태그\ (CanActivateAbility에서\ 체크됨)}}
+\DoxyCodeLine{00048\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Cooldown"{}})}
+\DoxyCodeLine{00049\ \ \ \ \ FGameplayTagContainer\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_aafbad2cffd2117eb21c5d0fa0ed3629c}{CooldownTags}};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ private:}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{comment}{//\ GetCooldownTags()\ 반환용\ (부모\ 태그\ +\ CooldownTags\ 합산)}}
+\DoxyCodeLine{00053\ \ \ \ \ mutable\ FGameplayTagContainer\ MergedCooldownTags;}
+\DoxyCodeLine{00054\ \};}
+
+\end{DoxyCode}

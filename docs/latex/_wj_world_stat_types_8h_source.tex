@@ -1,0 +1,53 @@
+\doxysection{Wj\+World\+Stat\+Types.\+h}
+\hypertarget{_wj_world_stat_types_8h_source}{}\label{_wj_world_stat_types_8h_source}\index{Source/WjWorld/Stats/WjWorldStatTypes.h@{Source/WjWorld/Stats/WjWorldStatTypes.h}}
+\doxymbox{\hyperlink{_wj_world_stat_types_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}WjWorldStatTypes.generated.h"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }\doxymbox{\hyperlink{namespace_wj_world_stats}{WjWorldStats}}}
+\DoxyCodeLine{00013\ \{}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keyword}{namespace\ }\doxymbox{\hyperlink{namespace_wj_world_stats_1_1_approaching_wall}{ApproachingWall}}}
+\DoxyCodeLine{00015\ \ \ \ \ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ FName\ \doxymbox{\hyperlink{namespace_wj_world_stats_1_1_approaching_wall_a872c2fb894088b6e352a156a8b21df51}{Wins}}(\textcolor{stringliteral}{"{}AW\_Wins"{}});}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ FName\ \doxymbox{\hyperlink{namespace_wj_world_stats_1_1_approaching_wall_af78ad5272f4317304a87babbc72c8059}{Losses}}(\textcolor{stringliteral}{"{}AW\_Losses"{}});}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ FName\ \doxymbox{\hyperlink{namespace_wj_world_stats_1_1_approaching_wall_ab509255383a25b4489b9add3a85218cf}{Kills}}(\textcolor{stringliteral}{"{}AW\_Kills"{}});}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ FName\ \doxymbox{\hyperlink{namespace_wj_world_stats_1_1_approaching_wall_a8cdfacc1be013e9d52408423e4ed1a7b}{GamesPlayed}}(\textcolor{stringliteral}{"{}AW\_GamesPlayed"{}});}
+\DoxyCodeLine{00020\ \ \ \ \ \}}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{comment}{//\ 향후\ 미니게임\ 추가\ 시\ 새\ namespace\ 추가}}
+\DoxyCodeLine{00022\ \}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00027\ USTRUCT(BlueprintType)}
+\DoxyCodeLine{00028\ struct\ \doxymbox{\hyperlink{struct_f_minigame_stat_entry}{FMinigameStatEntry}}}
+\DoxyCodeLine{00029\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00033\ \ \ \ \ FName\ \doxymbox{\hyperlink{struct_f_minigame_stat_entry_aef040fd75c2bc5c17b2e16dd0de235b6}{StatName}};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00036\ \ \ \ \ FText\ \doxymbox{\hyperlink{struct_f_minigame_stat_entry_a509eb7b820351cf2781c0d2cdece5611}{DisplayName}};}
+\DoxyCodeLine{00037\ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00043\ USTRUCT(BlueprintType)}
+\DoxyCodeLine{00044\ struct\ \doxymbox{\hyperlink{struct_f_minigame_stat_descriptor}{FMinigameStatDescriptor}}}
+\DoxyCodeLine{00045\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00049\ \ \ \ \ FText\ \doxymbox{\hyperlink{struct_f_minigame_stat_descriptor_a80396e2db5cadb6f1f37c100e9a9076c}{MinigameName}};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00052\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00053\ \ \ \ \ FString\ \doxymbox{\hyperlink{struct_f_minigame_stat_descriptor_a0ccfbef6aa06b4b7b1c0e88b75c75842}{GameModeId}};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00056\ \ \ \ \ TArray<\doxymbox{\hyperlink{struct_f_minigame_stat_entry}{FMinigameStatEntry}}>\ \doxymbox{\hyperlink{struct_f_minigame_stat_descriptor_aec338e1799f11f5480a1655f6b396818}{Stats}};}
+\DoxyCodeLine{00057\ \};}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00060\ const\ TArray<\doxymbox{\hyperlink{struct_f_minigame_stat_descriptor}{FMinigameStatDescriptor}}>\&\ \doxymbox{\hyperlink{_wj_world_stat_types_8h_a3b8d21b1f6c0f6ea0e4b08c5b75e1343}{GetAllMinigameDescriptors}}();}
+
+\end{DoxyCode}

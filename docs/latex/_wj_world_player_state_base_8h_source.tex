@@ -8,53 +8,80 @@
 \DoxyCodeLine{00004\ }
 \DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
 \DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}GameFramework/PlayerState.h"{}}}
-\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldPlayerStateBase.generated.h"{}}}
-\DoxyCodeLine{00008\ }
-\DoxyCodeLine{00012\ \doxymbox{\hyperlink{_wj_world_player_state_base_8h_a755c5209b42c1f7030a7f02b70da39b8}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams}}(FOnPlayerReadyStateChanged,\ int32,\ PlayerID,\ \textcolor{keywordtype}{bool},\ bIsReady);}
-\DoxyCodeLine{00013\ \doxymbox{\hyperlink{_wj_world_player_state_base_8h_ae41b0718845c3c0f70c12e6680f154dc}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnPlayerNameUpdated,\ \textcolor{keyword}{const}\ FString\&,\ PlayerName);}
-\DoxyCodeLine{00014\ }
-\DoxyCodeLine{00022\ UCLASS()}
-\DoxyCodeLine{00023\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a5877bdc9ae35b3f744973f85073dce11}{AWjWorldPlayerStateBase}}\ :\ public\ APlayerState}
-\DoxyCodeLine{00024\ \{}
-\DoxyCodeLine{00025\ \ \ \ \ GENERATED\_BODY()}
-\DoxyCodeLine{00026\ \ \ \ \ }
-\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00028\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a5877bdc9ae35b3f744973f85073dce11}{AWjWorldPlayerStateBase}}();}
-\DoxyCodeLine{00029\ }
-\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a27214a1a235bd4bcf1cf8c8cd7ce855c}{GetLifetimeReplicatedProps}}(TArray<FLifetimeProperty>\&\ OutLifetimeProps)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h}{Cosmetic/WjWorldCosmeticTypes.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldPlayerStateBase.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00013\ \doxymbox{\hyperlink{_wj_world_player_state_base_8h_a755c5209b42c1f7030a7f02b70da39b8}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams}}(FOnPlayerReadyStateChanged,\ int32,\ PlayerID,\ \textcolor{keywordtype}{bool},\ bIsReady);}
+\DoxyCodeLine{00014\ \doxymbox{\hyperlink{_wj_world_player_state_base_8h_ae41b0718845c3c0f70c12e6680f154dc}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnPlayerNameUpdated,\ \textcolor{keyword}{const}\ FString\&,\ PlayerName);}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00024\ UCLASS()}
+\DoxyCodeLine{00025\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a5877bdc9ae35b3f744973f85073dce11}{AWjWorldPlayerStateBase}}\ :\ public\ APlayerState}
+\DoxyCodeLine{00026\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a5877bdc9ae35b3f744973f85073dce11}{AWjWorldPlayerStateBase}}();}
 \DoxyCodeLine{00031\ }
-\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\string~\ Ready\ State}}
-\DoxyCodeLine{00036\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}PlayerState"{}})}
-\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a520d555bb723e97cd2c033018febb4d7}{ToggleReady}}();}
-\DoxyCodeLine{00038\ }
-\DoxyCodeLine{00042\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}PlayerState"{}})}
-\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_aaead30ca588790b0eb5e047b25e22c31}{SetReady}}(\textcolor{keywordtype}{bool}\ bNewReady);}
-\DoxyCodeLine{00044\ }
-\DoxyCodeLine{00048\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}PlayerState"{}})}
-\DoxyCodeLine{00049\ \ \ \ \ bool\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a629b859c75b31cfa4d1e42fe244522d9}{IsReady}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a3559a140fa4222a1ff157bbe96088996}{bIsReady}};\ \}}
-\DoxyCodeLine{00050\ }
-\DoxyCodeLine{00051\ \ \ \ \ \textcolor{comment}{//\string~\ Events}}
-\DoxyCodeLine{00052\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}PlayerState|Events"{}})}
-\DoxyCodeLine{00053\ \ \ \ \ FOnPlayerReadyStateChanged\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_ac28b924004207626f57decfb8169a707}{OnReadyStateChanged}};}
-\DoxyCodeLine{00054\ }
-\DoxyCodeLine{00055\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}PlayerState|Events"{}})}
-\DoxyCodeLine{00056\ \ \ \ \ FOnPlayerNameUpdated\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a5d5177e59d8ee1c8972c83c8d281c442}{OnPlayerNameUpdated}};}
-\DoxyCodeLine{00057\ }
-\DoxyCodeLine{00058\ protected:}
-\DoxyCodeLine{00059\ \ \ \ \ \textcolor{comment}{//\string~\ Replicated\ Properties}}
-\DoxyCodeLine{00063\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_ab100f8b6fe343ca4eedc6bc27cf0952d}{OnRep\_IsReady}},\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}PlayerState"{}})}
-\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a3559a140fa4222a1ff157bbe96088996}{bIsReady}}\ =\ false;}
-\DoxyCodeLine{00065\ }
-\DoxyCodeLine{00066\ \ \ \ \ \textcolor{comment}{//\string~\ Replication\ Callbacks}}
-\DoxyCodeLine{00067\ \ \ \ \ UFUNCTION()}
-\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_ab100f8b6fe343ca4eedc6bc27cf0952d}{OnRep\_IsReady}}();}
-\DoxyCodeLine{00069\ }
-\DoxyCodeLine{00070\ \ \ \ \ \textcolor{comment}{//\string~\ Override\ APlayerState}}
-\DoxyCodeLine{00071\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a7dda8d62160253f30fd5b183769f3761}{OnRep\_PlayerName}}()\ override;}
-\DoxyCodeLine{00072\ }
-\DoxyCodeLine{00073\ \ \ \ \ \textcolor{comment}{//\string~\ Server\ RPC}}
-\DoxyCodeLine{00074\ \ \ \ \ UFUNCTION(Server,\ Reliable)}
-\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a7f70150be5d2584e8215608ab7e9779a}{ServerSetReady}}(\textcolor{keywordtype}{bool}\ bNewReady);}
-\DoxyCodeLine{00076\ \};}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a45980a4f2372dbb5c7fb95379110cf2c}{BeginPlay}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a27214a1a235bd4bcf1cf8c8cd7ce855c}{GetLifetimeReplicatedProps}}(TArray<FLifetimeProperty>\&\ OutLifetimeProps)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//\string~\ Ready\ State}}
+\DoxyCodeLine{00039\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}PlayerState"{}})}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a520d555bb723e97cd2c033018febb4d7}{ToggleReady}}();}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00045\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}PlayerState"{}})}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_aaead30ca588790b0eb5e047b25e22c31}{SetReady}}(\textcolor{keywordtype}{bool}\ bNewReady);}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00051\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}PlayerState"{}})}
+\DoxyCodeLine{00052\ \ \ \ \ bool\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a629b859c75b31cfa4d1e42fe244522d9}{IsReady}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a3559a140fa4222a1ff157bbe96088996}{bIsReady}};\ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/\ 코스메틱\ 로드아웃\ -\/-\/-\/-\/}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00057\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00058\ \ \ \ \ void\ SetCosmeticLoadout(const\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmeticLoadout}}\&\ InLoadout);}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00061\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00062\ \ \ \ \ const\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmeticLoadout}}\&\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a4363067164e113c3bb8319c04f0e84ab}{GetCosmeticLoadout}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_aa2957199a81bd8e6cc1e24d12ff0ee40}{CosmeticLoadout}};\ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{comment}{//\string~\ Events}}
+\DoxyCodeLine{00065\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}PlayerState|Events"{}})}
+\DoxyCodeLine{00066\ \ \ \ \ FOnPlayerReadyStateChanged\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_ac28b924004207626f57decfb8169a707}{OnReadyStateChanged}};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}PlayerState|Events"{}})}
+\DoxyCodeLine{00069\ \ \ \ \ FOnPlayerNameUpdated\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a5d5177e59d8ee1c8972c83c8d281c442}{OnPlayerNameUpdated}};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ public:}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a93822153262533b897c4b9f401048c46}{OnPawnSet}}(APawn*\ OldPawn,\ APawn*\ NewPawn);}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ protected:}
+\DoxyCodeLine{00077\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_ac595f61c17c052ff911f35731630e800}{OnCosmeticLoadoutUpdated}}();}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a6784381022510c31b8dedb38df3b66c8}{OnRep\_CosmeticLoadout}}();}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_ab100f8b6fe343ca4eedc6bc27cf0952d}{OnRep\_IsReady}}();}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{comment}{//\string~\ Override\ APlayerState}}
+\DoxyCodeLine{00086\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a7dda8d62160253f30fd5b183769f3761}{OnRep\_PlayerName}}()\ override;}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{comment}{//\string~\ Replicated\ Properties}}
+\DoxyCodeLine{00092\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_ab100f8b6fe343ca4eedc6bc27cf0952d}{OnRep\_IsReady}},\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}PlayerState"{}})}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a3559a140fa4222a1ff157bbe96088996}{bIsReady}}\ =\ false;}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00096\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a6784381022510c31b8dedb38df3b66c8}{OnRep\_CosmeticLoadout}},\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00097\ \ \ \ \ \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmeticLoadout}}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_aa2957199a81bd8e6cc1e24d12ff0ee40}{CosmeticLoadout}};}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00100\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a038eee25c22b16fd88f1640721348061}{bPendingCosmeticApply}}\ =\ false;}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ private:}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{comment}{//\string~\ Server\ RPC}}
+\DoxyCodeLine{00105\ \ \ \ \ UFUNCTION(Server,\ Reliable)}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordtype}{void}\ ServerSetReady(\textcolor{keywordtype}{bool}\ bNewReady);}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ \ \ UFUNCTION(Server,\ Reliable)}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordtype}{void}\ ServerSetCosmeticLoadout(const\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmeticLoadout}}\&\ InLoadout);}
+\DoxyCodeLine{00110\ \};}
 
 \end{DoxyCode}

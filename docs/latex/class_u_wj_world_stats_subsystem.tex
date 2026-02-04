@@ -1,0 +1,130 @@
+\doxysection{UWj\+World\+Stats\+Subsystem Class Reference}
+\hypertarget{class_u_wj_world_stats_subsystem}{}\label{class_u_wj_world_stats_subsystem}\index{UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Stats\+Subsystem.\+h$>$}
+
+Inheritance diagram for UWj\+World\+Stats\+Subsystem:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_u_wj_world_stats_subsystem}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_a5b65f54631b15aaedfbe1401cf5cf172}{Initialize}} (FSubsystem\+Collection\+Base \&Collection) override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_a028336cd7006832a9cb521a746a257a4}{Deinitialize}} () override
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_a84b7f414446ba66ce8b7657f5223cccd}{Request\+Current\+Stats}} ()
+\item 
+int32 \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_afe1a02d40ec997b861d25800d9e33315}{Get\+Local\+Stat}} (FName Stat\+Name) const
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_af6e8e16ad190044da13d2a0586c3ddf5}{Increment\+Local\+Stat}} (FName Stat\+Name, int32 Delta=1)
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_ab0a54c28f3c805f5d97ab18ef2186d06}{Store\+Stats}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_afc343f85c3e97cc432f37ce43e1d0bed}{Request\+User\+Stats}} (const FUnique\+Net\+Id\+Repl \&User\+Id)
+\item 
+int32 \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_a1438530f8801b24fedb3f8043be708e5}{Get\+User\+Stat}} (const FUnique\+Net\+Id\+Repl \&User\+Id, FName Stat\+Name) const
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_aefac722fa58ca16d67c656563b0686c4}{Is\+User\+Stats\+Ready}} (const FUnique\+Net\+Id\+Repl \&User\+Id) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FOn\+Local\+Stats\+Ready \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_adbe14c5893a21d2d87c5861e64604688}{On\+Local\+Stats\+Ready}}
+\item 
+FOn\+User\+Stats\+Received \doxymbox{\hyperlink{class_u_wj_world_stats_subsystem_a004bddd1e1a3d42880df5184a4268d9e}{On\+User\+Stats\+Received}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Steam User Stats 래핑 서브시스템
+\begin{DoxyItemize}
+\item 로컬 플레이어 스탯 읽기/\+쓰기/\+저장
+\item 타 플레이어 스탯 비동기 조회
+\item WITHOUT\+\_\+\+STEAM:\+ TMap 폴백 (개발/\+테스트용, GConfig 저장) 
+\end{DoxyItemize}
+
+\label{doc-func-members}
+\Hypertarget{class_u_wj_world_stats_subsystem_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_wj_world_stats_subsystem_a028336cd7006832a9cb521a746a257a4}\index{UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}!Deinitialize@{Deinitialize}}
+\index{Deinitialize@{Deinitialize}!UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}}
+\doxysubsubsection{\texorpdfstring{Deinitialize()}{Deinitialize()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_stats_subsystem_a028336cd7006832a9cb521a746a257a4} 
+void UWj\+World\+Stats\+Subsystem::\+\+Deinitialize (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_stats_subsystem_afe1a02d40ec997b861d25800d9e33315}\index{UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}!GetLocalStat@{GetLocalStat}}
+\index{GetLocalStat@{GetLocalStat}!UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}}
+\doxysubsubsection{\texorpdfstring{GetLocalStat()}{GetLocalStat()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_stats_subsystem_afe1a02d40ec997b861d25800d9e33315} 
+int32 UWj\+World\+Stats\+Subsystem::\+\+Get\+Local\+Stat (\begin{DoxyParamCaption}\item[{FName}]{Stat\+Name}{}\end{DoxyParamCaption}) const}
+
+로컬 스탯 값 반환 \Hypertarget{class_u_wj_world_stats_subsystem_a1438530f8801b24fedb3f8043be708e5}\index{UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}!GetUserStat@{GetUserStat}}
+\index{GetUserStat@{GetUserStat}!UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}}
+\doxysubsubsection{\texorpdfstring{GetUserStat()}{GetUserStat()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_stats_subsystem_a1438530f8801b24fedb3f8043be708e5} 
+int32 UWj\+World\+Stats\+Subsystem::\+\+Get\+User\+Stat (\begin{DoxyParamCaption}\item[{const FUnique\+Net\+Id\+Repl \&}]{User\+Id}{, }\item[{FName}]{Stat\+Name}{}\end{DoxyParamCaption}) const}
+
+타 플레이어 스탯 값 반환 \Hypertarget{class_u_wj_world_stats_subsystem_af6e8e16ad190044da13d2a0586c3ddf5}\index{UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}!IncrementLocalStat@{IncrementLocalStat}}
+\index{IncrementLocalStat@{IncrementLocalStat}!UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}}
+\doxysubsubsection{\texorpdfstring{IncrementLocalStat()}{IncrementLocalStat()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_stats_subsystem_af6e8e16ad190044da13d2a0586c3ddf5} 
+void UWj\+World\+Stats\+Subsystem::\+\+Increment\+Local\+Stat (\begin{DoxyParamCaption}\item[{FName}]{Stat\+Name}{, }\item[{int32}]{Delta}{ = {\ttfamily 1}}\end{DoxyParamCaption})}
+
+로컬 스탯 증가 \Hypertarget{class_u_wj_world_stats_subsystem_a5b65f54631b15aaedfbe1401cf5cf172}\index{UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}}
+\doxysubsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_stats_subsystem_a5b65f54631b15aaedfbe1401cf5cf172} 
+void UWj\+World\+Stats\+Subsystem::\+\+Initialize (\begin{DoxyParamCaption}\item[{FSubsystem\+Collection\+Base \&}]{Collection}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_stats_subsystem_aefac722fa58ca16d67c656563b0686c4}\index{UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}!IsUserStatsReady@{IsUserStatsReady}}
+\index{IsUserStatsReady@{IsUserStatsReady}!UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}}
+\doxysubsubsection{\texorpdfstring{IsUserStatsReady()}{IsUserStatsReady()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_stats_subsystem_aefac722fa58ca16d67c656563b0686c4} 
+bool UWj\+World\+Stats\+Subsystem::\+\+Is\+User\+Stats\+Ready (\begin{DoxyParamCaption}\item[{const FUnique\+Net\+Id\+Repl \&}]{User\+Id}{}\end{DoxyParamCaption}) const}
+
+타 플레이어 스탯이 준비되었는지 \Hypertarget{class_u_wj_world_stats_subsystem_a84b7f414446ba66ce8b7657f5223cccd}\index{UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}!RequestCurrentStats@{RequestCurrentStats}}
+\index{RequestCurrentStats@{RequestCurrentStats}!UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}}
+\doxysubsubsection{\texorpdfstring{RequestCurrentStats()}{RequestCurrentStats()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_stats_subsystem_a84b7f414446ba66ce8b7657f5223cccd} 
+void UWj\+World\+Stats\+Subsystem::\+\+Request\+Current\+Stats (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+Steam에서 현재 유저 스탯 요청 (Initialize에서 자동 호출) \Hypertarget{class_u_wj_world_stats_subsystem_afc343f85c3e97cc432f37ce43e1d0bed}\index{UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}!RequestUserStats@{RequestUserStats}}
+\index{RequestUserStats@{RequestUserStats}!UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}}
+\doxysubsubsection{\texorpdfstring{RequestUserStats()}{RequestUserStats()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_stats_subsystem_afc343f85c3e97cc432f37ce43e1d0bed} 
+void UWj\+World\+Stats\+Subsystem::\+\+Request\+User\+Stats (\begin{DoxyParamCaption}\item[{const FUnique\+Net\+Id\+Repl \&}]{User\+Id}{}\end{DoxyParamCaption})}
+
+타 플레이어 스탯 요청 \Hypertarget{class_u_wj_world_stats_subsystem_ab0a54c28f3c805f5d97ab18ef2186d06}\index{UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}!StoreStats@{StoreStats}}
+\index{StoreStats@{StoreStats}!UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}}
+\doxysubsubsection{\texorpdfstring{StoreStats()}{StoreStats()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_stats_subsystem_ab0a54c28f3c805f5d97ab18ef2186d06} 
+void UWj\+World\+Stats\+Subsystem::\+\+Store\+Stats (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+Steam에 스탯 저장 (푸시) 
+
+\label{doc-variable-members}
+\Hypertarget{class_u_wj_world_stats_subsystem_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_wj_world_stats_subsystem_adbe14c5893a21d2d87c5861e64604688}\index{UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}!OnLocalStatsReady@{OnLocalStatsReady}}
+\index{OnLocalStatsReady@{OnLocalStatsReady}!UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}}
+\doxysubsubsection{\texorpdfstring{OnLocalStatsReady}{OnLocalStatsReady}}
+{\footnotesize\ttfamily \label{class_u_wj_world_stats_subsystem_adbe14c5893a21d2d87c5861e64604688} 
+FOn\+Local\+Stats\+Ready UWj\+World\+Stats\+Subsystem::\+\+On\+Local\+Stats\+Ready}
+
+\Hypertarget{class_u_wj_world_stats_subsystem_a004bddd1e1a3d42880df5184a4268d9e}\index{UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}!OnUserStatsReceived@{OnUserStatsReceived}}
+\index{OnUserStatsReceived@{OnUserStatsReceived}!UWjWorldStatsSubsystem@{UWjWorldStatsSubsystem}}
+\doxysubsubsection{\texorpdfstring{OnUserStatsReceived}{OnUserStatsReceived}}
+{\footnotesize\ttfamily \label{class_u_wj_world_stats_subsystem_a004bddd1e1a3d42880df5184a4268d9e} 
+FOn\+User\+Stats\+Received UWj\+World\+Stats\+Subsystem::\+\+On\+User\+Stats\+Received}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Stats/\+\doxymbox{\hyperlink{_wj_world_stats_subsystem_8h}{Wj\+World\+Stats\+Subsystem.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Stats/\+\doxymbox{\hyperlink{_wj_world_stats_subsystem_8cpp}{Wj\+World\+Stats\+Subsystem.\+cpp}}\end{DoxyCompactItemize}

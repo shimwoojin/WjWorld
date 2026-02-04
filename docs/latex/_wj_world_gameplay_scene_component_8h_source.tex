@@ -1,0 +1,36 @@
+\doxysection{Wj\+World\+Gameplay\+Scene\+Component.\+h}
+\hypertarget{_wj_world_gameplay_scene_component_8h_source}{}\label{_wj_world_gameplay_scene_component_8h_source}\index{Source/WjWorld/Core/Components/WjWorldGameplaySceneComponent.h@{Source/WjWorld/Core/Components/WjWorldGameplaySceneComponent.h}}
+\doxymbox{\hyperlink{_wj_world_gameplay_scene_component_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Components/SceneComponent.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldGameplaySceneComponent.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_game_mode_play}{AWjWorldGameModePlay}};}
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_game_state_play}{AWjWorldGameStatePlay}};}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ UCLASS(\ ClassGroup=(Custom),\ meta=(BlueprintSpawnableComponent)\ )}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }WJWORLD\_API\ UWjWorldGameplaySceneComponent\ :\ \textcolor{keyword}{public}\ USceneComponent}
+\DoxyCodeLine{00014\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ public:\ }
+\DoxyCodeLine{00018\ \ \ \ \ UWjWorldGameplaySceneComponent();}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ public:}
+\DoxyCodeLine{00021\ \ \ \ \ TObjectPtr<AWjWorldGameModePlay>\ GetGameModePlay();}
+\DoxyCodeLine{00022\ \ \ \ \ TObjectPtr<AWjWorldGameStatePlay>\ GetGameStatePlay();}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{comment}{//private:}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ \ UPROPERTY()}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ \ TObjectPtr<AWjWorldGameModePlay>\ GameModePlay;}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ \ UPROPERTY()}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ \ TObjectPtr<AWjWorldGameStatePlay>\ GameStatePlay;}}
+\DoxyCodeLine{00030\ \};}
+
+\end{DoxyCode}

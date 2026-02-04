@@ -1,0 +1,53 @@
+\doxysection{Wj\+World\+Brick\+Preview\+Actor.\+h}
+\hypertarget{_wj_world_brick_preview_actor_8h_source}{}\label{_wj_world_brick_preview_actor_8h_source}\index{Source/WjWorld/GamePlay/Wall/WjWorldBrickPreviewActor.h@{Source/WjWorld/GamePlay/Wall/WjWorldBrickPreviewActor.h}}
+\doxymbox{\hyperlink{_wj_world_brick_preview_actor_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}GameFramework/Actor.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldBrickPreviewActor.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }UStaticMeshComponent;}
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }UMaterialInstanceDynamic;}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ UCLASS()}
+\DoxyCodeLine{00013\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_brick_preview_actor_a84b657ae172c980eed70a405dd87eefe}{AWjWorldBrickPreviewActor}}\ :\ public\ AActor}
+\DoxyCodeLine{00014\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_brick_preview_actor_a84b657ae172c980eed70a405dd87eefe}{AWjWorldBrickPreviewActor}}();}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_brick_preview_actor_a8b028b97a4a1445dce8ee3acd7bf5a23}{BeginPlay}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_brick_preview_actor_a8d4b63d48df0eda156ba8f142065c330}{InitializePreview}}(\textcolor{keyword}{const}\ FVector\&\ InSize);}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_brick_preview_actor_abec8ee90521ea9c2fc95b7ddf9efb0d5}{UpdatePreviewLocation}}(\textcolor{keyword}{const}\ FVector\&\ InLocation);}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_brick_preview_actor_a9efbd4bed373675843c0e925c4df1809}{SetPreviewValid}}(\textcolor{keywordtype}{bool}\ bIsValid);}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_a_wj_world_brick_preview_actor_a2712c6c32d4a549b6fbd63090aed5b97}{IsPreviewValid}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ bIsValid;\ \}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00029\ \ \ \ \ UPROPERTY(VisibleAnywhere)}
+\DoxyCodeLine{00030\ \ \ \ \ TObjectPtr<UStaticMeshComponent>\ \doxymbox{\hyperlink{class_a_wj_world_brick_preview_actor_a6c48e7d4a50ba7c26ececc584b3d5030}{PreviewMeshComponent}};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00033\ \ \ \ \ TObjectPtr<UMaterialInstanceDynamic>\ \doxymbox{\hyperlink{class_a_wj_world_brick_preview_actor_a08249c8232e75ce3aef274ca15b0e399}{DynamicMaterial}};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//\ 에디터에서\ 색상\ 조정\ 가능}}
+\DoxyCodeLine{00036\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Preview"{}})}
+\DoxyCodeLine{00037\ \ \ \ \ FLinearColor\ \doxymbox{\hyperlink{class_a_wj_world_brick_preview_actor_a5f7f13784c520a0aa3cccd3939749341}{ValidColor}}\ =\ FLinearColor(0.0f,\ 1.0f,\ 0.0f,\ 0.5f);\ \ \textcolor{comment}{//\ 반투명\ 녹색}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Preview"{}})}
+\DoxyCodeLine{00040\ \ \ \ \ FLinearColor\ \doxymbox{\hyperlink{class_a_wj_world_brick_preview_actor_a4fc1782642b267cbb2f4030dc3b7de17}{InvalidColor}}\ =\ FLinearColor(1.0f,\ 0.0f,\ 0.0f,\ 0.5f);\ \ \textcolor{comment}{//\ 반투명\ 빨강}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Preview"{}})}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_a_wj_world_brick_preview_actor_aedfa38e424eac7b9a8b0781ba312e322}{PreviewOpacity}}\ =\ 0.5f;}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ private:}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{bool}\ bIsValid\ =\ true;}
+\DoxyCodeLine{00047\ \};}
+
+\end{DoxyCode}

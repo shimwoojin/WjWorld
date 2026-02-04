@@ -50,6 +50,8 @@ TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d
 TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a5bedbfc5277cee3f4957fe7cb7597549}{Start\+Game\+Button}}
 \item 
 TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a04a3362d6ba4b1c18c00bbc1dbda00ee}{Leave\+Button}}
+\item 
+TSubclass\+Of$<$ \doxymbox{\hyperlink{class_u_player_profile_widget}{UPlayer\+Profile\+Widget}} $>$ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a6ec50bef5623789d22149768b081725c}{Profile\+Widget\+Class}}
 \end{DoxyCompactItemize}
 
 
@@ -58,7 +60,7 @@ TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widg
 
 기능:\+
 \begin{DoxyItemize}
-\item 플레이어 목록 표시 (Game\+State 동기화)
+\item 플레이어 목록 표시 (Game\+State 동기화) -\/ 클릭 시 프로필 팝업
 \item 방 정보 표시 (Game\+State 동기화)
 \item 준비 버튼
 \item 게임 시작 버튼 (호스트만)
@@ -145,7 +147,13 @@ TObject\+Ptr$<$UText\+Block$>$ UWaiting\+Room\+HUDWidget::\+\+Player\+Count\+Tex
 {\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_a90cbbb5f781432b66160bc4a760a2222} 
 TObject\+Ptr$<$UVertical\+Box$>$ UWaiting\+Room\+HUDWidget::\+\+Player\+List\+Container\hspace{0.3cm}{\ttfamily [protected]}}
 
-플레이어 목록 컨테이너 \Hypertarget{class_u_waiting_room_h_u_d_widget_ac41ff74540551276855a46122e70ba46}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!ReadyButton@{ReadyButton}}
+플레이어 목록 컨테이너 \Hypertarget{class_u_waiting_room_h_u_d_widget_a6ec50bef5623789d22149768b081725c}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!ProfileWidgetClass@{ProfileWidgetClass}}
+\index{ProfileWidgetClass@{ProfileWidgetClass}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
+\doxysubsubsection{\texorpdfstring{ProfileWidgetClass}{ProfileWidgetClass}}
+{\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_a6ec50bef5623789d22149768b081725c} 
+TSubclass\+Of$<$\doxymbox{\hyperlink{class_u_player_profile_widget}{UPlayer\+Profile\+Widget}}$>$ UWaiting\+Room\+HUDWidget::\+\+Profile\+Widget\+Class\hspace{0.3cm}{\ttfamily [protected]}}
+
+프로필 위젯 클래스 (Blueprint에서 설정) \Hypertarget{class_u_waiting_room_h_u_d_widget_ac41ff74540551276855a46122e70ba46}\index{UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}!ReadyButton@{ReadyButton}}
 \index{ReadyButton@{ReadyButton}!UWaitingRoomHUDWidget@{UWaitingRoomHUDWidget}}
 \doxysubsubsection{\texorpdfstring{ReadyButton}{ReadyButton}}
 {\footnotesize\ttfamily \label{class_u_waiting_room_h_u_d_widget_ac41ff74540551276855a46122e70ba46} 

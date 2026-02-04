@@ -1,0 +1,200 @@
+\doxysection{AWj\+World\+Game\+State\+Play Class Reference}
+\hypertarget{class_a_wj_world_game_state_play}{}\label{class_a_wj_world_game_state_play}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Game\+State\+Play.\+h$>$}
+
+Inheritance diagram for AWj\+World\+Game\+State\+Play:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_a_wj_world_game_state_play}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_a_wj_world_game_state_play_a758ec04f0392cfa200f62d9f65270bbd}{AWj\+World\+Game\+State\+Play}} ()
+\item 
+virtual void \doxymbox{\hyperlink{class_a_wj_world_game_state_play_ab8b2445e41497cd1bf814c8a438ab8c8}{Get\+Lifetime\+Replicated\+Props}} (TArray$<$ FLifetime\+Property $>$ \&Out\+Lifetime\+Props) const override
+\item 
+virtual bool \doxymbox{\hyperlink{class_a_wj_world_game_state_play_aa2bafe3280c68a0427a5ff517bb1722e}{Has\+Match\+Started}} () const override
+\item 
+virtual bool \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a84c1690265816ed826f9984399b7d7f8}{Has\+Match\+Ended}} () const override
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a84e9c6b4b9b03086b0642c66b723a560}{Game\+Start\+With\+Countdown}} (float Countdown\+Time)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_play_ad1fc366c053574029cf46246a3eb069a}{Game\+End\+With\+Countdown}} (float Countdown\+Time)
+\item 
+\doxymbox{\hyperlink{_wj_world_core_types_8h_a110fd991750d11dddc7f1f886cdb8dd5}{EGame\+Phase}} \doxymbox{\hyperlink{class_a_wj_world_game_state_play_aa4ba0845188c0335c54592b3d7bb2cff}{Get\+Game\+Phase}} () const
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a3e3768cf364fc87acf63dfa405d61599}{Set\+Game\+Phase}} (\doxymbox{\hyperlink{_wj_world_core_types_8h_a110fd991750d11dddc7f1f886cdb8dd5}{EGame\+Phase}} New\+Phase)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_play_aa85826bc759211204d0ed773c1d4957d}{Set\+Game\+Result}} (const FString \&Winner\+Name, bool b\+Has\+Winner)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a52519211a096b0f31d7b13addec7b2ba}{Set\+Game\+Rule\+Class}} (TSubclass\+Of$<$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base}{UWj\+World\+Game\+Rule\+Base}} $>$ In\+Game\+Rule\+Class)
+\item 
+FString \doxymbox{\hyperlink{class_a_wj_world_game_state_play_aab4161170ed1bce3bcae226e3c39472b}{Get\+Winner\+Name}} () const
+\item 
+bool \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a80c089b21fe8136400bf56ac4f5485f6}{Has\+Winner}} () const
+\item 
+{\footnotesize template$<$typename T$>$ }\\T \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a26dbdea9093a950e61a77a3dd1227697}{Get\+Game\+Data}} () const
+\item 
+UWj\+World\+Game\+Data\+Component \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a129b906b9abede6eda737c062f42e9f8}{Add\+Game\+Data\+Component}} (TSubclass\+Of$<$ UWj\+World\+Game\+Data\+Component $>$ In\+Data\+Component\+Class)
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a729b3bc81e95a1f48cc7cd694b89d85e}{On\+Rep\+\_\+\+Game\+Phase}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a831d2611470c1ef84cb6cfe7b3402ba0}{On\+Rep\+\_\+\+Is\+Game\+Start\+Count\+Down\+Ready}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a92498b755938c12c8ce88dc22f2562b6}{On\+Rep\+\_\+\+Is\+Game\+End\+Count\+Down\+Ready}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_play_af59219f003a9d1463d761d49c3cdd063}{On\+Rep\+\_\+\+Game\+Result}} ()
+\item 
+void \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a246725734afe84bf190e5892e9e2b195}{On\+Rep\+\_\+\+Game\+Rule\+Class}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \doxymbox{\hyperlink{class_a_wj_world_game_state_play_a8fc2a61efd9e923158d3311cec5243c7}{UWj\+World\+Game\+Rule\+Base}}
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{class_a_wj_world_game_state_play_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_a_wj_world_game_state_play_a758ec04f0392cfa200f62d9f65270bbd}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{AWjWorldGameStatePlay()}{AWjWorldGameStatePlay()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_a758ec04f0392cfa200f62d9f65270bbd} 
+AWj\+World\+Game\+State\+Play::\+\+AWj\+World\+Game\+State\+Play (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_a_wj_world_game_state_play_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_a_wj_world_game_state_play_a129b906b9abede6eda737c062f42e9f8}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!AddGameDataComponent@{AddGameDataComponent}}
+\index{AddGameDataComponent@{AddGameDataComponent}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{AddGameDataComponent()}{AddGameDataComponent()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_a129b906b9abede6eda737c062f42e9f8} 
+UWj\+World\+Game\+Data\+Component \texorpdfstring{$\ast$}{*} AWj\+World\+Game\+State\+Play::\+\+Add\+Game\+Data\+Component (\begin{DoxyParamCaption}\item[{TSubclass\+Of$<$ UWj\+World\+Game\+Data\+Component $>$}]{In\+Data\+Component\+Class}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_a_wj_world_game_state_play_ad1fc366c053574029cf46246a3eb069a}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!GameEndWithCountdown@{GameEndWithCountdown}}
+\index{GameEndWithCountdown@{GameEndWithCountdown}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{GameEndWithCountdown()}{GameEndWithCountdown()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_ad1fc366c053574029cf46246a3eb069a} 
+void AWj\+World\+Game\+State\+Play::\+\+Game\+End\+With\+Countdown (\begin{DoxyParamCaption}\item[{float}]{Countdown\+Time}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_a_wj_world_game_state_play_a84e9c6b4b9b03086b0642c66b723a560}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!GameStartWithCountdown@{GameStartWithCountdown}}
+\index{GameStartWithCountdown@{GameStartWithCountdown}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{GameStartWithCountdown()}{GameStartWithCountdown()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_a84e9c6b4b9b03086b0642c66b723a560} 
+void AWj\+World\+Game\+State\+Play::\+\+Game\+Start\+With\+Countdown (\begin{DoxyParamCaption}\item[{float}]{Countdown\+Time}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_a_wj_world_game_state_play_a26dbdea9093a950e61a77a3dd1227697}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!GetGameData@{GetGameData}}
+\index{GetGameData@{GetGameData}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{GetGameData()}{GetGameData()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_a26dbdea9093a950e61a77a3dd1227697} 
+template$<$typename T$>$ \\
+T \texorpdfstring{$\ast$}{*} AWj\+World\+Game\+State\+Play::\+\+Get\+Game\+Data (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_a_wj_world_game_state_play_aa4ba0845188c0335c54592b3d7bb2cff}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!GetGamePhase@{GetGamePhase}}
+\index{GetGamePhase@{GetGamePhase}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{GetGamePhase()}{GetGamePhase()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_aa4ba0845188c0335c54592b3d7bb2cff} 
+\doxymbox{\hyperlink{_wj_world_core_types_8h_a110fd991750d11dddc7f1f886cdb8dd5}{EGame\+Phase}} AWj\+World\+Game\+State\+Play::\+\+Get\+Game\+Phase (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_a_wj_world_game_state_play_ab8b2445e41497cd1bf814c8a438ab8c8}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!GetLifetimeReplicatedProps@{GetLifetimeReplicatedProps}}
+\index{GetLifetimeReplicatedProps@{GetLifetimeReplicatedProps}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{GetLifetimeReplicatedProps()}{GetLifetimeReplicatedProps()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_ab8b2445e41497cd1bf814c8a438ab8c8} 
+void AWj\+World\+Game\+State\+Play::\+\+Get\+Lifetime\+Replicated\+Props (\begin{DoxyParamCaption}\item[{TArray$<$ FLifetime\+Property $>$ \&}]{Out\+Lifetime\+Props}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_game_state_play_aab4161170ed1bce3bcae226e3c39472b}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!GetWinnerName@{GetWinnerName}}
+\index{GetWinnerName@{GetWinnerName}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{GetWinnerName()}{GetWinnerName()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_aab4161170ed1bce3bcae226e3c39472b} 
+FString AWj\+World\+Game\+State\+Play::\+\+Get\+Winner\+Name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_a_wj_world_game_state_play_a84c1690265816ed826f9984399b7d7f8}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!HasMatchEnded@{HasMatchEnded}}
+\index{HasMatchEnded@{HasMatchEnded}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{HasMatchEnded()}{HasMatchEnded()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_a84c1690265816ed826f9984399b7d7f8} 
+bool AWj\+World\+Game\+State\+Play::\+\+Has\+Match\+Ended (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_game_state_play_aa2bafe3280c68a0427a5ff517bb1722e}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!HasMatchStarted@{HasMatchStarted}}
+\index{HasMatchStarted@{HasMatchStarted}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{HasMatchStarted()}{HasMatchStarted()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_aa2bafe3280c68a0427a5ff517bb1722e} 
+bool AWj\+World\+Game\+State\+Play::\+\+Has\+Match\+Started (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_a_wj_world_game_state_play_a80c089b21fe8136400bf56ac4f5485f6}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!HasWinner@{HasWinner}}
+\index{HasWinner@{HasWinner}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{HasWinner()}{HasWinner()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_a80c089b21fe8136400bf56ac4f5485f6} 
+bool AWj\+World\+Game\+State\+Play::\+\+Has\+Winner (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_a_wj_world_game_state_play_a729b3bc81e95a1f48cc7cd694b89d85e}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!OnRep\_GamePhase@{OnRep\_GamePhase}}
+\index{OnRep\_GamePhase@{OnRep\_GamePhase}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{OnRep\_GamePhase()}{OnRep\_GamePhase()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_a729b3bc81e95a1f48cc7cd694b89d85e} 
+void AWj\+World\+Game\+State\+Play::\+\+On\+Rep\+\_\+\+Game\+Phase (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_a_wj_world_game_state_play_af59219f003a9d1463d761d49c3cdd063}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!OnRep\_GameResult@{OnRep\_GameResult}}
+\index{OnRep\_GameResult@{OnRep\_GameResult}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{OnRep\_GameResult()}{OnRep\_GameResult()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_af59219f003a9d1463d761d49c3cdd063} 
+void AWj\+World\+Game\+State\+Play::\+\+On\+Rep\+\_\+\+Game\+Result (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_a_wj_world_game_state_play_a246725734afe84bf190e5892e9e2b195}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!OnRep\_GameRuleClass@{OnRep\_GameRuleClass}}
+\index{OnRep\_GameRuleClass@{OnRep\_GameRuleClass}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{OnRep\_GameRuleClass()}{OnRep\_GameRuleClass()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_a246725734afe84bf190e5892e9e2b195} 
+void AWj\+World\+Game\+State\+Play::\+\+On\+Rep\+\_\+\+Game\+Rule\+Class (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_a_wj_world_game_state_play_a92498b755938c12c8ce88dc22f2562b6}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!OnRep\_IsGameEndCountDownReady@{OnRep\_IsGameEndCountDownReady}}
+\index{OnRep\_IsGameEndCountDownReady@{OnRep\_IsGameEndCountDownReady}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{OnRep\_IsGameEndCountDownReady()}{OnRep\_IsGameEndCountDownReady()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_a92498b755938c12c8ce88dc22f2562b6} 
+void AWj\+World\+Game\+State\+Play::\+\+On\+Rep\+\_\+\+Is\+Game\+End\+Count\+Down\+Ready (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_a_wj_world_game_state_play_a831d2611470c1ef84cb6cfe7b3402ba0}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!OnRep\_IsGameStartCountDownReady@{OnRep\_IsGameStartCountDownReady}}
+\index{OnRep\_IsGameStartCountDownReady@{OnRep\_IsGameStartCountDownReady}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{OnRep\_IsGameStartCountDownReady()}{OnRep\_IsGameStartCountDownReady()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_a831d2611470c1ef84cb6cfe7b3402ba0} 
+void AWj\+World\+Game\+State\+Play::\+\+On\+Rep\+\_\+\+Is\+Game\+Start\+Count\+Down\+Ready (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_a_wj_world_game_state_play_a3e3768cf364fc87acf63dfa405d61599}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!SetGamePhase@{SetGamePhase}}
+\index{SetGamePhase@{SetGamePhase}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{SetGamePhase()}{SetGamePhase()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_a3e3768cf364fc87acf63dfa405d61599} 
+void AWj\+World\+Game\+State\+Play::\+\+Set\+Game\+Phase (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{_wj_world_core_types_8h_a110fd991750d11dddc7f1f886cdb8dd5}{EGame\+Phase}}}]{New\+Phase}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_a_wj_world_game_state_play_aa85826bc759211204d0ed773c1d4957d}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!SetGameResult@{SetGameResult}}
+\index{SetGameResult@{SetGameResult}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{SetGameResult()}{SetGameResult()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_aa85826bc759211204d0ed773c1d4957d} 
+void AWj\+World\+Game\+State\+Play::\+\+Set\+Game\+Result (\begin{DoxyParamCaption}\item[{const FString \&}]{Winner\+Name}{, }\item[{bool}]{b\+Has\+Winner}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_a_wj_world_game_state_play_a52519211a096b0f31d7b13addec7b2ba}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!SetGameRuleClass@{SetGameRuleClass}}
+\index{SetGameRuleClass@{SetGameRuleClass}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{SetGameRuleClass()}{SetGameRuleClass()}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_a52519211a096b0f31d7b13addec7b2ba} 
+void AWj\+World\+Game\+State\+Play::\+\+Set\+Game\+Rule\+Class (\begin{DoxyParamCaption}\item[{TSubclass\+Of$<$ \doxymbox{\hyperlink{class_u_wj_world_game_rule_base}{UWj\+World\+Game\+Rule\+Base}} $>$}]{In\+Game\+Rule\+Class}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-related-members}
+\Hypertarget{class_a_wj_world_game_state_play_doc-related-members}
+\doxysubsection{Friends And Related Symbol Documentation}
+\Hypertarget{class_a_wj_world_game_state_play_a8fc2a61efd9e923158d3311cec5243c7}\index{AWjWorldGameStatePlay@{AWjWorldGameStatePlay}!UWjWorldGameRuleBase@{UWjWorldGameRuleBase}}
+\index{UWjWorldGameRuleBase@{UWjWorldGameRuleBase}!AWjWorldGameStatePlay@{AWjWorldGameStatePlay}}
+\doxysubsubsection{\texorpdfstring{UWjWorldGameRuleBase}{UWjWorldGameRuleBase}}
+{\footnotesize\ttfamily \label{class_a_wj_world_game_state_play_a8fc2a61efd9e923158d3311cec5243c7} 
+friend class \doxymbox{\hyperlink{class_u_wj_world_game_rule_base}{UWj\+World\+Game\+Rule\+Base}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Play/\+\doxymbox{\hyperlink{_wj_world_game_state_play_8h}{Wj\+World\+Game\+State\+Play.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Core/\+\+Play/\+\doxymbox{\hyperlink{_wj_world_game_state_play_8cpp}{Wj\+World\+Game\+State\+Play.\+cpp}}\end{DoxyCompactItemize}

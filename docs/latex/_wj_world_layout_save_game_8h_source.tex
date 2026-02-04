@@ -1,0 +1,39 @@
+\doxysection{Wj\+World\+Layout\+Save\+Game.\+h}
+\hypertarget{_wj_world_layout_save_game_8h_source}{}\label{_wj_world_layout_save_game_8h_source}\index{Source/WjWorld/Save/WjWorldLayoutSaveGame.h@{Source/WjWorld/Save/WjWorldLayoutSaveGame.h}}
+\doxymbox{\hyperlink{_wj_world_layout_save_game_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}GameFramework/SaveGame.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldLayoutSaveGame.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00012\ USTRUCT()}
+\DoxyCodeLine{00013\ struct\ \doxymbox{\hyperlink{struct_f_placed_object_save_entry}{FPlacedObjectSaveEntry}}}
+\DoxyCodeLine{00014\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \ \ }
+\DoxyCodeLine{00018\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00019\ \ \ \ \ FName\ \doxymbox{\hyperlink{struct_f_placed_object_save_entry_a77c4ae847b8105381c5b7536c1e70c9e}{ObjectId}};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00022\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00023\ \ \ \ \ FTransform\ \doxymbox{\hyperlink{struct_f_placed_object_save_entry_aa2a4aa758a6a9d1b37ee1e483cee24ab}{Transform}};}
+\DoxyCodeLine{00024\ \};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00029\ UCLASS()}
+\DoxyCodeLine{00030\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_layout_save_game}{UWjWorldLayoutSaveGame}}\ :\ public\ USaveGame}
+\DoxyCodeLine{00031\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00036\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00037\ \ \ \ \ TArray<\doxymbox{\hyperlink{struct_f_placed_object_save_entry}{FPlacedObjectSaveEntry}}>\ \doxymbox{\hyperlink{class_u_wj_world_layout_save_game_a4616d9b6f77b8aab386dd4c7dcfbea0d}{PlacedObjects}};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00040\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00041\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_u_wj_world_layout_save_game_a458205ea06277ad38e95f59eda2688bc}{SaveVersion}}\ =\ 1;}
+\DoxyCodeLine{00042\ \};}
+
+\end{DoxyCode}

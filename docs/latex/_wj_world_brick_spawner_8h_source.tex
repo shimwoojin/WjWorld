@@ -1,0 +1,85 @@
+\doxysection{Wj\+World\+Brick\+Spawner.\+h}
+\hypertarget{_wj_world_brick_spawner_8h_source}{}\label{_wj_world_brick_spawner_8h_source}\index{Source/WjWorld/GamePlay/Wall/WjWorldBrickSpawner.h@{Source/WjWorld/GamePlay/Wall/WjWorldBrickSpawner.h}}
+\doxymbox{\hyperlink{_wj_world_brick_spawner_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}UObject/Object.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_wall_description_data_asset_8h}{WjWorldWallDescriptionDataAsset.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldBrickSpawner.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset}{UWjWorldWallDescriptionDataAsset}};}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_brick_actor}{AWjWorldBrickActor}};}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_tile_actor}{AWjWorldTileActor}};}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{struct\ }\doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWjWorldWallDescription}};}
+\DoxyCodeLine{00015\ \textcolor{keyword}{struct\ }\doxymbox{\hyperlink{struct_f_wj_world_brick_properties}{FWjWorldBrickProperties}};}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \doxymbox{\hyperlink{_wj_world_brick_spawner_8h_a8e7e4ff3b1c5d3029e0bef1f86625b95}{DECLARE\_MULTICAST\_DELEGATE\_TwoParams}}(FOnWallSpawnFinished,\ \textcolor{keyword}{const}\ TArray<FVector>\&,\ \textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWjWorldWallDescription}}\&);}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00023\ UCLASS()}
+\DoxyCodeLine{00024\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_brick_spawner}{UWjWorldBrickSpawner}}\ :\ public\ UObject,\ public\ FTickableGameObject}
+\DoxyCodeLine{00025\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{static}\ \doxymbox{\hyperlink{class_u_wj_world_brick_spawner}{UWjWorldBrickSpawner}}*\ \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a89e98ecd95a35aecee19aece6deab22e}{CreateBrickSpawner}}(UObject*\ Outer,\ TSoftObjectPtr<UWjWorldWallDescriptionDataAsset>\ WallDescDataAsset);}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{static}\ \doxymbox{\hyperlink{class_a_wj_world_brick_actor}{AWjWorldBrickActor}}*\ \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_abf9b4cab1a4a67749d7900e4c913715e}{SpawnBrickActor}}(UWorld*\ World,\ \textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties}{FWjWorldBrickProperties}}\&\ BrickProperties,\ int32\ ColumnIndex,\ int32\ RowIndex);}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a86724505afcd178077396fbc1e294bd9}{SpawnBricksRandomMapAsync}}();}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a0ed1a8946864585d0723bf0339747909}{SpawnBricksFromWallNameAsync}}(\textcolor{keyword}{const}\ FString\&\ WallName);}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{static}\ FVector\ \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_aac1e8c2088cd122b7ea0c4bd47cafc89}{CalculateBrickPosition}}(int32\ BrickColIndex,\ int32\ BrickRowIndex,\ int32\ ColNum,\ int32\ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties_a950085de1a5bbdcbd0038b94273af98b}{RowNum}},\ \textcolor{keyword}{const}\ FVector\&\ WallOrigin,\ \textcolor{keyword}{const}\ FVector\&\ BrickSize);}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{static}\ FIntPoint\ \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a09494d26770e1c35ea2ecabad86648eb}{CalculateBrickGridIndex}}(\textcolor{keyword}{const}\ FVector\&\ WorldLocation,\ int32\ ColNum,\ int32\ \doxymbox{\hyperlink{struct_f_wj_world_brick_properties_a950085de1a5bbdcbd0038b94273af98b}{RowNum}},\ \textcolor{keyword}{const}\ FVector\&\ WallOrigin,\ \textcolor{keyword}{const}\ FVector\&\ BrickSize);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{const}\ TArray<FIntPoint>\&\ \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_ae01284dc2b984ae3e2b6d6215a4f58ed}{GetStartSafeZonePoints}}();}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{comment}{//\ FTickableGameObject\ Interface}}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_ac967202e837a8898ce78794453b2deed}{Tick}}(\textcolor{keywordtype}{float}\ DeltaTime)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{virtual}\ UWorld*\ \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a1d9b6f768cca4cd0ef2e275d8ff63792}{GetTickableGameObjectWorld}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{virtual}\ TStatId\ \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a0fb20bc77da4e55d6902f165c55399a3}{GetStatId}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a4f189397864280df9c700b563db51b22}{IsTickable}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a51804552191b2bbf7b8ababa4ac965b5}{SetTickable}}(\textcolor{keywordtype}{bool}\ bInTickable);}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{comment}{//\ \string~FTickableGameObject\ Interface}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00049\ \ \ \ \ FOnWallSpawnFinished\ \doxymbox{\hyperlink{class_u_wj_world_brick_spawner_a2afa4ad20ffbcfa684a039e115825ff9}{OnWallSpawnFinished}};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00053\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00054\ \ \ \ \ TSoftObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset}{UWjWorldWallDescriptionDataAsset}}>\ WallDescriptionDataAsset;}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00057\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_wall_description_data_asset}{UWjWorldWallDescriptionDataAsset}}>\ LoadedWallDescriptionDataAsset;}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00060\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_a_wj_world_tile_actor}{AWjWorldTileActor}}>\ TileActorClass;}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00063\ \ \ \ \ \doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWjWorldWallDescription}}\ TargetDesc;}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00066\ \ \ \ \ int32\ CurrentLoadingBrickColIndex\ =\ 0;}
+\DoxyCodeLine{00067\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00068\ \ \ \ \ int32\ CurrentLoadingBrickRowIndex\ =\ 0;}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ FLoadSoftObjectPathAsyncDelegate\ OnWallDescriptionDataAssetLoaded;}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{void}\ SpawnBricksFromWallDescriptionAsync(\doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWjWorldWallDescription}}\&\ WallDesc);}
+\DoxyCodeLine{00073\ \ \ \ \ FString\ GenerateRandomWallName();}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ const\ int32\ CheckCellCountPerTick\ =\ 8;}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{bool}\ bTickable\ =\ false;}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00081\ \ \ \ \ TArray<FIntPoint>\ StartSafeZonePoints;}
+\DoxyCodeLine{00082\ \};}
+
+\end{DoxyCode}

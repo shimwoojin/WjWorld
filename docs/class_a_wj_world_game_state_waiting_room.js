@@ -10,6 +10,7 @@ var class_a_wj_world_game_state_waiting_room =
     [ "GetRoomSettings", "class_a_wj_world_game_state_waiting_room.html#a2c3e467e3b59584007166d73ec2c329e", null ],
     [ "InitializeRoomSettings", "class_a_wj_world_game_state_waiting_room.html#a2edbcba55278adce1d2574e987828f2d", null ],
     [ "OnPlayerNameUpdated", "class_a_wj_world_game_state_waiting_room.html#a6c8c71ef408a5b76c51d3501765001a7", null ],
+    [ "OnPlayerReadyStateChanged", "class_a_wj_world_game_state_waiting_room.html#a8420d820897cf44fa5484bb0a8d392ea", null ],
     [ "OnRep_RoomSettings", "class_a_wj_world_game_state_waiting_room.html#a4087b01b23feac0773a5a83d36c2f275", null ],
     [ "RemovePlayerState", "class_a_wj_world_game_state_waiting_room.html#aa1f8c774125543498bf66aaff699e049", null ],
     [ "OnPlayerListChanged", "class_a_wj_world_game_state_waiting_room.html#a159182cab4ec3799f68f01ea84a453db", null ],

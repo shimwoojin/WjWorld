@@ -1,0 +1,72 @@
+\doxysection{Character\+Preview\+Actor.\+h}
+\hypertarget{_character_preview_actor_8h_source}{}\label{_character_preview_actor_8h_source}\index{Source/WjWorld/UI/Profile/CharacterPreviewActor.h@{Source/WjWorld/UI/Profile/CharacterPreviewActor.h}}
+\doxymbox{\hyperlink{_character_preview_actor_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}GameFramework/Actor.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h}{Cosmetic/WjWorldCosmeticTypes.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}Engine/StreamableManager.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}CharacterPreviewActor.generated.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }USceneCaptureComponent2D;}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }UTextureRenderTarget2D;}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }USpotLightComponent;}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset}{UWjWorldCosmeticCatalogDataAsset}};}
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }UMeshComponent;}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00024\ UCLASS()}
+\DoxyCodeLine{00025\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_character_preview_actor_ac12dec03860b8c10d7f230325ff38f8d}{ACharacterPreviewActor}}\ :\ public\ AActor}
+\DoxyCodeLine{00026\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ \ \ \doxymbox{\hyperlink{class_a_character_preview_actor_ac12dec03860b8c10d7f230325ff38f8d}{ACharacterPreviewActor}}();}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_character_preview_actor_a9860659c02d8083842193cb665916464}{SetupFromPawn}}(APawn*\ SourcePawn);}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_character_preview_actor_a9909217d63741ee3a77b18ab3afb8ca8}{SetupPreview}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmeticLoadout}}\&\ Loadout);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00039\ \ \ \ \ UTextureRenderTarget2D*\ \doxymbox{\hyperlink{class_a_character_preview_actor_abb23908ef75067b32408e38641245d4c}{GetRenderTarget}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ RenderTarget;\ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{bool}\ HasBaseMesh()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{void}\ RefreshCapture();}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ BeginPlay()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ OnCosmeticAssetLoaded(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ Slot,\ FName\ ItemId);}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ UPROPERTY(VisibleAnywhere)}
+\DoxyCodeLine{00055\ \ \ \ \ TObjectPtr<USceneComponent>\ SceneRoot;}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \ \ UPROPERTY(VisibleAnywhere)}
+\DoxyCodeLine{00058\ \ \ \ \ TObjectPtr<USkeletalMeshComponent>\ PreviewMeshComponent;}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ UPROPERTY(VisibleAnywhere)}
+\DoxyCodeLine{00061\ \ \ \ \ TObjectPtr<USpotLightComponent>\ KeyLight;}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ UPROPERTY(VisibleAnywhere)}
+\DoxyCodeLine{00064\ \ \ \ \ TObjectPtr<USceneCaptureComponent2D>\ SceneCaptureComponent;}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00067\ \ \ \ \ TObjectPtr<UTextureRenderTarget2D>\ RenderTarget;}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00070\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00071\ \ \ \ \ TMap<\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}},\ TObjectPtr<UMeshComponent>>\ SlotMeshComponents;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00074\ \ \ \ \ static\ FName\ GetDefaultSocketName(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ Slot);}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00077\ \ \ \ \ FStreamableManager\ StreamableManager;}
+\DoxyCodeLine{00078\ \ \ \ \ TMap<\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}},\ TSharedPtr<FStreamableHandle>>\ ActiveStreamHandles;}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00081\ \ \ \ \ static\ constexpr\ int32\ RenderTargetWidth\ =\ 256;}
+\DoxyCodeLine{00082\ \ \ \ \ static\ constexpr\ int32\ RenderTargetHeight\ =\ 512;}
+\DoxyCodeLine{00083\ \};}
+
+\end{DoxyCode}

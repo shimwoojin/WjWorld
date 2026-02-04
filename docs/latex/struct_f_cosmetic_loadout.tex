@@ -1,0 +1,102 @@
+\doxysection{FCosmetic\+Loadout Struct Reference}
+\hypertarget{struct_f_cosmetic_loadout}{}\label{struct_f_cosmetic_loadout}\index{FCosmeticLoadout@{FCosmeticLoadout}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Cosmetic\+Types.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{struct_f_cosmetic_loadout_a97ad651e85b8c7ba8977a763f3f0d69a}{Equip}} (\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmetic\+Slot}} Slot, FName Item\+Id)
+\item 
+void \doxymbox{\hyperlink{struct_f_cosmetic_loadout_a0bb0f7631392ea5ad7445c0c38ca7553}{Unequip}} (\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmetic\+Slot}} Slot)
+\item 
+FName \doxymbox{\hyperlink{struct_f_cosmetic_loadout_a032ab279c27bc35e41739f772cd28445}{Get\+Equipped\+Item}} (\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmetic\+Slot}} Slot) const
+\item 
+bool \doxymbox{\hyperlink{struct_f_cosmetic_loadout_a09c814037c7db3193614df4e9636071c}{Is\+Empty}} () const
+\item 
+TArray$<$ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmetic\+Slot}} $>$ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_a50f993965763ee4572e31648fd2ff287}{Get\+Equipped\+Slots}} () const
+\item 
+void \doxymbox{\hyperlink{struct_f_cosmetic_loadout_a10397016f1368df3a4b1be29c67eb817}{Reset}} ()
+\item 
+bool \doxymbox{\hyperlink{struct_f_cosmetic_loadout_acdc62a1a6b62079d405da3f6d40c809a}{operator==}} (const \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmetic\+Loadout}} \&Other) const
+\item 
+bool \doxymbox{\hyperlink{struct_f_cosmetic_loadout_ab55b5b216da7355b4c34e7fa1fea17a0}{operator!=}} (const \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmetic\+Loadout}} \&Other) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TArray$<$ \doxymbox{\hyperlink{struct_f_cosmetic_slot_entry}{FCosmetic\+Slot\+Entry}} $>$ \doxymbox{\hyperlink{struct_f_cosmetic_loadout_acfc7611ef92df08f48e393c1cba84f9f}{Entries}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+코스메틱 로드아웃 (장착 중인 슬롯 → 아이템 매핑) TArray$<$\+FCosmetic\+Slot\+Entry$>$ 기반으로 리플리케이션 지원 
+
+\label{doc-func-members}
+\Hypertarget{struct_f_cosmetic_loadout_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_f_cosmetic_loadout_a97ad651e85b8c7ba8977a763f3f0d69a}\index{FCosmeticLoadout@{FCosmeticLoadout}!Equip@{Equip}}
+\index{Equip@{Equip}!FCosmeticLoadout@{FCosmeticLoadout}}
+\doxysubsubsection{\texorpdfstring{Equip()}{Equip()}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_loadout_a97ad651e85b8c7ba8977a763f3f0d69a} 
+void FCosmetic\+Loadout::\+\+Equip (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmetic\+Slot}}}]{Slot}{, }\item[{FName}]{Item\+Id}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+특정 슬롯에 아이템 장착 \Hypertarget{struct_f_cosmetic_loadout_a032ab279c27bc35e41739f772cd28445}\index{FCosmeticLoadout@{FCosmeticLoadout}!GetEquippedItem@{GetEquippedItem}}
+\index{GetEquippedItem@{GetEquippedItem}!FCosmeticLoadout@{FCosmeticLoadout}}
+\doxysubsubsection{\texorpdfstring{GetEquippedItem()}{GetEquippedItem()}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_loadout_a032ab279c27bc35e41739f772cd28445} 
+FName FCosmetic\+Loadout::\+\+Get\+Equipped\+Item (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmetic\+Slot}}}]{Slot}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+특정 슬롯에 장착된 아이템 반환 \Hypertarget{struct_f_cosmetic_loadout_a50f993965763ee4572e31648fd2ff287}\index{FCosmeticLoadout@{FCosmeticLoadout}!GetEquippedSlots@{GetEquippedSlots}}
+\index{GetEquippedSlots@{GetEquippedSlots}!FCosmeticLoadout@{FCosmeticLoadout}}
+\doxysubsubsection{\texorpdfstring{GetEquippedSlots()}{GetEquippedSlots()}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_loadout_a50f993965763ee4572e31648fd2ff287} 
+TArray$<$ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmetic\+Slot}} $>$ FCosmetic\+Loadout::\+\+Get\+Equipped\+Slots (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+모든 슬롯의 키 배열 반환 \Hypertarget{struct_f_cosmetic_loadout_a09c814037c7db3193614df4e9636071c}\index{FCosmeticLoadout@{FCosmeticLoadout}!IsEmpty@{IsEmpty}}
+\index{IsEmpty@{IsEmpty}!FCosmeticLoadout@{FCosmeticLoadout}}
+\doxysubsubsection{\texorpdfstring{IsEmpty()}{IsEmpty()}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_loadout_a09c814037c7db3193614df4e9636071c} 
+bool FCosmetic\+Loadout::\+\+Is\+Empty (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+로드아웃이 비었는지 확인 \Hypertarget{struct_f_cosmetic_loadout_ab55b5b216da7355b4c34e7fa1fea17a0}\index{FCosmeticLoadout@{FCosmeticLoadout}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!FCosmeticLoadout@{FCosmeticLoadout}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_loadout_ab55b5b216da7355b4c34e7fa1fea17a0} 
+bool FCosmetic\+Loadout::\+operator!= (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmetic\+Loadout}} \&}]{Other}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{struct_f_cosmetic_loadout_acdc62a1a6b62079d405da3f6d40c809a}\index{FCosmeticLoadout@{FCosmeticLoadout}!operator==@{operator==}}
+\index{operator==@{operator==}!FCosmeticLoadout@{FCosmeticLoadout}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_loadout_acdc62a1a6b62079d405da3f6d40c809a} 
+bool FCosmetic\+Loadout::\+operator== (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmetic\+Loadout}} \&}]{Other}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{struct_f_cosmetic_loadout_a10397016f1368df3a4b1be29c67eb817}\index{FCosmeticLoadout@{FCosmeticLoadout}!Reset@{Reset}}
+\index{Reset@{Reset}!FCosmeticLoadout@{FCosmeticLoadout}}
+\doxysubsubsection{\texorpdfstring{Reset()}{Reset()}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_loadout_a10397016f1368df3a4b1be29c67eb817} 
+void FCosmetic\+Loadout::\+\+Reset (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+초기화 \Hypertarget{struct_f_cosmetic_loadout_a0bb0f7631392ea5ad7445c0c38ca7553}\index{FCosmeticLoadout@{FCosmeticLoadout}!Unequip@{Unequip}}
+\index{Unequip@{Unequip}!FCosmeticLoadout@{FCosmeticLoadout}}
+\doxysubsubsection{\texorpdfstring{Unequip()}{Unequip()}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_loadout_a0bb0f7631392ea5ad7445c0c38ca7553} 
+void FCosmetic\+Loadout::\+\+Unequip (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmetic\+Slot}}}]{Slot}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+특정 슬롯의 아이템 해제 
+
+\label{doc-variable-members}
+\Hypertarget{struct_f_cosmetic_loadout_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_f_cosmetic_loadout_acfc7611ef92df08f48e393c1cba84f9f}\index{FCosmeticLoadout@{FCosmeticLoadout}!Entries@{Entries}}
+\index{Entries@{Entries}!FCosmeticLoadout@{FCosmeticLoadout}}
+\doxysubsubsection{\texorpdfstring{Entries}{Entries}}
+{\footnotesize\ttfamily \label{struct_f_cosmetic_loadout_acfc7611ef92df08f48e393c1cba84f9f} 
+TArray$<$\doxymbox{\hyperlink{struct_f_cosmetic_slot_entry}{FCosmetic\+Slot\+Entry}}$>$ FCosmetic\+Loadout::\+\+Entries}
+
+슬롯별 장착 아이템 목록 
+
+The documentation for this struct was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Cosmetic/\+\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h}{Wj\+World\+Cosmetic\+Types.\+h}}\end{DoxyCompactItemize}

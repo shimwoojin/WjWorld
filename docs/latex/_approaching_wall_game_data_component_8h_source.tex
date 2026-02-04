@@ -1,0 +1,47 @@
+\doxysection{Approaching\+Wall\+Game\+Data\+Component.\+h}
+\hypertarget{_approaching_wall_game_data_component_8h_source}{}\label{_approaching_wall_game_data_component_8h_source}\index{Source/WjWorld/Core/GameData/ApproachingWallGameDataComponent.h@{Source/WjWorld/Core/GameData/ApproachingWallGameDataComponent.h}}
+\doxymbox{\hyperlink{_approaching_wall_game_data_component_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_game_data_component_8h}{Core/GameData/WjWorldGameDataComponent.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}ApproachingWallGameDataComponent.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00012\ UCLASS()}
+\DoxyCodeLine{00013\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component}{UApproachingWallGameDataComponent}}\ :\ public\ UWjWorldGameDataComponent}
+\DoxyCodeLine{00014\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00016\ \ \ \ \ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_a9553666fb3eaf7c1cba0f80ef4984de9}{GetSecondsForNextWave}}(int32\ WaveIndex)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_ad40555747712c179a3fa7e96f1bc4b94}{GetCurrentLevel}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_a0f8b356956abdbaab0a7a76edef1560b}{CurrentLevel}};\ \}}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_ad0527323e0aa2bb8124a51119c450163}{SetCurrentLevel}}(int32\ InLevel)\ \{\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_a0f8b356956abdbaab0a7a76edef1560b}{CurrentLevel}}\ =\ InLevel;\ \}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_a48abe0f2e30837fbc03396d550c7133a}{GetAlivePlayerCount}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_a8defb7ce108d32bd64d2c2e52cfd912b}{AlivePlayerCount}};\ \}}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_a1e6c54135afeb2065fc4631cf58c04c2}{SetAlivePlayerCount}}(int32\ InCount)\ \{\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_a8defb7ce108d32bd64d2c2e52cfd912b}{AlivePlayerCount}}\ =\ InCount;\ \}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_a3ce7f44e2427997529cd25bd2df14d84}{GetTotalPlayerCount}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_afaf2c9c208483c62a28e4b6dbe350898}{TotalPlayerCount}};\ \}}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_a2b712eec76bd8b5503d58b51db0be736}{SetTotalPlayerCount}}(int32\ InCount)\ \{\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_afaf2c9c208483c62a28e4b6dbe350898}{TotalPlayerCount}}\ =\ InCount;\ \}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ GetLifetimeReplicatedProps(TArray<FLifetimeProperty>\&\ OutLifetimeProps)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00033\ \ \ \ \ UPROPERTY(Replicated)}
+\DoxyCodeLine{00034\ \ \ \ \ TArray<int32>\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_a01d7a3d3848d34a003d0eb3d88322c28}{SecondsForNextWaves}};}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ UPROPERTY(Replicated)}
+\DoxyCodeLine{00037\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_a0f8b356956abdbaab0a7a76edef1560b}{CurrentLevel}}\ =\ 0;}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ UPROPERTY(Replicated)}
+\DoxyCodeLine{00040\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_a8defb7ce108d32bd64d2c2e52cfd912b}{AlivePlayerCount}}\ =\ 0;}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ UPROPERTY(Replicated)}
+\DoxyCodeLine{00043\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_u_approaching_wall_game_data_component_afaf2c9c208483c62a28e4b6dbe350898}{TotalPlayerCount}}\ =\ 0;}
+\DoxyCodeLine{00044\ \};}
+
+\end{DoxyCode}

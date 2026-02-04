@@ -9,63 +9,85 @@
 \DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
 \DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}GameFramework/Character.h"{}}}
 \DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}InputActionValue.h"{}}}
-\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldCharacterBase.generated.h"{}}}
-\DoxyCodeLine{00009\ }
-\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }UGameplayCameraComponent;}
-\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }UInputMappingContext;}
-\DoxyCodeLine{00012\ }
-\DoxyCodeLine{00013\ UENUM()}
-\DoxyCodeLine{00014\ enum\ class\ \doxymbox{\hyperlink{_wj_world_character_base_8h_aac1445d872a9eeaf8933fc54f5a955ab}{ECharacterViewMode}}\ :\ uint8}
-\DoxyCodeLine{00015\ \{}
-\DoxyCodeLine{00016\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_character_base_8h_aac1445d872a9eeaf8933fc54f5a955abad9504b07e71879cc2a511f9b6fcd6606}{TopDown}},}
-\DoxyCodeLine{00017\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_character_base_8h_aac1445d872a9eeaf8933fc54f5a955abacfc2bf618c3d2a4227cda65ef4e14990}{ThirdPerson}},}
-\DoxyCodeLine{00018\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_character_base_8h_aac1445d872a9eeaf8933fc54f5a955aba69e42bfc96b519dfef9e38ad76fc7429}{FirstPerson}}}
-\DoxyCodeLine{00019\ \};}
-\DoxyCodeLine{00020\ }
-\DoxyCodeLine{00028\ UCLASS(abstract)}
-\DoxyCodeLine{00029\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a89132c9b76acde3a302c706d1931769a}{AWjWorldCharacterBase}}\ :\ public\ ACharacter}
-\DoxyCodeLine{00030\ \{}
-\DoxyCodeLine{00031\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_camera_types_8h}{GamePlay/Camera/WJCameraTypes.h}}"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}GameplayTagContainer.h"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}WjWorldCharacterBase.generated.h"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }UGameplayCameraComponent;}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }UInputMappingContext;}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }UWjWorldCosmeticComponent;}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \doxymbox{\hyperlink{_wj_world_character_base_8h_a6b083c7e2eaf1732180ce5ad7c5b47ce}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnCharacterViewModeChanged,\ FGameplayTag,\ CameraMode);}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00025\ UCLASS(abstract)}
+\DoxyCodeLine{00026\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a89132c9b76acde3a302c706d1931769a}{AWjWorldCharacterBase}}\ :\ public\ ACharacter}
+\DoxyCodeLine{00027\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_character_base_a89132c9b76acde3a302c706d1931769a}{AWjWorldCharacterBase}}();}
 \DoxyCodeLine{00032\ }
 \DoxyCodeLine{00033\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00034\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_character_base_a89132c9b76acde3a302c706d1931769a}{AWjWorldCharacterBase}}();}
-\DoxyCodeLine{00035\ }
-\DoxyCodeLine{00036\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a10d3770bc59c61b53da2682a7faae57b}{SetCharacterViewMode}}(\doxymbox{\hyperlink{_wj_world_character_base_8h_aac1445d872a9eeaf8933fc54f5a955ab}{ECharacterViewMode}}\ NewViewMode);}
-\DoxyCodeLine{00038\ }
-\DoxyCodeLine{00039\ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a38194801545a2d8433deb48ce36300d9}{BeginPlay}}()\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00041\ }
-\DoxyCodeLine{00042\ \textcolor{keyword}{public}:\ }
-\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a645d77e1ca3055c7b4450aa4d5eb111b}{Tick}}(\textcolor{keywordtype}{float}\ DeltaTime)\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00044\ }
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a8db3fd1326b0c7b43a2918902d3ffd1c}{SetupPlayerInputComponent}}(\textcolor{keyword}{class}\ UInputComponent*\ PlayerInputComponent)\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00046\ }
-\DoxyCodeLine{00047\ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a6970818ef125ea9ce78baa7ae4247fca}{InitializeCharacter}}();}
-\DoxyCodeLine{00052\ }
-\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_accfb44f05f97b60c21c14ca7c07c8104}{SetupInputBindings}}(\textcolor{keyword}{class}\ UInputComponent*\ PlayerInputComponent);}
-\DoxyCodeLine{00057\ }
-\DoxyCodeLine{00058\ \ \ \ \ \textcolor{comment}{//\string~\ Input\ Handlers}}
-\DoxyCodeLine{00062\ \ \ \ \ UFUNCTION()}
-\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_ae0763ed841b7861571568921978c477e}{Move}}(\textcolor{keyword}{const}\ FInputActionValue\&\ Value);}
-\DoxyCodeLine{00064\ }
-\DoxyCodeLine{00068\ \ \ \ \ UFUNCTION()}
-\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a91d6696a44335c36fa3dcd8dd5d94395}{Interact}}(\textcolor{keyword}{const}\ FInputActionValue\&\ Value);}
-\DoxyCodeLine{00070\ }
-\DoxyCodeLine{00071\ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00075\ \ \ \ \ UPROPERTY(VisibleAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Camera"{}},\ meta\ =\ (AllowPrivateAccess\ =\ \textcolor{stringliteral}{"{}true"{}}))}
-\DoxyCodeLine{00076\ \ \ \ \ TObjectPtr<UGameplayCameraComponent>\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a1e0d571d583e75bdfacbb250be2eb13f}{GamePlayCamera}};}
-\DoxyCodeLine{00077\ }
-\DoxyCodeLine{00081\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Input"{}})}
-\DoxyCodeLine{00082\ \ \ \ \ TObjectPtr<UInputMappingContext>\ \doxymbox{\hyperlink{class_a_wj_world_character_base_ab6f878f0b06d53b21dd251f45f69e545}{DefaultMappingContext}};}
-\DoxyCodeLine{00083\ }
-\DoxyCodeLine{00084\ public:}
-\DoxyCodeLine{00085\ \ \ \ \ TObjectPtr<UGameplayCameraComponent>\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a37598085f9ad1a4c22117c219844d7d9}{GetGamePlayCamera}}()\ \{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a1e0d571d583e75bdfacbb250be2eb13f}{GamePlayCamera}};\ \}}
-\DoxyCodeLine{00086\ \ \ \ \ TObjectPtr<UInputMappingContext>\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a948532d6c1431ced08d67cf65ecf419a}{GetDefaultMappingContext}}()\ \{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_ab6f878f0b06d53b21dd251f45f69e545}{DefaultMappingContext}};\ \}}
-\DoxyCodeLine{00087\ }
-\DoxyCodeLine{00088\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00089\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_character_base_8h_aac1445d872a9eeaf8933fc54f5a955ab}{ECharacterViewMode}}\ CurrentViewMode;}
-\DoxyCodeLine{00090\ \};}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_aea545fa94580dbb8ef63571ca6f30e20}{SetCharacterViewMode}}(\doxymbox{\hyperlink{_wj_camera_types_8h_a3a319438a0221a6fe61b590733aa450a}{ECharacterCameraMode}}\ NewViewMode);}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_aea545fa94580dbb8ef63571ca6f30e20}{SetCharacterViewMode}}(\textcolor{keyword}{const}\ FGameplayTag\&\ NewViewMode);}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a5ebcfc311e7cd5b917dafe7846af70e7}{PostInitializeComponents}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a38194801545a2d8433deb48ce36300d9}{BeginPlay}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{keyword}{public}:\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a645d77e1ca3055c7b4450aa4d5eb111b}{Tick}}(\textcolor{keywordtype}{float}\ DeltaTime)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_ab7642bf2689f3be3aa21eb28aecffa69}{PossessedBy}}(AController*\ NewController)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a25cd0af46e146c8e95e87c640cd5b593}{OnRep\_PlayerState}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a8db3fd1326b0c7b43a2918902d3ffd1c}{SetupPlayerInputComponent}}(\textcolor{keyword}{class}\ UInputComponent*\ PlayerInputComponent)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a6970818ef125ea9ce78baa7ae4247fca}{InitializeCharacter}}();}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_accfb44f05f97b60c21c14ca7c07c8104}{SetupInputBindings}}(\textcolor{keyword}{class}\ UInputComponent*\ PlayerInputComponent);}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a8b7c47cbcbbaf64ae1b61b50bd47ff5c}{GasInputPressed}}(int32\ InputID);}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a7ea189681e2c9b85ed41a3a5c9904256}{GasInputReleased}}(int32\ InputID);}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{comment}{//\string~\ Input\ Handlers}}
+\DoxyCodeLine{00066\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_ae0763ed841b7861571568921978c477e}{Move}}(\textcolor{keyword}{const}\ FInputActionValue\&\ Value);}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00072\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a91d6696a44335c36fa3dcd8dd5d94395}{Interact}}(\textcolor{keyword}{const}\ FInputActionValue\&\ Value);}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00076\ \ \ \ \ UPROPERTY(BlueprintAssignable)}
+\DoxyCodeLine{00077\ \ \ \ \ FOnCharacterViewModeChanged\ \doxymbox{\hyperlink{class_a_wj_world_character_base_ade363b8269f3199fff404e8dfefe27a2}{OnCharacterViewModeChanged}};}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ protected:}
+\DoxyCodeLine{00083\ \ \ \ \ UPROPERTY(VisibleAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Camera"{}},\ meta\ =\ (AllowPrivateAccess\ =\ \textcolor{stringliteral}{"{}true"{}}))}
+\DoxyCodeLine{00084\ \ \ \ \ TObjectPtr<UGameplayCameraComponent>\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a1e0d571d583e75bdfacbb250be2eb13f}{GamePlayCamera}};}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00089\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Mesh"{}})}
+\DoxyCodeLine{00090\ \ \ \ \ TSoftObjectPtr<USkeletalMesh>\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a6a4c84e9691b5d7ae7c26a3504e5ec42}{DefaultSkeletalMesh}};}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00095\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Mesh"{}})}
+\DoxyCodeLine{00096\ \ \ \ \ TSoftClassPtr<UAnimInstance>\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a6f9a2a10161b54d7eb04ef0553ad0ce1}{DefaultAnimBlueprintClass}};}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00101\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Input"{}})}
+\DoxyCodeLine{00102\ \ \ \ \ TSoftObjectPtr<UInputMappingContext>\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a176f4d6ce4609a4820bcd7de6e8997ea}{DefaultMappingContext}};}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00107\ \ \ \ \ UPROPERTY(VisibleAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00108\ \ \ \ \ TObjectPtr<UWjWorldCosmeticComponent>\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a9a560bb4c3f5eb7769914966dd639430}{CosmeticComponent}};}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ public:}
+\DoxyCodeLine{00111\ \ \ \ \ TObjectPtr<UGameplayCameraComponent>\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a37598085f9ad1a4c22117c219844d7d9}{GetGamePlayCamera}}()\ \{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a1e0d571d583e75bdfacbb250be2eb13f}{GamePlayCamera}};\ \}}
+\DoxyCodeLine{00112\ \ \ \ \ UInputMappingContext*\ GetDefaultMappingContext()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00113\ \ \ \ \ UWjWorldCosmeticComponent*\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a41d508753a4083abaef3233100ca0957}{GetCosmeticComponent}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_a_wj_world_character_base_a9a560bb4c3f5eb7769914966dd639430}{CosmeticComponent}};\ \}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00116\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Camera"{}},\ meta\ =\ (AllowPrivateAccess\ =\ \textcolor{stringliteral}{"{}true"{}}))}
+\DoxyCodeLine{00117\ \ \ \ \ \doxymbox{\hyperlink{_wj_camera_types_8h_a3a319438a0221a6fe61b590733aa450a}{ECharacterCameraMode}}\ StartCameraMode\ =\ \doxymbox{\hyperlink{_wj_camera_types_8h_a3a319438a0221a6fe61b590733aa450a}{ECharacterCameraMode}}::\doxymbox{\hyperlink{_wj_camera_types_8h_a3a319438a0221a6fe61b590733aa450aad9504b07e71879cc2a511f9b6fcd6606}{TopDown}};}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \ \ UPROPERTY(VisibleAnywhere,\ BlueprintReadOnly,\ meta\ =\ (AllowPrivateAccess\ =\ \textcolor{stringliteral}{"{}true"{}}))}
+\DoxyCodeLine{00120\ \ \ \ \ FGameplayTag\ CameraMode;}
+\DoxyCodeLine{00121\ \};}
 
 \end{DoxyCode}

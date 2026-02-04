@@ -1,0 +1,50 @@
+\doxysection{Wj\+World\+Player\+State\+Play.\+h}
+\hypertarget{_wj_world_player_state_play_8h_source}{}\label{_wj_world_player_state_play_8h_source}\index{Source/WjWorld/Core/Play/WjWorldPlayerStatePlay.h@{Source/WjWorld/Core/Play/WjWorldPlayerStatePlay.h}}
+\doxymbox{\hyperlink{_wj_world_player_state_play_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_player_state_base_8h}{Core/Base/WjWorldPlayerStateBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}AbilitySystemInterface.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldPlayerStatePlay.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_ability_system_component}{UWjWorldAbilitySystemComponent}};}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }UWjWorldGameDataComponent;}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_character_attribute_set}{UWjWorldCharacterAttributeSet}};}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00019\ UCLASS()}
+\DoxyCodeLine{00020\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_player_state_play_a520780e000d26d96141618f922e7ac07}{AWjWorldPlayerStatePlay}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a5877bdc9ae35b3f744973f85073dce11}{AWjWorldPlayerStateBase}},\ public\ IAbilitySystemInterface}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_player_state_play_a520780e000d26d96141618f922e7ac07}{AWjWorldPlayerStatePlay}}();}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{virtual}\ UAbilitySystemComponent*\ \doxymbox{\hyperlink{class_a_wj_world_player_state_play_ad8a93f67187ba2288b1afc1a4ce60330}{GetAbilitySystemComponent}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00028\ \ \ \ \ \doxymbox{\hyperlink{class_u_wj_world_ability_system_component}{UWjWorldAbilitySystemComponent}}*\ \doxymbox{\hyperlink{class_a_wj_world_player_state_play_a444ebcb8258c5b0137b7c6e0da1080e9}{GetWJAbilitySystemComponent}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_add9f93867229148295935e70f9bf71e0}{GetLifetimeReplicatedProps}}(TArray<\ FLifetimeProperty\ >\&\ OutLifetimeProps)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{comment}{//\ 게임별\ 데이터는\ 컴포넌트로}}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00033\ \ \ \ \ T*\ \doxymbox{\hyperlink{class_a_wj_world_player_state_play_aa3e093d416a85419fd15b8751fc0504b}{GetGameData}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FindComponentByClass<T>();\ \}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ AddGameDataComponent(TSubclassOf<UWjWorldGameDataComponent>\ InDataComponentClass);}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnCosmeticLoadoutUpdated()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ UPROPERTY(VisibleAnywhere,\ BlueprintReadOnly,\ meta\ =\ (AllowPrivateAccess\ =\ \textcolor{keyword}{true}))}
+\DoxyCodeLine{00043\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_ability_system_component}{UWjWorldAbilitySystemComponent}}>\ \doxymbox{\hyperlink{class_a_wj_world_player_state_play_a10c9edafc48cc733231451b1234a61d9}{AbilitySystemComponent}};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ UPROPERTY(VisibleAnywhere,\ BlueprintReadOnly,\ meta\ =\ (AllowPrivateAccess\ =\ true))}
+\DoxyCodeLine{00046\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_character_attribute_set}{UWjWorldCharacterAttributeSet}}>\ \doxymbox{\hyperlink{class_a_wj_world_player_state_play_a0f9423353543979396198bb2123cc056}{CharacterAttributeSet}};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ UPROPERTY(Replicated)}
+\DoxyCodeLine{00049\ \ \ \ \ TObjectPtr<UWjWorldGameDataComponent>\ \doxymbox{\hyperlink{class_a_wj_world_player_state_play_aa79ce22440f992710b935d25b18d2f21}{PlayerDataComponent}};}
+\DoxyCodeLine{00050\ \};}
+
+\end{DoxyCode}

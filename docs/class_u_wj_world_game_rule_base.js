@@ -1,0 +1,27 @@
+var class_u_wj_world_game_rule_base =
+[
+    [ "BeginDestroy", "class_u_wj_world_game_rule_base.html#a16f0716eb64654b26b56c05112b70d79", null ],
+    [ "CheckWinCondition", "class_u_wj_world_game_rule_base.html#ab03f9ec99b29c60c9c8da015ece91d3e", null ],
+    [ "GameLevelUp", "class_u_wj_world_game_rule_base.html#ac99d78d7e74b7b1a4d06ac5a6567ddb2", null ],
+    [ "GetGameModePlay", "class_u_wj_world_game_rule_base.html#a21332ec2b8f14ed555fbe286027e513c", null ],
+    [ "GetGameStatePlay", "class_u_wj_world_game_rule_base.html#a39827e7eeafa65353860b29f94202c79", null ],
+    [ "GetWinner", "class_u_wj_world_game_rule_base.html#aebe46f808610fcdfea7ef15291904e1b", null ],
+    [ "HasAuthority", "class_u_wj_world_game_rule_base.html#a5dced7d956649a0a10e47ccdbcabad90", null ],
+    [ "Initialize", "class_u_wj_world_game_rule_base.html#a6f8e0f1b98821229b24c2fecd5a9df19", null ],
+    [ "OnGameEnd", "class_u_wj_world_game_rule_base.html#af35e4129d70e97f6061dcc7d141d5c2a", null ],
+    [ "OnGameEndPredict", "class_u_wj_world_game_rule_base.html#a226c0e618ee08f44123e1a95d9b1213f", null ],
+    [ "OnGameReady", "class_u_wj_world_game_rule_base.html#ac05f38f32baecd50107359e0254c3c52", null ],
+    [ "OnGameStart", "class_u_wj_world_game_rule_base.html#a049b44d0b0a32a890d58f866f98b7821", null ],
+    [ "OnPlayerJoined", "class_u_wj_world_game_rule_base.html#a0db12030f099799b91e6a18dcf917f90", null ],
+    [ "OnPlayerLeft", "class_u_wj_world_game_rule_base.html#ab930230376f69ffb45dd4cd306544c5d", null ],
+    [ "PredictNextLevelIsLast", "class_u_wj_world_game_rule_base.html#aeaee66281849cdde641252c596fe4a5a", null ],
+    [ "TickGameRule", "class_u_wj_world_game_rule_base.html#a7b0d89afe68ade01a5d05df040619156", null ],
+    [ "DelayStartHandle", "class_u_wj_world_game_rule_base.html#aae96bc2b57198f3b67a01fc3fa3bdd71", null ],
+    [ "GameDataComponentClass", "class_u_wj_world_game_rule_base.html#a96ca73919fc5cf009ff9d1167d042697", null ],
+    [ "GameMode", "class_u_wj_world_game_rule_base.html#a255d277042a68f697f579f21ab582e1a", null ],
+    [ "GotoWaitingRoomHandle", "class_u_wj_world_game_rule_base.html#a12e89cfbe51172785d91747f5f4c3603", null ],
+    [ "PlayerDataComponentClass", "class_u_wj_world_game_rule_base.html#a2ff20f4707783824d893bfa81c278e0f", null ],
+    [ "SecondsForGameStartCount", "class_u_wj_world_game_rule_base.html#aa95ca7ebca82dbc13247fde5dc2edbc3", null ],
+    [ "SecondsForGotoWaitingRoom", "class_u_wj_world_game_rule_base.html#a5773435b2bd861858e02805fb54a95af", null ],
+    [ "StartDelay", "class_u_wj_world_game_rule_base.html#a25c4c3adc9dafe1b4df707bf3dc40adc", null ]
+];

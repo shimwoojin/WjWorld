@@ -7,91 +7,76 @@
 \DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
 \DoxyCodeLine{00004\ }
 \DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
-\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_game_state_base_8h}{Core/Base/WjWorldGameStateBase.h}}"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_game_state_lobby_8h}{Core/Local/Lobby/WjWorldGameStateLobby.h}}"{}}}
 \DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_session_types_8h}{Network/SessionTypes.h}}"{}}}
 \DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldGameStateWaitingRoom.generated.h"{}}}
 \DoxyCodeLine{00009\ }
 \DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_player_state_base}{AWjWorldPlayerStateBase}};}
 \DoxyCodeLine{00011\ }
-\DoxyCodeLine{00015\ USTRUCT(BlueprintType)}
-\DoxyCodeLine{00016\ struct\ \doxymbox{\hyperlink{struct_f_player_display_info}{FPlayerDisplayInfo}}}
-\DoxyCodeLine{00017\ \{}
-\DoxyCodeLine{00018\ \ \ \ \ GENERATED\_BODY()}
-\DoxyCodeLine{00019\ }
-\DoxyCodeLine{00020\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Player"{}})}
-\DoxyCodeLine{00021\ \ \ \ \ FString\ \doxymbox{\hyperlink{struct_f_player_display_info_a030aa89bae5a49274e5503e7e0636063}{PlayerName}};}
-\DoxyCodeLine{00022\ }
-\DoxyCodeLine{00023\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Player"{}})}
-\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_player_display_info_a7583e33152e32e877b0d993e0443f4b0}{bIsReady}}\ =\ false;}
-\DoxyCodeLine{00025\ }
-\DoxyCodeLine{00026\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Player"{}})}
-\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_player_display_info_a21a234a3726a099593e6c35fd984240c}{bIsHost}}\ =\ false;}
-\DoxyCodeLine{00028\ }
-\DoxyCodeLine{00029\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Player"{}})}
-\DoxyCodeLine{00030\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_player_display_info_a4b856272abc15ff4b80b3ae11c6476e8}{PlayerID}}\ =\ -\/1;}
-\DoxyCodeLine{00031\ \};}
-\DoxyCodeLine{00032\ }
-\DoxyCodeLine{00036\ \doxymbox{\hyperlink{_wj_world_player_state_base_8h_ae41b0718845c3c0f70c12e6680f154dc}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnPlayerListChanged,\ const\ TArray<\doxymbox{\hyperlink{struct_f_player_display_info}{FPlayerDisplayInfo}}>\&,\ PlayerList);}
-\DoxyCodeLine{00037\ \doxymbox{\hyperlink{_wj_world_player_state_base_8h_ae41b0718845c3c0f70c12e6680f154dc}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnRoomInfoChanged,\ const\ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\&,\ RoomSettings);}
-\DoxyCodeLine{00038\ }
-\DoxyCodeLine{00048\ UCLASS()}
-\DoxyCodeLine{00049\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a9fb093c7d0eb994c3f0a55ac697876ea}{AWjWorldGameStateWaitingRoom}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_game_state_base}{AWjWorldGameStateBase}}}
-\DoxyCodeLine{00050\ \{}
-\DoxyCodeLine{00051\ \ \ \ \ GENERATED\_BODY()}
-\DoxyCodeLine{00052\ \ \ \ \ }
-\DoxyCodeLine{00053\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00054\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a9fb093c7d0eb994c3f0a55ac697876ea}{AWjWorldGameStateWaitingRoom}}();}
-\DoxyCodeLine{00055\ }
-\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a27214a1a235bd4bcf1cf8c8cd7ce855c}{GetLifetimeReplicatedProps}}(TArray<FLifetimeProperty>\&\ OutLifetimeProps)\ \textcolor{keyword}{const\ override};}
-\DoxyCodeLine{00057\ }
-\DoxyCodeLine{00058\ \ \ \ \ \textcolor{comment}{//\string~\ Room\ Info}}
-\DoxyCodeLine{00063\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom"{}})}
-\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a2edbcba55278adce1d2574e987828f2d}{InitializeRoomSettings}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\&\ Settings);}
-\DoxyCodeLine{00065\ }
-\DoxyCodeLine{00069\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom"{}})}
-\DoxyCodeLine{00070\ \ \ \ \ const\ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\&\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a2c3e467e3b59584007166d73ec2c329e}{GetRoomSettings}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a42968a86fcc6cf99ed53bb710db1bcae}{RoomSettings}};\ \}}
-\DoxyCodeLine{00071\ }
-\DoxyCodeLine{00072\ \ \ \ \ \textcolor{comment}{//\string~\ Player\ Management}}
-\DoxyCodeLine{00076\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom"{}})}
-\DoxyCodeLine{00077\ \ \ \ \ TArray<\doxymbox{\hyperlink{struct_f_player_display_info}{FPlayerDisplayInfo}}>\ GetPlayerList()\ const;}
-\DoxyCodeLine{00078\ }
-\DoxyCodeLine{00082\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom"{}})}
-\DoxyCodeLine{00083\ \ \ \ \ int32\ GetPlayerCount()\ const;}
-\DoxyCodeLine{00084\ }
-\DoxyCodeLine{00088\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom"{}})}
-\DoxyCodeLine{00089\ \ \ \ \ int32\ GetReadyPlayerCount()\ const;}
-\DoxyCodeLine{00090\ }
-\DoxyCodeLine{00094\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom"{}})}
-\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordtype}{bool}\ AreAllPlayersReady()\ const;}
-\DoxyCodeLine{00096\ }
-\DoxyCodeLine{00097\ \ \ \ \ \textcolor{comment}{//\string~\ Events}}
-\DoxyCodeLine{00101\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom|Events"{}})}
-\DoxyCodeLine{00102\ \ \ \ \ FOnPlayerListChanged\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a159182cab4ec3799f68f01ea84a453db}{OnPlayerListChanged}};}
-\DoxyCodeLine{00103\ }
-\DoxyCodeLine{00107\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom|Events"{}})}
-\DoxyCodeLine{00108\ \ \ \ \ FOnRoomInfoChanged\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a5244c60dc814951a5e9b1d28bab179f1}{OnRoomInfoChanged}};}
+\DoxyCodeLine{00015\ \doxymbox{\hyperlink{_wj_world_game_state_waiting_room_8h_abd133623f4c171bbe10cb337c9fb1a4e}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnPlayerListChanged,\ \textcolor{keyword}{const}\ TArray<FPlayerDisplayInfo>\&,\ PlayerList);}
+\DoxyCodeLine{00016\ \doxymbox{\hyperlink{_wj_world_game_state_waiting_room_8h_abd133623f4c171bbe10cb337c9fb1a4e}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnRoomInfoChanged,\ \textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\&,\ RoomSettings);}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00028\ UCLASS()}
+\DoxyCodeLine{00029\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a9fb093c7d0eb994c3f0a55ac697876ea}{AWjWorldGameStateWaitingRoom}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_game_state_lobby_a2a1c8e702129af47676377563e3bca0b}{AWjWorldGameStateLobby}}}
+\DoxyCodeLine{00030\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00032\ \ \ \ \ }
+\DoxyCodeLine{00033\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00034\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a9fb093c7d0eb994c3f0a55ac697876ea}{AWjWorldGameStateWaitingRoom}}();}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a27214a1a235bd4bcf1cf8c8cd7ce855c}{GetLifetimeReplicatedProps}}(TArray<FLifetimeProperty>\&\ OutLifetimeProps)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{comment}{//\string~\ Room\ Info}}
+\DoxyCodeLine{00043\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom"{}})}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a2edbcba55278adce1d2574e987828f2d}{InitializeRoomSettings}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\&\ Settings);}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00049\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom"{}})}
+\DoxyCodeLine{00050\ \ \ \ \ const\ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\&\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a2c3e467e3b59584007166d73ec2c329e}{GetRoomSettings}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a42968a86fcc6cf99ed53bb710db1bcae}{RoomSettings}};\ \}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{comment}{//\string~\ Player\ Management}}
+\DoxyCodeLine{00056\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom"{}})}
+\DoxyCodeLine{00057\ \ \ \ \ TArray<\doxymbox{\hyperlink{struct_f_player_display_info}{FPlayerDisplayInfo}}>\ GetPlayerList()\ const;}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00062\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom"{}})}
+\DoxyCodeLine{00063\ \ \ \ \ int32\ GetPlayerCount()\ const;}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00068\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom"{}})}
+\DoxyCodeLine{00069\ \ \ \ \ int32\ GetReadyPlayerCount()\ const;}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00074\ \ \ \ \ UFUNCTION(BlueprintPure,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom"{}})}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{bool}\ AreAllPlayersReady()\ const;}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{comment}{//\string~\ Events}}
+\DoxyCodeLine{00081\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom|Events"{}})}
+\DoxyCodeLine{00082\ \ \ \ \ FOnPlayerListChanged\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a159182cab4ec3799f68f01ea84a453db}{OnPlayerListChanged}};}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00087\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom|Events"{}})}
+\DoxyCodeLine{00088\ \ \ \ \ FOnRoomInfoChanged\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a5244c60dc814951a5e9b1d28bab179f1}{OnRoomInfoChanged}};}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ protected:}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{comment}{//\string~\ Replicated\ Properties}}
+\DoxyCodeLine{00095\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a4087b01b23feac0773a5a83d36c2f275}{OnRep\_RoomSettings}},\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom"{}})}
+\DoxyCodeLine{00096\ \ \ \ \ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a42968a86fcc6cf99ed53bb710db1bcae}{RoomSettings}};}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{comment}{//\string~\ Replication\ Callbacks}}
+\DoxyCodeLine{00099\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a4087b01b23feac0773a5a83d36c2f275}{OnRep\_RoomSettings}}();}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{comment}{//\string~\ Override\ GameStateBase}}
+\DoxyCodeLine{00103\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_ac3355845f6505421849abff9057bd952}{AddPlayerState}}(APlayerState*\ PlayerState)\ override;}
+\DoxyCodeLine{00104\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_aa1f8c774125543498bf66aaff699e049}{RemovePlayerState}}(APlayerState*\ PlayerState)\ override;}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{comment}{//\string~\ PlayerState\ 이벤트\ 핸들러}}
+\DoxyCodeLine{00107\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a6c8c71ef408a5b76c51d3501765001a7}{OnPlayerNameUpdated}}(const\ FString\&\ PlayerName);}
 \DoxyCodeLine{00109\ }
-\DoxyCodeLine{00110\ protected:}
-\DoxyCodeLine{00111\ \ \ \ \ \textcolor{comment}{//\string~\ Replicated\ Properties}}
-\DoxyCodeLine{00115\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a4087b01b23feac0773a5a83d36c2f275}{OnRep\_RoomSettings}},\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}GameState|WaitingRoom"{}})}
-\DoxyCodeLine{00116\ \ \ \ \ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a42968a86fcc6cf99ed53bb710db1bcae}{RoomSettings}};}
-\DoxyCodeLine{00117\ }
-\DoxyCodeLine{00118\ \ \ \ \ \textcolor{comment}{//\string~\ Replication\ Callbacks}}
-\DoxyCodeLine{00119\ \ \ \ \ UFUNCTION()}
-\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a4087b01b23feac0773a5a83d36c2f275}{OnRep\_RoomSettings}}();}
-\DoxyCodeLine{00121\ }
-\DoxyCodeLine{00122\ \ \ \ \ \textcolor{comment}{//\string~\ Override\ GameStateBase}}
-\DoxyCodeLine{00123\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_ac3355845f6505421849abff9057bd952}{AddPlayerState}}(APlayerState*\ PlayerState)\ override;}
-\DoxyCodeLine{00124\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_aa1f8c774125543498bf66aaff699e049}{RemovePlayerState}}(APlayerState*\ PlayerState)\ override;}
-\DoxyCodeLine{00125\ }
-\DoxyCodeLine{00126\ \ \ \ \ \textcolor{comment}{//\string~\ PlayerState\ 이벤트\ 핸들러}}
-\DoxyCodeLine{00127\ \ \ \ \ UFUNCTION()}
-\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a6c8c71ef408a5b76c51d3501765001a7}{OnPlayerNameUpdated}}(const\ FString\&\ PlayerName);}
-\DoxyCodeLine{00129\ }
-\DoxyCodeLine{00130\ private:}
-\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordtype}{void}\ BroadcastPlayerListChanged();}
-\DoxyCodeLine{00133\ }
-\DoxyCodeLine{00135\ \ \ \ \ int32\ HostPlayerID\ =\ -\/1;}
-\DoxyCodeLine{00136\ \};}
+\DoxyCodeLine{00110\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room_a8420d820897cf44fa5484bb0a8d392ea}{OnPlayerReadyStateChanged}}(int32\ PlayerID,\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_a_wj_world_player_state_base_a3559a140fa4222a1ff157bbe96088996}{bIsReady}});}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ private:}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordtype}{void}\ BroadcastPlayerListChanged();}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00118\ \ \ \ \ int32\ HostPlayerID\ =\ -\/1;}
+\DoxyCodeLine{00119\ \};}
 
 \end{DoxyCode}

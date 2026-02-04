@@ -14,77 +14,91 @@
 \DoxyCodeLine{00010\ \textcolor{keyword}{class\ }UButton;}
 \DoxyCodeLine{00011\ \textcolor{keyword}{class\ }UTextBlock;}
 \DoxyCodeLine{00012\ \textcolor{keyword}{class\ }UVerticalBox;}
-\DoxyCodeLine{00013\ }
-\DoxyCodeLine{00024\ UCLASS()}
-\DoxyCodeLine{00025\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget}{UWaitingRoomHUDWidget}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}}
-\DoxyCodeLine{00026\ \{}
-\DoxyCodeLine{00027\ \ \ \ \ GENERATED\_BODY()}
-\DoxyCodeLine{00028\ \ \ \ \ }
-\DoxyCodeLine{00029\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a01c9def79ee8b643ea6416acc0c57d7e}{NativeConstruct}}()\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_af0d95849dc8b6e678787f79b81493d0f}{NativeDestruct}}()\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00032\ }
-\DoxyCodeLine{00033\ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00034\ \ \ \ \ \textcolor{comment}{//\string~\ UI\ 위젯\ 바인딩\ (Blueprint에서\ 설정)}}
-\DoxyCodeLine{00035\ }
-\DoxyCodeLine{00037\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
-\DoxyCodeLine{00038\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a7aa064d6cd051ef7b8c708d051ed2eea}{RoomNameText}};}
-\DoxyCodeLine{00039\ }
-\DoxyCodeLine{00041\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
-\DoxyCodeLine{00042\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_ad468d2bc62c9ffe449b9c0a2ef7d3bdf}{GameModeText}};}
-\DoxyCodeLine{00043\ }
-\DoxyCodeLine{00045\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
-\DoxyCodeLine{00046\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a4a17126c6a594000b9d0705620393700}{PlayerCountText}};}
-\DoxyCodeLine{00047\ }
-\DoxyCodeLine{00049\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
-\DoxyCodeLine{00050\ \ \ \ \ TObjectPtr<UVerticalBox>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a90cbbb5f781432b66160bc4a760a2222}{PlayerListContainer}};}
-\DoxyCodeLine{00051\ }
-\DoxyCodeLine{00053\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
-\DoxyCodeLine{00054\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_ac41ff74540551276855a46122e70ba46}{ReadyButton}};}
-\DoxyCodeLine{00055\ }
-\DoxyCodeLine{00057\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
-\DoxyCodeLine{00058\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_ae7ddcefe7617f4dbc1b4e13583ada0c2}{ReadyButtonText}};}
-\DoxyCodeLine{00059\ }
-\DoxyCodeLine{00061\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
-\DoxyCodeLine{00062\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a5bedbfc5277cee3f4957fe7cb7597549}{StartGameButton}};}
-\DoxyCodeLine{00063\ }
-\DoxyCodeLine{00065\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
-\DoxyCodeLine{00066\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a04a3362d6ba4b1c18c00bbc1dbda00ee}{LeaveButton}};}
-\DoxyCodeLine{00067\ }
-\DoxyCodeLine{00068\ protected:}
-\DoxyCodeLine{00069\ \ \ \ \ \textcolor{comment}{//\string~\ 버튼\ 클릭\ 이벤트}}
-\DoxyCodeLine{00070\ }
-\DoxyCodeLine{00071\ \ \ \ \ UFUNCTION()}
-\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a5ec18ac92f832d128bcf5ce025b1c005}{OnReadyClicked}}();}
-\DoxyCodeLine{00073\ }
-\DoxyCodeLine{00074\ \ \ \ \ UFUNCTION()}
-\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a9494017fca4346cfba44731bc7945791}{OnStartGameClicked}}();}
-\DoxyCodeLine{00076\ }
-\DoxyCodeLine{00077\ \ \ \ \ UFUNCTION()}
-\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a4c67522300bbe7a56e2f4c2359b10094}{OnLeaveClicked}}();}
-\DoxyCodeLine{00079\ }
-\DoxyCodeLine{00080\ \ \ \ \ \textcolor{comment}{//\string~\ GameState\ 이벤트\ 핸들러}}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_player_profile_widget}{UPlayerProfileWidget}};}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00025\ UCLASS()}
+\DoxyCodeLine{00026\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget}{UWaitingRoomHUDWidget}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}}
+\DoxyCodeLine{00027\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_player_profile_widget_a24bd7ef254db5cfe5332af799926305b}{NativeConstruct}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_player_profile_widget_acc2f04d98fba7a9e2f091ae6365dcebb}{NativeDestruct}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//\string~\ UI\ 위젯\ 바인딩\ (Blueprint에서\ 설정)}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00038\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00039\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a7aa064d6cd051ef7b8c708d051ed2eea}{RoomNameText}};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00042\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00043\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_ad468d2bc62c9ffe449b9c0a2ef7d3bdf}{GameModeText}};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00046\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00047\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a4a17126c6a594000b9d0705620393700}{PlayerCountText}};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00050\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00051\ \ \ \ \ TObjectPtr<UVerticalBox>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a90cbbb5f781432b66160bc4a760a2222}{PlayerListContainer}};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00054\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00055\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_ac41ff74540551276855a46122e70ba46}{ReadyButton}};}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00058\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00059\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_ae7ddcefe7617f4dbc1b4e13583ada0c2}{ReadyButtonText}};}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00062\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00063\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a5bedbfc5277cee3f4957fe7cb7597549}{StartGameButton}};}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00066\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00067\ \ \ \ \ TObjectPtr<UButton>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a04a3362d6ba4b1c18c00bbc1dbda00ee}{LeaveButton}};}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00070\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Profile"{}})}
+\DoxyCodeLine{00071\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_u_player_profile_widget}{UPlayerProfileWidget}}>\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a6ec50bef5623789d22149768b081725c}{ProfileWidgetClass}};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ protected:}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{comment}{//\string~\ 버튼\ 클릭\ 이벤트}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a5ec18ac92f832d128bcf5ce025b1c005}{OnReadyClicked}}();}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a9494017fca4346cfba44731bc7945791}{OnStartGameClicked}}();}
 \DoxyCodeLine{00081\ }
 \DoxyCodeLine{00082\ \ \ \ \ UFUNCTION()}
-\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a7d2620771c99441fee6d5c84b550dbde}{OnRoomInfoChanged}}(const\ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\&\ RoomSettings);}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a4c67522300bbe7a56e2f4c2359b10094}{OnLeaveClicked}}();}
 \DoxyCodeLine{00084\ }
-\DoxyCodeLine{00085\ \ \ \ \ UFUNCTION()}
-\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_aee635ddf4143ec903629e0e8206f48a5}{OnPlayerListChanged}}(const\ TArray<\doxymbox{\hyperlink{struct_f_player_display_info}{FPlayerDisplayInfo}}>\&\ PlayerList);}
-\DoxyCodeLine{00087\ }
-\DoxyCodeLine{00088\ \ \ \ \ UFUNCTION()}
-\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a67dbd17f66ef948e3c69488b3caabd5a}{OnPlayerReadyStateChanged}}(int32\ PlayerID,\ \textcolor{keywordtype}{bool}\ bIsReady);}
-\DoxyCodeLine{00090\ }
-\DoxyCodeLine{00091\ private:}
-\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateRoomInfo();}
-\DoxyCodeLine{00094\ }
-\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdatePlayerList();}
-\DoxyCodeLine{00097\ }
-\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateReadyButton();}
-\DoxyCodeLine{00100\ }
-\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateStartGameButton();}
-\DoxyCodeLine{00103\ }
-\DoxyCodeLine{00105\ \ \ \ \ UPROPERTY()}
-\DoxyCodeLine{00106\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room}{AWjWorldGameStateWaitingRoom}}>\ CachedGameState;}
-\DoxyCodeLine{00107\ \};}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{comment}{//\string~\ GameState\ 이벤트\ 핸들러}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a7d2620771c99441fee6d5c84b550dbde}{OnRoomInfoChanged}}(const\ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\&\ RoomSettings);}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_aee635ddf4143ec903629e0e8206f48a5}{OnPlayerListChanged}}(const\ TArray<\doxymbox{\hyperlink{struct_f_player_display_info}{FPlayerDisplayInfo}}>\&\ PlayerList);}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_waiting_room_h_u_d_widget_a67dbd17f66ef948e3c69488b3caabd5a}{OnPlayerReadyStateChanged}}(int32\ PlayerID,\ \textcolor{keywordtype}{bool}\ bIsReady);}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ private:}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateRoomInfo();}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdatePlayerList();}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateReadyButton();}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateStartGameButton();}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00110\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordtype}{void}\ OnAnyPlayerButtonClicked();}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordtype}{void}\ ShowPlayerProfile(int32\ PlayerID);}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00117\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00118\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_a_wj_world_game_state_waiting_room}{AWjWorldGameStateWaitingRoom}}>\ CachedGameState;}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00121\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00122\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_player_profile_widget}{UPlayerProfileWidget}}>\ ProfileWidgetInstance;}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00125\ \ \ \ \ TArray<\doxymbox{\hyperlink{struct_f_player_display_info}{FPlayerDisplayInfo}}>\ CachedPlayerDisplayList;}
+\DoxyCodeLine{00126\ \};}
 
 \end{DoxyCode}

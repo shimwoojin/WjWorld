@@ -1,0 +1,96 @@
+\doxysection{Wj\+World\+Cosmetic\+Data\+Asset.\+h}
+\hypertarget{_wj_world_cosmetic_data_asset_8h_source}{}\label{_wj_world_cosmetic_data_asset_8h_source}\index{Source/WjWorld/Cosmetic/WjWorldCosmeticDataAsset.h@{Source/WjWorld/Cosmetic/WjWorldCosmeticDataAsset.h}}
+\doxymbox{\hyperlink{_wj_world_cosmetic_data_asset_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Engine/DataAsset.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h}{Cosmetic/WjWorldCosmeticTypes.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldCosmeticDataAsset.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00014\ USTRUCT(BlueprintType)}
+\DoxyCodeLine{00015\ struct\ WJWORLD\_API\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition}{FCosmeticItemDefinition}}}
+\DoxyCodeLine{00016\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \ \ \ }
+\DoxyCodeLine{00020\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00021\ \ \ \ \ FName\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_abb4adee6ebb5e3b58e33d8772b68d1dd}{ItemId}};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00024\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00025\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_af51c73a10cb56a03f5504f82c9559e43}{SteamItemDefId}}\ =\ 0;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00028\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00029\ \ \ \ \ FText\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a284b3acb5ac38f6a720b1472a0f8ce62}{DisplayName}};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00032\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00033\ \ \ \ \ FText\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a111db8186963d23f782b294af152b61c}{Description}};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00036\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00037\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a675d04ea3707aaffdbbe554454a2b0db}{Slot}}\ =\ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}::\doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0ea6adf97f83acf6453d4a6a4b1070f3754}{None}};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00040\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00041\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_af3b6fbfb2df313f7e1012e2cb7ac931c}{ECosmeticRarity}}\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_ac2d12a7e9873b0775cb275f524548096}{Rarity}}\ =\ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_af3b6fbfb2df313f7e1012e2cb7ac931c}{ECosmeticRarity}}::Common;}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00044\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00045\ \ \ \ \ TSoftObjectPtr<USkeletalMesh>\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a04fed83e9eb9e9a5d50f2b636aff93f5}{SkeletalMesh}};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00048\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00049\ \ \ \ \ TSoftObjectPtr<UStaticMesh>\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a5b07fe1dc34f1880a436e77a1c2c5bee}{StaticMesh}};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00052\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00053\ \ \ \ \ TSoftObjectPtr<UTexture2D>\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_acc656d870336a71c7f8b1da77752054b}{Icon}};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00056\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00057\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a80082559945da38d9b53f5a4ec71b0c0}{Price}}\ =\ 0;}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00060\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Attachment"{}})}
+\DoxyCodeLine{00061\ \ \ \ \ FName\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_ade59dab0752b559df49a0a19b0936e5b}{AttachSocketName}};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00064\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Attachment"{}})}
+\DoxyCodeLine{00065\ \ \ \ \ FVector\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_ab0bdf04ed6675313f5837fa9da3ab7b0}{AttachLocationOffset}}\ =\ FVector::ZeroVector;}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00068\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Attachment"{}})}
+\DoxyCodeLine{00069\ \ \ \ \ FRotator\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a54fa3dda46e59f1e11e27e0bf2cf66dc}{AttachRotationOffset}}\ =\ FRotator::ZeroRotator;}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00072\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Attachment"{}})}
+\DoxyCodeLine{00073\ \ \ \ \ FVector\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a86cb22f34165fca629cee5289a8f25fe}{AttachScale}}\ =\ FVector::OneVector;}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition_a17f34a3146fcef260d154550e6435868}{IsValid}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !\doxymbox{\hyperlink{struct_f_cosmetic_item_definition_abb4adee6ebb5e3b58e33d8772b68d1dd}{ItemId}}.IsNone();\ \}}
+\DoxyCodeLine{00076\ \};}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00082\ UCLASS(BlueprintType)}
+\DoxyCodeLine{00083\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset}{UWjWorldCosmeticCatalogDataAsset}}\ :\ public\ UPrimaryDataAsset}
+\DoxyCodeLine{00084\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00089\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00090\ \ \ \ \ TArray<\doxymbox{\hyperlink{struct_f_cosmetic_item_definition}{FCosmeticItemDefinition}}>\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset_ac9f743a977dac7e3c51a585476801e11}{Items}};}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00093\ \ \ \ \ const\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition}{FCosmeticItemDefinition}}*\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset_ae774318325903256b87f7f862349e85e}{FindByItemId}}(FName\ ItemId)\ const;}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00096\ \ \ \ \ const\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition}{FCosmeticItemDefinition}}*\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset_a231d3f2d8cf2c71e3c9f745729b3e2f2}{FindBySteamItemDefId}}(int32\ SteamItemDefId)\ const;}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00099\ \ \ \ \ FName\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset_adfad6e5f9a7c2ecb7321d19916c9649f}{SteamItemDefIdToItemId}}(int32\ SteamItemDefId)\ const;}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00102\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset_ae4062ef348e7a3ed0d1a89b661b35b5d}{ItemIdToSteamItemDefId}}(FName\ ItemId)\ const;}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00105\ \ \ \ \ TArray<const\ \doxymbox{\hyperlink{struct_f_cosmetic_item_definition}{FCosmeticItemDefinition}}*>\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset_a414813f873bb49f243c1e6aafaea09e7}{GetItemsBySlot}}(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ Slot)\ const;}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{comment}{//\#if\ WITH\_EDITOR}}
+\DoxyCodeLine{00108\ \textcolor{comment}{//\ \ virtual\ void\ PreSave(FObjectPreSaveContext\ SaveContext)\ override;}}
+\DoxyCodeLine{00109\ \textcolor{comment}{//\#endif}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ protected:}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset_aab491ad0eba4bf5e1b9d60325d037429}{BuildLookupMaps}}()\ const;}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ mutable\ TMap<FName,\ int32>\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset_afcced6fcae4d5d538e9b0e96f927efa5}{ItemIdToIndex}};}
+\DoxyCodeLine{00116\ \ \ \ \ mutable\ TMap<int32,\ int32>\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset_a600229add4e0452602dbf411d9cc5a0e}{SteamDefIdToIndex}};}
+\DoxyCodeLine{00117\ \ \ \ \ mutable\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset_a8672fbd13268d8b9590bf7d78fe49133}{bLookupDirty}}\ =\ true;}
+\DoxyCodeLine{00118\ \};}
+
+\end{DoxyCode}

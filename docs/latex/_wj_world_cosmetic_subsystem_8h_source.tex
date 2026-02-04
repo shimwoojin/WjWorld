@@ -1,0 +1,125 @@
+\doxysection{Wj\+World\+Cosmetic\+Subsystem.\+h}
+\hypertarget{_wj_world_cosmetic_subsystem_8h_source}{}\label{_wj_world_cosmetic_subsystem_8h_source}\index{Source/WjWorld/Cosmetic/WjWorldCosmeticSubsystem.h@{Source/WjWorld/Cosmetic/WjWorldCosmeticSubsystem.h}}
+\doxymbox{\hyperlink{_wj_world_cosmetic_subsystem_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Subsystems/GameInstanceSubsystem.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h}{Cosmetic/WjWorldCosmeticTypes.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldCosmeticSubsystem.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#if\ WITH\_STEAM}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}steam/steam\_api.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset}{UWjWorldCosmeticCatalogDataAsset}};}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \doxymbox{\hyperlink{_wj_world_cosmetic_subsystem_8h_ae26ecafcf3f91fba755dccf4935d887e}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE}}(FOnInventoryUpdated);}
+\DoxyCodeLine{00017\ \doxymbox{\hyperlink{_wj_world_cosmetic_subsystem_8h_a27836f20ef4330ae32f3ba22270726bd}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams}}(FOnLoadoutChanged,\ \doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}},\ Slot,\ FName,\ ItemId);}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00026\ UCLASS()}
+\DoxyCodeLine{00027\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem}{UWjWorldCosmeticSubsystem}}\ :\ public\ UGameInstanceSubsystem}
+\DoxyCodeLine{00028\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_ae3ef1484ed0fb7c151d703f72b635f3d}{Initialize}}(FSubsystemCollectionBase\&\ Collection)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_aaafa520a2b8b04b86f6c39003eeb075f}{Deinitialize}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/\ 카탈로그\ -\/-\/-\/-\/}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00038\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a0c7054569a5641d10c49b0d50b39f874}{SetCatalog}}(\doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset}{UWjWorldCosmeticCatalogDataAsset}}*\ InCatalog);}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00042\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00043\ \ \ \ \ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset}{UWjWorldCosmeticCatalogDataAsset}}*\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a9dea1f61dfc96a91302cd5beb3cbfb57}{GetCatalog}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Catalog;\ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/\ 인벤토리\ -\/-\/-\/-\/}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00048\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00049\ \ \ \ \ void\ RequestInventoryRefresh();}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00052\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00053\ \ \ \ \ const\ TArray<\doxymbox{\hyperlink{struct_f_cosmetic_item_instance}{FCosmeticItemInstance}}>\&\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a23830c1b24689c61e1df97613f988073}{GetInventory}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CachedInventory;\ \}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00056\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00057\ \ \ \ \ bool\ HasItem(FName\ ItemId)\ const;}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00060\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{void}\ GrantItemLocally(FName\ ItemId,\ int32\ Quantity\ =\ 1);}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/\ 테스트/디버그\ -\/-\/-\/-\/}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00066\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic|Debug"{}},\ meta\ =\ (DevelopmentOnly))}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{bool}\ GenerateTestItem(FName\ ItemId);}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00070\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic|Debug"{}},\ meta\ =\ (DevelopmentOnly))}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{void}\ GrantAllItemsLocally();}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00074\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic|Debug"{}},\ meta\ =\ (DevelopmentOnly))}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{void}\ ClearLocalInventory();}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00078\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic|Debug"{}})}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{void}\ DebugPrintInventory()\ const;}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00082\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic|Debug"{}})}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{void}\ DebugPrintLoadout()\ const;}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/\ 로드아웃\ -\/-\/-\/-\/}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00088\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00089\ \ \ \ \ const\ \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmeticLoadout}}\&\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_aea2cd7d94a875ff529e516f9a1b80325}{GetLoadout}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CurrentLoadout;\ \}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00092\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00093\ \ \ \ \ bool\ EquipItem(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ Slot,\ FName\ ItemId);}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00096\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{void}\ UnequipSlot(\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmeticSlot}}\ Slot);}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/\ 로컬\ 저장\ -\/-\/-\/-\/}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00102\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordtype}{void}\ SaveLoadoutToLocal();}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00106\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordtype}{void}\ LoadLoadoutFromLocal();}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/\ 델리게이트\ -\/-\/-\/-\/}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00112\ \ \ \ \ FOnInventoryUpdated\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a6a336f6a62f6f5b34ef63ad3fc0342ac}{OnInventoryUpdated}};}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \ \ UPROPERTY(BlueprintAssignable,\ Category\ =\ \textcolor{stringliteral}{"{}Cosmetic"{}})}
+\DoxyCodeLine{00115\ \ \ \ \ FOnLoadoutChanged\ \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_abaee2fac850b0cd7c917b5ea6e3f6735}{OnLoadoutChanged}};}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ private:}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordtype}{void}\ PollSteamInventoryResult();}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordtype}{void}\ ParseInventoryResult();}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordtype}{void}\ StartInventoryPolling();}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordtype}{void}\ StopInventoryPolling();}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00131\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset}{UWjWorldCosmeticCatalogDataAsset}}>\ Catalog;}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00134\ \ \ \ \ TArray<\doxymbox{\hyperlink{struct_f_cosmetic_item_instance}{FCosmeticItemInstance}}>\ CachedInventory;}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00137\ \ \ \ \ \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmeticLoadout}}\ CurrentLoadout;}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00140\ \ \ \ \ static\ const\ FString\ LoadoutConfigSection;}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \textcolor{preprocessor}{\#if\ WITH\_STEAM}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00144\ \ \ \ \ SteamInventoryResult\_t\ PendingResultHandle\ =\ k\_SteamInventoryResultInvalid;}
+\DoxyCodeLine{00145\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00148\ \ \ \ \ FTimerHandle\ InventoryPollTimerHandle;}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordtype}{bool}\ bInventoryRequestPending\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00152\ \};}
+
+\end{DoxyCode}

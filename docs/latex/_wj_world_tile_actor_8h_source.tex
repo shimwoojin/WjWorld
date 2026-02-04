@@ -1,0 +1,99 @@
+\doxysection{Wj\+World\+Tile\+Actor.\+h}
+\hypertarget{_wj_world_tile_actor_8h_source}{}\label{_wj_world_tile_actor_8h_source}\index{Source/WjWorld/GamePlay/Wall/WjWorldTileActor.h@{Source/WjWorld/GamePlay/Wall/WjWorldTileActor.h}}
+\doxymbox{\hyperlink{_wj_world_tile_actor_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}GameFramework/Actor.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_types_8h}{WjTypes.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldTileActor.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }UBoxComponent;}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall}{UWjWorldGameRuleApproachingWall}};}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }UNiagaraSystem;}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }UStaticMeshComponent;}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }UMaterialInstanceDynamic;}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ UCLASS()}
+\DoxyCodeLine{00017\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a004eeefb7438f8af0b3c13c5519fc678}{AWjWorldTileActor}}\ :\ public\ AActor}
+\DoxyCodeLine{00018\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00020\ \ \ \ \ }
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{float}\ HitBoxSize\ =\ 5.0f;}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ FColor\ BombSignalOnColorWarning;}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ FColor\ BombSignalOnColorDanger;}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{static}\ UStaticMesh*\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_aef947c82ff9841ceb237639719693baa}{GetTileMesh}}();}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ \ \ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a004eeefb7438f8af0b3c13c5519fc678}{AWjWorldTileActor}}();}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a2b4311f97632b82c0832f03481b1c12c}{InitializeTile}}(\textcolor{keyword}{const}\ FVector\&\ InSize,\ \textcolor{keyword}{const}\ FVector\&\ InCenterOffset,\ \textcolor{keywordtype}{bool}\ bInIsWhiteTile);}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_adadef6c54a21a38550c86563e67e0387}{BeginPlay}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_aba43594f404f1cc6737e8b0e76b20792}{Tick}}(\textcolor{keywordtype}{float}\ DeltaTime)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_aed76ca0e749a67f771f7cadd689bbbb4}{GetLifetimeReplicatedProps}}(TArray<\ FLifetimeProperty\ >\&\ OutLifetimeProps)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_ab457b59151a19e30bcc5ba3c9a212f09}{PostNetInit}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{comment}{//\ 충돌\ 이벤트\ 핸들러}}
+\DoxyCodeLine{00043\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{void}\ OnBrickOverlapBegin(UPrimitiveComponent*\ OverlappedComponent,\ AActor*\ OtherActor,}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ UPrimitiveComponent*\ OtherComp,\ int32\ OtherBodyIndex,\ \textcolor{keywordtype}{bool}\ bFromSweep,\ \textcolor{keyword}{const}\ FHitResult\&\ SweepResult);}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{void}\ OnBrickOverlapEnd(UPrimitiveComponent*\ OverlappedComponent,\ AActor*\ OtherActor,\ UPrimitiveComponent*\ OtherComp,\ int32\ OtherBodyIndex);}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{bool}\ CheckBombSignalOn()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{void}\ Bomb();}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ UFUNCTION(NetMulticast,\ Unreliable)}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ SpawnBombEffect();}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ OnRep\_IsBombSignalOn();}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ ApplyTileColor();}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00063\ \ \ \ \ UPROPERTY(VisibleAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00064\ \ \ \ \ TObjectPtr<UBoxComponent>\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a5f0a308fbcd198602a2fd44ff2d6f65b}{CenterHitBoxComponent}};}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ UPROPERTY(VisibleAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00067\ \ \ \ \ TObjectPtr<UStaticMeshComponent>\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_ad015bdd2d9d7f9195e1b4994a3c6e355}{TileMeshComponent}};}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00070\ \ \ \ \ TObjectPtr<UBoxComponent>\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_ade13e9f4b9abafdf27a3e4ac6da3935f}{HitBoxComponents}}[\doxymbox{\hyperlink{namespace_e_wj_world_direction}{EWjWorldDirection}}::Max];}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ TWeakObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_game_rule_approaching_wall}{UWjWorldGameRuleApproachingWall}}>\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a65d97dd9856a5d1b2782e334113e6f19}{GameRule}};}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \ \ int32\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_aaa3ae6c0b26c3b9d5ed3d5ef466a2476}{bIsOverlapBricks}}[\doxymbox{\hyperlink{namespace_e_wj_world_direction}{EWjWorldDirection}}::Max];}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ UPROPERTY(ReplicatedUsing\ =\ OnRep\_IsBombSignalOn)}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a88c3b8993b81e128893513cc7b40f7c3}{bIsBombSignalOn}}\ =\ false;}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a700055c0c7e619922a7332a7e54bb4b3}{ElapsedBombingTime}}\ =\ 0.0f;}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \ \ UPROPERTY(EditAnywhere)}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a5cb27c5b065d611d2e0db50e2cc59935}{BombChargingTime}}\ =\ 3.0f;}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ UPROPERTY(EditAnywhere)}
+\DoxyCodeLine{00085\ \ \ \ \ UNiagaraSystem*\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_ad2644651248bde3c67aa816e69846a24}{NiagaraSystem}};}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00088\ \ \ \ \ TObjectPtr<UMaterialInstanceDynamic>\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a9b9cf52d185ffefc99a520e3f6ad0f3e}{DynamicMaterial}};}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ UPROPERTY(Replicated)}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a935fb6895c755b7d9da8c7fd4b665b71}{bIsWhiteTile}}\ =\ true;}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \ \ FLinearColor\ \doxymbox{\hyperlink{class_a_wj_world_tile_actor_a65f77e5fe031595591060e06b2e8d98d}{DefaultBaseColor}};}
+\DoxyCodeLine{00094\ \};}
+
+\end{DoxyCode}

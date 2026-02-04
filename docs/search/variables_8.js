@@ -1,4 +1,24 @@
 var searchData=
 [
-  ['joinbutton_0',['JoinButton',['../class_u_room_list_entry_widget.html#ac4c36035f7c1c92e1629d060f648b586',1,'URoomListEntryWidget']]]
+  ['icon_0',['Icon',['../struct_f_cosmetic_item_definition.html#acc656d870336a71c7f8b1da77752054b',1,'FCosmeticItemDefinition::Icon'],['../struct_f_placeable_object_definition.html#acecf16cd61b2b5c9e818cd88641f00b1',1,'FPlaceableObjectDefinition::Icon']]],
+  ['iconimage_1',['IconImage',['../class_u_cosmetic_item_entry_widget.html#abf85516d332ef6e5aba88ae2c61fee80',1,'UCosmeticItemEntryWidget']]],
+  ['inactivequesttids_2',['InactiveQuestTIDs',['../class_packet_quest_load_ntf.html#ab91ccdb19b3002ae4fc5f78e696feee3',1,'PacketQuestLoadNtf']]],
+  ['increaseplayersbutton_3',['IncreasePlayersButton',['../class_u_create_room_window.html#a2e981b8ffda98d2402623f7ed3e9c35c',1,'UCreateRoomWindow']]],
+  ['interactaction_4',['InteractAction',['../class_a_interactable_portal.html#ad580773070dad64f531d4b7e9c55bf5c',1,'AInteractablePortal']]],
+  ['interactionkey_5',['InteractionKey',['../class_a_interactable_portal.html#a33e91b9de8155138d93046fa25639302',1,'AInteractablePortal']]],
+  ['interactiontext_6',['InteractionText',['../class_u_interaction_widget.html#adee9bc95ced0e019ca41cc5ef45ea122',1,'UInteractionWidget']]],
+  ['interactiontrigger_7',['InteractionTrigger',['../class_a_interactable_portal.html#afaff89ddc03d4974d61df425305b8931',1,'AInteractablePortal']]],
+  ['interactionwidgetclass_8',['InteractionWidgetClass',['../class_a_interactable_portal.html#af3081ad0a2bb884b53137383f7dbf0ce',1,'AInteractablePortal']]],
+  ['interactionwidgetcomponent_9',['InteractionWidgetComponent',['../class_a_interactable_portal.html#a8d581390df62066b6a6be58411b2ec44',1,'AInteractablePortal']]],
+  ['introwidget_10',['IntroWidget',['../class_a_wj_world_game_mode_intro.html#a84a27f02971f9fe93504dc69ae196d77',1,'AWjWorldGameModeIntro']]],
+  ['introwidgetclass_11',['IntroWidgetClass',['../class_a_wj_world_game_mode_intro.html#aef675daa9fb5a3334a0fb670168c501a',1,'AWjWorldGameModeIntro']]],
+  ['invalidcolor_12',['InvalidColor',['../class_a_wj_world_placement_preview_actor.html#abc7ecce0211e6026b0778e3ce4bf27a0',1,'AWjWorldPlacementPreviewActor::InvalidColor'],['../class_a_wj_world_brick_preview_actor.html#a4fc1782642b267cbb2f4030dc3b7de17',1,'AWjWorldBrickPreviewActor::InvalidColor']]],
+  ['inventorytabbutton_13',['InventoryTabButton',['../class_u_cosmetic_main_window.html#a0c98d7b941f06cec854b8c58ceba309c',1,'UCosmeticMainWindow']]],
+  ['itembutton_14',['ItemButton',['../class_u_cosmetic_item_entry_widget.html#a86cbd911281fe81eaa3305cef2fed359',1,'UCosmeticItemEntryWidget']]],
+  ['itementrywidgetclass_15',['ItemEntryWidgetClass',['../class_u_cosmetic_main_window.html#a9e39cfaf2cd563075bd347ecab843573',1,'UCosmeticMainWindow']]],
+  ['itemgridpanel_16',['ItemGridPanel',['../class_u_cosmetic_main_window.html#a1194014d79757ca19e9c4ade9a186df8',1,'UCosmeticMainWindow']]],
+  ['itemid_17',['ItemId',['../struct_f_cosmetic_item_definition.html#abb4adee6ebb5e3b58e33d8772b68d1dd',1,'FCosmeticItemDefinition::ItemId'],['../struct_f_cosmetic_item_instance.html#a91e5e0bf48068fc75a63b8a09decf389',1,'FCosmeticItemInstance::ItemId'],['../struct_f_cosmetic_slot_entry.html#a0c7b08fe888b1ba762e9a2e9ed8244f7',1,'FCosmeticSlotEntry::ItemId']]],
+  ['itemidtoindex_18',['ItemIdToIndex',['../class_u_wj_world_cosmetic_catalog_data_asset.html#afcced6fcae4d5d538e9b0e96f927efa5',1,'UWjWorldCosmeticCatalogDataAsset']]],
+  ['items_19',['Items',['../class_u_wj_world_cosmetic_catalog_data_asset.html#ac9f743a977dac7e3c51a585476801e11',1,'UWjWorldCosmeticCatalogDataAsset']]],
+  ['itemscrollbox_20',['ItemScrollBox',['../class_u_cosmetic_main_window.html#a0d33dba22ecc21aee6a92c4c074888b1',1,'UCosmeticMainWindow']]]
 ];

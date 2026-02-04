@@ -1,0 +1,45 @@
+\doxysection{Wj\+World\+HUDPlay.\+h}
+\hypertarget{_wj_world_h_u_d_play_8h_source}{}\label{_wj_world_h_u_d_play_8h_source}\index{Source/WjWorld/Core/Play/WjWorldHUDPlay.h@{Source/WjWorld/Core/Play/WjWorldHUDPlay.h}}
+\doxymbox{\hyperlink{_wj_world_h_u_d_play_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_h_u_d_base_8h}{Core/Base/WjWorldHUDBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldHUDPlay.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget}{UGameplayGlobalHUDWidget}};}
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}};}
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_u_wj_world_game_rule_base}{UWjWorldGameRuleBase}};}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00016\ UCLASS()}
+\DoxyCodeLine{00017\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_play}{AWjWorldHUDPlay}}\ :\ public\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_base}{AWjWorldHUDBase}}}
+\DoxyCodeLine{00018\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00020\ \ \ \ \ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_play_ae0a7e2e609f5222999602450f0e28383}{StartGameStartCountDown}}(\textcolor{keywordtype}{float}\ CountDown);}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_play_ad5925e48b6f85dea5d8bb5e1716918e9}{ShowGameResultText}}(\textcolor{keyword}{const}\ FString\&\ ResultText,\ \textcolor{keywordtype}{float}\ Duration\ =\ 3.0f);}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_play_a967590819bf12ecd0ac4b62415d9cc77}{ShowGameRuleHUDWidget}}(TSubclassOf<UWjWorldGameRuleBase>\ GameRuleClass);}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_play_a4e28ca63d9b1cdf9ea282cf9ccc70139}{BeginPlay}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00031\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}UI"{}})}
+\DoxyCodeLine{00032\ \ \ \ \ TSubclassOf<\doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget}{UGameplayGlobalHUDWidget}}>\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_play_a0b822063a2abcaa29558fd45d2e4a0b1}{GlobalHUDWidgetClass}};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00035\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget}{UGameplayGlobalHUDWidget}}>\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_play_ac0b0fed25d99aa5f7e47fd9fe979dbcd}{GlobalHUDWidget}};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}UI"{}})}
+\DoxyCodeLine{00038\ \ \ \ \ TMap<TSubclassOf<\doxymbox{\hyperlink{class_u_wj_world_game_rule_base}{UWjWorldGameRuleBase}}>,\ TSubclassOf<\doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}>>\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_play_ad76e33fe44fdb4ba1cfd567e96761338}{GameRuleHUDWidgetClasses}};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00041\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}>\ \doxymbox{\hyperlink{class_a_wj_world_h_u_d_play_a38b70af5d4ed5b6951513a5f2af50935}{GameRuleHUDWidget}};}
+\DoxyCodeLine{00042\ \};}
+
+\end{DoxyCode}

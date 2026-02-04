@@ -1,0 +1,63 @@
+\doxysection{Wj\+World\+Character\+Attribute\+Set.\+h}
+\hypertarget{_wj_world_character_attribute_set_8h_source}{}\label{_wj_world_character_attribute_set_8h_source}\index{Source/WjWorld/AbilitySystem/AttributeSets/WjWorldCharacterAttributeSet.h@{Source/WjWorld/AbilitySystem/AttributeSets/WjWorldCharacterAttributeSet.h}}
+\doxymbox{\hyperlink{_wj_world_character_attribute_set_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}AttributeSet.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_attribute_set_base_8h}{WjWorldAttributeSetBase.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}WjWorldCharacterAttributeSet.generated.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00013\ UCLASS()}
+\DoxyCodeLine{00014\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set}{UWjWorldCharacterAttributeSet}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_attribute_set_base}{UWjWorldAttributeSetBase}}}
+\DoxyCodeLine{00015\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00017\ \ \ \ \ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ \ \ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_ab231b4af6b2e864f0c17bee175852796}{ATTRIBUTE\_ACCESSORS\_BASIC}}(\doxymbox{\hyperlink{class_u_wj_world_character_attribute_set}{UWjWorldCharacterAttributeSet}},\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_acc471c24cf2892094cce48f374bc8b88}{MaxHP}});}
+\DoxyCodeLine{00020\ \ \ \ \ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a945af8617f57c8f4083815024b85e365}{ATTRIBUTE\_ACCESSORS\_BASIC}}(\doxymbox{\hyperlink{class_u_wj_world_character_attribute_set}{UWjWorldCharacterAttributeSet}},\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a067290e730f8e5aadb0b9341ee32dba8}{HP}});}
+\DoxyCodeLine{00021\ \ \ \ \ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a4cb642a85ab050812ad63f95fd3205b6}{ATTRIBUTE\_ACCESSORS\_BASIC}}(\doxymbox{\hyperlink{class_u_wj_world_character_attribute_set}{UWjWorldCharacterAttributeSet}},\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a63a1e86d72c62f6e73e1711e13e4033e}{MaxSpawnBrickCharges}});}
+\DoxyCodeLine{00022\ \ \ \ \ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a507f6a84bbb5c32d085d52528aa49a8a}{ATTRIBUTE\_ACCESSORS\_BASIC}}(\doxymbox{\hyperlink{class_u_wj_world_character_attribute_set}{UWjWorldCharacterAttributeSet}},\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a81475b2f0f14161d91e91f25ce985a9c}{SpawnBrickCharges}});}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_add9f93867229148295935e70f9bf71e0}{GetLifetimeReplicatedProps}}(TArray<\ FLifetimeProperty\ >\&\ OutLifetimeProps)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a0e137d2f2c67c802b8631fc808a9fb00}{PreAttributeChange}}(\textcolor{keyword}{const}\ FGameplayAttribute\&\ Attribute,\ \textcolor{keywordtype}{float}\&\ NewValue)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a00624d368832d3fd3b45282b624c1666}{PostAttributeChange}}(\textcolor{keyword}{const}\ FGameplayAttribute\&\ Attribute,\ \textcolor{keywordtype}{float}\ OldValue,\ \textcolor{keywordtype}{float}\ NewValue)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_ab75661ade1c530cbc53cd0eb73fbc29b}{PreAttributeBaseChange}}(\textcolor{keyword}{const}\ FGameplayAttribute\&\ Attribute,\ \textcolor{keywordtype}{float}\&\ NewValue)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a82c58e411f2691d2c7d9d7a8b027ffe7}{PostAttributeBaseChange}}(\textcolor{keyword}{const}\ FGameplayAttribute\&\ Attribute,\ \textcolor{keywordtype}{float}\ OldValue,\ \textcolor{keywordtype}{float}\ NewValue)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_ab069363b40dcef53f405b835dcd6aad8}{PreGameplayEffectExecute}}(\textcolor{keyword}{struct}\ FGameplayEffectModCallbackData\&\ Data)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_ac1c3cd7fc480bb6199ef43a95340b33a}{PostGameplayEffectExecute}}(\textcolor{keyword}{const}\ \textcolor{keyword}{struct}\ FGameplayEffectModCallbackData\&\ Data)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00035\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00036\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a6f44d0c32158fc8334512733f40753c5}{OnRep\_MaxHP}}(const\ FGameplayAttributeData\&\ OldMaxHP);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00039\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_ade5212a5feea51fc801fb3bbf41e553e}{OnRep\_HP}}(const\ FGameplayAttributeData\&\ OldHP);}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00042\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a47f18c94a163c567730def5ccf0a5f66}{OnRep\_MaxSpawnBrickCharges}}(const\ FGameplayAttributeData\&\ OldMaxSpawnBrickCharges);}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00045\ \ \ \ \ virtual\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a85bc7d1f70470c277f11aee5faba0e48}{OnRep\_SpawnBrickCharges}}(const\ FGameplayAttributeData\&\ OldSpawnBrickCharges);}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ protected:}
+\DoxyCodeLine{00048\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Property"{}},\ ReplicatedUsing\ =\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a6f44d0c32158fc8334512733f40753c5}{OnRep\_MaxHP}},\ Meta\ =\ (AllowPrivateAccess\ =\ \textcolor{stringliteral}{"{}True"{}}))}
+\DoxyCodeLine{00049\ \ \ \ \ FGameplayAttributeData\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_acc471c24cf2892094cce48f374bc8b88}{MaxHP}};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Property"{}},\ ReplicatedUsing\ =\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_ade5212a5feea51fc801fb3bbf41e553e}{OnRep\_HP}},\ Meta\ =\ (AllowPrivateAccess\ =\ \textcolor{stringliteral}{"{}True"{}}))}
+\DoxyCodeLine{00052\ \ \ \ \ FGameplayAttributeData\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a067290e730f8e5aadb0b9341ee32dba8}{HP}};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{comment}{//\ SpawnBrick\ 충전\ 시스템}}
+\DoxyCodeLine{00055\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Property"{}},\ ReplicatedUsing\ =\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a47f18c94a163c567730def5ccf0a5f66}{OnRep\_MaxSpawnBrickCharges}},\ Meta\ =\ (AllowPrivateAccess\ =\ \textcolor{stringliteral}{"{}True"{}}))}
+\DoxyCodeLine{00056\ \ \ \ \ FGameplayAttributeData\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a63a1e86d72c62f6e73e1711e13e4033e}{MaxSpawnBrickCharges}};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Property"{}},\ ReplicatedUsing\ =\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a85bc7d1f70470c277f11aee5faba0e48}{OnRep\_SpawnBrickCharges}},\ Meta\ =\ (AllowPrivateAccess\ =\ \textcolor{stringliteral}{"{}True"{}}))}
+\DoxyCodeLine{00059\ \ \ \ \ FGameplayAttributeData\ \doxymbox{\hyperlink{class_u_wj_world_character_attribute_set_a81475b2f0f14161d91e91f25ce985a9c}{SpawnBrickCharges}};}
+\DoxyCodeLine{00060\ \};}
+
+\end{DoxyCode}

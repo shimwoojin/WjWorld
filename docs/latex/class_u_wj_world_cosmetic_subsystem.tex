@@ -1,0 +1,203 @@
+\doxysection{UWj\+World\+Cosmetic\+Subsystem Class Reference}
+\hypertarget{class_u_wj_world_cosmetic_subsystem}{}\label{class_u_wj_world_cosmetic_subsystem}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Cosmetic\+Subsystem.\+h$>$}
+
+Inheritance diagram for UWj\+World\+Cosmetic\+Subsystem:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_u_wj_world_cosmetic_subsystem}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_ae3ef1484ed0fb7c151d703f72b635f3d}{Initialize}} (FSubsystem\+Collection\+Base \&Collection) override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_aaafa520a2b8b04b86f6c39003eeb075f}{Deinitialize}} () override
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a0c7054569a5641d10c49b0d50b39f874}{Set\+Catalog}} (\doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset}{UWj\+World\+Cosmetic\+Catalog\+Data\+Asset}} \texorpdfstring{$\ast$}{*}In\+Catalog)
+\item 
+\doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset}{UWj\+World\+Cosmetic\+Catalog\+Data\+Asset}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a9dea1f61dfc96a91302cd5beb3cbfb57}{Get\+Catalog}} () const
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a38b24500c8bd7a3bb813ed168d2e03ce}{Request\+Inventory\+Refresh}} ()
+\item 
+const TArray$<$ \doxymbox{\hyperlink{struct_f_cosmetic_item_instance}{FCosmetic\+Item\+Instance}} $>$ \& \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a23830c1b24689c61e1df97613f988073}{Get\+Inventory}} () const
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a04c334aa339063b82aea4be3de7e1a8f}{Has\+Item}} (FName Item\+Id) const
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_aa31dc47fe560271b6aa2d5ddcf354c0a}{Grant\+Item\+Locally}} (FName Item\+Id, int32 Quantity=1)
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a86307dcc6c4a51b6aa7dabb8325058cf}{Generate\+Test\+Item}} (FName Item\+Id)
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a65aca3d9db81391d1a3cdd95b602a644}{Grant\+All\+Items\+Locally}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a670a3cbc78a43cd995c05cde04ecfef6}{Clear\+Local\+Inventory}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_ab00a543a4764d308837ba4227b74bd7e}{Debug\+Print\+Inventory}} () const
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a92d60b6658c592bed92d21ab8330e244}{Debug\+Print\+Loadout}} () const
+\item 
+const \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmetic\+Loadout}} \& \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_aea2cd7d94a875ff529e516f9a1b80325}{Get\+Loadout}} () const
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a460d25361d25e67280e00dd2438e5d17}{Equip\+Item}} (\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmetic\+Slot}} Slot, FName Item\+Id)
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a3218487b041eba48795f87e3c027850c}{Unequip\+Slot}} (\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmetic\+Slot}} Slot)
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_ad8c90aeec0b1fbb1982d52a4194edd5b}{Save\+Loadout\+To\+Local}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a7c29ce6576c6cf22a5c381c6186fa572}{Load\+Loadout\+From\+Local}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FOn\+Inventory\+Updated \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_a6a336f6a62f6f5b34ef63ad3fc0342ac}{On\+Inventory\+Updated}}
+\item 
+FOn\+Loadout\+Changed \doxymbox{\hyperlink{class_u_wj_world_cosmetic_subsystem_abaee2fac850b0cd7c917b5ea6e3f6735}{On\+Loadout\+Changed}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+코스메틱 인벤토리 및 로드아웃 관리 서브시스템
+\begin{DoxyItemize}
+\item Steam Inventory 조회 (\+\#if WITH\+\_\+\+STEAM)
+\item 인벤토리 캐시 (Steam\+Item\+Def\+Id → Item\+Id 변환)
+\item 로드아웃 장착/\+해제
+\item 로컬 저장/\+로드 (GConfig) 
+\end{DoxyItemize}
+
+\label{doc-func-members}
+\Hypertarget{class_u_wj_world_cosmetic_subsystem_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_wj_world_cosmetic_subsystem_a670a3cbc78a43cd995c05cde04ecfef6}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!ClearLocalInventory@{ClearLocalInventory}}
+\index{ClearLocalInventory@{ClearLocalInventory}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{ClearLocalInventory()}{ClearLocalInventory()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_a670a3cbc78a43cd995c05cde04ecfef6} 
+void UWj\+World\+Cosmetic\+Subsystem::\+\+Clear\+Local\+Inventory (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+로컬 인벤토리 초기화 (개발 빌드 전용) \Hypertarget{class_u_wj_world_cosmetic_subsystem_ab00a543a4764d308837ba4227b74bd7e}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!DebugPrintInventory@{DebugPrintInventory}}
+\index{DebugPrintInventory@{DebugPrintInventory}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{DebugPrintInventory()}{DebugPrintInventory()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_ab00a543a4764d308837ba4227b74bd7e} 
+void UWj\+World\+Cosmetic\+Subsystem::\+\+Debug\+Print\+Inventory (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+현재 인벤토리 상태를 로그로 출력 \Hypertarget{class_u_wj_world_cosmetic_subsystem_a92d60b6658c592bed92d21ab8330e244}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!DebugPrintLoadout@{DebugPrintLoadout}}
+\index{DebugPrintLoadout@{DebugPrintLoadout}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{DebugPrintLoadout()}{DebugPrintLoadout()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_a92d60b6658c592bed92d21ab8330e244} 
+void UWj\+World\+Cosmetic\+Subsystem::\+\+Debug\+Print\+Loadout (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+현재 로드아웃 상태를 로그로 출력 \Hypertarget{class_u_wj_world_cosmetic_subsystem_aaafa520a2b8b04b86f6c39003eeb075f}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!Deinitialize@{Deinitialize}}
+\index{Deinitialize@{Deinitialize}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{Deinitialize()}{Deinitialize()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_aaafa520a2b8b04b86f6c39003eeb075f} 
+void UWj\+World\+Cosmetic\+Subsystem::\+\+Deinitialize (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_cosmetic_subsystem_a460d25361d25e67280e00dd2438e5d17}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!EquipItem@{EquipItem}}
+\index{EquipItem@{EquipItem}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{EquipItem()}{EquipItem()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_a460d25361d25e67280e00dd2438e5d17} 
+bool UWj\+World\+Cosmetic\+Subsystem::\+\+Equip\+Item (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmetic\+Slot}}}]{Slot}{, }\item[{FName}]{Item\+Id}{}\end{DoxyParamCaption})}
+
+슬롯에 아이템 장착 \Hypertarget{class_u_wj_world_cosmetic_subsystem_a86307dcc6c4a51b6aa7dabb8325058cf}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!GenerateTestItem@{GenerateTestItem}}
+\index{GenerateTestItem@{GenerateTestItem}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{GenerateTestItem()}{GenerateTestItem()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_a86307dcc6c4a51b6aa7dabb8325058cf} 
+bool UWj\+World\+Cosmetic\+Subsystem::\+\+Generate\+Test\+Item (\begin{DoxyParamCaption}\item[{FName}]{Item\+Id}{}\end{DoxyParamCaption})}
+
+Steam Generate\+Items를 사용하여 테스트 아이템 생성 (개발 빌드 전용) \Hypertarget{class_u_wj_world_cosmetic_subsystem_a9dea1f61dfc96a91302cd5beb3cbfb57}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!GetCatalog@{GetCatalog}}
+\index{GetCatalog@{GetCatalog}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{GetCatalog()}{GetCatalog()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_a9dea1f61dfc96a91302cd5beb3cbfb57} 
+\doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset}{UWj\+World\+Cosmetic\+Catalog\+Data\+Asset}} \texorpdfstring{$\ast$}{*} UWj\+World\+Cosmetic\+Subsystem::\+\+Get\+Catalog (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+카탈로그 데이터 에셋 반환 \Hypertarget{class_u_wj_world_cosmetic_subsystem_a23830c1b24689c61e1df97613f988073}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!GetInventory@{GetInventory}}
+\index{GetInventory@{GetInventory}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{GetInventory()}{GetInventory()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_a23830c1b24689c61e1df97613f988073} 
+const TArray$<$ \doxymbox{\hyperlink{struct_f_cosmetic_item_instance}{FCosmetic\+Item\+Instance}} $>$ \& UWj\+World\+Cosmetic\+Subsystem::\+\+Get\+Inventory (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+캐시된 인벤토리 반환 \Hypertarget{class_u_wj_world_cosmetic_subsystem_aea2cd7d94a875ff529e516f9a1b80325}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!GetLoadout@{GetLoadout}}
+\index{GetLoadout@{GetLoadout}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{GetLoadout()}{GetLoadout()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_aea2cd7d94a875ff529e516f9a1b80325} 
+const \doxymbox{\hyperlink{struct_f_cosmetic_loadout}{FCosmetic\+Loadout}} \& UWj\+World\+Cosmetic\+Subsystem::\+\+Get\+Loadout (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+현재 로드아웃 반환 \Hypertarget{class_u_wj_world_cosmetic_subsystem_a65aca3d9db81391d1a3cdd95b602a644}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!GrantAllItemsLocally@{GrantAllItemsLocally}}
+\index{GrantAllItemsLocally@{GrantAllItemsLocally}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{GrantAllItemsLocally()}{GrantAllItemsLocally()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_a65aca3d9db81391d1a3cdd95b602a644} 
+void UWj\+World\+Cosmetic\+Subsystem::\+\+Grant\+All\+Items\+Locally (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+모든 카탈로그 아이템을 로컬 인벤토리에 추가 (개발 빌드 전용) \Hypertarget{class_u_wj_world_cosmetic_subsystem_aa31dc47fe560271b6aa2d5ddcf354c0a}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!GrantItemLocally@{GrantItemLocally}}
+\index{GrantItemLocally@{GrantItemLocally}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{GrantItemLocally()}{GrantItemLocally()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_aa31dc47fe560271b6aa2d5ddcf354c0a} 
+void UWj\+World\+Cosmetic\+Subsystem::\+\+Grant\+Item\+Locally (\begin{DoxyParamCaption}\item[{FName}]{Item\+Id}{, }\item[{int32}]{Quantity}{ = {\ttfamily 1}}\end{DoxyParamCaption})}
+
+인벤토리에 아이템 추가 (테스트/\+오프라인용) \Hypertarget{class_u_wj_world_cosmetic_subsystem_a04c334aa339063b82aea4be3de7e1a8f}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!HasItem@{HasItem}}
+\index{HasItem@{HasItem}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{HasItem()}{HasItem()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_a04c334aa339063b82aea4be3de7e1a8f} 
+bool UWj\+World\+Cosmetic\+Subsystem::\+\+Has\+Item (\begin{DoxyParamCaption}\item[{FName}]{Item\+Id}{}\end{DoxyParamCaption}) const}
+
+특정 아이템 보유 여부 \Hypertarget{class_u_wj_world_cosmetic_subsystem_ae3ef1484ed0fb7c151d703f72b635f3d}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_ae3ef1484ed0fb7c151d703f72b635f3d} 
+void UWj\+World\+Cosmetic\+Subsystem::\+\+Initialize (\begin{DoxyParamCaption}\item[{FSubsystem\+Collection\+Base \&}]{Collection}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_cosmetic_subsystem_a7c29ce6576c6cf22a5c381c6186fa572}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!LoadLoadoutFromLocal@{LoadLoadoutFromLocal}}
+\index{LoadLoadoutFromLocal@{LoadLoadoutFromLocal}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{LoadLoadoutFromLocal()}{LoadLoadoutFromLocal()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_a7c29ce6576c6cf22a5c381c6186fa572} 
+void UWj\+World\+Cosmetic\+Subsystem::\+\+Load\+Loadout\+From\+Local (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+로컬에서 로드아웃 로드 \Hypertarget{class_u_wj_world_cosmetic_subsystem_a38b24500c8bd7a3bb813ed168d2e03ce}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!RequestInventoryRefresh@{RequestInventoryRefresh}}
+\index{RequestInventoryRefresh@{RequestInventoryRefresh}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{RequestInventoryRefresh()}{RequestInventoryRefresh()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_a38b24500c8bd7a3bb813ed168d2e03ce} 
+void UWj\+World\+Cosmetic\+Subsystem::\+\+Request\+Inventory\+Refresh (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+Steam으로부터 인벤토리를 갱신 요청 \Hypertarget{class_u_wj_world_cosmetic_subsystem_ad8c90aeec0b1fbb1982d52a4194edd5b}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!SaveLoadoutToLocal@{SaveLoadoutToLocal}}
+\index{SaveLoadoutToLocal@{SaveLoadoutToLocal}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{SaveLoadoutToLocal()}{SaveLoadoutToLocal()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_ad8c90aeec0b1fbb1982d52a4194edd5b} 
+void UWj\+World\+Cosmetic\+Subsystem::\+\+Save\+Loadout\+To\+Local (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+로드아웃을 로컬에 저장 \Hypertarget{class_u_wj_world_cosmetic_subsystem_a0c7054569a5641d10c49b0d50b39f874}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!SetCatalog@{SetCatalog}}
+\index{SetCatalog@{SetCatalog}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{SetCatalog()}{SetCatalog()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_a0c7054569a5641d10c49b0d50b39f874} 
+void UWj\+World\+Cosmetic\+Subsystem::\+\+Set\+Catalog (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_u_wj_world_cosmetic_catalog_data_asset}{UWj\+World\+Cosmetic\+Catalog\+Data\+Asset}} \texorpdfstring{$\ast$}{*}}]{In\+Catalog}{}\end{DoxyParamCaption})}
+
+카탈로그 데이터 에셋 설정 \Hypertarget{class_u_wj_world_cosmetic_subsystem_a3218487b041eba48795f87e3c027850c}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!UnequipSlot@{UnequipSlot}}
+\index{UnequipSlot@{UnequipSlot}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{UnequipSlot()}{UnequipSlot()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_a3218487b041eba48795f87e3c027850c} 
+void UWj\+World\+Cosmetic\+Subsystem::\+\+Unequip\+Slot (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmetic\+Slot}}}]{Slot}{}\end{DoxyParamCaption})}
+
+슬롯 아이템 해제 
+
+\label{doc-variable-members}
+\Hypertarget{class_u_wj_world_cosmetic_subsystem_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_wj_world_cosmetic_subsystem_a6a336f6a62f6f5b34ef63ad3fc0342ac}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!OnInventoryUpdated@{OnInventoryUpdated}}
+\index{OnInventoryUpdated@{OnInventoryUpdated}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{OnInventoryUpdated}{OnInventoryUpdated}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_a6a336f6a62f6f5b34ef63ad3fc0342ac} 
+FOn\+Inventory\+Updated UWj\+World\+Cosmetic\+Subsystem::\+\+On\+Inventory\+Updated}
+
+\Hypertarget{class_u_wj_world_cosmetic_subsystem_abaee2fac850b0cd7c917b5ea6e3f6735}\index{UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}!OnLoadoutChanged@{OnLoadoutChanged}}
+\index{OnLoadoutChanged@{OnLoadoutChanged}!UWjWorldCosmeticSubsystem@{UWjWorldCosmeticSubsystem}}
+\doxysubsubsection{\texorpdfstring{OnLoadoutChanged}{OnLoadoutChanged}}
+{\footnotesize\ttfamily \label{class_u_wj_world_cosmetic_subsystem_abaee2fac850b0cd7c917b5ea6e3f6735} 
+FOn\+Loadout\+Changed UWj\+World\+Cosmetic\+Subsystem::\+\+On\+Loadout\+Changed}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Cosmetic/\+\doxymbox{\hyperlink{_wj_world_cosmetic_subsystem_8h}{Wj\+World\+Cosmetic\+Subsystem.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Cosmetic/\+\doxymbox{\hyperlink{_wj_world_cosmetic_subsystem_8cpp}{Wj\+World\+Cosmetic\+Subsystem.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,45 @@
+\doxysection{Gameplay\+Global\+HUDWidget.\+h}
+\hypertarget{_gameplay_global_h_u_d_widget_8h_source}{}\label{_gameplay_global_h_u_d_widget_8h_source}\index{Source/WjWorld/UI/HUD/GameplayGlobalHUDWidget.h@{Source/WjWorld/UI/HUD/GameplayGlobalHUDWidget.h}}
+\doxymbox{\hyperlink{_gameplay_global_h_u_d_widget_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_user_widget_base_8h}{UI/WjWorldUserWidgetBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}GameplayGlobalHUDWidget.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }UTextBlock;}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00014\ UCLASS()}
+\DoxyCodeLine{00015\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget}{UGameplayGlobalHUDWidget}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}}
+\DoxyCodeLine{00016\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00018\ \ \ \ \ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget_ae32a9955073f5c32c71624930a4ac968}{NativeConstruct}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget_ac4425ad8fb6e22ba9e36dc4570f39c62}{NativeTick}}(\textcolor{keyword}{const}\ FGeometry\&\ MyGeometry,\ \textcolor{keywordtype}{float}\ InDeltaTime)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget_afb2fe575f0635b11bacf317bc6bb6c39}{StartCountDown}}(\textcolor{keywordtype}{float}\ CountDown);}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget_a7b5e42f4700af72e75206ddcacf14d58}{EndCountDown}}(\textcolor{keywordtype}{float}\ CountDown);}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget_af32da2ee9d5c7c39f27d96e45564b07d}{ShowGameResultText}}(\textcolor{keyword}{const}\ FString\&\ ResultText,\ \textcolor{keywordtype}{float}\ Duration\ =\ 3.0f);}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00029\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00030\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget_ae3bd45b8893309da04c2c5ad7c84b74a}{GameStartCountText}};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00033\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget_aa03384294ab96617cdfb45d3803e3fd6}{GameEndCountText}};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00036\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_gameplay_global_h_u_d_widget_ac9d0399c8f83cdab52a07420677b46ca}{GameResultText}};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ private:}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{float}\ GameStartCountDownTime\ =\ 0.0f;}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{float}\ GameEndCountDownTime\ =\ 0.0f;}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{float}\ ResultTextDisplayTime\ =\ 0.0f;}
+\DoxyCodeLine{00042\ \};}
+
+\end{DoxyCode}

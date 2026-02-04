@@ -8,6 +8,24 @@
 struct \doxymbox{\hyperlink{struct_f_room_settings}{FRoom\+Settings}}
 \item 
 struct \doxymbox{\hyperlink{struct_f_room_info}{FRoom\+Info}}
+\item 
+struct \doxymbox{\hyperlink{struct_f_player_display_info}{FPlayer\+Display\+Info}}
+\item 
+struct \doxymbox{\hyperlink{struct_f_host_migration_context}{FHost\+Migration\+Context}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1e}{EHost\+Migration\+State}} :\+ uint8 \{ \newline
+\doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = "{}\+None"{})
+, \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = "{}\+Detected"{})
+, \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = "{}\+Creating Session"{})
+, \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = "{}\+Searching Session"{})
+, \newline
+\doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = "{}\+Joining Session"{})
+, \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = "{}\+Complete"{})
+, \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = "{}\+Failed"{})
+ \}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -21,7 +39,64 @@ struct \doxymbox{\hyperlink{struct_f_room_info}{FRoom\+Info}}
 \doxymbox{\hyperlink{_session_types_8h_af41241c66b2d7ce02dccf1563e97ce9a}{DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param}} (FOn\+Room\+Destroyed, bool, b\+Was\+Successful)
 \item 
 \doxymbox{\hyperlink{_session_types_8h_af5ed7f574d69732ea5bf509a4a11d98b}{DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param}} (FOn\+Room\+Started, bool, b\+Was\+Successful)
+\item 
+\doxymbox{\hyperlink{_session_types_8h_a67f6169d0753d3904a9fcb84858496d0}{DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param}} (FOn\+Room\+Ended, bool, b\+Was\+Successful)
 \end{DoxyCompactItemize}
+
+
+\label{doc-enum-members}
+\Hypertarget{_session_types_8h_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1e}\index{SessionTypes.h@{SessionTypes.h}!EHostMigrationState@{EHostMigrationState}}
+\index{EHostMigrationState@{EHostMigrationState}!SessionTypes.h@{SessionTypes.h}}
+\doxysubsubsection{\texorpdfstring{EHostMigrationState}{EHostMigrationState}}
+{\footnotesize\ttfamily \label{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1e} 
+enum class \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1e}{EHost\+Migration\+State}} :\+ uint8\hspace{0.3cm}{\ttfamily [strong]}}
+
+호스트 마이그레이션 상태 \begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!SessionTypes.h@{SessionTypes.h}}
+\index{SessionTypes.h@{SessionTypes.h}!UMETA@{UMETA}}
+}\Hypertarget{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!SessionTypes.h@{SessionTypes.h}}
+\index{SessionTypes.h@{SessionTypes.h}!UMETA@{UMETA}}
+}\Hypertarget{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!SessionTypes.h@{SessionTypes.h}}
+\index{SessionTypes.h@{SessionTypes.h}!UMETA@{UMETA}}
+}\Hypertarget{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!SessionTypes.h@{SessionTypes.h}}
+\index{SessionTypes.h@{SessionTypes.h}!UMETA@{UMETA}}
+}\Hypertarget{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!SessionTypes.h@{SessionTypes.h}}
+\index{SessionTypes.h@{SessionTypes.h}!UMETA@{UMETA}}
+}\Hypertarget{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!SessionTypes.h@{SessionTypes.h}}
+\index{SessionTypes.h@{SessionTypes.h}!UMETA@{UMETA}}
+}\Hypertarget{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!SessionTypes.h@{SessionTypes.h}}
+\index{SessionTypes.h@{SessionTypes.h}!UMETA@{UMETA}}
+}\Hypertarget{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635} 
+UMETA&\\
+\hline
+
+\end{DoxyEnumFields}
 
 
 \label{doc-func-members}
@@ -29,25 +104,31 @@ struct \doxymbox{\hyperlink{struct_f_room_info}{FRoom\+Info}}
 \doxysubsection{Function Documentation}
 \Hypertarget{_session_types_8h_a2037544477cc8dcf21ea9f6f181da102}\index{SessionTypes.h@{SessionTypes.h}!DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}
 \index{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}!SessionTypes.h@{SessionTypes.h}}
-\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
 {\footnotesize\ttfamily \label{_session_types_8h_a2037544477cc8dcf21ea9f6f181da102} 
 DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param (\begin{DoxyParamCaption}\item[{FOn\+Room\+Created}]{}{, }\item[{bool}]{}{, }\item[{b\+Was\+Successful}]{}{}\end{DoxyParamCaption})}
 
 Session 델리게이트 타입 주의:\+ 이름에 "{}\+Room"{}을 붙여서 Online\+Subsystem 델리게이트와 충돌 방지 \Hypertarget{_session_types_8h_af41241c66b2d7ce02dccf1563e97ce9a}\index{SessionTypes.h@{SessionTypes.h}!DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}
 \index{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}!SessionTypes.h@{SessionTypes.h}}
-\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
 {\footnotesize\ttfamily \label{_session_types_8h_af41241c66b2d7ce02dccf1563e97ce9a} 
 DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param (\begin{DoxyParamCaption}\item[{FOn\+Room\+Destroyed}]{}{, }\item[{bool}]{}{, }\item[{b\+Was\+Successful}]{}{}\end{DoxyParamCaption})}
 
+\Hypertarget{_session_types_8h_a67f6169d0753d3904a9fcb84858496d0}\index{SessionTypes.h@{SessionTypes.h}!DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}
+\index{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}!SessionTypes.h@{SessionTypes.h}}
+\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily \label{_session_types_8h_a67f6169d0753d3904a9fcb84858496d0} 
+DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param (\begin{DoxyParamCaption}\item[{FOn\+Room\+Ended}]{}{, }\item[{bool}]{}{, }\item[{b\+Was\+Successful}]{}{}\end{DoxyParamCaption})}
+
 \Hypertarget{_session_types_8h_af7b44db9cb0599bbd264977d5f537ca0}\index{SessionTypes.h@{SessionTypes.h}!DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}
 \index{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}!SessionTypes.h@{SessionTypes.h}}
-\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
 {\footnotesize\ttfamily \label{_session_types_8h_af7b44db9cb0599bbd264977d5f537ca0} 
 DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param (\begin{DoxyParamCaption}\item[{FOn\+Room\+Joined}]{}{, }\item[{bool}]{}{, }\item[{b\+Was\+Successful}]{}{}\end{DoxyParamCaption})}
 
 \Hypertarget{_session_types_8h_af5ed7f574d69732ea5bf509a4a11d98b}\index{SessionTypes.h@{SessionTypes.h}!DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}
 \index{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam@{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}!SessionTypes.h@{SessionTypes.h}}
-\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+\doxysubsubsection{\texorpdfstring{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
 {\footnotesize\ttfamily \label{_session_types_8h_af5ed7f574d69732ea5bf509a4a11d98b} 
 DECLARE\+\_\+\+DYNAMIC\+\_\+\+MULTICAST\+\_\+\+DELEGATE\+\_\+\+One\+Param (\begin{DoxyParamCaption}\item[{FOn\+Room\+Started}]{}{, }\item[{bool}]{}{, }\item[{b\+Was\+Successful}]{}{}\end{DoxyParamCaption})}
 

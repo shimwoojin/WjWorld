@@ -1,0 +1,98 @@
+\doxysection{UWj\+World\+Purchase\+Subsystem Class Reference}
+\hypertarget{class_u_wj_world_purchase_subsystem}{}\label{class_u_wj_world_purchase_subsystem}\index{UWjWorldPurchaseSubsystem@{UWjWorldPurchaseSubsystem}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Purchase\+Subsystem.\+h$>$}
+
+Inheritance diagram for UWj\+World\+Purchase\+Subsystem:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_u_wj_world_purchase_subsystem}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_purchase_subsystem_aea4a07b93fef370829f78810a07e9bec}{Initialize}} (FSubsystem\+Collection\+Base \&Collection) override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_wj_world_purchase_subsystem_a4b3b1faa4f998db0a68875355ad28fba}{Deinitialize}} () override
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_purchase_subsystem_ad0373122ce80503bd45dd81984882306}{Request\+Purchase}} (FName Item\+Id)
+\item 
+\doxymbox{\hyperlink{_wj_world_purchase_subsystem_8h_a15acf98b582e7cf7a17c121e5ca78399}{EPurchase\+State}} \doxymbox{\hyperlink{class_u_wj_world_purchase_subsystem_ab31da866d3a25e75b77d957cf30e7584}{Get\+Purchase\+State}} () const
+\item 
+bool \doxymbox{\hyperlink{class_u_wj_world_purchase_subsystem_a22d585f894151caaf95fb741f47e4988}{Is\+Purchase\+Pending}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FOn\+Purchase\+Complete \doxymbox{\hyperlink{class_u_wj_world_purchase_subsystem_a9e35b37b30a001728d1aafd624542d50}{On\+Purchase\+Complete}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Steam 결제 처리 서브시스템
+\begin{DoxyItemize}
+\item Steam Micro\+Transaction API 호출 (\+\#if WITH\+\_\+\+STEAM)
+\item 구매 상태 관리
+\item 구매 완료 시 Cosmetic\+Subsystem에 인벤토리 갱신 요청 
+\end{DoxyItemize}
+
+\label{doc-func-members}
+\Hypertarget{class_u_wj_world_purchase_subsystem_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_wj_world_purchase_subsystem_a4b3b1faa4f998db0a68875355ad28fba}\index{UWjWorldPurchaseSubsystem@{UWjWorldPurchaseSubsystem}!Deinitialize@{Deinitialize}}
+\index{Deinitialize@{Deinitialize}!UWjWorldPurchaseSubsystem@{UWjWorldPurchaseSubsystem}}
+\doxysubsubsection{\texorpdfstring{Deinitialize()}{Deinitialize()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_purchase_subsystem_a4b3b1faa4f998db0a68875355ad28fba} 
+void UWj\+World\+Purchase\+Subsystem::\+\+Deinitialize (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_purchase_subsystem_ab31da866d3a25e75b77d957cf30e7584}\index{UWjWorldPurchaseSubsystem@{UWjWorldPurchaseSubsystem}!GetPurchaseState@{GetPurchaseState}}
+\index{GetPurchaseState@{GetPurchaseState}!UWjWorldPurchaseSubsystem@{UWjWorldPurchaseSubsystem}}
+\doxysubsubsection{\texorpdfstring{GetPurchaseState()}{GetPurchaseState()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_purchase_subsystem_ab31da866d3a25e75b77d957cf30e7584} 
+\doxymbox{\hyperlink{_wj_world_purchase_subsystem_8h_a15acf98b582e7cf7a17c121e5ca78399}{EPurchase\+State}} UWj\+World\+Purchase\+Subsystem::\+\+Get\+Purchase\+State (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+현재 구매 상태 \Hypertarget{class_u_wj_world_purchase_subsystem_aea4a07b93fef370829f78810a07e9bec}\index{UWjWorldPurchaseSubsystem@{UWjWorldPurchaseSubsystem}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!UWjWorldPurchaseSubsystem@{UWjWorldPurchaseSubsystem}}
+\doxysubsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_purchase_subsystem_aea4a07b93fef370829f78810a07e9bec} 
+void UWj\+World\+Purchase\+Subsystem::\+\+Initialize (\begin{DoxyParamCaption}\item[{FSubsystem\+Collection\+Base \&}]{Collection}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_wj_world_purchase_subsystem_a22d585f894151caaf95fb741f47e4988}\index{UWjWorldPurchaseSubsystem@{UWjWorldPurchaseSubsystem}!IsPurchasePending@{IsPurchasePending}}
+\index{IsPurchasePending@{IsPurchasePending}!UWjWorldPurchaseSubsystem@{UWjWorldPurchaseSubsystem}}
+\doxysubsubsection{\texorpdfstring{IsPurchasePending()}{IsPurchasePending()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_purchase_subsystem_a22d585f894151caaf95fb741f47e4988} 
+bool UWj\+World\+Purchase\+Subsystem::\+\+Is\+Purchase\+Pending (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+현재 구매 진행 중 여부 \Hypertarget{class_u_wj_world_purchase_subsystem_ad0373122ce80503bd45dd81984882306}\index{UWjWorldPurchaseSubsystem@{UWjWorldPurchaseSubsystem}!RequestPurchase@{RequestPurchase}}
+\index{RequestPurchase@{RequestPurchase}!UWjWorldPurchaseSubsystem@{UWjWorldPurchaseSubsystem}}
+\doxysubsubsection{\texorpdfstring{RequestPurchase()}{RequestPurchase()}}
+{\footnotesize\ttfamily \label{class_u_wj_world_purchase_subsystem_ad0373122ce80503bd45dd81984882306} 
+bool UWj\+World\+Purchase\+Subsystem::\+\+Request\+Purchase (\begin{DoxyParamCaption}\item[{FName}]{Item\+Id}{}\end{DoxyParamCaption})}
+
+아이템 구매 요청 
+\begin{DoxyParams}{Parameters}
+{\em Item\+Id} & 구매할 아이템의 플랫폼 독립 ID \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+구매 요청 성공 여부 (비동기, 결과는 On\+Purchase\+Complete로 수신) 
+\end{DoxyReturn}
+
+
+\label{doc-variable-members}
+\Hypertarget{class_u_wj_world_purchase_subsystem_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_wj_world_purchase_subsystem_a9e35b37b30a001728d1aafd624542d50}\index{UWjWorldPurchaseSubsystem@{UWjWorldPurchaseSubsystem}!OnPurchaseComplete@{OnPurchaseComplete}}
+\index{OnPurchaseComplete@{OnPurchaseComplete}!UWjWorldPurchaseSubsystem@{UWjWorldPurchaseSubsystem}}
+\doxysubsubsection{\texorpdfstring{OnPurchaseComplete}{OnPurchaseComplete}}
+{\footnotesize\ttfamily \label{class_u_wj_world_purchase_subsystem_a9e35b37b30a001728d1aafd624542d50} 
+FOn\+Purchase\+Complete UWj\+World\+Purchase\+Subsystem::\+\+On\+Purchase\+Complete}
+
+구매 완료 델리게이트 
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Cosmetic/\+\doxymbox{\hyperlink{_wj_world_purchase_subsystem_8h}{Wj\+World\+Purchase\+Subsystem.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Cosmetic/\+\doxymbox{\hyperlink{_wj_world_purchase_subsystem_8cpp}{Wj\+World\+Purchase\+Subsystem.\+cpp}}\end{DoxyCompactItemize}

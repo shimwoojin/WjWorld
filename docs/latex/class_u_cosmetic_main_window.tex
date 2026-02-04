@@ -1,0 +1,305 @@
+\doxysection{UCosmetic\+Main\+Window Class Reference}
+\hypertarget{class_u_cosmetic_main_window}{}\label{class_u_cosmetic_main_window}\index{UCosmeticMainWindow@{UCosmeticMainWindow}}
+
+
+{\ttfamily \+\#include $<$Cosmetic\+Main\+Window.\+h$>$}
+
+Inheritance diagram for UCosmetic\+Main\+Window:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_u_cosmetic_main_window}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \doxymbox{\hyperlink{class_u_cosmetic_main_window_a8d18c8fe1e532aedfc1d510eb9ef9623}{Native\+Construct}} () override
+\item 
+virtual void \doxymbox{\hyperlink{class_u_cosmetic_main_window_a072bec76a4d3da7503e269e2154e1139}{Native\+Destruct}} () override
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_main_window_a593d01563f20346224cd89b325e133d7}{Show\+Popup}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_main_window_a0f041387953ae397d4b2dcc6160c142f}{Close\+Popup}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_main_window_a9ff217a06504609d1db594fdf4839600}{On\+Shop\+Tab\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_main_window_a4fd4a231fdbf74a5253521259d6c3818}{On\+Inventory\+Tab\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_main_window_afdcc41419344e97eceb4357db7d92b49}{On\+Tab\+Head\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_main_window_ad55e1df7606f822aef36eff5aef73000}{On\+Tab\+Body\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_main_window_a7c3bf69f4bf3272341ea66e21e449c3f}{On\+Tab\+Back\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_main_window_a3a6a5fcc90395a11444a0ea838bcd2e3}{On\+Tab\+Effect\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_main_window_ac299ec61106deec040ca8a046d9fec5a}{On\+Action\+Button\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_main_window_a9df38195dae9e5e39623e77d71d4edf5}{On\+Close\+Clicked}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_main_window_a92e7354333a3dc454e73d48bebdae91b}{On\+Item\+Clicked}} (FName Item\+Id)
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_main_window_a65388302c2255fbda2ad55192fed3d13}{On\+Inventory\+Updated}} ()
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_main_window_a4be3e82885ef6ed1ea315711599db7f4}{On\+Loadout\+Changed}} (\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmetic\+Slot}} Cosmetic\+Slot, FName Item\+Id)
+\item 
+void \doxymbox{\hyperlink{class_u_cosmetic_main_window_a92631975ae254f58c8aa9815b3518263}{On\+Purchase\+Complete}} (FName Item\+Id, bool b\+Success)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_cosmetic_main_window_a32ba2eace5a109a378a01108449e0bbf}{Shop\+Tab\+Button}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_cosmetic_main_window_a0c98d7b941f06cec854b8c58ceba309c}{Inventory\+Tab\+Button}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_cosmetic_main_window_aa787ddc089f64156626232c73e69ea2e}{Tab\+Head\+Button}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_cosmetic_main_window_a5d81ff8307b720ad7d1438f23ef69bff}{Tab\+Body\+Button}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_cosmetic_main_window_abfaeed29f8bffbea9e3ab020df913375}{Tab\+Back\+Button}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_cosmetic_main_window_a2eb320d3e456ac4cc3c2a0e2e228e301}{Tab\+Effect\+Button}}
+\item 
+TObject\+Ptr$<$ UScroll\+Box $>$ \doxymbox{\hyperlink{class_u_cosmetic_main_window_a0d33dba22ecc21aee6a92c4c074888b1}{Item\+Scroll\+Box}}
+\item 
+TObject\+Ptr$<$ UUniform\+Grid\+Panel $>$ \doxymbox{\hyperlink{class_u_cosmetic_main_window_a1194014d79757ca19e9c4ade9a186df8}{Item\+Grid\+Panel}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_cosmetic_main_window_af90570a2d1b3cef68f8b38aadb155f29}{Selected\+Item\+Name\+Text}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_cosmetic_main_window_a41d4d7b062f03aa83017603ca95b62d6}{Selected\+Item\+Description\+Text}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_cosmetic_main_window_a7079743f6d80dad35e11ef2f9d3cd692}{Selected\+Item\+Price\+Text}}
+\item 
+TObject\+Ptr$<$ \doxymbox{\hyperlink{class_u_cosmetic_preview_panel}{UCosmetic\+Preview\+Panel}} $>$ \doxymbox{\hyperlink{class_u_cosmetic_main_window_a07fda4745034d902ae29559b4a1e4a93}{Preview\+Panel}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_cosmetic_main_window_a2e13e60d5f7d15447f2618fec6a76f38}{Action\+Button}}
+\item 
+TObject\+Ptr$<$ UText\+Block $>$ \doxymbox{\hyperlink{class_u_cosmetic_main_window_a2ed3821cb4eac6734c1cd76d54b706bc}{Action\+Button\+Text}}
+\item 
+TObject\+Ptr$<$ UButton $>$ \doxymbox{\hyperlink{class_u_cosmetic_main_window_adff35940664a4543f086d2df0eb4d4b2}{Close\+Button}}
+\item 
+TSubclass\+Of$<$ \doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget}{UCosmetic\+Item\+Entry\+Widget}} $>$ \doxymbox{\hyperlink{class_u_cosmetic_main_window_a9e39cfaf2cd563075bd347ecab843573}{Item\+Entry\+Widget\+Class}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+코스메틱 메인 윈도우
+
+상점/\+인벤토리 통합 윈도우
+\begin{DoxyItemize}
+\item 탭으로 상점/\+인벤토리 전환
+\item 슬롯별 아이템 필터링
+\item 4열 그리드 레이아웃
+\item 3D 캐릭터 프리뷰
+\item 구매/\+장착/\+해제 기능 
+\end{DoxyItemize}
+
+\label{doc-func-members}
+\Hypertarget{class_u_cosmetic_main_window_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_u_cosmetic_main_window_a0f041387953ae397d4b2dcc6160c142f}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!ClosePopup@{ClosePopup}}
+\index{ClosePopup@{ClosePopup}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{ClosePopup()}{ClosePopup()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a0f041387953ae397d4b2dcc6160c142f} 
+void UCosmetic\+Main\+Window::\+\+Close\+Popup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+팝업 닫기 \Hypertarget{class_u_cosmetic_main_window_a8d18c8fe1e532aedfc1d510eb9ef9623}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!NativeConstruct@{NativeConstruct}}
+\index{NativeConstruct@{NativeConstruct}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{NativeConstruct()}{NativeConstruct()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a8d18c8fe1e532aedfc1d510eb9ef9623} 
+void UCosmetic\+Main\+Window::\+\+Native\+Construct (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a072bec76a4d3da7503e269e2154e1139}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!NativeDestruct@{NativeDestruct}}
+\index{NativeDestruct@{NativeDestruct}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{NativeDestruct()}{NativeDestruct()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a072bec76a4d3da7503e269e2154e1139} 
+void UCosmetic\+Main\+Window::\+\+Native\+Destruct (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\Hypertarget{class_u_cosmetic_main_window_ac299ec61106deec040ca8a046d9fec5a}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!OnActionButtonClicked@{OnActionButtonClicked}}
+\index{OnActionButtonClicked@{OnActionButtonClicked}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{OnActionButtonClicked()}{OnActionButtonClicked()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_ac299ec61106deec040ca8a046d9fec5a} 
+void UCosmetic\+Main\+Window::\+\+On\+Action\+Button\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a9df38195dae9e5e39623e77d71d4edf5}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!OnCloseClicked@{OnCloseClicked}}
+\index{OnCloseClicked@{OnCloseClicked}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{OnCloseClicked()}{OnCloseClicked()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a9df38195dae9e5e39623e77d71d4edf5} 
+void UCosmetic\+Main\+Window::\+\+On\+Close\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a4fd4a231fdbf74a5253521259d6c3818}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!OnInventoryTabClicked@{OnInventoryTabClicked}}
+\index{OnInventoryTabClicked@{OnInventoryTabClicked}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{OnInventoryTabClicked()}{OnInventoryTabClicked()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a4fd4a231fdbf74a5253521259d6c3818} 
+void UCosmetic\+Main\+Window::\+\+On\+Inventory\+Tab\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a65388302c2255fbda2ad55192fed3d13}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!OnInventoryUpdated@{OnInventoryUpdated}}
+\index{OnInventoryUpdated@{OnInventoryUpdated}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{OnInventoryUpdated()}{OnInventoryUpdated()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a65388302c2255fbda2ad55192fed3d13} 
+void UCosmetic\+Main\+Window::\+\+On\+Inventory\+Updated (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a92e7354333a3dc454e73d48bebdae91b}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!OnItemClicked@{OnItemClicked}}
+\index{OnItemClicked@{OnItemClicked}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{OnItemClicked()}{OnItemClicked()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a92e7354333a3dc454e73d48bebdae91b} 
+void UCosmetic\+Main\+Window::\+\+On\+Item\+Clicked (\begin{DoxyParamCaption}\item[{FName}]{Item\+Id}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a4be3e82885ef6ed1ea315711599db7f4}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!OnLoadoutChanged@{OnLoadoutChanged}}
+\index{OnLoadoutChanged@{OnLoadoutChanged}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{OnLoadoutChanged()}{OnLoadoutChanged()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a4be3e82885ef6ed1ea315711599db7f4} 
+void UCosmetic\+Main\+Window::\+\+On\+Loadout\+Changed (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{_wj_world_cosmetic_types_8h_a22d4e4e0b76408eef50fcc31d8eb47a2}{ECosmetic\+Slot}}}]{Cosmetic\+Slot}{, }\item[{FName}]{Item\+Id}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a92631975ae254f58c8aa9815b3518263}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!OnPurchaseComplete@{OnPurchaseComplete}}
+\index{OnPurchaseComplete@{OnPurchaseComplete}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{OnPurchaseComplete()}{OnPurchaseComplete()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a92631975ae254f58c8aa9815b3518263} 
+void UCosmetic\+Main\+Window::\+\+On\+Purchase\+Complete (\begin{DoxyParamCaption}\item[{FName}]{Item\+Id}{, }\item[{bool}]{b\+Success}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a9ff217a06504609d1db594fdf4839600}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!OnShopTabClicked@{OnShopTabClicked}}
+\index{OnShopTabClicked@{OnShopTabClicked}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{OnShopTabClicked()}{OnShopTabClicked()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a9ff217a06504609d1db594fdf4839600} 
+void UCosmetic\+Main\+Window::\+\+On\+Shop\+Tab\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a7c3bf69f4bf3272341ea66e21e449c3f}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!OnTabBackClicked@{OnTabBackClicked}}
+\index{OnTabBackClicked@{OnTabBackClicked}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{OnTabBackClicked()}{OnTabBackClicked()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a7c3bf69f4bf3272341ea66e21e449c3f} 
+void UCosmetic\+Main\+Window::\+\+On\+Tab\+Back\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_ad55e1df7606f822aef36eff5aef73000}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!OnTabBodyClicked@{OnTabBodyClicked}}
+\index{OnTabBodyClicked@{OnTabBodyClicked}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{OnTabBodyClicked()}{OnTabBodyClicked()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_ad55e1df7606f822aef36eff5aef73000} 
+void UCosmetic\+Main\+Window::\+\+On\+Tab\+Body\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a3a6a5fcc90395a11444a0ea838bcd2e3}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!OnTabEffectClicked@{OnTabEffectClicked}}
+\index{OnTabEffectClicked@{OnTabEffectClicked}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{OnTabEffectClicked()}{OnTabEffectClicked()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a3a6a5fcc90395a11444a0ea838bcd2e3} 
+void UCosmetic\+Main\+Window::\+\+On\+Tab\+Effect\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_afdcc41419344e97eceb4357db7d92b49}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!OnTabHeadClicked@{OnTabHeadClicked}}
+\index{OnTabHeadClicked@{OnTabHeadClicked}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{OnTabHeadClicked()}{OnTabHeadClicked()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_afdcc41419344e97eceb4357db7d92b49} 
+void UCosmetic\+Main\+Window::\+\+On\+Tab\+Head\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a593d01563f20346224cd89b325e133d7}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!ShowPopup@{ShowPopup}}
+\index{ShowPopup@{ShowPopup}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{ShowPopup()}{ShowPopup()}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a593d01563f20346224cd89b325e133d7} 
+void UCosmetic\+Main\+Window::\+\+Show\+Popup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+팝업 표시 
+
+\label{doc-variable-members}
+\Hypertarget{class_u_cosmetic_main_window_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_u_cosmetic_main_window_a2e13e60d5f7d15447f2618fec6a76f38}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!ActionButton@{ActionButton}}
+\index{ActionButton@{ActionButton}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{ActionButton}{ActionButton}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a2e13e60d5f7d15447f2618fec6a76f38} 
+TObject\+Ptr$<$UButton$>$ UCosmetic\+Main\+Window::\+\+Action\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a2ed3821cb4eac6734c1cd76d54b706bc}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!ActionButtonText@{ActionButtonText}}
+\index{ActionButtonText@{ActionButtonText}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{ActionButtonText}{ActionButtonText}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a2ed3821cb4eac6734c1cd76d54b706bc} 
+TObject\+Ptr$<$UText\+Block$>$ UCosmetic\+Main\+Window::\+\+Action\+Button\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_adff35940664a4543f086d2df0eb4d4b2}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!CloseButton@{CloseButton}}
+\index{CloseButton@{CloseButton}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{CloseButton}{CloseButton}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_adff35940664a4543f086d2df0eb4d4b2} 
+TObject\+Ptr$<$UButton$>$ UCosmetic\+Main\+Window::\+\+Close\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a0c98d7b941f06cec854b8c58ceba309c}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!InventoryTabButton@{InventoryTabButton}}
+\index{InventoryTabButton@{InventoryTabButton}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{InventoryTabButton}{InventoryTabButton}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a0c98d7b941f06cec854b8c58ceba309c} 
+TObject\+Ptr$<$UButton$>$ UCosmetic\+Main\+Window::\+\+Inventory\+Tab\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a9e39cfaf2cd563075bd347ecab843573}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!ItemEntryWidgetClass@{ItemEntryWidgetClass}}
+\index{ItemEntryWidgetClass@{ItemEntryWidgetClass}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{ItemEntryWidgetClass}{ItemEntryWidgetClass}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a9e39cfaf2cd563075bd347ecab843573} 
+TSubclass\+Of$<$\doxymbox{\hyperlink{class_u_cosmetic_item_entry_widget}{UCosmetic\+Item\+Entry\+Widget}}$>$ UCosmetic\+Main\+Window::\+\+Item\+Entry\+Widget\+Class\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a1194014d79757ca19e9c4ade9a186df8}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!ItemGridPanel@{ItemGridPanel}}
+\index{ItemGridPanel@{ItemGridPanel}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{ItemGridPanel}{ItemGridPanel}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a1194014d79757ca19e9c4ade9a186df8} 
+TObject\+Ptr$<$UUniform\+Grid\+Panel$>$ UCosmetic\+Main\+Window::\+\+Item\+Grid\+Panel\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a0d33dba22ecc21aee6a92c4c074888b1}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!ItemScrollBox@{ItemScrollBox}}
+\index{ItemScrollBox@{ItemScrollBox}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{ItemScrollBox}{ItemScrollBox}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a0d33dba22ecc21aee6a92c4c074888b1} 
+TObject\+Ptr$<$UScroll\+Box$>$ UCosmetic\+Main\+Window::\+\+Item\+Scroll\+Box\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a07fda4745034d902ae29559b4a1e4a93}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!PreviewPanel@{PreviewPanel}}
+\index{PreviewPanel@{PreviewPanel}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{PreviewPanel}{PreviewPanel}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a07fda4745034d902ae29559b4a1e4a93} 
+TObject\+Ptr$<$\doxymbox{\hyperlink{class_u_cosmetic_preview_panel}{UCosmetic\+Preview\+Panel}}$>$ UCosmetic\+Main\+Window::\+\+Preview\+Panel\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a41d4d7b062f03aa83017603ca95b62d6}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!SelectedItemDescriptionText@{SelectedItemDescriptionText}}
+\index{SelectedItemDescriptionText@{SelectedItemDescriptionText}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{SelectedItemDescriptionText}{SelectedItemDescriptionText}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a41d4d7b062f03aa83017603ca95b62d6} 
+TObject\+Ptr$<$UText\+Block$>$ UCosmetic\+Main\+Window::\+\+Selected\+Item\+Description\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_af90570a2d1b3cef68f8b38aadb155f29}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!SelectedItemNameText@{SelectedItemNameText}}
+\index{SelectedItemNameText@{SelectedItemNameText}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{SelectedItemNameText}{SelectedItemNameText}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_af90570a2d1b3cef68f8b38aadb155f29} 
+TObject\+Ptr$<$UText\+Block$>$ UCosmetic\+Main\+Window::\+\+Selected\+Item\+Name\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a7079743f6d80dad35e11ef2f9d3cd692}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!SelectedItemPriceText@{SelectedItemPriceText}}
+\index{SelectedItemPriceText@{SelectedItemPriceText}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{SelectedItemPriceText}{SelectedItemPriceText}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a7079743f6d80dad35e11ef2f9d3cd692} 
+TObject\+Ptr$<$UText\+Block$>$ UCosmetic\+Main\+Window::\+\+Selected\+Item\+Price\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a32ba2eace5a109a378a01108449e0bbf}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!ShopTabButton@{ShopTabButton}}
+\index{ShopTabButton@{ShopTabButton}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{ShopTabButton}{ShopTabButton}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a32ba2eace5a109a378a01108449e0bbf} 
+TObject\+Ptr$<$UButton$>$ UCosmetic\+Main\+Window::\+\+Shop\+Tab\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_abfaeed29f8bffbea9e3ab020df913375}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!TabBackButton@{TabBackButton}}
+\index{TabBackButton@{TabBackButton}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{TabBackButton}{TabBackButton}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_abfaeed29f8bffbea9e3ab020df913375} 
+TObject\+Ptr$<$UButton$>$ UCosmetic\+Main\+Window::\+\+Tab\+Back\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a5d81ff8307b720ad7d1438f23ef69bff}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!TabBodyButton@{TabBodyButton}}
+\index{TabBodyButton@{TabBodyButton}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{TabBodyButton}{TabBodyButton}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a5d81ff8307b720ad7d1438f23ef69bff} 
+TObject\+Ptr$<$UButton$>$ UCosmetic\+Main\+Window::\+\+Tab\+Body\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_a2eb320d3e456ac4cc3c2a0e2e228e301}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!TabEffectButton@{TabEffectButton}}
+\index{TabEffectButton@{TabEffectButton}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{TabEffectButton}{TabEffectButton}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_a2eb320d3e456ac4cc3c2a0e2e228e301} 
+TObject\+Ptr$<$UButton$>$ UCosmetic\+Main\+Window::\+\+Tab\+Effect\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_u_cosmetic_main_window_aa787ddc089f64156626232c73e69ea2e}\index{UCosmeticMainWindow@{UCosmeticMainWindow}!TabHeadButton@{TabHeadButton}}
+\index{TabHeadButton@{TabHeadButton}!UCosmeticMainWindow@{UCosmeticMainWindow}}
+\doxysubsubsection{\texorpdfstring{TabHeadButton}{TabHeadButton}}
+{\footnotesize\ttfamily \label{class_u_cosmetic_main_window_aa787ddc089f64156626232c73e69ea2e} 
+TObject\+Ptr$<$UButton$>$ UCosmetic\+Main\+Window::\+\+Tab\+Head\+Button\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Cosmetic/\+\doxymbox{\hyperlink{_cosmetic_main_window_8h}{Cosmetic\+Main\+Window.\+h}}\item 
+Source/\+\+Wj\+World/\+\+UI/\+\+Cosmetic/\+\doxymbox{\hyperlink{_cosmetic_main_window_8cpp}{Cosmetic\+Main\+Window.\+cpp}}\end{DoxyCompactItemize}

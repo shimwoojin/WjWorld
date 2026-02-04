@@ -1,0 +1,37 @@
+\doxysection{Ability\+Prompt\+Widget.\+h}
+\hypertarget{_ability_prompt_widget_8h_source}{}\label{_ability_prompt_widget_8h_source}\index{Source/WjWorld/UI/Ability/AbilityPromptWidget.h@{Source/WjWorld/UI/Ability/AbilityPromptWidget.h}}
+\doxymbox{\hyperlink{_ability_prompt_widget_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Blueprint/UserWidget.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}AbilityPromptWidget.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }UTextBlock;}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00016\ UCLASS()}
+\DoxyCodeLine{00017\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_ability_prompt_widget}{UAbilityPromptWidget}}\ :\ public\ UUserWidget}
+\DoxyCodeLine{00018\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \ \ UFUNCTION(BlueprintCallable,\ Category\ =\ \textcolor{stringliteral}{"{}Ability|Prompt"{}})}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_ability_prompt_widget_a5cde7986d2582bc5ec1532032ee8b9fc}{SetPromptInfo}}(\textcolor{keyword}{const}\ FText\&\ ConfirmKeyName,\ \textcolor{keyword}{const}\ FText\&\ CancelKeyName,\ \textcolor{keyword}{const}\ FText\&\ Description);}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{comment}{//\ BindWidget\ 요소\ (UMG\ Blueprint에서\ 바인딩)}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00030\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00031\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_ability_prompt_widget_ac0a0e61f2242ed5c271c1ec6fa5f28e6}{ConfirmText}};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00034\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00035\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_ability_prompt_widget_aac1c046b0f867102df5353dc0395386e}{CancelText}};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00038\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidgetOptional))}
+\DoxyCodeLine{00039\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_ability_prompt_widget_ab17e3ff6b4374c4076f75a0d35a80db4}{DescriptionText}};}
+\DoxyCodeLine{00040\ \};}
+
+\end{DoxyCode}

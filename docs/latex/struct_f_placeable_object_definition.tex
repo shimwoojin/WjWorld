@@ -1,0 +1,86 @@
+\doxysection{FPlaceable\+Object\+Definition Struct Reference}
+\hypertarget{struct_f_placeable_object_definition}{}\label{struct_f_placeable_object_definition}\index{FPlaceableObjectDefinition@{FPlaceableObjectDefinition}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Placeable\+Object\+Data\+Asset.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FName \doxymbox{\hyperlink{struct_f_placeable_object_definition_aa6867832ea32e5f5b2ab21309d300524}{Object\+Id}}
+\item 
+FText \doxymbox{\hyperlink{struct_f_placeable_object_definition_a4de7d080e22312f9b037dc97db7b36b4}{Display\+Name}}
+\item 
+FName \doxymbox{\hyperlink{struct_f_placeable_object_definition_a6f8288ea23134a7cb8f5b4fb4429c6a2}{Category}}
+\item 
+TSoft\+Object\+Ptr$<$ UStatic\+Mesh $>$ \doxymbox{\hyperlink{struct_f_placeable_object_definition_a7d3a1b19da1f54956bf29fd0cc00841f}{Mesh}}
+\item 
+TSoft\+Object\+Ptr$<$ UTexture2D $>$ \doxymbox{\hyperlink{struct_f_placeable_object_definition_acecf16cd61b2b5c9e818cd88641f00b1}{Icon}}
+\item 
+FVector \doxymbox{\hyperlink{struct_f_placeable_object_definition_a3ffcc9cd74aff48d175b2126f55c60ee}{Default\+Scale}} = FVector::\+\+One\+Vector
+\item 
+float \doxymbox{\hyperlink{struct_f_placeable_object_definition_a870a9bd6d6ef8ea1139adeecf33b5725}{Ground\+Offset}} = 0.\+0f
+\item 
+float \doxymbox{\hyperlink{struct_f_placeable_object_definition_a55c7e155e8e7b44ad4fbef8f9bbd57c9}{Rotation\+Snap\+Degrees}} = 90.\+0f
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+배치 가능한 오브젝트 정의 
+
+\label{doc-variable-members}
+\Hypertarget{struct_f_placeable_object_definition_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_f_placeable_object_definition_a6f8288ea23134a7cb8f5b4fb4429c6a2}\index{FPlaceableObjectDefinition@{FPlaceableObjectDefinition}!Category@{Category}}
+\index{Category@{Category}!FPlaceableObjectDefinition@{FPlaceableObjectDefinition}}
+\doxysubsubsection{\texorpdfstring{Category}{Category}}
+{\footnotesize\ttfamily \label{struct_f_placeable_object_definition_a6f8288ea23134a7cb8f5b4fb4429c6a2} 
+FName FPlaceable\+Object\+Definition::\+\+Category}
+
+카테고리 (가구, 장식 등) \Hypertarget{struct_f_placeable_object_definition_a3ffcc9cd74aff48d175b2126f55c60ee}\index{FPlaceableObjectDefinition@{FPlaceableObjectDefinition}!DefaultScale@{DefaultScale}}
+\index{DefaultScale@{DefaultScale}!FPlaceableObjectDefinition@{FPlaceableObjectDefinition}}
+\doxysubsubsection{\texorpdfstring{DefaultScale}{DefaultScale}}
+{\footnotesize\ttfamily \label{struct_f_placeable_object_definition_a3ffcc9cd74aff48d175b2126f55c60ee} 
+FVector FPlaceable\+Object\+Definition::\+\+Default\+Scale = FVector::\+\+One\+Vector}
+
+기본 스케일 \Hypertarget{struct_f_placeable_object_definition_a4de7d080e22312f9b037dc97db7b36b4}\index{FPlaceableObjectDefinition@{FPlaceableObjectDefinition}!DisplayName@{DisplayName}}
+\index{DisplayName@{DisplayName}!FPlaceableObjectDefinition@{FPlaceableObjectDefinition}}
+\doxysubsubsection{\texorpdfstring{DisplayName}{DisplayName}}
+{\footnotesize\ttfamily \label{struct_f_placeable_object_definition_a4de7d080e22312f9b037dc97db7b36b4} 
+FText FPlaceable\+Object\+Definition::\+\+Display\+Name}
+
+UI 표시명 \Hypertarget{struct_f_placeable_object_definition_a870a9bd6d6ef8ea1139adeecf33b5725}\index{FPlaceableObjectDefinition@{FPlaceableObjectDefinition}!GroundOffset@{GroundOffset}}
+\index{GroundOffset@{GroundOffset}!FPlaceableObjectDefinition@{FPlaceableObjectDefinition}}
+\doxysubsubsection{\texorpdfstring{GroundOffset}{GroundOffset}}
+{\footnotesize\ttfamily \label{struct_f_placeable_object_definition_a870a9bd6d6ef8ea1139adeecf33b5725} 
+float FPlaceable\+Object\+Definition::\+\+Ground\+Offset = 0.\+0f}
+
+바닥 오프셋 \Hypertarget{struct_f_placeable_object_definition_acecf16cd61b2b5c9e818cd88641f00b1}\index{FPlaceableObjectDefinition@{FPlaceableObjectDefinition}!Icon@{Icon}}
+\index{Icon@{Icon}!FPlaceableObjectDefinition@{FPlaceableObjectDefinition}}
+\doxysubsubsection{\texorpdfstring{Icon}{Icon}}
+{\footnotesize\ttfamily \label{struct_f_placeable_object_definition_acecf16cd61b2b5c9e818cd88641f00b1} 
+TSoft\+Object\+Ptr$<$UTexture2D$>$ FPlaceable\+Object\+Definition::\+\+Icon}
+
+카탈로그 아이콘 \Hypertarget{struct_f_placeable_object_definition_a7d3a1b19da1f54956bf29fd0cc00841f}\index{FPlaceableObjectDefinition@{FPlaceableObjectDefinition}!Mesh@{Mesh}}
+\index{Mesh@{Mesh}!FPlaceableObjectDefinition@{FPlaceableObjectDefinition}}
+\doxysubsubsection{\texorpdfstring{Mesh}{Mesh}}
+{\footnotesize\ttfamily \label{struct_f_placeable_object_definition_a7d3a1b19da1f54956bf29fd0cc00841f} 
+TSoft\+Object\+Ptr$<$UStatic\+Mesh$>$ FPlaceable\+Object\+Definition::\+\+Mesh}
+
+메시 (비동기 로드) \Hypertarget{struct_f_placeable_object_definition_aa6867832ea32e5f5b2ab21309d300524}\index{FPlaceableObjectDefinition@{FPlaceableObjectDefinition}!ObjectId@{ObjectId}}
+\index{ObjectId@{ObjectId}!FPlaceableObjectDefinition@{FPlaceableObjectDefinition}}
+\doxysubsubsection{\texorpdfstring{ObjectId}{ObjectId}}
+{\footnotesize\ttfamily \label{struct_f_placeable_object_definition_aa6867832ea32e5f5b2ab21309d300524} 
+FName FPlaceable\+Object\+Definition::\+\+Object\+Id}
+
+고유 식별자 \Hypertarget{struct_f_placeable_object_definition_a55c7e155e8e7b44ad4fbef8f9bbd57c9}\index{FPlaceableObjectDefinition@{FPlaceableObjectDefinition}!RotationSnapDegrees@{RotationSnapDegrees}}
+\index{RotationSnapDegrees@{RotationSnapDegrees}!FPlaceableObjectDefinition@{FPlaceableObjectDefinition}}
+\doxysubsubsection{\texorpdfstring{RotationSnapDegrees}{RotationSnapDegrees}}
+{\footnotesize\ttfamily \label{struct_f_placeable_object_definition_a55c7e155e8e7b44ad4fbef8f9bbd57c9} 
+float FPlaceable\+Object\+Definition::\+\+Rotation\+Snap\+Degrees = 90.\+0f}
+
+회전 단위 (도) 
+
+The documentation for this struct was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Data\+Asset/\+\doxymbox{\hyperlink{_wj_world_placeable_object_data_asset_8h}{Wj\+World\+Placeable\+Object\+Data\+Asset.\+h}}\end{DoxyCompactItemize}

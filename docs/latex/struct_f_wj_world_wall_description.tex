@@ -1,0 +1,175 @@
+\doxysection{FWj\+World\+Wall\+Description Struct Reference}
+\hypertarget{struct_f_wj_world_wall_description}{}\label{struct_f_wj_world_wall_description}\index{FWjWorldWallDescription@{FWjWorldWallDescription}}
+
+
+{\ttfamily \+\#include $<$Wj\+World\+Wall\+Description\+Data\+Asset.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ad61a1385af86b2d661f2aaf12f9c9253}{Load\+Wall\+Layout\+From\+File}} ()
+\item 
+void \doxymbox{\hyperlink{struct_f_wj_world_wall_description_afbb9b3213473eaf08a83e50f88ff5f23}{Get\+Random\+Safe\+Zones}} (TArray$<$ FInt\+Point $>$ \&Out\+Safe\+Zones, int32 Max\+Count=10) const
+\item 
+void \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ade9df2efe1e4d8fde702f311b1f8d17a}{Reset}} ()
+\item 
+bool \doxymbox{\hyperlink{struct_f_wj_world_wall_description_a99d8d21c286ad3c137c534543f78b74c}{Is\+Wall\+Closed}} ()
+\item 
+bool \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ac7fcc162ec2ba0d97d5a17c3eaadff1e}{Is\+Layout\+Valid}} ()
+\item 
+bool \doxymbox{\hyperlink{struct_f_wj_world_wall_description_af12f56f824bb08cac030337f9e545998}{Is\+Layout\+Empty}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FString \doxymbox{\hyperlink{struct_f_wj_world_wall_description_af8525249608ef5d947fc7df75ebebc7e}{Wall\+Name}}
+\item 
+FVector \doxymbox{\hyperlink{struct_f_wj_world_wall_description_a3a17cff17474b3b9e6510b4d0bd633ed}{Center\+Offset}} = FVector::\+\+Zero\+Vector
+\item 
+FVector \doxymbox{\hyperlink{struct_f_wj_world_wall_description_aa8e5423509ebf7c785f4f059a03749a3}{Brick\+Size}} = FVector(100.\+0, 100.\+0, 100.\+0)
+\item 
+FFile\+Path \doxymbox{\hyperlink{struct_f_wj_world_wall_description_a1097d71b058af7401e42f7fdece8e96f}{Wall\+Layout\+File\+Path}}
+\item 
+TArray$<$ TArray$<$ int32 $>$ $>$ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_a4b44a8fec285109ccecd1d2d8e7407d3}{Wall\+Layout}}
+\item 
+bool \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ac1dd451aad2cbc42d10b0d1d25f1d1b1}{b\+Is\+Layout\+Valid}} = false
+\item 
+bool \doxymbox{\hyperlink{struct_f_wj_world_wall_description_aee15d86a8ec724091361b75d53bdd30c}{b\+Size\+Exact\+Match}} = false
+\item 
+int32 \doxymbox{\hyperlink{struct_f_wj_world_wall_description_a385aa550239cdf450bf9679919c98dbb}{Row\+Num}} = 0
+\item 
+int32 \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ac1179fb359682321bf4fabb08a183132}{Column\+Num}} = 0
+\item 
+TArray$<$ FInt\+Point $>$ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_aed6253d31d9001e8e76ae6c8c007a0c9}{Safe\+Zones}}
+\item 
+TSet$<$ FInt\+Point $>$ \doxymbox{\hyperlink{struct_f_wj_world_wall_description_ac8eb39db511dee0bcf25d9b5d035a0ee}{Safe\+Zones\+Set}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr int32 \doxymbox{\hyperlink{struct_f_wj_world_wall_description_a6e77e943ea0817cb38ac9b1b59b4a364}{Wall\+Cell\+\_\+\+Empty}} = -\/1
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{struct_f_wj_world_wall_description_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_f_wj_world_wall_description_afbb9b3213473eaf08a83e50f88ff5f23}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!GetRandomSafeZones@{GetRandomSafeZones}}
+\index{GetRandomSafeZones@{GetRandomSafeZones}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{GetRandomSafeZones()}{GetRandomSafeZones()}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_afbb9b3213473eaf08a83e50f88ff5f23} 
+void FWj\+World\+Wall\+Description::\+\+Get\+Random\+Safe\+Zones (\begin{DoxyParamCaption}\item[{TArray$<$ FInt\+Point $>$ \&}]{Out\+Safe\+Zones}{, }\item[{int32}]{Max\+Count}{ = {\ttfamily 10}}\end{DoxyParamCaption}) const}
+
+\Hypertarget{struct_f_wj_world_wall_description_af12f56f824bb08cac030337f9e545998}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!IsLayoutEmpty@{IsLayoutEmpty}}
+\index{IsLayoutEmpty@{IsLayoutEmpty}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{IsLayoutEmpty()}{IsLayoutEmpty()}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_af12f56f824bb08cac030337f9e545998} 
+bool FWj\+World\+Wall\+Description::\+\+Is\+Layout\+Empty (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{struct_f_wj_world_wall_description_ac7fcc162ec2ba0d97d5a17c3eaadff1e}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!IsLayoutValid@{IsLayoutValid}}
+\index{IsLayoutValid@{IsLayoutValid}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{IsLayoutValid()}{IsLayoutValid()}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_ac7fcc162ec2ba0d97d5a17c3eaadff1e} 
+bool FWj\+World\+Wall\+Description::\+\+Is\+Layout\+Valid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{struct_f_wj_world_wall_description_a99d8d21c286ad3c137c534543f78b74c}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!IsWallClosed@{IsWallClosed}}
+\index{IsWallClosed@{IsWallClosed}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{IsWallClosed()}{IsWallClosed()}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_a99d8d21c286ad3c137c534543f78b74c} 
+bool FWj\+World\+Wall\+Description::\+\+Is\+Wall\+Closed (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{struct_f_wj_world_wall_description_ad61a1385af86b2d661f2aaf12f9c9253}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!LoadWallLayoutFromFile@{LoadWallLayoutFromFile}}
+\index{LoadWallLayoutFromFile@{LoadWallLayoutFromFile}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{LoadWallLayoutFromFile()}{LoadWallLayoutFromFile()}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_ad61a1385af86b2d661f2aaf12f9c9253} 
+bool FWj\+World\+Wall\+Description::\+\+Load\+Wall\+Layout\+From\+File (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{struct_f_wj_world_wall_description_ade9df2efe1e4d8fde702f311b1f8d17a}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!Reset@{Reset}}
+\index{Reset@{Reset}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{Reset()}{Reset()}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_ade9df2efe1e4d8fde702f311b1f8d17a} 
+void FWj\+World\+Wall\+Description::\+\+Reset (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{struct_f_wj_world_wall_description_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_f_wj_world_wall_description_ac1dd451aad2cbc42d10b0d1d25f1d1b1}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!bIsLayoutValid@{bIsLayoutValid}}
+\index{bIsLayoutValid@{bIsLayoutValid}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{bIsLayoutValid}{bIsLayoutValid}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_ac1dd451aad2cbc42d10b0d1d25f1d1b1} 
+bool FWj\+World\+Wall\+Description::\+b\+Is\+Layout\+Valid = false}
+
+\Hypertarget{struct_f_wj_world_wall_description_aa8e5423509ebf7c785f4f059a03749a3}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!BrickSize@{BrickSize}}
+\index{BrickSize@{BrickSize}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{BrickSize}{BrickSize}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_aa8e5423509ebf7c785f4f059a03749a3} 
+FVector FWj\+World\+Wall\+Description::\+\+Brick\+Size = FVector(100.\+0, 100.\+0, 100.\+0)}
+
+\Hypertarget{struct_f_wj_world_wall_description_aee15d86a8ec724091361b75d53bdd30c}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!bSizeExactMatch@{bSizeExactMatch}}
+\index{bSizeExactMatch@{bSizeExactMatch}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{bSizeExactMatch}{bSizeExactMatch}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_aee15d86a8ec724091361b75d53bdd30c} 
+bool FWj\+World\+Wall\+Description::\+b\+Size\+Exact\+Match = false}
+
+\Hypertarget{struct_f_wj_world_wall_description_a3a17cff17474b3b9e6510b4d0bd633ed}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!CenterOffset@{CenterOffset}}
+\index{CenterOffset@{CenterOffset}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{CenterOffset}{CenterOffset}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_a3a17cff17474b3b9e6510b4d0bd633ed} 
+FVector FWj\+World\+Wall\+Description::\+\+Center\+Offset = FVector::\+\+Zero\+Vector}
+
+\Hypertarget{struct_f_wj_world_wall_description_ac1179fb359682321bf4fabb08a183132}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!ColumnNum@{ColumnNum}}
+\index{ColumnNum@{ColumnNum}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{ColumnNum}{ColumnNum}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_ac1179fb359682321bf4fabb08a183132} 
+int32 FWj\+World\+Wall\+Description::\+\+Column\+Num = 0}
+
+\Hypertarget{struct_f_wj_world_wall_description_a385aa550239cdf450bf9679919c98dbb}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!RowNum@{RowNum}}
+\index{RowNum@{RowNum}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{RowNum}{RowNum}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_a385aa550239cdf450bf9679919c98dbb} 
+int32 FWj\+World\+Wall\+Description::\+\+Row\+Num = 0}
+
+\Hypertarget{struct_f_wj_world_wall_description_aed6253d31d9001e8e76ae6c8c007a0c9}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!SafeZones@{SafeZones}}
+\index{SafeZones@{SafeZones}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{SafeZones}{SafeZones}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_aed6253d31d9001e8e76ae6c8c007a0c9} 
+TArray$<$FInt\+Point$>$ FWj\+World\+Wall\+Description::\+\+Safe\+Zones}
+
+\Hypertarget{struct_f_wj_world_wall_description_ac8eb39db511dee0bcf25d9b5d035a0ee}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!SafeZonesSet@{SafeZonesSet}}
+\index{SafeZonesSet@{SafeZonesSet}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{SafeZonesSet}{SafeZonesSet}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_ac8eb39db511dee0bcf25d9b5d035a0ee} 
+TSet$<$FInt\+Point$>$ FWj\+World\+Wall\+Description::\+\+Safe\+Zones\+Set}
+
+\Hypertarget{struct_f_wj_world_wall_description_a6e77e943ea0817cb38ac9b1b59b4a364}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!WallCell\_Empty@{WallCell\_Empty}}
+\index{WallCell\_Empty@{WallCell\_Empty}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{WallCell\_Empty}{WallCell\_Empty}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_a6e77e943ea0817cb38ac9b1b59b4a364} 
+int32 FWj\+World\+Wall\+Description::\+\+Wall\+Cell\+\_\+\+Empty = -\/1\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+\Hypertarget{struct_f_wj_world_wall_description_a4b44a8fec285109ccecd1d2d8e7407d3}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!WallLayout@{WallLayout}}
+\index{WallLayout@{WallLayout}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{WallLayout}{WallLayout}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_a4b44a8fec285109ccecd1d2d8e7407d3} 
+TArray$<$TArray$<$int32$>$ $>$ FWj\+World\+Wall\+Description::\+\+Wall\+Layout}
+
+\Hypertarget{struct_f_wj_world_wall_description_a1097d71b058af7401e42f7fdece8e96f}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!WallLayoutFilePath@{WallLayoutFilePath}}
+\index{WallLayoutFilePath@{WallLayoutFilePath}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{WallLayoutFilePath}{WallLayoutFilePath}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_a1097d71b058af7401e42f7fdece8e96f} 
+FFile\+Path FWj\+World\+Wall\+Description::\+\+Wall\+Layout\+File\+Path}
+
+\Hypertarget{struct_f_wj_world_wall_description_af8525249608ef5d947fc7df75ebebc7e}\index{FWjWorldWallDescription@{FWjWorldWallDescription}!WallName@{WallName}}
+\index{WallName@{WallName}!FWjWorldWallDescription@{FWjWorldWallDescription}}
+\doxysubsubsection{\texorpdfstring{WallName}{WallName}}
+{\footnotesize\ttfamily \label{struct_f_wj_world_wall_description_af8525249608ef5d947fc7df75ebebc7e} 
+FString FWj\+World\+Wall\+Description::\+\+Wall\+Name}
+
+
+
+The documentation for this struct was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Wall/\+\doxymbox{\hyperlink{_wj_world_wall_description_data_asset_8h}{Wj\+World\+Wall\+Description\+Data\+Asset.\+h}}\item 
+Source/\+\+Wj\+World/\+\+Game\+Play/\+\+Wall/\+\doxymbox{\hyperlink{_wj_world_wall_description_data_asset_8cpp}{Wj\+World\+Wall\+Description\+Data\+Asset.\+cpp}}\end{DoxyCompactItemize}

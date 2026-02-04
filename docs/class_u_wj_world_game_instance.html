@@ -110,15 +110,59 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a28ee05ff3fc5c9a122a41014478c9507" id="r_a28ee05ff3fc5c9a122a41014478c9507"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a28ee05ff3fc5c9a122a41014478c9507">JoinRoom</a> (int32 RoomIndex)</td></tr>
 <tr class="memitem:a5fd413aba23065c36389db78a31843f3" id="r_a5fd413aba23065c36389db78a31843f3"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a5fd413aba23065c36389db78a31843f3">StartGame</a> ()</td></tr>
 <tr class="memitem:ae73cafba9b06d6f43a7ad5a356366ddf" id="r_ae73cafba9b06d6f43a7ad5a356366ddf"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ae73cafba9b06d6f43a7ad5a356366ddf">LeaveRoom</a> ()</td></tr>
+<tr class="memitem:a570818799e2642eede973b7304bab1d0" id="r_a570818799e2642eede973b7304bab1d0"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a570818799e2642eede973b7304bab1d0">EndGame</a> ()</td></tr>
+<tr class="memitem:af5e6980796e7a6165cff420a1300b39a" id="r_af5e6980796e7a6165cff420a1300b39a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af5e6980796e7a6165cff420a1300b39a">CachePlayerList</a> (const TArray&lt; <a class="el" href="struct_f_player_display_info.html">FPlayerDisplayInfo</a> &gt; &amp;PlayerList)</td></tr>
+<tr class="memitem:a399e5190b784525c8e5ec08aa3464509" id="r_a399e5190b784525c8e5ec08aa3464509"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a399e5190b784525c8e5ec08aa3464509">CacheRoomSettings</a> (const <a class="el" href="struct_f_room_settings.html">FRoomSettings</a> &amp;Settings)</td></tr>
+<tr class="memitem:a59822103171ca15e6a4f67f64cafb87c" id="r_a59822103171ca15e6a4f67f64cafb87c"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a59822103171ca15e6a4f67f64cafb87c">IsMigrating</a> () const</td></tr>
+<tr class="memitem:a6950736a62f668c2b5874712f7914d31" id="r_a6950736a62f668c2b5874712f7914d31"><td class="memItemLeft"><a class="el" href="_session_types_8h.html#ab3dfa8a05261e6faa3af631b30f0bc1e">EHostMigrationState</a>&#160;</td><td class="memItemRight"><a class="el" href="#a6950736a62f668c2b5874712f7914d31">GetMigrationState</a> () const</td></tr>
+<tr class="memitem:a649189e28c325c04a5dd158818c4611c" id="r_a649189e28c325c04a5dd158818c4611c"><td class="memItemLeft"><a class="el" href="struct_f_host_migration_context.html">FHostMigrationContext</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a649189e28c325c04a5dd158818c4611c">GetMigrationContext</a> ()</td></tr>
+<tr class="memitem:ad8350e971a0f51415d63ec929f85e6f1" id="r_ad8350e971a0f51415d63ec929f85e6f1"><td class="memItemLeft">const <a class="el" href="struct_f_host_migration_context.html">FHostMigrationContext</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="#ad8350e971a0f51415d63ec929f85e6f1">GetMigrationContext</a> () const</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_wj_world.html">WjWorld</a> 게임 인스턴스</p>
 <p>역할:</p><ul>
 <li>게임 전역 데이터 관리</li>
 <li>SessionManager 소유 및 접근 제공</li>
-<li>레벨 간 데이터 유지 </li>
+<li>레벨 간 데이터 유지</li>
+<li>호스트 마이그레이션 관리 </li>
 </ul>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="af5e6980796e7a6165cff420a1300b39a" name="af5e6980796e7a6165cff420a1300b39a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5e6980796e7a6165cff420a1300b39a">&#9670;&#160;</a></span>CachePlayerList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void UWjWorldGameInstance::CachePlayerList </td>
+          <td>(</td>
+          <td class="paramtype">const TArray&lt; <a class="el" href="struct_f_player_display_info.html">FPlayerDisplayInfo</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>PlayerList</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>플레이어 목록 캐시 </p>
+
+</div>
+</div>
+<a id="a399e5190b784525c8e5ec08aa3464509" name="a399e5190b784525c8e5ec08aa3464509"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a399e5190b784525c8e5ec08aa3464509">&#9670;&#160;</a></span>CacheRoomSettings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void UWjWorldGameInstance::CacheRoomSettings </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_f_room_settings.html">FRoomSettings</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>Settings</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>방 설정 캐시 </p>
+
+</div>
+</div>
 <a id="a325364952578abd0bff3788a09a0279b" name="a325364952578abd0bff3788a09a0279b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a325364952578abd0bff3788a09a0279b">&#9670;&#160;</a></span>CreateRoom()</h2>
 
@@ -136,6 +180,24 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a570818799e2642eede973b7304bab1d0" name="a570818799e2642eede973b7304bab1d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a570818799e2642eede973b7304bab1d0">&#9670;&#160;</a></span>EndGame()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool UWjWorldGameInstance::EndGame </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>게임 종료 래퍼. Play → WaitingRoom 복귀 전에 호출. </p><dl class="section return"><dt>Returns</dt><dd>성공 여부 </dd></dl>
+
+</div>
+</div>
 <a id="a4f3514320f6aa5de29c0718f1b536015" name="a4f3514320f6aa5de29c0718f1b536015"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4f3514320f6aa5de29c0718f1b536015">&#9670;&#160;</a></span>FindRooms()</h2>
 
@@ -150,6 +212,83 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a649189e28c325c04a5dd158818c4611c" name="a649189e28c325c04a5dd158818c4611c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a649189e28c325c04a5dd158818c4611c">&#9670;&#160;</a></span>GetMigrationContext() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_f_host_migration_context.html">FHostMigrationContext</a> &amp; UWjWorldGameInstance::GetMigrationContext </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>마이그레이션 컨텍스트 접근 </p>
+
+</div>
+</div>
+<a id="ad8350e971a0f51415d63ec929f85e6f1" name="ad8350e971a0f51415d63ec929f85e6f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8350e971a0f51415d63ec929f85e6f1">&#9670;&#160;</a></span>GetMigrationContext() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="struct_f_host_migration_context.html">FHostMigrationContext</a> &amp; UWjWorldGameInstance::GetMigrationContext </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6950736a62f668c2b5874712f7914d31" name="a6950736a62f668c2b5874712f7914d31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6950736a62f668c2b5874712f7914d31">&#9670;&#160;</a></span>GetMigrationState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_session_types_8h.html#ab3dfa8a05261e6faa3af631b30f0bc1e">EHostMigrationState</a> UWjWorldGameInstance::GetMigrationState </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>현재 마이그레이션 상태 </p>
 
 </div>
 </div>
@@ -175,7 +314,6 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>SessionManager 가져오기 (블루프린트/C++ 모두 접근 가능) </p>
 
 </div>
 </div>
@@ -201,6 +339,32 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a59822103171ca15e6a4f67f64cafb87c" name="a59822103171ca15e6a4f67f64cafb87c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59822103171ca15e6a4f67f64cafb87c">&#9670;&#160;</a></span>IsMigrating()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool UWjWorldGameInstance::IsMigrating </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>마이그레이션 진행 중 여부 </p>
 
 </div>
 </div>

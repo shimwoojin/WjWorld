@@ -1,0 +1,32 @@
+\doxysection{Approaching\+Wall\+HUDWidget.\+h}
+\hypertarget{_approaching_wall_h_u_d_widget_8h_source}{}\label{_approaching_wall_h_u_d_widget_8h_source}\index{Source/WjWorld/UI/HUD/ApproachingWallHUDWidget.h@{Source/WjWorld/UI/HUD/ApproachingWallHUDWidget.h}}
+\doxymbox{\hyperlink{_approaching_wall_h_u_d_widget_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_user_widget_base_8h}{UI/WjWorldUserWidgetBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}ApproachingWallHUDWidget.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }UTextBlock;}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00015\ UCLASS()}
+\DoxyCodeLine{00016\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_approaching_wall_h_u_d_widget}{UApproachingWallHUDWidget}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_user_widget_base}{UWjWorldUserWidgetBase}}}
+\DoxyCodeLine{00017\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_approaching_wall_h_u_d_widget_a8ca70a1d4236d9488588e14e9202f813}{NativeConstruct}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_u_approaching_wall_h_u_d_widget_a34f54bc4cfbd9d86af349e1a6b0aab72}{NativeTick}}(\textcolor{keyword}{const}\ FGeometry\&\ MyGeometry,\ \textcolor{keywordtype}{float}\ InDeltaTime)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00025\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00026\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_approaching_wall_h_u_d_widget_a3140cf8db5f27f7c454fb881117e7e4e}{LevelText}};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ UPROPERTY(meta\ =\ (BindWidget))}
+\DoxyCodeLine{00029\ \ \ \ \ TObjectPtr<UTextBlock>\ \doxymbox{\hyperlink{class_u_approaching_wall_h_u_d_widget_a56738c5a254a6452fc101ef48c248ba5}{AlivePlayerText}};}
+\DoxyCodeLine{00030\ \};}
+
+\end{DoxyCode}

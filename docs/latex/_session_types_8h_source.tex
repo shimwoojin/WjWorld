@@ -70,10 +70,88 @@
 \DoxyCodeLine{00086\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_room_info_a2c5e86f5a2c89765f7f1058b95cafc4f}{SearchResultIndex}}\ =\ -\/1;}
 \DoxyCodeLine{00087\ \};}
 \DoxyCodeLine{00088\ }
-\DoxyCodeLine{00093\ \doxymbox{\hyperlink{_wj_world_player_state_base_8h_ae41b0718845c3c0f70c12e6680f154dc}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnRoomCreated,\ \textcolor{keywordtype}{bool},\ bWasSuccessful);}
+\DoxyCodeLine{00093\ \doxymbox{\hyperlink{_wj_world_character_base_8h_a6b083c7e2eaf1732180ce5ad7c5b47ce}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnRoomCreated,\ \textcolor{keywordtype}{bool},\ bWasSuccessful);}
 \DoxyCodeLine{00094\ \doxymbox{\hyperlink{_wj_world_player_state_base_8h_a755c5209b42c1f7030a7f02b70da39b8}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_TwoParams}}(FOnRoomsFound,\ \textcolor{keywordtype}{bool},\ bWasSuccessful,\ const\ TArray<\doxymbox{\hyperlink{struct_f_room_info}{FRoomInfo}}>\&,\ Rooms);}
-\DoxyCodeLine{00095\ \doxymbox{\hyperlink{_wj_world_player_state_base_8h_ae41b0718845c3c0f70c12e6680f154dc}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnRoomJoined,\ \textcolor{keywordtype}{bool},\ bWasSuccessful);}
-\DoxyCodeLine{00096\ \doxymbox{\hyperlink{_wj_world_player_state_base_8h_ae41b0718845c3c0f70c12e6680f154dc}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnRoomDestroyed,\ \textcolor{keywordtype}{bool},\ bWasSuccessful);}
-\DoxyCodeLine{00097\ \doxymbox{\hyperlink{_wj_world_player_state_base_8h_ae41b0718845c3c0f70c12e6680f154dc}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnRoomStarted,\ \textcolor{keywordtype}{bool},\ bWasSuccessful);}
+\DoxyCodeLine{00095\ \doxymbox{\hyperlink{_wj_world_character_base_8h_a6b083c7e2eaf1732180ce5ad7c5b47ce}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnRoomJoined,\ \textcolor{keywordtype}{bool},\ bWasSuccessful);}
+\DoxyCodeLine{00096\ \doxymbox{\hyperlink{_wj_world_character_base_8h_a6b083c7e2eaf1732180ce5ad7c5b47ce}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnRoomDestroyed,\ \textcolor{keywordtype}{bool},\ bWasSuccessful);}
+\DoxyCodeLine{00097\ \doxymbox{\hyperlink{_wj_world_character_base_8h_a6b083c7e2eaf1732180ce5ad7c5b47ce}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnRoomStarted,\ \textcolor{keywordtype}{bool},\ bWasSuccessful);}
+\DoxyCodeLine{00098\ \doxymbox{\hyperlink{_wj_world_character_base_8h_a6b083c7e2eaf1732180ce5ad7c5b47ce}{DECLARE\_DYNAMIC\_MULTICAST\_DELEGATE\_OneParam}}(FOnRoomEnded,\ \textcolor{keywordtype}{bool},\ bWasSuccessful);}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00103\ USTRUCT(BlueprintType)}
+\DoxyCodeLine{00104\ struct\ \doxymbox{\hyperlink{struct_f_player_display_info}{FPlayerDisplayInfo}}}
+\DoxyCodeLine{00105\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Player"{}})}
+\DoxyCodeLine{00109\ \ \ \ \ FString\ \doxymbox{\hyperlink{struct_f_player_display_info_a030aa89bae5a49274e5503e7e0636063}{PlayerName}};}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Player"{}})}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_player_display_info_a7583e33152e32e877b0d993e0443f4b0}{bIsReady}}\ =\ false;}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Player"{}})}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_player_display_info_a21a234a3726a099593e6c35fd984240c}{bIsHost}}\ =\ false;}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Player"{}})}
+\DoxyCodeLine{00118\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_player_display_info_a4b856272abc15ff4b80b3ae11c6476e8}{PlayerID}}\ =\ -\/1;}
+\DoxyCodeLine{00119\ \};}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00124\ UENUM(BlueprintType)}
+\DoxyCodeLine{00125\ enum\ class\ \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1e}{EHostMigrationState}}\ :\ uint8}
+\DoxyCodeLine{00126\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \doxymbox{\hyperlink{_wj_world_placement_component_8h_a0baad503e9a7d563b7b22c618221bd0ea6adf97f83acf6453d4a6a4b1070f3754}{None}}\ \ \ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}None"{}}),}
+\DoxyCodeLine{00128\ \ \ \ \ Detected\ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Detected"{}}),}
+\DoxyCodeLine{00129\ \ \ \ \ CreatingSession\ \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Creating\ Session"{}}),}
+\DoxyCodeLine{00130\ \ \ \ \ SearchingSession\ \ \ \ \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Searching\ Session"{}}),}
+\DoxyCodeLine{00131\ \ \ \ \ JoiningSession\ \ \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Joining\ Session"{}}),}
+\DoxyCodeLine{00132\ \ \ \ \ Complete\ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Complete"{}}),}
+\DoxyCodeLine{00133\ \ \ \ \ Failed\ \ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{_session_types_8h_ab3dfa8a05261e6faa3af631b30f0bc1eaa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}}(DisplayName\ =\ \textcolor{stringliteral}{"{}Failed"{}})}
+\DoxyCodeLine{00134\ \};}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00140\ USTRUCT(BlueprintType)}
+\DoxyCodeLine{00141\ struct\ \doxymbox{\hyperlink{struct_f_host_migration_context}{FHostMigrationContext}}}
+\DoxyCodeLine{00142\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \ \ }
+\DoxyCodeLine{00146\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Migration"{}})}
+\DoxyCodeLine{00147\ \ \ \ \ bool\ \doxymbox{\hyperlink{struct_f_host_migration_context_abf789697e2a5c7db7e600a574fee834a}{bIsMigrating}}\ =\ false;}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00150\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Migration"{}})}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_f_host_migration_context_a8ea950edc9b326dc8e128d452e670587}{bIsNewHost}}\ =\ false;}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00154\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Migration"{}})}
+\DoxyCodeLine{00155\ \ \ \ \ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}\ \doxymbox{\hyperlink{struct_f_host_migration_context_aef7c54ffcb93190718c2bec4f5497c1f}{CachedRoomSettings}};}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00158\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Migration"{}})}
+\DoxyCodeLine{00159\ \ \ \ \ FString\ \doxymbox{\hyperlink{struct_f_host_migration_context_a4a5d427ef2deaa74d515bd44129ee538}{MigrationSessionTag}};}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00162\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Migration"{}})}
+\DoxyCodeLine{00163\ \ \ \ \ TArray<\doxymbox{\hyperlink{struct_f_player_display_info}{FPlayerDisplayInfo}}>\ \doxymbox{\hyperlink{struct_f_host_migration_context_a318c8fa5d2753f5a8b8cd76bb8f5d375}{CachedPlayerList}};}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00166\ \ \ \ \ UPROPERTY(BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Migration"{}})}
+\DoxyCodeLine{00167\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_host_migration_context_ae9f18f5046df7cc1a1f79d3060b3aac9}{LocalPlayerID}}\ =\ -\/1;}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keywordtype}{double}\ \doxymbox{\hyperlink{struct_f_host_migration_context_a6fa88c85171727c45c0fc9e6befdc53a}{MigrationStartTime}}\ =\ 0.0;}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00173\ \ \ \ \ int32\ \doxymbox{\hyperlink{struct_f_host_migration_context_a66fc9b0e32aa4ff172b86b9c2abcd480}{RetryCount}}\ =\ 0;}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00176\ \ \ \ \ static\ constexpr\ int32\ \doxymbox{\hyperlink{struct_f_host_migration_context_a099e9730580d4d0e46b7f0b7c98e427f}{MaxRetryCount}}\ =\ 10;}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00179\ \ \ \ \ static\ constexpr\ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{struct_f_host_migration_context_a80de23349901582bddc7fe8e848a22ca}{RetryInterval}}\ =\ 2.0f;}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00182\ \ \ \ \ static\ constexpr\ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{struct_f_host_migration_context_a4e1d7ae8d8b8967775dc05a3c8819c2d}{MigrationTimeout}}\ =\ 30.0f;}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{struct_f_host_migration_context_a66692ac214e6b3244e980b526d58b7cd}{Reset}}()}
+\DoxyCodeLine{00186\ \ \ \ \ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{struct_f_host_migration_context_abf789697e2a5c7db7e600a574fee834a}{bIsMigrating}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{struct_f_host_migration_context_a8ea950edc9b326dc8e128d452e670587}{bIsNewHost}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{struct_f_host_migration_context_aef7c54ffcb93190718c2bec4f5497c1f}{CachedRoomSettings}}\ =\ \doxymbox{\hyperlink{struct_f_room_settings}{FRoomSettings}}();}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{struct_f_host_migration_context_a4a5d427ef2deaa74d515bd44129ee538}{MigrationSessionTag}}.Empty();}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{struct_f_host_migration_context_a318c8fa5d2753f5a8b8cd76bb8f5d375}{CachedPlayerList}}.Empty();}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{struct_f_host_migration_context_ae9f18f5046df7cc1a1f79d3060b3aac9}{LocalPlayerID}}\ =\ -\/1;}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{struct_f_host_migration_context_a6fa88c85171727c45c0fc9e6befdc53a}{MigrationStartTime}}\ =\ 0.0;}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{struct_f_host_migration_context_a66fc9b0e32aa4ff172b86b9c2abcd480}{RetryCount}}\ =\ 0;}
+\DoxyCodeLine{00195\ \ \ \ \ \}}
+\DoxyCodeLine{00196\ \};}
 
 \end{DoxyCode}

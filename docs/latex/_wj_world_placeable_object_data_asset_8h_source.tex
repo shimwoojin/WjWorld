@@ -1,0 +1,56 @@
+\doxysection{Wj\+World\+Placeable\+Object\+Data\+Asset.\+h}
+\hypertarget{_wj_world_placeable_object_data_asset_8h_source}{}\label{_wj_world_placeable_object_data_asset_8h_source}\index{Source/WjWorld/DataAsset/WjWorldPlaceableObjectDataAsset.h@{Source/WjWorld/DataAsset/WjWorldPlaceableObjectDataAsset.h}}
+\doxymbox{\hyperlink{_wj_world_placeable_object_data_asset_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Engine/DataAsset.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WjWorldPlaceableObjectDataAsset.generated.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00012\ USTRUCT(BlueprintType)}
+\DoxyCodeLine{00013\ struct\ \doxymbox{\hyperlink{struct_f_placeable_object_definition}{FPlaceableObjectDefinition}}}
+\DoxyCodeLine{00014\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \ \ }
+\DoxyCodeLine{00018\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00019\ \ \ \ \ FName\ \doxymbox{\hyperlink{struct_f_placeable_object_definition_aa6867832ea32e5f5b2ab21309d300524}{ObjectId}};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00022\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00023\ \ \ \ \ FText\ \doxymbox{\hyperlink{struct_f_placeable_object_definition_a4de7d080e22312f9b037dc97db7b36b4}{DisplayName}};}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00026\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00027\ \ \ \ \ FName\ \doxymbox{\hyperlink{struct_f_placeable_object_definition_a6f8288ea23134a7cb8f5b4fb4429c6a2}{Category}};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00030\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00031\ \ \ \ \ TSoftObjectPtr<UStaticMesh>\ \doxymbox{\hyperlink{struct_f_placeable_object_definition_a7d3a1b19da1f54956bf29fd0cc00841f}{Mesh}};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00034\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00035\ \ \ \ \ TSoftObjectPtr<UTexture2D>\ \doxymbox{\hyperlink{struct_f_placeable_object_definition_acecf16cd61b2b5c9e818cd88641f00b1}{Icon}};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00038\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00039\ \ \ \ \ FVector\ \doxymbox{\hyperlink{struct_f_placeable_object_definition_a3ffcc9cd74aff48d175b2126f55c60ee}{DefaultScale}}\ =\ FVector::OneVector;}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00042\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly)}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{struct_f_placeable_object_definition_a870a9bd6d6ef8ea1139adeecf33b5725}{GroundOffset}}\ =\ 0.0f;}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00046\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ meta\ =\ (ClampMin\ =\ \textcolor{stringliteral}{"{}1.0"{}}))}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{struct_f_placeable_object_definition_a55c7e155e8e7b44ad4fbef8f9bbd57c9}{RotationSnapDegrees}}\ =\ 90.0f;}
+\DoxyCodeLine{00048\ \};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00053\ UCLASS(BlueprintType)}
+\DoxyCodeLine{00054\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset}{UWjWorldPlaceableObjectDataAsset}}\ :\ public\ UPrimaryDataAsset}
+\DoxyCodeLine{00055\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00060\ \ \ \ \ UPROPERTY(EditAnywhere,\ BlueprintReadOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Placement"{}})}
+\DoxyCodeLine{00061\ \ \ \ \ TArray<\doxymbox{\hyperlink{struct_f_placeable_object_definition}{FPlaceableObjectDefinition}}>\ \doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset_a8b825e24462715a25d5cc945deaddf4f}{Objects}};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00064\ \ \ \ \ const\ \doxymbox{\hyperlink{struct_f_placeable_object_definition}{FPlaceableObjectDefinition}}*\ \doxymbox{\hyperlink{class_u_wj_world_placeable_object_data_asset_ab6b876f98c7df1a7db8a78c3f9e2a98c}{FindByObjectId}}(FName\ ObjectId)\ const;}
+\DoxyCodeLine{00065\ \};}
+
+\end{DoxyCode}

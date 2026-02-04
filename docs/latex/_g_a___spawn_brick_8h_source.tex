@@ -1,0 +1,102 @@
+\doxysection{GA\+\_\+\+Spawn\+Brick.\+h}
+\hypertarget{_g_a___spawn_brick_8h_source}{}\label{_g_a___spawn_brick_8h_source}\index{Source/WjWorld/AbilitySystem/Abilities/GA\_SpawnBrick.h@{Source/WjWorld/AbilitySystem/Abilities/GA\_SpawnBrick.h}}
+\doxymbox{\hyperlink{_g_a___spawn_brick_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Fill\ out\ your\ copyright\ notice\ in\ the\ Description\ page\ of\ Project\ Settings.}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_gameplay_ability_base_8h}{AbilitySystem/Abilities/WjWorldGameplayAbilityBase.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_wj_world_wall_description_data_asset_8h}{GamePlay/Wall/WjWorldWallDescriptionDataAsset.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}ActiveGameplayEffectHandle.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}GA\_SpawnBrick.generated.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_a_wj_world_brick_preview_actor}{AWjWorldBrickPreviewActor}};}
+\DoxyCodeLine{00012\ \textcolor{keyword}{struct\ }FOnAttributeChangeData;}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00018\ UCLASS(Abstract)}
+\DoxyCodeLine{00019\ class\ WJWORLD\_API\ \doxymbox{\hyperlink{class_u_g_a___spawn_brick_a45d02a51c0aa75a16a162e29139046c7}{UGA\_SpawnBrick}}\ :\ public\ \doxymbox{\hyperlink{class_u_wj_world_gameplay_ability_base_ad7322fe328393ab6e7dcf9bd1c4097f8}{UWjWorldGameplayAbilityBase}}}
+\DoxyCodeLine{00020\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ GENERATED\_BODY()}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \ \ \doxymbox{\hyperlink{class_u_g_a___spawn_brick_a45d02a51c0aa75a16a162e29139046c7}{UGA\_SpawnBrick}}();}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{comment}{//\ 충전\ 시스템\ 오버라이드}}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_u_g_a___spawn_brick_a4465f3e0d751bf4c2e1a19589af66ac5}{IsChargeBased}}()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{virtual}\ int32\ GetCurrentCharges()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{virtual}\ int32\ GetMaxCharges()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{float}\ GetChargeRefillTimeRemaining()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\ 프롬프트\ 설명}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{virtual}\ FText\ GetPromptDescription()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnGiveAbility(\textcolor{keyword}{const}\ FGameplayAbilityActorInfo*\ ActorInfo,\ \textcolor{keyword}{const}\ FGameplayAbilitySpec\&\ Spec)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnRemoveAbility(\textcolor{keyword}{const}\ FGameplayAbilityActorInfo*\ ActorInfo,\ \textcolor{keyword}{const}\ FGameplayAbilitySpec\&\ Spec)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ CanActivateAbility(\textcolor{keyword}{const}\ FGameplayAbilitySpecHandle\ Handle,\ \textcolor{keyword}{const}\ FGameplayAbilityActorInfo*\ ActorInfo,\ \textcolor{keyword}{const}\ FGameplayTagContainer*\ SourceTags\ =\ \textcolor{keyword}{nullptr},\ \textcolor{keyword}{const}\ FGameplayTagContainer*\ TargetTags\ =\ \textcolor{keyword}{nullptr},\ OUT\ FGameplayTagContainer*\ OptionalRelevantTags\ =\ \textcolor{keyword}{nullptr})\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ActivateAbility(\textcolor{keyword}{const}\ FGameplayAbilitySpecHandle\ Handle,\ \textcolor{keyword}{const}\ FGameplayAbilityActorInfo*\ ActorInfo,\ \textcolor{keyword}{const}\ FGameplayAbilityActivationInfo\ ActivationInfo,\ \textcolor{keyword}{const}\ FGameplayEventData*\ TriggerEventData)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ EndAbility(\textcolor{keyword}{const}\ FGameplayAbilitySpecHandle\ Handle,\ \textcolor{keyword}{const}\ FGameplayAbilityActorInfo*\ ActorInfo,\ \textcolor{keyword}{const}\ FGameplayAbilityActivationInfo\ ActivationInfo,\ \textcolor{keywordtype}{bool}\ bReplicateEndAbility,\ \textcolor{keywordtype}{bool}\ bWasCancelled)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{comment}{//\ Preview\ 관련}}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{void}\ SpawnPreviewActor();}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{void}\ DestroyPreviewActor();}
+\DoxyCodeLine{00046\ \ \ \ \ FVector\ CalculatePreviewLocation()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{bool}\ CheckPreviewValid()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{comment}{//\ Confirm/Cancel\ 콜백}}
+\DoxyCodeLine{00050\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00051\ \ \ \ \ void\ OnConfirmCallback();}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ OnCancelCallback();}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{comment}{//\ 실제\ 벽돌\ 스폰\ (서버에서만)}}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ SpawnBrickAtPreviewLocation();}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/\ 충전\ 시스템\ -\/-\/-\/-\/}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{void}\ ApplyChargeCost();}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{void}\ StartChargeRefill();}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ StopChargeRefill();}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{void}\ CreateRefillEffect();}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{void}\ OnSpawnBrickChargesChanged(const\ FOnAttributeChangeData\&\ Data);}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ private:}
+\DoxyCodeLine{00077\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00078\ \ \ \ \ TObjectPtr<\doxymbox{\hyperlink{class_a_wj_world_brick_preview_actor}{AWjWorldBrickPreviewActor}}>\ PreviewActor;}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{comment}{//\ 캐시된\ WallDesc\ (Preview\ 업데이트용)}}
+\DoxyCodeLine{00081\ \ \ \ \ \doxymbox{\hyperlink{struct_f_wj_world_wall_description}{FWjWorldWallDescription}}\ CachedWallDesc;}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{comment}{//\ Tick으로\ Preview\ 위치\ 업데이트용\ 타이머}}
+\DoxyCodeLine{00084\ \ \ \ \ FTimerHandle\ PreviewUpdateTimerHandle;}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ UFUNCTION()}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdatePreviewLocation();}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/\ 충전\ 시스템\ -\/-\/-\/-\/}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00092\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Charge"{}})}
+\DoxyCodeLine{00093\ \ \ \ \ int32\ MaxCharges\ =\ 3;}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00096\ \ \ \ \ UPROPERTY(EditDefaultsOnly,\ Category\ =\ \textcolor{stringliteral}{"{}Charge"{}})}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{float}\ ChargeRefillInterval\ =\ 5.0f;}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00100\ \ \ \ \ UPROPERTY()}
+\DoxyCodeLine{00101\ \ \ \ \ TObjectPtr<UGameplayEffect>\ RefillEffect;}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00104\ \ \ \ \ FActiveGameplayEffectHandle\ RefillEffectHandle;}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00107\ \ \ \ \ FDelegateHandle\ ChargesChangedDelegateHandle;}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordtype}{double}\ RefillStartWorldTime\ =\ 0.0;}
+\DoxyCodeLine{00111\ \};}
+
+\end{DoxyCode}
