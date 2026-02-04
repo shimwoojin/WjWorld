@@ -58,12 +58,17 @@
 - 멀티플레이어에서 OnLoadoutChanged 브로드캐스트가 모든 Pawn에 영향 → `IsLocallyControlled()` 체크 추가
 - WaitingRoom 3자 코스메틱 미동기화 → `CharacterBase.OnRep_PlayerState()`에서 `OnPawnSet()` 호출하도록 수정
 
-### 다음 작업 예정 (Approaching Wall 개선)
-- [ ] Normal Attack 시 Montage 발동
-- [ ] Lift Brick 시 드는 포즈 (Animation 필요) 및 실제 벽돌을 든 모습 3자 Replicate
-- [ ] Brick 이동 시 다른 색 벽돌 간 Z-Fight 현상 수정
-- [ ] 벽돌과 플레이어 끼임 케이스 추가 처리
-- [ ] GameplayCue 사용으로 Ability 발동 시 사운드 효과 추가
+### 완료된 작업 (Approaching Wall 개선)
+- [x] Normal Attack 시 Montage 발동 (코드 완료, 에셋 필요)
+- [x] Lift Brick 시 드는 포즈 및 실제 벽돌을 든 모습 3자 Replicate (코드 완료, 에셋 필요)
+- [x] Brick 이동 시 다른 색 벽돌 간 Z-Fight 현상 수정
+- [x] 벽돌과 플레이어 끼임 케이스 추가 처리
+- [x] GameplayCue 사용으로 Ability 발동 시 사운드 효과 추가 (코드 완료, 에셋 필요)
+
+### 다음 작업 예정 (에디터/에셋 작업 - 낮은 우선순위)
+- [ ] 공격 AnimMontage 생성 및 BP_GA_NormalAttack에 할당
+- [ ] AnimBP에서 LiftBrickCarry 포즈 설정 (State.LiftBrickCarry 태그 체크)
+- [ ] GameplayCue 사운드 에셋 4개 (NormalAttack, SpawnBrick, LiftBrick, LiftBrick.Place)
 
 ---
 

@@ -13,6 +13,8 @@
 #include "GamePlay/Wall/WjWorldBrickComponent.h"
 #include "GamePlay/Wall/WjWorldBrickActor.h"
 
+#include "AbilitySystemComponent.h"
+#include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Engine/OverlapResult.h"
 
 UGA_NormalAttack::UGA_NormalAttack()
@@ -40,6 +42,11 @@ void UGA_NormalAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
+	// EndAbility 호출용 캐시
+	CachedHandle = Handle;
+	CachedActorInfo = ActorInfo;
+	CachedActivationInfo = ActivationInfo;
+
 	// WallDesc 캐시
 	AWjWorldGameModePlay* GameModePlay = GetWorld()->GetAuthGameMode<AWjWorldGameModePlay>();
 	if (GameModePlay)
@@ -51,67 +58,127 @@ void UGA_NormalAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 		}
 	}
 
-	// 서버에서만 공격 처리
-	if (HasAuthority(&ActivationInfo))
+	// GameplayCue 실행 (사운드/VFX)
+	if (UAbilitySystemComponent* ASC = ActorInfo->AbilitySystemComponent.Get())
 	{
-		FVector TargetLocation = CalculateTargetLocation();
-		FVector HalfSize = CachedWallDesc.BrickSize * 0.3f;
-
-		TArray<FOverlapResult> Overlaps;
-		FCollisionShape CollisionShape = FCollisionShape::MakeBox(HalfSize);
-
-		if (GetWorld()->OverlapMultiByObjectType(
-			Overlaps,
-			TargetLocation,
-			FQuat::Identity,
-			FCollisionObjectQueryParams::AllObjects,
-			CollisionShape))
-		{
-			for (const FOverlapResult& Overlap : Overlaps)
-			{
-				AWjWorldBrickActor* BrickActor = Cast<AWjWorldBrickActor>(Overlap.GetActor());
-				if (!BrickActor) continue;
-
-				UWjWorldBrickComponent* BrickComp = BrickActor->GetBrickComponent();
-				if (!BrickComp) continue;
-
-				const FWjWorldBrickProperties& Props = BrickComp->GetBrickProperties();
-
-				switch (Props.BrickType)
-				{
-				case EWjWorldBrickType::Standard:
-					// 파괴 불가
-					UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Standard brick - cannot destroy"));
-					break;
-
-				case EWjWorldBrickType::Explosive:
-					// 폭발 처리
-					UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Explosive brick - HandleWallCollision"));
-					BrickComp->HandleWallCollision(FVector::ZeroVector);
-					break;
-
-				case EWjWorldBrickType::Moving:
-					//UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Moving brick - destroying"));
-					//BrickComp->ReserveDestroyBrick(0.1f);
-					break;
-
-				case EWjWorldBrickType::Destructible:
-					// HP 기반 데미지
-					UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Destructible brick - applying damage"));
-					BrickComp->ApplyDamage(1);
-					break;
-				}
-
-				// 첫 번째 벽돌만 처리
-				break;
-			}
-		}
+		FGameplayCueParameters CueParams;
+		CueParams.Location = GetAvatarActorFromActorInfo()->GetActorLocation();
+		ASC->ExecuteGameplayCue(WjWorldGameplayTag::GameplayCue_Ability_NormalAttack(), CueParams);
 	}
+
+	// 공격 로직 즉시 실행 (Montage와 별개로)
+	ExecuteAttack(ActivationInfo);
 
 	// 쿨다운 적용
 	ApplyCooldown(Handle, ActorInfo, ActivationInfo);
 
-	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+	// Montage가 있으면 재생, 없으면 즉시 종료
+	if (AttackMontage)
+	{
+		UAbilityTask_PlayMontageAndWait* MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
+			this,
+			NAME_None,
+			AttackMontage,
+			MontagePlayRate,
+			NAME_None,
+			true,  // bStopWhenAbilityEnds
+			1.0f   // AnimRootMotionTranslationScale
+		);
+
+		MontageTask->OnCompleted.AddDynamic(this, &UGA_NormalAttack::OnMontageCompleted);
+		MontageTask->OnBlendOut.AddDynamic(this, &UGA_NormalAttack::OnMontageBlendOut);
+		MontageTask->OnInterrupted.AddDynamic(this, &UGA_NormalAttack::OnMontageInterrupted);
+		MontageTask->OnCancelled.AddDynamic(this, &UGA_NormalAttack::OnMontageCancelled);
+		MontageTask->ReadyForActivation();
+	}
+	else
+	{
+		// Montage 없으면 즉시 종료
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+	}
+}
+
+void UGA_NormalAttack::ExecuteAttack(const FGameplayAbilityActivationInfo& ActivationInfo)
+{
+	// 서버에서만 공격 처리
+	if (!HasAuthority(&ActivationInfo))
+	{
+		return;
+	}
+
+	FVector TargetLocation = CalculateTargetLocation();
+	FVector HalfSize = CachedWallDesc.BrickSize * 0.3f;
+
+	TArray<FOverlapResult> Overlaps;
+	FCollisionShape CollisionShape = FCollisionShape::MakeBox(HalfSize);
+
+	if (GetWorld()->OverlapMultiByObjectType(
+		Overlaps,
+		TargetLocation,
+		FQuat::Identity,
+		FCollisionObjectQueryParams::AllObjects,
+		CollisionShape))
+	{
+		for (const FOverlapResult& Overlap : Overlaps)
+		{
+			AWjWorldBrickActor* BrickActor = Cast<AWjWorldBrickActor>(Overlap.GetActor());
+			if (!BrickActor) continue;
+
+			UWjWorldBrickComponent* BrickComp = BrickActor->GetBrickComponent();
+			if (!BrickComp) continue;
+
+			const FWjWorldBrickProperties& Props = BrickComp->GetBrickProperties();
+
+			switch (Props.BrickType)
+			{
+			case EWjWorldBrickType::Standard:
+				// 파괴 불가
+				UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Standard brick - cannot destroy"));
+				break;
+
+			case EWjWorldBrickType::Explosive:
+				// 폭발 처리
+				UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Explosive brick - HandleWallCollision"));
+				BrickComp->HandleWallCollision(FVector::ZeroVector);
+				break;
+
+			case EWjWorldBrickType::Moving:
+				//UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Moving brick - destroying"));
+				//BrickComp->ReserveDestroyBrick(0.1f);
+				break;
+
+			case EWjWorldBrickType::Destructible:
+				// HP 기반 데미지
+				UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Destructible brick - applying damage"));
+				BrickComp->ApplyDamage(1);
+				break;
+			}
+
+			// 첫 번째 벽돌만 처리
+			break;
+		}
+	}
+}
+
+void UGA_NormalAttack::OnMontageCompleted()
+{
+	EndAbility(CachedHandle, CachedActorInfo, CachedActivationInfo, true, false);
+}
+
+void UGA_NormalAttack::OnMontageBlendOut()
+{
+	// BlendOut도 정상 종료로 처리
+	EndAbility(CachedHandle, CachedActorInfo, CachedActivationInfo, true, false);
+}
+
+void UGA_NormalAttack::OnMontageInterrupted()
+{
+	EndAbility(CachedHandle, CachedActorInfo, CachedActivationInfo, true, true);
+}
+
+void UGA_NormalAttack::OnMontageCancelled()
+{
+	EndAbility(CachedHandle, CachedActorInfo, CachedActivationInfo, true, true);
 }
 
 FVector UGA_NormalAttack::CalculateTargetLocation() const

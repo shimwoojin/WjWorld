@@ -65,3 +65,23 @@ FGameplayTag WjWorldGameplayTag::Data_Cooldown()
 {
 	return FGameplayTag::RequestGameplayTag(TEXT("Data.Cooldown"));
 }
+
+FGameplayTag WjWorldGameplayTag::GameplayCue_Ability_NormalAttack()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("GameplayCue.Ability.NormalAttack"));
+}
+
+FGameplayTag WjWorldGameplayTag::GameplayCue_Ability_SpawnBrick()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("GameplayCue.Ability.SpawnBrick"));
+}
+
+FGameplayTag WjWorldGameplayTag::GameplayCue_Ability_LiftBrick()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("GameplayCue.Ability.LiftBrick"));
+}
+
+FGameplayTag WjWorldGameplayTag::GameplayCue_Ability_LiftBrick_Place()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("GameplayCue.Ability.LiftBrick.Place"));
+}

@@ -12,6 +12,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
 
@@ -28,6 +29,14 @@ AWjWorldCharacterPlay::AWjWorldCharacterPlay()
 	AbilityPromptComponent->SetWidgetSpace(EWidgetSpace::Screen);
 	AbilityPromptComponent->SetDrawAtDesiredSize(true);
 	AbilityPromptComponent->SetVisibility(false);
+
+	// 들고 있는 벽돌 메시 컴포넌트 (손 소켓에 부착될 예정)
+	LiftedBrickMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LiftedBrickMeshComponent"));
+	LiftedBrickMeshComponent->SetupAttachment(GetMesh(), FName("hand_r"));
+	LiftedBrickMeshComponent->SetRelativeLocation(FVector(0.f, 0.f, 30.f));
+	LiftedBrickMeshComponent->SetRelativeScale3D(FVector(0.3f));
+	LiftedBrickMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	LiftedBrickMeshComponent->SetVisibility(false);
 }
 
 void AWjWorldCharacterPlay::PostInitializeComponents()
@@ -50,6 +59,9 @@ void AWjWorldCharacterPlay::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AWjWorldCharacterPlay, bIsEliminated);
+	DOREPLIFETIME(AWjWorldCharacterPlay, bIsCarryingBrick);
+	DOREPLIFETIME(AWjWorldCharacterPlay, CarriedBrickMesh);
+	DOREPLIFETIME(AWjWorldCharacterPlay, CarriedBrickScale);
 }
 
 void AWjWorldCharacterPlay::OnEliminated()
@@ -269,5 +281,66 @@ void AWjWorldCharacterPlay::SetLastAttacker(AWjWorldCharacterPlay* Attacker)
 	if (Attacker && Attacker != this)
 	{
 		LastAttacker = Attacker;
+	}
+}
+
+void AWjWorldCharacterPlay::ShowLiftedBrick(UStaticMesh* BrickMesh, const FVector& BrickScale)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	CarriedBrickMesh = BrickMesh;
+	CarriedBrickScale = BrickScale;
+	bIsCarryingBrick = true;
+
+	// 서버에서도 즉시 시각 업데이트
+	UpdateLiftedBrickVisual();
+
+	UE_LOG(LogWjWorld, Log, TEXT("AWjWorldCharacterPlay::ShowLiftedBrick - Mesh: %s, Scale: %s"),
+		BrickMesh ? *BrickMesh->GetName() : TEXT("None"),
+		*BrickScale.ToString());
+}
+
+void AWjWorldCharacterPlay::HideLiftedBrick()
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	bIsCarryingBrick = false;
+	CarriedBrickMesh = nullptr;
+	CarriedBrickScale = FVector::OneVector;
+
+	// 서버에서도 즉시 시각 업데이트
+	UpdateLiftedBrickVisual();
+
+	UE_LOG(LogWjWorld, Log, TEXT("AWjWorldCharacterPlay::HideLiftedBrick"));
+}
+
+void AWjWorldCharacterPlay::OnRep_IsCarryingBrick()
+{
+	UpdateLiftedBrickVisual();
+}
+
+void AWjWorldCharacterPlay::UpdateLiftedBrickVisual()
+{
+	if (!LiftedBrickMeshComponent)
+	{
+		return;
+	}
+
+	if (bIsCarryingBrick && CarriedBrickMesh)
+	{
+		LiftedBrickMeshComponent->SetStaticMesh(CarriedBrickMesh);
+		LiftedBrickMeshComponent->SetRelativeScale3D(CarriedBrickScale * 0.3f);
+		LiftedBrickMeshComponent->SetVisibility(true);
+	}
+	else
+	{
+		LiftedBrickMeshComponent->SetVisibility(false);
+		LiftedBrickMeshComponent->SetStaticMesh(nullptr);
 	}
 }

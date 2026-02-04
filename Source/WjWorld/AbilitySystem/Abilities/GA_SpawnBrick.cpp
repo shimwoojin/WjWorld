@@ -337,6 +337,14 @@ void UGA_SpawnBrick::OnConfirmCallback()
 			ApplyChargeCost();
 			SpawnBrickAtPreviewLocation();
 			StartChargeRefill();
+
+			// GameplayCue 실행 (사운드/VFX)
+			if (UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo())
+			{
+				FGameplayCueParameters CueParams;
+				CueParams.Location = CalculatePreviewLocation();
+				ASC->ExecuteGameplayCue(WjWorldGameplayTag::GameplayCue_Ability_SpawnBrick(), CueParams);
+			}
 		}
 	}
 

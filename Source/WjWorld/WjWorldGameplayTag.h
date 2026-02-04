@@ -34,4 +34,10 @@ public:
 
 	//Data (SetByCaller용)
 	static FGameplayTag Data_Cooldown();
+
+	//GameplayCue (사운드/VFX)
+	static FGameplayTag GameplayCue_Ability_NormalAttack();
+	static FGameplayTag GameplayCue_Ability_SpawnBrick();
+	static FGameplayTag GameplayCue_Ability_LiftBrick();
+	static FGameplayTag GameplayCue_Ability_LiftBrick_Place();
 };

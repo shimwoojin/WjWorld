@@ -14,12 +14,14 @@
 #include "GamePlay/Wall/WjWorldBrickActor.h"
 #include "GamePlay/Wall/WjWorldBrickPreviewActor.h"
 
+#include "AbilitySystemComponent.h"
 #include "Abilities/Tasks/AbilityTask_WaitConfirmCancel.h"
 #include "TimerManager.h"
 
 #include "Engine/OverlapResult.h"
 
 #include "Core/Play/WjWorldCharacterPlay.h"
+#include "Setting/WjWorldDeveloperSettings.h"
 
 UGA_LiftBrick::UGA_LiftBrick()
 {
@@ -100,6 +102,25 @@ void UGA_LiftBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 					// 원래 벽돌 파괴
 					BrickActor->Destroy();
 
+					// 캐릭터에 들고 있는 벽돌 시각화 (3자에게도 보임)
+					if (AWjWorldCharacterPlay* CharacterPlay = Cast<AWjWorldCharacterPlay>(GetAvatarActorFromActorInfo()))
+					{
+						const UWjWorldDeveloperSettings* DevSettings = GetDefault<UWjWorldDeveloperSettings>();
+						if (DevSettings && DevSettings->BrickMesh.IsValid())
+						{
+							UStaticMesh* BrickMesh = DevSettings->BrickMesh.LoadSynchronous();
+							CharacterPlay->ShowLiftedBrick(BrickMesh, CachedWallDesc.BrickSize / 100.f);
+						}
+					}
+
+					// GameplayCue 실행 (벽돌 집는 사운드)
+					if (UAbilitySystemComponent* ASC = ActorInfo->AbilitySystemComponent.Get())
+					{
+						FGameplayCueParameters CueParams;
+						CueParams.Location = OriginalBrickLocation;
+						ASC->ExecuteGameplayCue(WjWorldGameplayTag::GameplayCue_Ability_LiftBrick(), CueParams);
+					}
+
 					UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_LiftBrick: Picked up %s brick at %s"),
 						Props.BrickType == EWjWorldBrickType::Moving ? TEXT("Moving") : TEXT("Destructible"),
 						*OriginalBrickLocation.ToString());
@@ -161,6 +182,15 @@ void UGA_LiftBrick::EndAbility(const FGameplayAbilitySpecHandle Handle, const FG
 	}
 
 	DestroyPreviewActor();
+
+	// 들고 있는 벽돌 시각화 숨김 (서버에서)
+	if (HasAuthority(&ActivationInfo))
+	{
+		if (AWjWorldCharacterPlay* CharacterPlay = Cast<AWjWorldCharacterPlay>(GetAvatarActorFromActorInfo()))
+		{
+			CharacterPlay->HideLiftedBrick();
+		}
+	}
 
 	// 프롬프트 UI 숨김
 	if (ActorInfo && ActorInfo->IsLocallyControlled())
@@ -349,16 +379,26 @@ void UGA_LiftBrick::OnConfirmCallback()
 
 	if (HasAuthority(&CurrentActivationInfo) && bHasLiftedBrick)
 	{
+		FVector PlaceLocation;
 		if (CheckPreviewValid())
 		{
 			// 프리뷰 위치에 벽돌 스폰
-			FVector SpawnLocation = CalculatePreviewLocation();
-			SpawnBrickAtLocation(SpawnLocation);
+			PlaceLocation = CalculatePreviewLocation();
+			SpawnBrickAtLocation(PlaceLocation);
 		}
 		else
 		{
 			// 유효하지 않으면 원래 위치에 복원
-			SpawnBrickAtLocation(OriginalBrickLocation);
+			PlaceLocation = OriginalBrickLocation;
+			SpawnBrickAtLocation(PlaceLocation);
+		}
+
+		// GameplayCue 실행 (벽돌 놓는 사운드)
+		if (UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo())
+		{
+			FGameplayCueParameters CueParams;
+			CueParams.Location = PlaceLocation;
+			ASC->ExecuteGameplayCue(WjWorldGameplayTag::GameplayCue_Ability_LiftBrick_Place(), CueParams);
 		}
 	}
 

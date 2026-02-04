@@ -8,6 +8,7 @@
 #include "GamePlay/Wall/WjWorldWallManager.h"
 
 #include "Core/GameRule/WjWorldGameRuleApproachingWall.h"
+#include "Core/Play/WjWorldCharacterPlay.h"
 
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -42,10 +43,13 @@ void UWjWorldBrickMovement::Tick(float DeltaTime)
 
 	bool bWallManagerMoving = WallManger.IsValid() ? WallManger->IsWallMoving() : false;
 
+	// 이동 중인 벽돌에 Z 오프셋 적용 (Z-Fight 방지)
+	constexpr float MovingZOffset = 5.0f;
+
 	if (MoveElapsedTime >= MoveAllowTime
 		|| bWallManagerMoving == false)
 	{
-		NewLocation = EndLocation;
+		NewLocation = EndLocation; // 이동 완료 시 원래 Z 위치로 복귀
 		bIsMoving = false;
 		MoveElapsedTime = 0.0f;
 		if (TargetActor.IsValid())
@@ -57,6 +61,7 @@ void UWjWorldBrickMovement::Tick(float DeltaTime)
 	{
 		float Alpha = MoveElapsedTime / MoveAllowTime;
 		NewLocation = FMath::Lerp(StartLocation, EndLocation, Alpha);
+		NewLocation.Z += MovingZOffset; // 이동 중에는 약간 위로 띄움
 		if (TargetActor.IsValid())
 		{
 			TargetActor->SetActorLocation(NewLocation);
@@ -86,10 +91,11 @@ void UWjWorldBrickMovement::Tick(float DeltaTime)
 		{
 			for (const FOverlapResult& Overlap : PawnOverlaps)
 			{
-				ACharacter* Character = Cast<ACharacter>(Overlap.GetActor());
-				if (!Character) continue;
+				AWjWorldCharacterPlay* CharacterPlay = Cast<AWjWorldCharacterPlay>(Overlap.GetActor());
+				if (!CharacterPlay) continue;
+				if (CharacterPlay->IsEliminated()) continue;
 
-				float CapsuleRadius = Character->GetCapsuleComponent()->GetScaledCapsuleRadius();
+				float CapsuleRadius = CharacterPlay->GetCapsuleComponent()->GetScaledCapsuleRadius();
 
 				FVector MoveDir = MovementVector.GetSafeNormal();
 				if (MoveDir.IsNearlyZero()) continue;
@@ -106,8 +112,48 @@ void UWjWorldBrickMovement::Tick(float DeltaTime)
 				}
 
 				FVector PushTarget = NewLocation + MoveDir * PushDistance;
-				PushTarget.Z = Character->GetActorLocation().Z; // Z축 유지
-				Character->SetActorLocation(PushTarget);
+				PushTarget.Z = CharacterPlay->GetActorLocation().Z; // Z축 유지
+
+				// 끼임 체크: 밀려날 위치에 벽돌이 있는지 확인
+				bool bIsTrapped = false;
+				UWjWorldBrickComponent* BlockingBrick = FindBrickAtLocation(PushTarget);
+				if (BlockingBrick)
+				{
+					bIsTrapped = true;
+				}
+				else
+				{
+					// 맵 경계 체크
+					const FWjWorldBrickProperties& BrickProperties = BrickComponent->GetBrickProperties();
+					FIntPoint GridIndex = UWjWorldBrickSpawner::CalculateBrickGridIndex(
+						PushTarget,
+						BrickProperties.ColumnNum,
+						BrickProperties.RowNum,
+						BrickProperties.CenterOffset,
+						BrickProperties.Size
+					);
+
+					if (GridIndex.X < 0 || GridIndex.X >= BrickProperties.ColumnNum ||
+						GridIndex.Y < 0 || GridIndex.Y >= BrickProperties.RowNum)
+					{
+						bIsTrapped = true;
+					}
+				}
+
+				if (bIsTrapped)
+				{
+					// 끼임 발생 → 플레이어 제거
+					UE_LOG(LogWjWorld, Warning, TEXT("Player trapped between bricks - eliminating"));
+					if (GameRule.IsValid())
+					{
+						GameRule->OnPlayerEliminated(CharacterPlay);
+					}
+				}
+				else
+				{
+					// 정상적으로 밀어냄
+					CharacterPlay->SetActorLocation(PushTarget);
+				}
 			}
 		}
 	}
