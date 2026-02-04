@@ -64,6 +64,12 @@
 - **FFilePath 경로 문제**: 에디터에서 절대 경로 저장 → 패키지 빌드에서 `FPaths::ProjectContentDir()` 기준으로 변환 필요
 - **Debug vs Development 빌드 차이**: Debug는 개발 PC 파일 시스템 직접 접근, Development/Shipping은 .pak 파일 사용
 
+### 나중에 논의할 내용
+- **에셋 팩 관리 방법**: 마켓플레이스 에셋 팩 (BigNiagaraBundle, Fantasy_Pack, GJM_Assets, sA_PickupSet_1 등)
+  - .gitignore는 적절하지 않음 (팀원/다른 PC에서 필요)
+  - Git LFS 도입? 별도 저장소? 빌드 파이프라인에서 관리?
+  - 용량 문제와 버전 관리 전략 필요
+
 ---
 
 ## 2026-02-04

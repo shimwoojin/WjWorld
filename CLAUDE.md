@@ -262,10 +262,18 @@ Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용). `UWjWorldStatsSub
 - **CharacterPreviewActor**: SceneCaptureComponent2D로 오프스크린 3D 렌더링 (256x512), FStreamableManager 비동기 코스메틱 메시 로드, Socket 기반 부착 (GetDefaultSocketName), StaticMesh/SkeletalMesh 동시 지원, SetupFromPawn()으로 Pawn에서 메시/ABP 복사
 
 ### Steam 빌드 설정
+- **AppID**: 4399350, **DepotID**: 4399351
 - **조건부 컴파일**: `WITH_STEAM` 매크로 (Win64에서만 활성화)
 - **모듈**: Steamworks, OnlineSubsystemSteam (Win64 전용)
 - **플러그인**: OnlineSubsystemSteam 활성화
 - **코스메틱/구매/스탯 코드**: `#if WITH_STEAM` 블록으로 Steam API 호출 분리
+- **Inventory Service**: `Steam/itemdefs.json`에 아이템 정의
+- **빌드 업로드**: `Steam/upload.bat` (SteamCMD 사용)
+
+### 패키징 주의사항
+- **Non-asset 파일** (`.txt`, `.csv` 등): `DefaultGame.ini`의 `DirectoriesToAlwaysStageAsNonUFS`로 명시적 포함 필요
+- **FFilePath 경로**: 에디터에서 절대 경로 저장 → 패키지 빌드에서 `FPaths::ProjectContentDir()` 기준으로 변환 필요
+- **Debug vs Development 빌드**: Debug는 개발 PC 파일 시스템 직접 접근, Development/Shipping은 .pak 파일 사용
 
 ### WjWorldDeveloperSettings (중앙 설정)
 에디터에서 설정 가능한 중앙 집중식 에셋/클래스 참조. Project Settings > Game > WjWorld Developer Settings에서 설정.
