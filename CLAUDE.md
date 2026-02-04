@@ -314,6 +314,10 @@ Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용). `UWjWorldStatsSub
 - **대기실 Ready 상태 즉시 동기화** (OnReadyStateChanged 구독)
 - **코스메틱 미리보기/시착 시스템** (CharacterPreviewActor Socket 부착, StaticMesh/SkeletalMesh 지원, 다중 슬롯 시착)
 - **하드코딩 경로 제거 및 DeveloperSettings 중앙화** (맵/GameMode/캐릭터/Approaching Wall 에셋)
+- **Approaching Wall 완성** (승리 조건, 게임 결과 처리, 대기실 복귀)
+  - Kills 스탯 추적 (LastAttacker 시스템)
+  - 플레이어 이탈 시 캐릭터 제거 처리
+  - 엣지 케이스 처리 (솔로 게임, 동시 제거, 전원 이탈)
 
 ## 진행 중 / 미구현
 - 추가 미니게임 구현

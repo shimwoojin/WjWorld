@@ -262,3 +262,12 @@ void AWjWorldCharacterPlay::HideAbilityPrompt()
 		AbilityPromptComponent->SetVisibility(false);
 	}
 }
+
+void AWjWorldCharacterPlay::SetLastAttacker(AWjWorldCharacterPlay* Attacker)
+{
+	// 자기 자신은 공격자로 설정하지 않음
+	if (Attacker && Attacker != this)
+	{
+		LastAttacker = Attacker;
+	}
+}

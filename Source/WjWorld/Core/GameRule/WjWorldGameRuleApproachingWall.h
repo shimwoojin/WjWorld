@@ -37,6 +37,9 @@ public:
 	// 생존자 수 반환
 	int32 GetAlivePlayerCount() const { return AlivePlayerCount; }
 
+	// 최소 플레이어 수 (게임 시작 조건)
+	int32 GetMinimumPlayerCount() const { return MinimumPlayerCount; }
+
 	const TSet<FIntPoint>& GetFloodFillPoints() const { return FloodFillPoints; }
 	const TSet<FIntPoint>& GetCurrentSafeZonePoints() const { return CurrentSafeZonePoints; }
 	TObjectPtr<UWjWorldWallManager> GetWallManager() const { return WallManager; }
@@ -89,4 +92,11 @@ protected:
 
 	int32 AlivePlayerCount = 0;
 	int32 TotalPlayerCount = 0;
+
+	// 최소 플레이어 수 (기본값: 1, 솔로 테스트 허용)
+	UPROPERTY(EditDefaultsOnly, Category = "GameRule")
+	int32 MinimumPlayerCount = 1;
+
+	// 킬 스탯 기록 (공격자가 있는 경우)
+	void RecordKillStat(AWjWorldPlayerStatePlay* KillerPlayerState);
 };

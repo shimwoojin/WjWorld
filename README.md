@@ -363,11 +363,12 @@ GameRule 초기화 → 카운트다운 → 게임 시작
   - [x] 캐릭터 기본 메시/애니메이션
   - [x] Approaching Wall 에셋 (Brick, Tile, WallDescription)
   - [x] ConstructorHelpers 제거 → UPROPERTY + DeveloperSettings 폴백 패턴
-
-### 진행 중
-- [ ] **Approaching Wall 완성**
-  - [ ] 승리 조건 (최후 생존자)
-  - [ ] 게임 결과 처리 및 대기실 복귀
+- [x] **Approaching Wall 완성**
+  - [x] 승리 조건 (최후 생존자)
+  - [x] 게임 결과 처리 및 대기실 복귀
+  - [x] Kills 스탯 추적 (LastAttacker 시스템)
+  - [x] 플레이어 이탈 시 캐릭터 제거 처리
+  - [x] 엣지 케이스 처리 (솔로 게임, 동시 제거, 전원 이탈)
 
 ### 예정
 - [ ] Steam 실제 환경 테스트 (AppID 발급 후)

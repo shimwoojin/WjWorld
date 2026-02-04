@@ -11,6 +11,8 @@
 #include "GamePlay/Wall/WjWorldBrickSpawner.h"
 #include "GamePlay/Wall/WjWorldWallManager.h"
 #include "Setting/WjWorldDeveloperSettings.h"
+#include "Stats/WjWorldStatsSubsystem.h"
+#include "Stats/WjWorldStatTypes.h"
 
 #include "WjWorldLogCategories.h"
 
@@ -82,8 +84,34 @@ void UWjWorldGameRuleApproachingWall::OnGameStart()
 
 	Super::OnGameStart();
 
-	UE_LOG(LogWjWorld, Log, TEXT("UWjWorldGameRuleApproachingWall::OnGameStart()"));
+	UE_LOG(LogWjWorld, Log, TEXT("UWjWorldGameRuleApproachingWall::OnGameStart() - Players: %d (Min: %d)"),
+		TotalPlayerCount, MinimumPlayerCount);
+
 	bIsGameStarted = true;
+
+	// 엣지 케이스: 플레이어가 없거나 부족한 경우
+	if (TotalPlayerCount <= 0)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("UWjWorldGameRuleApproachingWall::OnGameStart - No players, ending game"));
+		bGameOverConditionMet = true;
+		WinnerPlayer = nullptr;
+		OnGameEnd();
+		return;
+	}
+
+	// 엣지 케이스: 플레이어가 1명뿐인 경우 즉시 승리
+	if (TotalPlayerCount == 1 && AlivePlayerCount == 1)
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("UWjWorldGameRuleApproachingWall::OnGameStart - Solo player wins by default"));
+		if (AlivePlayers.Num() > 0 && AlivePlayers[0].IsValid())
+		{
+			WinnerPlayer = AlivePlayers[0];
+		}
+		bGameOverConditionMet = true;
+		OnGameEnd();
+		return;
+	}
+
 	InternalGameStartProcess();
 }
 
@@ -135,6 +163,16 @@ void UWjWorldGameRuleApproachingWall::OnPlayerLeft(AWjWorldPlayerStatePlay* Play
 
 	if (!HasAuthority() || !Player) return;
 
+	// 플레이어의 캐릭터 처리 (좀비 상태 방지)
+	APawn* PlayerPawn = Player->GetPawn();
+	AWjWorldCharacterPlay* PlayerCharacter = Cast<AWjWorldCharacterPlay>(PlayerPawn);
+	if (PlayerCharacter && !PlayerCharacter->IsEliminated())
+	{
+		// 캐릭터를 제거 상태로 만들고 파괴
+		PlayerCharacter->OnEliminated();
+		UE_LOG(LogWjWorld, Log, TEXT("UWjWorldGameRuleApproachingWall::OnPlayerLeft - Character eliminated for leaving player"));
+	}
+
 	// 플레이어가 나가면 생존자 목록에서 제거
 	if (AlivePlayers.Remove(Player) > 0)
 	{
@@ -147,9 +185,31 @@ void UWjWorldGameRuleApproachingWall::OnPlayerLeft(AWjWorldPlayerStatePlay* Play
 	UE_LOG(LogWjWorld, Log, TEXT("UWjWorldGameRuleApproachingWall::OnPlayerLeft - Player: %s, Alive: %d, Total: %d"),
 		*Player->GetPlayerName(), AlivePlayerCount, TotalPlayerCount);
 
+	// 엣지 케이스: 모든 플레이어가 나간 경우
+	if (TotalPlayerCount <= 0)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("UWjWorldGameRuleApproachingWall::OnPlayerLeft - All players left, ending game"));
+		bGameOverConditionMet = true;
+		WinnerPlayer = nullptr; // 승자 없음
+		OnGameEnd();
+		return;
+	}
+
 	// 남은 플레이어 수 확인하여 승리 조건 체크
 	if (bIsGameStarted && CheckWinCondition())
 	{
+		// 마지막 생존자를 승자로 설정
+		if (AlivePlayerCount == 1 && AlivePlayers.Num() > 0)
+		{
+			for (const auto& AlivePlayer : AlivePlayers)
+			{
+				if (AlivePlayer.IsValid())
+				{
+					WinnerPlayer = AlivePlayer;
+					break;
+				}
+			}
+		}
 		bGameOverConditionMet = true;
 		OnGameEnd();
 	}
@@ -161,6 +221,19 @@ void UWjWorldGameRuleApproachingWall::OnPlayerEliminated(AWjWorldCharacterPlay* 
 
 	// 이미 제거된 캐릭터면 무시
 	if (EliminatedCharacter->IsEliminated()) return;
+
+	// 공격자가 있으면 킬 스탯 기록
+	AWjWorldCharacterPlay* Attacker = EliminatedCharacter->GetLastAttacker();
+	if (Attacker && !Attacker->IsEliminated())
+	{
+		AWjWorldPlayerStatePlay* AttackerPS = Attacker->GetPlayerState<AWjWorldPlayerStatePlay>();
+		if (AttackerPS)
+		{
+			RecordKillStat(AttackerPS);
+			UE_LOG(LogWjWorld, Log, TEXT("UWjWorldGameRuleApproachingWall::OnPlayerEliminated - Kill recorded for %s"),
+				*AttackerPS->GetPlayerName());
+		}
+	}
 
 	// 캐릭터 사망 처리
 	EliminatedCharacter->OnEliminated();
@@ -180,6 +253,16 @@ void UWjWorldGameRuleApproachingWall::OnPlayerEliminated(AWjWorldCharacterPlay* 
 	}
 
 	UpdateGameData();
+
+	// 엣지 케이스: 동시에 모두 제거된 경우 (AlivePlayerCount == 0)
+	if (AlivePlayerCount == 0)
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("UWjWorldGameRuleApproachingWall::OnPlayerEliminated - All players eliminated simultaneously (Draw)"));
+		bGameOverConditionMet = true;
+		WinnerPlayer = nullptr; // 무승부
+		OnGameEnd();
+		return;
+	}
 
 	// 승리 조건 체크
 	if (bIsGameStarted && CheckWinCondition())
@@ -421,4 +504,30 @@ bool UWjWorldGameRuleApproachingWall::PredictNextLevelIsLast()
 	}
 
 	return SimulatedSafeZones.Num() <= 1;
+}
+
+void UWjWorldGameRuleApproachingWall::RecordKillStat(AWjWorldPlayerStatePlay* KillerPlayerState)
+{
+	if (!KillerPlayerState) return;
+
+	// 서버에서만 실행
+	if (!HasAuthority()) return;
+
+	// 킬러의 PlayerController를 통해 스탯 기록
+	APlayerController* KillerPC = Cast<APlayerController>(KillerPlayerState->GetOwner());
+	if (KillerPC && KillerPC->IsLocalController())
+	{
+		// 로컬 플레이어면 직접 기록
+		UWjWorldStatsSubsystem* Stats = GetWorld()->GetGameInstance()->GetSubsystem<UWjWorldStatsSubsystem>();
+		if (Stats)
+		{
+			Stats->IncrementLocalStat(WjWorldStats::ApproachingWall::Kills);
+			Stats->StoreStats();
+		}
+	}
+	// 원격 플레이어의 킬은 게임 종료 시 클라이언트에서 각자 처리하거나
+	// 별도 RPC로 처리해야 함 (현재는 로컬 플레이어만 즉시 기록)
+
+	UE_LOG(LogWjWorld, Log, TEXT("UWjWorldGameRuleApproachingWall::RecordKillStat - Recorded kill for %s"),
+		*KillerPlayerState->GetPlayerName());
 }

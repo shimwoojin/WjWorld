@@ -49,6 +49,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Death")
 	bool IsEliminated() const { return bIsEliminated; }
 
+	// 마지막 공격자 설정 (킬 스탯 추적용)
+	void SetLastAttacker(AWjWorldCharacterPlay* Attacker);
+	AWjWorldCharacterPlay* GetLastAttacker() const { return LastAttacker.Get(); }
+
 	// 어빌리티 프롬프트 표시/숨김
 	void ShowAbilityPrompt(const FText& ConfirmKeyName, const FText& CancelKeyName, const FText& Description);
 	void HideAbilityPrompt();
@@ -82,6 +86,9 @@ private:
 	// 사망 상태 (리플리케이션)
 	UPROPERTY(ReplicatedUsing = OnRep_IsEliminated)
 	bool bIsEliminated = false;
+
+	// 마지막 공격자 (킬 스탯 추적용)
+	TWeakObjectPtr<AWjWorldCharacterPlay> LastAttacker;
 
 	// 어빌리티 프롬프트 WidgetComponent
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI", meta = (AllowPrivateAccess = true))
