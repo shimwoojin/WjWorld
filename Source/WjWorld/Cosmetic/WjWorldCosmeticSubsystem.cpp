@@ -4,10 +4,8 @@
 #include "Cosmetic/WjWorldCosmeticDataAsset.h"
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "WjWorldLogCategories.h"
-
-#if WITH_STEAM
-#include "steam/steam_api.h"
-#endif
+#include "Engine/World.h"
+#include "TimerManager.h"
 
 const FString UWjWorldCosmeticSubsystem::LoadoutConfigSection = TEXT("CosmeticLoadout");
 
@@ -34,7 +32,21 @@ void UWjWorldCosmeticSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 
 void UWjWorldCosmeticSubsystem::Deinitialize()
 {
+	StopInventoryPolling();
 	SaveLoadoutToLocal();
+
+#if WITH_STEAM
+	// 대기 중인 결과 핸들 정리
+	if (PendingResultHandle != k_SteamInventoryResultInvalid)
+	{
+		ISteamInventory* SteamInv = SteamInventory();
+		if (SteamInv)
+		{
+			SteamInv->DestroyResult(PendingResultHandle);
+		}
+		PendingResultHandle = k_SteamInventoryResultInvalid;
+	}
+#endif
 
 	Super::Deinitialize();
 }
@@ -47,6 +59,12 @@ void UWjWorldCosmeticSubsystem::SetCatalog(UWjWorldCosmeticCatalogDataAsset* InC
 
 void UWjWorldCosmeticSubsystem::RequestInventoryRefresh()
 {
+	if (bInventoryRequestPending)
+	{
+		UE_LOG(LogWjWorldCosmetic, Log, TEXT("인벤토리 요청이 이미 진행 중입니다."));
+		return;
+	}
+
 #if WITH_STEAM
 	ISteamInventory* SteamInv = SteamInventory();
 	if (!SteamInv)
@@ -55,11 +73,18 @@ void UWjWorldCosmeticSubsystem::RequestInventoryRefresh()
 		return;
 	}
 
-	SteamInventoryResult_t ResultHandle = k_SteamInventoryResultInvalid;
-	if (SteamInv->GetAllItems(&ResultHandle))
+	// 기존 핸들 정리
+	if (PendingResultHandle != k_SteamInventoryResultInvalid)
 	{
-		UE_LOG(LogWjWorldCosmetic, Log, TEXT("Steam 인벤토리 요청 성공 (ResultHandle: %d)"), ResultHandle);
-		// Steam 콜백으로 결과 비동기 수신 → HandleSteamInventoryResult 에서 처리
+		SteamInv->DestroyResult(PendingResultHandle);
+		PendingResultHandle = k_SteamInventoryResultInvalid;
+	}
+
+	if (SteamInv->GetAllItems(&PendingResultHandle))
+	{
+		bInventoryRequestPending = true;
+		StartInventoryPolling();
+		UE_LOG(LogWjWorldCosmetic, Log, TEXT("Steam 인벤토리 요청 성공 (ResultHandle: %d)"), PendingResultHandle);
 	}
 	else
 	{
@@ -67,6 +92,7 @@ void UWjWorldCosmeticSubsystem::RequestInventoryRefresh()
 	}
 #else
 	UE_LOG(LogWjWorldCosmetic, Log, TEXT("Steam 미지원 환경 - 인벤토리 갱신 스킵"));
+	OnInventoryUpdated.Broadcast();
 #endif
 }
 
@@ -184,25 +210,310 @@ void UWjWorldCosmeticSubsystem::LoadLoadoutFromLocal()
 	UE_LOG(LogWjWorldCosmetic, Log, TEXT("로드아웃 로컬 로드 완료 (%d 슬롯)"), CurrentLoadout.Entries.Num());
 }
 
-void UWjWorldCosmeticSubsystem::HandleSteamInventoryResult()
+void UWjWorldCosmeticSubsystem::StartInventoryPolling()
+{
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	// 100ms 간격으로 결과 폴링
+	World->GetTimerManager().SetTimer(
+		InventoryPollTimerHandle,
+		this,
+		&UWjWorldCosmeticSubsystem::PollSteamInventoryResult,
+		0.1f,
+		true
+	);
+
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("인벤토리 폴링 시작"));
+}
+
+void UWjWorldCosmeticSubsystem::StopInventoryPolling()
+{
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		World->GetTimerManager().ClearTimer(InventoryPollTimerHandle);
+	}
+	bInventoryRequestPending = false;
+
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("인벤토리 폴링 중지"));
+}
+
+void UWjWorldCosmeticSubsystem::PollSteamInventoryResult()
+{
+#if WITH_STEAM
+	if (PendingResultHandle == k_SteamInventoryResultInvalid)
+	{
+		StopInventoryPolling();
+		return;
+	}
+
+	ISteamInventory* SteamInv = SteamInventory();
+	if (!SteamInv)
+	{
+		StopInventoryPolling();
+		return;
+	}
+
+	EResult Status = SteamInv->GetResultStatus(PendingResultHandle);
+
+	if (Status == k_EResultPending)
+	{
+		// 아직 대기 중 - 계속 폴링
+		return;
+	}
+
+	// 결과 처리
+	if (Status == k_EResultOK)
+	{
+		UE_LOG(LogWjWorldCosmetic, Log, TEXT("Steam 인벤토리 결과 수신 성공"));
+		ParseInventoryResult();
+	}
+	else
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("Steam 인벤토리 결과 실패 (Status: %d)"), static_cast<int32>(Status));
+	}
+
+	// 정리
+	SteamInv->DestroyResult(PendingResultHandle);
+	PendingResultHandle = k_SteamInventoryResultInvalid;
+	StopInventoryPolling();
+
+	// 델리게이트 브로드캐스트
+	OnInventoryUpdated.Broadcast();
+#else
+	StopInventoryPolling();
+#endif
+}
+
+void UWjWorldCosmeticSubsystem::ParseInventoryResult()
 {
 #if WITH_STEAM
 	ISteamInventory* SteamInv = SteamInventory();
 	if (!SteamInv || !Catalog)
 	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("ParseInventoryResult: SteamInventory 또는 Catalog 없음"));
 		return;
 	}
 
-	// 이 함수는 Steam 콜백에서 호출되어야 하며, 현재는 구조만 정의
-	// 실제 콜백 등록은 Steam 통합 시 추가 구현 필요
-	UE_LOG(LogWjWorldCosmetic, Log, TEXT("Steam 인벤토리 결과 처리"));
+	if (PendingResultHandle == k_SteamInventoryResultInvalid)
+	{
+		return;
+	}
 
-	// 예시: ResultHandle에서 아이템 목록을 읽어 CachedInventory 갱신
-	// SteamItemDetails_t* pDetails = ...;
-	// for each item:
-	//   FName ItemId = Catalog->SteamItemDefIdToItemId(pDetails[i].m_iDefinition);
-	//   CachedInventory.Add(FCosmeticItemInstance(ItemId));
+	// 아이템 개수 확인
+	uint32 ItemCount = 0;
+	if (!SteamInv->GetResultItems(PendingResultHandle, nullptr, &ItemCount) || ItemCount == 0)
+	{
+		UE_LOG(LogWjWorldCosmetic, Log, TEXT("Steam 인벤토리: 아이템 0개"));
+		CachedInventory.Empty();
+		return;
+	}
+
+	// 아이템 상세 정보 가져오기
+	TArray<SteamItemDetails_t> ItemDetails;
+	ItemDetails.SetNum(ItemCount);
+
+	if (!SteamInv->GetResultItems(PendingResultHandle, ItemDetails.GetData(), &ItemCount))
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("Steam 인벤토리 아이템 상세 정보 가져오기 실패"));
+		return;
+	}
+
+	// 캐시된 인벤토리 갱신
+	CachedInventory.Empty(ItemCount);
+
+	for (uint32 i = 0; i < ItemCount; ++i)
+	{
+		const SteamItemDetails_t& Details = ItemDetails[i];
+
+		// SteamItemDefId → ItemId 변환
+		FName ItemId = Catalog->SteamItemDefIdToItemId(Details.m_iDefinition);
+		if (ItemId.IsNone())
+		{
+			UE_LOG(LogWjWorldCosmetic, Warning, TEXT("알 수 없는 SteamItemDefId: %d"), Details.m_iDefinition);
+			continue;
+		}
+
+		// 수량 체크 (0이면 소비됨/만료됨)
+		if (Details.m_unQuantity == 0)
+		{
+			continue;
+		}
+
+		// 기존 아이템 수량 증가 또는 새로 추가
+		FCosmeticItemInstance* Existing = CachedInventory.FindByPredicate([ItemId](const FCosmeticItemInstance& Inst)
+		{
+			return Inst.ItemId == ItemId;
+		});
+
+		if (Existing)
+		{
+			Existing->Quantity += Details.m_unQuantity;
+		}
+		else
+		{
+			FCosmeticItemInstance NewItem(ItemId);
+			NewItem.Quantity = Details.m_unQuantity;
+			CachedInventory.Add(NewItem);
+		}
+
+		UE_LOG(LogWjWorldCosmetic, Verbose, TEXT("인벤토리 아이템: %s (DefId: %d, Qty: %d)"),
+			*ItemId.ToString(), Details.m_iDefinition, Details.m_unQuantity);
+	}
+
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("Steam 인벤토리 파싱 완료: %d개 아이템"), CachedInventory.Num());
+#endif
+}
+
+bool UWjWorldCosmeticSubsystem::GenerateTestItem(FName ItemId)
+{
+#if WITH_STEAM && !UE_BUILD_SHIPPING
+	if (ItemId.IsNone())
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("GenerateTestItem: 유효하지 않은 ItemId"));
+		return false;
+	}
+
+	ISteamInventory* SteamInv = SteamInventory();
+	if (!SteamInv)
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("GenerateTestItem: Steam Inventory API 사용 불가"));
+		return false;
+	}
+
+	if (!Catalog)
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("GenerateTestItem: 카탈로그 없음"));
+		return false;
+	}
+
+	int32 SteamDefId = Catalog->ItemIdToSteamItemDefId(ItemId);
+	if (SteamDefId == 0)
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("GenerateTestItem: SteamItemDefId를 찾을 수 없음 (%s)"), *ItemId.ToString());
+		return false;
+	}
+
+	SteamItemDef_t ItemDef = static_cast<SteamItemDef_t>(SteamDefId);
+	uint32 Quantity = 1;
+	SteamInventoryResult_t ResultHandle = k_SteamInventoryResultInvalid;
+
+	if (SteamInv->GenerateItems(&ResultHandle, &ItemDef, &Quantity, 1))
+	{
+		UE_LOG(LogWjWorldCosmetic, Log, TEXT("GenerateTestItem: 테스트 아이템 생성 요청 성공 (%s, DefId: %d)"), *ItemId.ToString(), SteamDefId);
+
+		// 결과 핸들 정리 (비동기이므로 즉시 파괴하면 안됨 - 실제 구현시 폴링 필요)
+		// 간단한 테스트를 위해 로컬 인벤토리에도 추가
+		GrantItemLocally(ItemId, 1);
+
+		SteamInv->DestroyResult(ResultHandle);
+		return true;
+	}
+	else
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("GenerateTestItem: Steam GenerateItems 실패"));
+		return false;
+	}
+#else
+	// 비 Steam 또는 Shipping 빌드: 로컬로 아이템 부여
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("GenerateTestItem: 로컬 아이템 부여 (비Steam 환경) - %s"), *ItemId.ToString());
+	GrantItemLocally(ItemId, 1);
+	return true;
+#endif
+}
+
+void UWjWorldCosmeticSubsystem::GrantAllItemsLocally()
+{
+#if !UE_BUILD_SHIPPING
+	if (!Catalog)
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("GrantAllItemsLocally: 카탈로그 없음"));
+		return;
+	}
+
+	int32 GrantedCount = 0;
+	for (const FCosmeticItemDefinition& Def : Catalog->Items)
+	{
+		if (Def.IsValid() && !HasItem(Def.ItemId))
+		{
+			GrantItemLocally(Def.ItemId, 1);
+			GrantedCount++;
+		}
+	}
+
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("GrantAllItemsLocally: %d개 아이템 부여 완료"), GrantedCount);
+#endif
+}
+
+void UWjWorldCosmeticSubsystem::ClearLocalInventory()
+{
+#if !UE_BUILD_SHIPPING
+	int32 PrevCount = CachedInventory.Num();
+	CachedInventory.Empty();
+	CurrentLoadout.Reset();
 
 	OnInventoryUpdated.Broadcast();
+
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("ClearLocalInventory: 인벤토리 초기화 (%d개 아이템 제거)"), PrevCount);
 #endif
+}
+
+void UWjWorldCosmeticSubsystem::DebugPrintInventory() const
+{
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("========== 인벤토리 상태 =========="));
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("총 아이템: %d개"), CachedInventory.Num());
+
+	for (const FCosmeticItemInstance& Item : CachedInventory)
+	{
+		FString DisplayName = TEXT("Unknown");
+		if (Catalog)
+		{
+			if (const FCosmeticItemDefinition* Def = Catalog->FindByItemId(Item.ItemId))
+			{
+				DisplayName = Def->DisplayName.ToString();
+			}
+		}
+
+		UE_LOG(LogWjWorldCosmetic, Log, TEXT("  - %s (%s) x%d"),
+			*Item.ItemId.ToString(), *DisplayName, Item.Quantity);
+	}
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("===================================="));
+}
+
+void UWjWorldCosmeticSubsystem::DebugPrintLoadout() const
+{
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("========== 로드아웃 상태 =========="));
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("장착 슬롯: %d개"), CurrentLoadout.Entries.Num());
+
+	auto SlotToString = [](ECosmeticSlot Slot) -> FString
+	{
+		switch (Slot)
+		{
+		case ECosmeticSlot::Head: return TEXT("Head");
+		case ECosmeticSlot::Body: return TEXT("Body");
+		case ECosmeticSlot::Back: return TEXT("Back");
+		case ECosmeticSlot::Effect: return TEXT("Effect");
+		default: return TEXT("None");
+		}
+	};
+
+	for (const FCosmeticSlotEntry& Entry : CurrentLoadout.Entries)
+	{
+		FString DisplayName = TEXT("Unknown");
+		if (Catalog)
+		{
+			if (const FCosmeticItemDefinition* Def = Catalog->FindByItemId(Entry.ItemId))
+			{
+				DisplayName = Def->DisplayName.ToString();
+			}
+		}
+
+		UE_LOG(LogWjWorldCosmetic, Log, TEXT("  - [%s] %s (%s)"),
+			*SlotToString(Entry.Slot), *Entry.ItemId.ToString(), *DisplayName);
+	}
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("===================================="));
 }

@@ -47,4 +47,42 @@ public:
 
 	UFUNCTION(Exec)
 	void ServerTravelWaitingRoom();
+
+	// ---- 코스메틱 테스트 콘솔 명령어 ----
+
+	/** 특정 아이템을 인벤토리에 추가 (테스트용) */
+	UFUNCTION(Exec)
+	void Cosmetic_GrantItem(FString ItemId);
+
+	/** 모든 카탈로그 아이템을 인벤토리에 추가 */
+	UFUNCTION(Exec)
+	void Cosmetic_GrantAll();
+
+	/** 인벤토리 초기화 */
+	UFUNCTION(Exec)
+	void Cosmetic_ClearInventory();
+
+	/** 인벤토리 상태 출력 */
+	UFUNCTION(Exec)
+	void Cosmetic_PrintInventory();
+
+	/** 로드아웃 상태 출력 */
+	UFUNCTION(Exec)
+	void Cosmetic_PrintLoadout();
+
+	/** 특정 슬롯에 아이템 장착 (1=Head, 2=Body, 3=Back, 4=Effect) */
+	UFUNCTION(Exec)
+	void Cosmetic_Equip(int32 SlotIndex, FString ItemId);
+
+	/** 특정 슬롯 장착 해제 */
+	UFUNCTION(Exec)
+	void Cosmetic_Unequip(int32 SlotIndex);
+
+	/** Steam 인벤토리 갱신 요청 */
+	UFUNCTION(Exec)
+	void Cosmetic_RefreshInventory();
+
+	/** 코스메틱 상점 UI 열기 */
+	UFUNCTION(Exec)
+	void Cosmetic_OpenShop();
 };

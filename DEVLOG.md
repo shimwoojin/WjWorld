@@ -17,15 +17,35 @@
   - `FCosmeticItemDefinition`에 부착 설정 추가 (AttachSocketName, LocationOffset, RotationOffset, Scale)
   - 슬롯별 기본 소켓 매핑: Head→"head", Back→"spine_03", Effect→"root"
   - 모자 메시 임포트 및 테스트 완료
+- **Steam Inventory 폴링 콜백 구현**
+  - `CosmeticSubsystem`: 타이머 기반 폴링 (StartInventoryPolling, PollSteamInventoryResult, ParseInventoryResult)
+  - `PurchaseSubsystem`: 구매 결과 폴링 콜백 추가
+- **코스메틱 테스트 콘솔 명령어 추가** (PlayerControllerBase)
+  - `Cosmetic_GrantItem`, `Cosmetic_GrantAll`, `Cosmetic_ClearInventory`
+  - `Cosmetic_PrintInventory`, `Cosmetic_PrintLoadout`
+  - `Cosmetic_Equip`, `Cosmetic_Unequip`, `Cosmetic_RefreshInventory`
+- **코스메틱 상점 UI 마무리**
+  - 상점 모드에서 소유 아이템 장착/해제 기능 추가
+- **멀티플레이어 코스메틱 동기화 수정**
+  - `CosmeticComponent.OnLoadoutChangedHandler()`: IsLocallyControlled() 체크 추가
+  - `CharacterBase.OnRep_PlayerState()`: 3자 캐릭터 코스메틱 적용 로직 추가
+  - `PlayerStateBase`: OnPawnSet(), OnCosmeticLoadoutUpdated() 구현 (Play에서 이동)
+  - `CharacterWaitingRoom.PossessedBy()`: 서버 측 코스메틱 초기화 추가
+- **CLAUDE.md 갱신** 및 `/update-claude-md` 스킬 생성
 
 ### 학습/메모
 - Socket Attachment vs Leader Pose vs Skeletal Mesh Merge: 슬롯 유형별 적합한 부착 방식이 다름
 - 모자 등 고정형 악세서리는 Socket Attachment, 옷/갑옷은 Leader Pose 권장
 - Mesh Merge는 드로우콜 최적화에 효과적이나 아이템 교체 시 재머지 필요
+- Steam Inventory API는 비동기 → 폴링 기반 콜백 패턴 필요
+- 멀티플레이어 코스메틱 동기화: `PossessedBy()`(서버) + `OnRep_PlayerState()`(클라이언트) 양쪽 필요
+- `OnRep_PlayerState()`는 자신/3자 모두에게 호출됨 → 3자 캐릭터 초기화에 활용
 
 ### 이슈/해결
 - UHT 오류: 파라미터명 `Slot`이 UWidget::Slot과 충돌 → `CosmeticSlot`으로 변경
 - `SetBrushFromTexture`가 RenderTarget 미지원 → `SetBrushResourceObject` 사용
+- 멀티플레이어에서 OnLoadoutChanged 브로드캐스트가 모든 Pawn에 영향 → `IsLocallyControlled()` 체크 추가
+- WaitingRoom 3자 코스메틱 미동기화 → `CharacterBase.OnRep_PlayerState()`에서 `OnPawnSet()` 호출하도록 수정
 
 ---
 

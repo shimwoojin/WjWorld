@@ -2,6 +2,7 @@
 
 #include "Core/Base/WjWorldPlayerStateBase.h"
 #include "Cosmetic/WjWorldCosmeticSubsystem.h"
+#include "Cosmetic/WjWorldCosmeticComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "WjWorldLogCategories.h"
 
@@ -75,7 +76,36 @@ void AWjWorldPlayerStateBase::SetCosmeticLoadout(const FCosmeticLoadout& InLoado
 
 void AWjWorldPlayerStateBase::OnCosmeticLoadoutUpdated()
 {
-	// 베이스 클래스에서는 아무것도 하지 않음. 서브클래스에서 오버라이드.
+	// 소유 Pawn의 CosmeticComponent에 로드아웃 적용
+	if (APawn* OwnerPawn = GetPawn())
+	{
+		if (UWjWorldCosmeticComponent* CosmeticComp = OwnerPawn->FindComponentByClass<UWjWorldCosmeticComponent>())
+		{
+			CosmeticComp->ApplyLoadout(CosmeticLoadout);
+			UE_LOG(LogWjWorldCosmetic, Log, TEXT("PlayerStateBase: 코스메틱 로드아웃 적용 (%s)"), *GetPlayerName());
+		}
+		bPendingCosmeticApply = false;
+	}
+	else
+	{
+		// Pawn이 아직 없으면 대기 플래그 설정
+		bPendingCosmeticApply = true;
+		UE_LOG(LogWjWorldCosmetic, Log, TEXT("PlayerStateBase: Pawn 없음, 코스메틱 적용 대기 (%s)"), *GetPlayerName());
+	}
+}
+
+void AWjWorldPlayerStateBase::OnPawnSet(APawn* OldPawn, APawn* NewPawn)
+{
+	// 대기 중인 코스메틱 적용
+	if (bPendingCosmeticApply && NewPawn)
+	{
+		if (UWjWorldCosmeticComponent* CosmeticComp = NewPawn->FindComponentByClass<UWjWorldCosmeticComponent>())
+		{
+			CosmeticComp->ApplyLoadout(CosmeticLoadout);
+			bPendingCosmeticApply = false;
+			UE_LOG(LogWjWorldCosmetic, Log, TEXT("PlayerStateBase: 대기 중인 코스메틱 적용 완료 (%s)"), *GetPlayerName());
+		}
+	}
 }
 
 void AWjWorldPlayerStateBase::OnRep_CosmeticLoadout()

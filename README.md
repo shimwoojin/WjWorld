@@ -65,6 +65,7 @@ Source/WjWorld/
 ├── Network/                           # 네트워크/패킷 관련
 └── UI/                                # UI 위젯들
     ├── Ability/                       # 어빌리티 UI (슬롯, 프롬프트)
+    ├── Cosmetic/                      # 코스메틱 UI (상점, 인벤토리, 프리뷰)
     ├── Profile/                       # 플레이어 프로필 (3D 프리뷰 + 스탯)
     ├── HUD/                           # 게임플레이 HUD
     └── ...                            # Intro, Login, Lobby, Session, WaitingRoom 등
@@ -198,7 +199,7 @@ Steam 무료 출시 후 유료 코스메틱 판매를 위한 시스템.
 **아키텍처:**
 - `ItemId`(FName) 기반 플랫폼 독립 식별 → `SteamItemDefId`(int32) 매핑
 - `CosmeticCatalogDataAsset`으로 아이템 정의 (메시, 아이콘, 가격, 슬롯, 희귀도)
-- `CosmeticSubsystem`으로 인벤토리 캐시 및 로드아웃 관리
+- `CosmeticSubsystem`으로 인벤토리 캐시 및 로드아웃 관리, Steam Inventory 폴링 콜백
 - `CosmeticComponent`로 캐릭터에 비동기 메시 적용
 - `FCosmeticLoadout` (`TArray<FCosmeticSlotEntry>`) 기반 네트워크 리플리케이션
 
@@ -206,8 +207,12 @@ Steam 무료 출시 후 유료 코스메틱 판매를 위한 시스템.
 
 **리플리케이션 흐름:**
 ```
-CosmeticSubsystem → PlayerStateBase (Replicated, 모든 모드) → CosmeticComponent → 캐릭터 비주얼
+[서버] Character.PossessedBy() → PlayerStateBase.OnPawnSet() → CosmeticComponent.ApplyLoadout()
+[클라이언트] CharacterBase.OnRep_PlayerState() → PS->OnPawnSet() → 3자 캐릭터 포함 동기화
 ```
+
+**테스트 콘솔 명령어:**
+- `Cosmetic_GrantAll`, `Cosmetic_PrintInventory`, `Cosmetic_Equip/Unequip`
 
 ### 구매 시스템
 - `PurchaseSubsystem`을 통한 Steam MicroTransaction API 연동
@@ -331,6 +336,10 @@ GameRule 초기화 → 카운트다운 → 게임 시작
   - [x] 코스메틱 서브시스템 (인벤토리 캐시, 로드아웃, 로컬 저장)
   - [x] 코스메틱 카탈로그 데이터 에셋 (ItemId ↔ SteamItemDefId)
   - [x] FCosmeticLoadout 리플리케이션 (PlayerStateBase, 모든 모드)
+  - [x] Steam Inventory 폴링 콜백 시스템
+  - [x] 코스메틱 상점 UI (CosmeticMainWindow, 장착/해제/구매)
+  - [x] 멀티플레이어 3자 코스메틱 동기화 (OnRep_PlayerState)
+  - [x] 테스트 콘솔 명령어 (Cosmetic_*)
 - [x] **구매 시스템** (PurchaseSubsystem, Steam MicroTransaction 연동)
 - [x] **스탯 시스템**
   - [x] WjWorldStatsSubsystem (Steam User Stats + GConfig 폴백)
@@ -344,17 +353,14 @@ GameRule 초기화 → 카운트다운 → 게임 시작
 - [x] **로그 카테고리** (LogWjWorld, LogWjWorldAbilities, LogWjWorldCosmetic, LogWjWorldStats)
 
 ### 진행 중
-- [ ] Steam Inventory 콜백 완전 구현
-- [ ] 구매 결과 콜백 체인 완성
-- [ ] 코스메틱 상점/인벤토리 UI 위젯
 - [ ] **Approaching Wall 완성**
   - [ ] 승리 조건 (최후 생존자)
   - [ ] 게임 결과 처리 및 대기실 복귀
 
 ### 예정
 - [ ] 코스메틱 미리보기/시착 시스템
+- [ ] Steam 실제 환경 테스트 (AppID 발급 후)
 - [ ] 추가 미니게임 구현
-- [ ] 멀티플레이어 동기화 개선
 
 ## 문서화
 

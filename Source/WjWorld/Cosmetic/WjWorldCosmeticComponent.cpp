@@ -343,6 +343,19 @@ void UWjWorldCosmeticComponent::RestoreDefaultMesh(ECosmeticSlot Slot)
 
 void UWjWorldCosmeticComponent::OnLoadoutChangedHandler(ECosmeticSlot Slot, FName ItemId)
 {
+	// 로컬 플레이어 캐릭터만 처리 (멀티플레이어에서 다른 플레이어 캐릭터 제외)
+	APawn* OwnerPawn = Cast<APawn>(GetOwner());
+	if (!OwnerPawn)
+	{
+		return;
+	}
+
+	// 로컬 컨트롤 여부 확인
+	if (!OwnerPawn->IsLocallyControlled())
+	{
+		return;
+	}
+
 	UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticComponent: 로드아웃 변경 감지 - 슬롯 %d, 아이템 %s"),
 		static_cast<int32>(Slot), *ItemId.ToString());
 

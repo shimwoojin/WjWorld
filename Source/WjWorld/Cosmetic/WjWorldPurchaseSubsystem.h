@@ -6,6 +6,10 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "WjWorldPurchaseSubsystem.generated.h"
 
+#if WITH_STEAM
+#include "steam/steam_api.h"
+#endif
+
 class UWjWorldCosmeticSubsystem;
 
 /**
@@ -64,8 +68,31 @@ private:
 	/** 구매 완료 후 인벤토리 갱신 */
 	void RefreshInventoryAfterPurchase();
 
+	/** 구매 결과 폴링 */
+	void PollPurchaseResult();
+
+	/** 폴링 타이머 시작 */
+	void StartPurchasePolling();
+
+	/** 폴링 타이머 중지 */
+	void StopPurchasePolling();
+
 	EPurchaseState CurrentState = EPurchaseState::Idle;
 
 	/** 현재 구매 중인 아이템 */
 	FName PendingItemId;
+
+#if WITH_STEAM
+	/** 대기 중인 구매 결과 핸들 */
+	SteamInventoryResult_t PurchaseResultHandle = k_SteamInventoryResultInvalid;
+#endif
+
+	/** 폴링 타이머 핸들 */
+	FTimerHandle PurchasePollTimerHandle;
+
+	/** 폴링 최대 대기 시간 (초) */
+	float PurchaseTimeoutSeconds = 300.0f;
+
+	/** 폴링 시작 시간 */
+	float PurchaseStartTime = 0.0f;
 };

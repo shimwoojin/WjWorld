@@ -122,6 +122,7 @@ void AWjWorldCharacterPlay::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
 
+	// ASC 초기화 (CharacterPlay 전용)
 	APlayerState* WJPlayerState = GetPlayerState<AWjWorldPlayerStatePlay>();
 	IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(WJPlayerState);
 	if (AbilitySystemInterface)
@@ -143,20 +144,7 @@ void AWjWorldCharacterPlay::OnRep_PlayerState()
 		}
 	}
 
-	// 클라이언트에서 코스메틱 카탈로그 설정
-	if (CosmeticComponent)
-	{
-		if (UWjWorldCosmeticSubsystem* CosmeticSub = GetGameInstance()->GetSubsystem<UWjWorldCosmeticSubsystem>())
-		{
-			CosmeticComponent->SetCatalog(CosmeticSub->GetCatalog());
-		}
-	}
-
-	// Pawn이 설정되었으니 대기 중인 코스메틱 적용 시도
-	if (AWjWorldPlayerStatePlay* PS = GetPlayerState<AWjWorldPlayerStatePlay>())
-	{
-		PS->OnPawnSet(nullptr, this);
-	}
+	// 코스메틱은 Super::OnRep_PlayerState()에서 처리됨 (CharacterBase)
 }
 
 void AWjWorldCharacterPlay::PossessedBy(AController* NewController)

@@ -23,6 +23,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void PossessedBy(AController* NewController) override;
 
 	virtual void InitializeCharacter() override;
 	virtual void SetupInputBindings(class UInputComponent* PlayerInputComponent) override;

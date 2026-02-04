@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "WjWorldCharacterWaitingRoom.h"
+#include "Core/Base/WjWorldPlayerStateBase.h"
+#include "Cosmetic/WjWorldCosmeticSubsystem.h"
+#include "Cosmetic/WjWorldCosmeticComponent.h"
 
 AWjWorldCharacterWaitingRoom::AWjWorldCharacterWaitingRoom()
 {
@@ -9,8 +12,19 @@ AWjWorldCharacterWaitingRoom::AWjWorldCharacterWaitingRoom()
 void AWjWorldCharacterWaitingRoom::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	InitializeWaitingRoomCharacter();
+}
+
+void AWjWorldCharacterWaitingRoom::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	// PlayerState에 Pawn 설정 알림 → 대기 중인 코스메틱 적용
+	if (AWjWorldPlayerStateBase* PS = GetPlayerState<AWjWorldPlayerStateBase>())
+	{
+		PS->OnPawnSet(nullptr, this);
+	}
 }
 
 void AWjWorldCharacterWaitingRoom::InitializeCharacter()

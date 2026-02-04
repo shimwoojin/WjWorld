@@ -205,11 +205,30 @@ void UCosmeticMainWindow::OnActionButtonClicked()
 		return;
 	}
 
+	const FCosmeticLoadout& Loadout = CosmeticSub->GetLoadout();
+	FName EquippedItem = Loadout.GetEquippedItem(CurrentSlot);
+
 	if (CurrentMode == ECosmeticWindowMode::Shop)
 	{
-		// 상점 모드: 구매
-		if (!CosmeticSub->HasItem(SelectedItemId))
+		// 상점 모드
+		if (CosmeticSub->HasItem(SelectedItemId))
 		{
+			// 보유 중인 아이템 → 장착 또는 해제
+			if (EquippedItem == SelectedItemId)
+			{
+				CosmeticSub->UnequipSlot(CurrentSlot);
+				UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticMainWindow: Unequipped slot %d (from Shop)"), static_cast<int32>(CurrentSlot));
+			}
+			else
+			{
+				CosmeticSub->EquipItem(CurrentSlot, SelectedItemId);
+				UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticMainWindow: Equipped %s on slot %d (from Shop)"), *SelectedItemId.ToString(), static_cast<int32>(CurrentSlot));
+			}
+			CosmeticSub->SaveLoadoutToLocal();
+		}
+		else
+		{
+			// 미보유 아이템 → 구매
 			UWjWorldPurchaseSubsystem* PurchaseSub = GI->GetSubsystem<UWjWorldPurchaseSubsystem>();
 			if (PurchaseSub && !PurchaseSub->IsPurchasePending())
 			{
@@ -221,23 +240,16 @@ void UCosmeticMainWindow::OnActionButtonClicked()
 	else
 	{
 		// 인벤토리 모드: 장착 또는 해제
-		const FCosmeticLoadout& Loadout = CosmeticSub->GetLoadout();
-		FName EquippedItem = Loadout.GetEquippedItem(CurrentSlot);
-
 		if (EquippedItem == SelectedItemId)
 		{
-			// 이미 장착됨 → 해제
 			CosmeticSub->UnequipSlot(CurrentSlot);
 			UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticMainWindow: Unequipped slot %d"), static_cast<int32>(CurrentSlot));
 		}
 		else
 		{
-			// 장착
 			CosmeticSub->EquipItem(CurrentSlot, SelectedItemId);
 			UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticMainWindow: Equipped %s on slot %d"), *SelectedItemId.ToString(), static_cast<int32>(CurrentSlot));
 		}
-
-		// 로드아웃 저장
 		CosmeticSub->SaveLoadoutToLocal();
 	}
 }
@@ -388,16 +400,30 @@ void UCosmeticMainWindow::RefreshActionButton()
 		return;
 	}
 
+	const FCosmeticLoadout& Loadout = CosmeticSub->GetLoadout();
+	FName EquippedItem = Loadout.GetEquippedItem(CurrentSlot);
+	bool bIsEquipped = (EquippedItem == SelectedItemId);
+
 	if (CurrentMode == ECosmeticWindowMode::Shop)
 	{
 		// 상점 모드
 		if (CosmeticSub->HasItem(SelectedItemId))
 		{
-			ActionButton->SetIsEnabled(false);
-			ActionButtonText->SetText(NSLOCTEXT("Cosmetic", "AlreadyOwned", "이미 보유"));
+			// 보유 중인 아이템 → 장착/해제 가능
+			ActionButton->SetIsEnabled(true);
+
+			if (bIsEquipped)
+			{
+				ActionButtonText->SetText(NSLOCTEXT("Cosmetic", "Unequip", "해제"));
+			}
+			else
+			{
+				ActionButtonText->SetText(NSLOCTEXT("Cosmetic", "Equip", "장착"));
+			}
 		}
 		else
 		{
+			// 미보유 아이템 → 구매
 			UWjWorldPurchaseSubsystem* PurchaseSub = GI->GetSubsystem<UWjWorldPurchaseSubsystem>();
 			bool bPending = PurchaseSub && PurchaseSub->IsPurchasePending();
 
@@ -410,12 +436,9 @@ void UCosmeticMainWindow::RefreshActionButton()
 	else
 	{
 		// 인벤토리 모드
-		const FCosmeticLoadout& Loadout = CosmeticSub->GetLoadout();
-		FName EquippedItem = Loadout.GetEquippedItem(CurrentSlot);
-
 		ActionButton->SetIsEnabled(true);
 
-		if (EquippedItem == SelectedItemId)
+		if (bIsEquipped)
 		{
 			ActionButtonText->SetText(NSLOCTEXT("Cosmetic", "Unequip", "해제"));
 		}

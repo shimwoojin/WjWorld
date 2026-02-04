@@ -1,10 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "WjWorldCharacterBase.h"
+#include "WjWorldPlayerStateBase.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Cosmetic/WjWorldCosmeticComponent.h"
+#include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
@@ -117,6 +119,26 @@ void AWjWorldCharacterBase::Tick(float DeltaTime)
 void AWjWorldCharacterBase::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
+}
+
+void AWjWorldCharacterBase::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+
+	// 코스메틱 카탈로그 설정
+	if (CosmeticComponent)
+	{
+		if (UWjWorldCosmeticSubsystem* CosmeticSub = GetGameInstance()->GetSubsystem<UWjWorldCosmeticSubsystem>())
+		{
+			CosmeticComponent->SetCatalog(CosmeticSub->GetCatalog());
+		}
+	}
+
+	// PlayerState에 Pawn 설정 알림 → 대기 중인 코스메틱 적용
+	if (AWjWorldPlayerStateBase* PS = GetPlayerState<AWjWorldPlayerStateBase>())
+	{
+		PS->OnPawnSet(nullptr, this);
+	}
 }
 
 void AWjWorldCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

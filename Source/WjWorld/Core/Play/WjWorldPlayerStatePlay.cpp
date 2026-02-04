@@ -51,33 +51,6 @@ void AWjWorldPlayerStatePlay::AddGameDataComponent(TSubclassOf<UWjWorldGameDataC
 
 void AWjWorldPlayerStatePlay::OnCosmeticLoadoutUpdated()
 {
+	// 부모 클래스에서 CosmeticComponent에 로드아웃 적용 처리
 	Super::OnCosmeticLoadoutUpdated();
-
-	// 소유 Pawn의 CosmeticComponent에 로드아웃 적용
-	if (APawn* OwnerPawn = GetPawn())
-	{
-		if (UWjWorldCosmeticComponent* CosmeticComp = OwnerPawn->FindComponentByClass<UWjWorldCosmeticComponent>())
-		{
-			CosmeticComp->ApplyLoadout(GetCosmeticLoadout());
-		}
-		bPendingCosmeticApply = false;
-	}
-	else
-	{
-		// Pawn이 아직 없으면 대기 플래그 설정
-		bPendingCosmeticApply = true;
-	}
-}
-
-void AWjWorldPlayerStatePlay::OnPawnSet(APawn* OldPawn, APawn* NewPawn)
-{
-	// 대기 중인 코스메틱 적용
-	if (bPendingCosmeticApply && NewPawn)
-	{
-		if (UWjWorldCosmeticComponent* CosmeticComp = NewPawn->FindComponentByClass<UWjWorldCosmeticComponent>())
-		{
-			CosmeticComp->ApplyLoadout(GetCosmeticLoadout());
-			bPendingCosmeticApply = false;
-		}
-	}
 }

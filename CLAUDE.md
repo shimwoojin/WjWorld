@@ -131,6 +131,10 @@ Source/WjWorld/
     ├── Profile/                        # 플레이어 프로필
     │   ├── PlayerProfileWidget         # 프로필 UI (3D 프리뷰 + 스탯 표시)
     │   └── CharacterPreviewActor       # 3D 캐릭터 프리뷰 (SceneCaptureComponent2D)
+    ├── Cosmetic/                        # 코스메틱 UI
+    │   ├── CosmeticMainWindow          # 코스메틱 메인 윈도우 (상점/인벤토리 모드)
+    │   ├── CosmeticItemEntryWidget     # 아이템 엔트리 위젯
+    │   └── CosmeticPreviewPanel        # 3D 프리뷰 패널
     └── HUD/
         ├── GameplayGlobalHUDWidget     # 게임플레이 글로벌 HUD
         └── ApproachingWallHUDWidget    # Approaching Wall 전용 HUD
@@ -212,21 +216,34 @@ GAS 기반 어빌리티 시스템. `UWjWorldGameplayAbilityBase`를 상속받아
 ### 코스메틱 시스템
 Steam 무료 출시 후 유료 코스메틱 판매를 위한 시스템. ItemId(FName) 기반 플랫폼 독립 식별.
 - **CosmeticTypes**: `ECosmeticSlot`(Head/Body/Back/Effect), `FCosmeticSlotEntry`, `FCosmeticLoadout`(TArray 기반 리플리케이션 지원)
-- **CosmeticComponent**: 캐릭터에 부착, 비동기 에셋 로드(FStreamableManager), 슬롯별 메시 관리
-- **CosmeticSubsystem**: GameInstanceSubsystem. 인벤토리 캐시, 로드아웃 관리, 로컬 저장(GConfig)
+- **CosmeticComponent**: 캐릭터에 부착, 비동기 에셋 로드(FStreamableManager), 슬롯별 메시 관리, 로컬 플레이어만 브로드캐스트 수신
+- **CosmeticSubsystem**: GameInstanceSubsystem. 인벤토리 캐시, 로드아웃 관리, 로컬 저장(GConfig), Steam Inventory 폴링 콜백
 - **CosmeticDataAsset**: 카탈로그. `FCosmeticItemDefinition`(ItemId, SteamItemDefId, 메시, 아이콘, 가격). 양방향 룩업
-- **PurchaseSubsystem**: GameInstanceSubsystem. Steam MicroTransaction API 연동, 구매 상태 관리
+- **PurchaseSubsystem**: GameInstanceSubsystem. Steam MicroTransaction API 연동, 구매 상태 관리, 폴링 기반 결과 콜백
+- **테스트 함수**: `GenerateTestItem()`, `GrantAllItemsLocally()`, `ClearLocalInventory()`, `DebugPrintInventory/Loadout()`
+- **콘솔 명령어**: `Cosmetic_GrantItem`, `Cosmetic_GrantAll`, `Cosmetic_ClearInventory`, `Cosmetic_PrintInventory/Loadout`, `Cosmetic_Equip/Unequip`, `Cosmetic_RefreshInventory`
 
 ### 코스메틱 리플리케이션 흐름
 ```
-CosmeticSubsystem.GetLoadout() (서버 로컬)
-    ↓ (PossessedBy에서 호출)
-PlayerStateBase.SetCosmeticLoadout() (서버, 모든 모드에서 사용)
-    ↓ (DOREPLIFETIME → 네트워크 리플리케이션)
-PlayerStateBase.CosmeticLoadout (TArray<FCosmeticSlotEntry> 기반)
-    ↓ (OnRep_CosmeticLoadout 콜백)
-Character.CosmeticComponent.ApplyLoadout() (클라이언트)
-    ↓ (비동기 메시 로드)
+[서버 측 - PossessedBy]
+Character.PossessedBy() → PlayerStateBase.OnPawnSet()
+    ↓ (bPendingCosmeticApply 체크)
+CosmeticComponent.ApplyLoadout() (서버에서 즉시 적용)
+
+[클라이언트 - 자신의 캐릭터]
+PlayerStateBase.BeginPlay() → ServerSetCosmeticLoadout() RPC
+    ↓
+OnRep_CosmeticLoadout() → OnCosmeticLoadoutUpdated()
+    ↓ (Pawn 없으면 bPendingCosmeticApply = true)
+CharacterBase.OnRep_PlayerState() → PS->OnPawnSet() → 적용
+
+[클라이언트 - 3자 캐릭터]
+CharacterBase.OnRep_PlayerState() (PlayerState 복제 시 호출)
+    ↓
+CosmeticComponent.SetCatalog() + PS->OnPawnSet()
+    ↓
+CosmeticComponent.ApplyLoadout() (비동기 메시 로드)
+    ↓
 캐릭터 비주얼 적용
 ```
 
@@ -268,6 +285,10 @@ Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용). `UWjWorldStatsSub
 - **벽돌 프리뷰 시스템** (BrickPreviewActor 유효/무효 색상)
 - **코스메틱 시스템** (컴포넌트, 서브시스템, 카탈로그, 타입)
 - **코스메틱 리플리케이션** (PlayerStateBase로 이동, 모든 모드에서 사용)
+- **코스메틱 멀티플레이어 동기화** (CharacterBase.OnRep_PlayerState, 3자 캐릭터 동기화)
+- **코스메틱 상점 UI** (CosmeticMainWindow, 장착/해제/구매 통합)
+- **Steam Inventory 폴링 콜백** (CosmeticSubsystem, PurchaseSubsystem)
+- **코스메틱 테스트 콘솔 명령어** (PlayerControllerBase Exec 함수)
 - **구매 시스템** (PurchaseSubsystem, Steam MicroTransaction 연동)
 - **Steam 빌드 설정** (조건부 컴파일, 플러그인, 모듈)
 - **플레이어 제거 상태** (bIsEliminated 리플리케이션)
@@ -282,11 +303,9 @@ Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용). `UWjWorldStatsSub
 - **대기실 Ready 상태 즉시 동기화** (OnReadyStateChanged 구독)
 
 ## 진행 중 / 미구현
-- Steam Inventory 콜백 완전 구현
-- 구매 결과 콜백 체인 완성
-- 코스메틱 상점/인벤토리 UI 위젯
 - 코스메틱 미리보기/시착 시스템
 - 추가 미니게임 구현
+- Steam 실제 환경 테스트 (AppID 발급 후)
 
 ## 코딩 컨벤션
 - 언리얼 엔진 코딩 표준 준수

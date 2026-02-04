@@ -68,12 +68,22 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "PlayerState|Events")
 	FOnPlayerNameUpdated OnPlayerNameUpdated;
 
+public:
+	/** Pawn이 설정되면 대기 중인 코스메틱 적용 */
+	void OnPawnSet(APawn* OldPawn, APawn* NewPawn);
+
 protected:
-	/** 서브클래스에서 코스메틱 로드아웃 업데이트 시 호출되는 훅 */
+	/** 코스메틱 로드아웃 업데이트 시 Pawn의 CosmeticComponent에 적용 */
 	virtual void OnCosmeticLoadoutUpdated();
 
 	UFUNCTION()
 	void OnRep_CosmeticLoadout();
+
+	UFUNCTION()
+	void OnRep_IsReady();
+
+	//~ Override APlayerState
+	virtual void OnRep_PlayerName() override;
 
 	//~ Replicated Properties
 	/**
@@ -82,22 +92,19 @@ protected:
 	UPROPERTY(ReplicatedUsing = OnRep_IsReady, BlueprintReadOnly, Category = "PlayerState")
 	bool bIsReady = false;
 
-	//~ Replication Callbacks
-	UFUNCTION()
-	void OnRep_IsReady();
+	/** 리플리케이션되는 코스메틱 로드아웃 */
+	UPROPERTY(ReplicatedUsing = OnRep_CosmeticLoadout, BlueprintReadOnly, Category = "Cosmetic")
+	FCosmeticLoadout CosmeticLoadout;
 
-	//~ Override APlayerState
-	virtual void OnRep_PlayerName() override;
+	/** Pawn이 설정되기 전에 코스메틱 적용 대기 플래그 */
+	UPROPERTY(BlueprintReadOnly, Category = "Cosmetic")
+	bool bPendingCosmeticApply = false;
 
+private:
 	//~ Server RPC
 	UFUNCTION(Server, Reliable)
 	void ServerSetReady(bool bNewReady);
 
 	UFUNCTION(Server, Reliable)
 	void ServerSetCosmeticLoadout(const FCosmeticLoadout& InLoadout);
-
-private:
-	/** 리플리케이션되는 코스메틱 로드아웃 */
-	UPROPERTY(ReplicatedUsing = OnRep_CosmeticLoadout)
-	FCosmeticLoadout CosmeticLoadout;
 };

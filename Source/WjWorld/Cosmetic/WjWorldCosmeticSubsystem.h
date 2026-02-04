@@ -7,6 +7,10 @@
 #include "Cosmetic/WjWorldCosmeticTypes.h"
 #include "WjWorldCosmeticSubsystem.generated.h"
 
+#if WITH_STEAM
+#include "steam/steam_api.h"
+#endif
+
 class UWjWorldCosmeticCatalogDataAsset;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryUpdated);
@@ -56,6 +60,28 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Cosmetic")
 	void GrantItemLocally(FName ItemId, int32 Quantity = 1);
 
+	// ---- 테스트/디버그 ----
+
+	/** Steam GenerateItems를 사용하여 테스트 아이템 생성 (개발 빌드 전용) */
+	UFUNCTION(BlueprintCallable, Category = "Cosmetic|Debug", meta = (DevelopmentOnly))
+	bool GenerateTestItem(FName ItemId);
+
+	/** 모든 카탈로그 아이템을 로컬 인벤토리에 추가 (개발 빌드 전용) */
+	UFUNCTION(BlueprintCallable, Category = "Cosmetic|Debug", meta = (DevelopmentOnly))
+	void GrantAllItemsLocally();
+
+	/** 로컬 인벤토리 초기화 (개발 빌드 전용) */
+	UFUNCTION(BlueprintCallable, Category = "Cosmetic|Debug", meta = (DevelopmentOnly))
+	void ClearLocalInventory();
+
+	/** 현재 인벤토리 상태를 로그로 출력 */
+	UFUNCTION(BlueprintCallable, Category = "Cosmetic|Debug")
+	void DebugPrintInventory() const;
+
+	/** 현재 로드아웃 상태를 로그로 출력 */
+	UFUNCTION(BlueprintCallable, Category = "Cosmetic|Debug")
+	void DebugPrintLoadout() const;
+
 	// ---- 로드아웃 ----
 
 	/** 현재 로드아웃 반환 */
@@ -89,8 +115,17 @@ public:
 	FOnLoadoutChanged OnLoadoutChanged;
 
 private:
-	/** Steam Inventory 결과 처리 */
-	void HandleSteamInventoryResult();
+	/** Steam Inventory 결과 처리 (폴링 방식) */
+	void PollSteamInventoryResult();
+
+	/** 인벤토리 결과 파싱 */
+	void ParseInventoryResult();
+
+	/** 폴링 타이머 시작 */
+	void StartInventoryPolling();
+
+	/** 폴링 타이머 중지 */
+	void StopInventoryPolling();
 
 	UPROPERTY()
 	TObjectPtr<UWjWorldCosmeticCatalogDataAsset> Catalog;
@@ -103,4 +138,15 @@ private:
 
 	/** 로드아웃 저장/로드용 설정 섹션 */
 	static const FString LoadoutConfigSection;
+
+#if WITH_STEAM
+	/** 대기 중인 인벤토리 결과 핸들 */
+	SteamInventoryResult_t PendingResultHandle = k_SteamInventoryResultInvalid;
+#endif
+
+	/** 폴링 타이머 핸들 */
+	FTimerHandle InventoryPollTimerHandle;
+
+	/** 인벤토리 요청 진행 중 여부 */
+	bool bInventoryRequestPending = false;
 };
