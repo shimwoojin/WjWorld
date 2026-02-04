@@ -97,4 +97,10 @@ batch/*.log
 
 # Generated files
 *.gen.cpp
-*.generated.hWindows/
+*.generated.h
+
+# Steam build files
+Steam/content/*
+!Steam/content/.gitkeep
+Steam/output/*
+!Steam/output/.gitkeep
