@@ -35,6 +35,7 @@ public:
 	void SetCharacterViewMode(const FGameplayTag& NewViewMode);
 
 protected:
+	virtual void PostInitializeComponents() override;
 	virtual void BeginPlay() override;
 
 public:	
@@ -83,10 +84,22 @@ protected:
 	TObjectPtr<UGameplayCameraComponent> GamePlayCamera;
 
 	/**
-	 * 기본 Input Mapping Context
+	 * 기본 스켈레탈 메시 (설정 안하면 DeveloperSettings 사용)
+	 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mesh")
+	TSoftObjectPtr<USkeletalMesh> DefaultSkeletalMesh;
+
+	/**
+	 * 기본 애니메이션 블루프린트 클래스 (설정 안하면 DeveloperSettings 사용)
+	 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mesh")
+	TSoftClassPtr<UAnimInstance> DefaultAnimBlueprintClass;
+
+	/**
+	 * 기본 Input Mapping Context (설정 안하면 DeveloperSettings 사용)
 	 */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UInputMappingContext> DefaultMappingContext;
+	TSoftObjectPtr<UInputMappingContext> DefaultMappingContext;
 
 	/**
 	 * 코스메틱 컴포넌트
@@ -96,7 +109,7 @@ protected:
 
 public:
 	TObjectPtr<UGameplayCameraComponent> GetGamePlayCamera() { return GamePlayCamera; }
-	TObjectPtr<UInputMappingContext> GetDefaultMappingContext() { return DefaultMappingContext; }
+	UInputMappingContext* GetDefaultMappingContext() const;
 	UWjWorldCosmeticComponent* GetCosmeticComponent() const { return CosmeticComponent; }
 
 private:

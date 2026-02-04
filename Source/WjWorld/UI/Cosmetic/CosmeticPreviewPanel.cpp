@@ -153,6 +153,13 @@ void UCosmeticPreviewPanel::CreatePreviewActor()
 
 	if (PreviewActor)
 	{
+		// 로컬 플레이어의 Pawn에서 SkeletalMesh와 AnimBlueprint 복사
+		APlayerController* PC = GetOwningPlayer();
+		if (PC && PC->GetPawn())
+		{
+			PreviewActor->SetupFromPawn(PC->GetPawn());
+		}
+
 		UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticPreviewPanel: PreviewActor created"));
 	}
 }

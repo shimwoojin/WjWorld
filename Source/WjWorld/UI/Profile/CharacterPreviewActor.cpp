@@ -3,7 +3,10 @@
 #include "UI/Profile/CharacterPreviewActor.h"
 #include "Components/SceneCaptureComponent2D.h"
 #include "Components/SpotLightComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Engine/TextureRenderTarget2D.h"
+#include "GameFramework/Character.h"
 #include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "Cosmetic/WjWorldCosmeticDataAsset.h"
 #include "WjWorldLogCategories.h"
@@ -56,6 +59,57 @@ void ACharacterPreviewActor::BeginPlay()
 
 	// ShowOnlyList에 프리뷰 메시 추가
 	SceneCaptureComponent->ShowOnlyComponents.Add(PreviewMeshComponent);
+}
+
+void ACharacterPreviewActor::SetupFromPawn(APawn* SourcePawn)
+{
+	if (!SourcePawn)
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("CharacterPreviewActor: SetupFromPawn called with null pawn"));
+		return;
+	}
+
+	// ACharacter에서 메시 컴포넌트 가져오기
+	ACharacter* SourceCharacter = Cast<ACharacter>(SourcePawn);
+	if (!SourceCharacter)
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("CharacterPreviewActor: SourcePawn is not a Character"));
+		return;
+	}
+
+	USkeletalMeshComponent* SourceMesh = SourceCharacter->GetMesh();
+	if (!SourceMesh)
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("CharacterPreviewActor: Source character has no mesh"));
+		return;
+	}
+
+	// SkeletalMesh 복사
+	USkeletalMesh* SkelMesh = SourceMesh->GetSkeletalMeshAsset();
+	if (SkelMesh)
+	{
+		PreviewMeshComponent->SetSkeletalMesh(SkelMesh);
+		UE_LOG(LogWjWorldCosmetic, Log, TEXT("CharacterPreviewActor: Copied SkeletalMesh %s"), *SkelMesh->GetName());
+	}
+
+	// AnimBlueprint 복사
+	UClass* AnimClass = SourceMesh->GetAnimClass();
+	if (AnimClass)
+	{
+		PreviewMeshComponent->SetAnimInstanceClass(AnimClass);
+		UE_LOG(LogWjWorldCosmetic, Log, TEXT("CharacterPreviewActor: Copied AnimBlueprint %s"), *AnimClass->GetName());
+	}
+
+	// 애니메이션 재생을 위해 가시성 및 틱 활성화
+	PreviewMeshComponent->SetVisibility(true);
+	PreviewMeshComponent->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
+
+	RefreshCapture();
+}
+
+bool ACharacterPreviewActor::HasBaseMesh() const
+{
+	return PreviewMeshComponent && PreviewMeshComponent->GetSkeletalMeshAsset() != nullptr;
 }
 
 void ACharacterPreviewActor::SetupPreview(const FCosmeticLoadout& Loadout)
@@ -174,16 +228,56 @@ void ACharacterPreviewActor::OnCosmeticAssetLoaded(ECosmeticSlot Slot, FName Ite
 		LoadedAsset = ItemDef->SkeletalMesh.ToSoftObjectPath().ResolveObject();
 	}
 
+	// 부착 소켓 결정
+	FName SocketName = ItemDef->AttachSocketName;
+	if (SocketName.IsNone())
+	{
+		SocketName = GetDefaultSocketName(ItemDef->Slot);
+	}
+
+	// 메시 컴포넌트 생성 및 부착
+	UMeshComponent* NewMeshComp = nullptr;
+
 	if (UStaticMesh* StaticMesh = Cast<UStaticMesh>(LoadedAsset))
 	{
-		UStaticMeshComponent* MeshComp = NewObject<UStaticMeshComponent>(this);
-		MeshComp->SetupAttachment(PreviewMeshComponent);
-		MeshComp->SetStaticMesh(StaticMesh);
-		MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		MeshComp->RegisterComponent();
+		UStaticMeshComponent* StaticMeshComp = NewObject<UStaticMeshComponent>(this);
+		StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		StaticMeshComp->SetStaticMesh(StaticMesh);
+		NewMeshComp = StaticMeshComp;
+	}
+	else if (USkeletalMesh* SkeletalMesh = Cast<USkeletalMesh>(LoadedAsset))
+	{
+		USkeletalMeshComponent* SkelMeshComp = NewObject<USkeletalMeshComponent>(this);
+		SkelMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		SkelMeshComp->SetSkeletalMesh(SkeletalMesh);
+		NewMeshComp = SkelMeshComp;
+	}
 
-		SlotMeshComponents.Add(Slot, MeshComp);
-		SceneCaptureComponent->ShowOnlyComponents.Add(MeshComp);
+	if (NewMeshComp)
+	{
+		// Socket 부착 또는 단순 부착
+		if (!SocketName.IsNone() && PreviewMeshComponent->DoesSocketExist(SocketName))
+		{
+			NewMeshComp->AttachToComponent(PreviewMeshComponent,
+				FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketName);
+		}
+		else
+		{
+			NewMeshComp->SetupAttachment(PreviewMeshComponent);
+		}
+
+		// 오프셋 및 스케일 적용
+		NewMeshComp->SetRelativeLocation(ItemDef->AttachLocationOffset);
+		NewMeshComp->SetRelativeRotation(ItemDef->AttachRotationOffset);
+		NewMeshComp->SetRelativeScale3D(ItemDef->AttachScale);
+
+		NewMeshComp->RegisterComponent();
+
+		SlotMeshComponents.Add(Slot, NewMeshComp);
+		SceneCaptureComponent->ShowOnlyComponents.Add(NewMeshComp);
+
+		UE_LOG(LogWjWorldCosmetic, Log, TEXT("CharacterPreviewActor: Loaded cosmetic %s on slot %d (socket: %s)"),
+			*ItemId.ToString(), static_cast<int32>(Slot), *SocketName.ToString());
 	}
 
 	// 모든 로드가 완료되었는지 확인
@@ -191,6 +285,21 @@ void ACharacterPreviewActor::OnCosmeticAssetLoaded(ECosmeticSlot Slot, FName Ite
 	if (ActiveStreamHandles.Num() == 0)
 	{
 		RefreshCapture();
+	}
+}
+
+FName ACharacterPreviewActor::GetDefaultSocketName(ECosmeticSlot Slot)
+{
+	switch (Slot)
+	{
+	case ECosmeticSlot::Head:
+		return FName("head");
+	case ECosmeticSlot::Back:
+		return FName("spine_03");
+	case ECosmeticSlot::Effect:
+		return FName("root");
+	default:
+		return NAME_None;
 	}
 }
 

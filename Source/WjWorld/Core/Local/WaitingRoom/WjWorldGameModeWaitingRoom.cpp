@@ -30,14 +30,7 @@ AWjWorldGameModeWaitingRoom::AWjWorldGameModeWaitingRoom()
 	// PlayerController 클래스 설정
 	PlayerControllerClass = AWjWorldPlayerControllerWaitingRoom::StaticClass();
 
-	// Character Blueprint 클래스 설정
-	static ConstructorHelpers::FClassFinder<APawn> CharacterBPClass(
-		TEXT("/Game/Core/WaitingRoom/BP_CharacterWaitingRoom")
-	);
-	if (CharacterBPClass.Succeeded())
-	{
-		DefaultPawnClass = CharacterBPClass.Class;
-	}
+	// DefaultPawnClass는 BP 서브클래스에서 설정
 }
 
 void AWjWorldGameModeWaitingRoom::BeginPlay()
@@ -189,8 +182,7 @@ void AWjWorldGameModeWaitingRoom::StartGame()
 			if (Def)
 			{
 				// LevelPath + GameMode 명시적 지정 + GameModeId 전달 (GameRule 조회용)
-				TravelURL = FString::Printf(TEXT("%s?game=/Game/Core/Play/BP_GameModePlay.BP_GameModePlay_C?GameModeId=%s"),
-					*Def->LevelPath, *Settings.GameMode);
+				TravelURL = DevSettings->GetPlayServerTravelURL(Def->LevelPath, Settings.GameMode);
 
 				// MapOption을 URL 옵션으로 전달
 				if (!Settings.MapName.IsEmpty())

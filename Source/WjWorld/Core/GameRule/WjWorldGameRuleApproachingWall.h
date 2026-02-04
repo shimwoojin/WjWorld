@@ -18,8 +18,6 @@ UCLASS(Blueprintable)
 class WJWORLD_API UWjWorldGameRuleApproachingWall : public UWjWorldGameRuleBase
 {
 	GENERATED_BODY()
-	
-	const FSoftObjectPath WallDescPath = FSoftObjectPath("/Game/GamePlay/Wall/DA_WallDescription");
 
 public:
 	virtual void Initialize(AWjWorldGameModePlay* InGameMode) override;

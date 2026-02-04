@@ -2,6 +2,7 @@
 
 #include "Core/WjWorldGameInstance.h"
 #include "Core/Session/SessionManager.h"
+#include "Setting/WjWorldDeveloperSettings.h"
 #include "Engine/Engine.h"
 #include "GameFramework/PlayerState.h"
 #include "Kismet/GameplayStatics.h"
@@ -339,7 +340,8 @@ void UWjWorldGameInstance::OnMigrationSessionCreated(bool bWasSuccessful)
 		if (World)
 		{
 			World->GetTimerManager().ClearTimer(MigrationTimeoutHandle);
-			World->ServerTravel(TEXT("/Game/Map/02-2_WaitingRoom?listen"));
+			const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+			World->ServerTravel(Settings->GetWaitingRoomOpenLevelURL());
 		}
 	}
 	else
@@ -473,7 +475,8 @@ void UWjWorldGameInstance::MigrationFailed()
 	SetMigrationState(EHostMigrationState::None);
 
 	// 로비로 복귀
-	UGameplayStatics::OpenLevel(this, FName(TEXT("/Game/Map/02-1_Lobby")));
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	UGameplayStatics::OpenLevel(this, FName(*Settings->GetLobbyMapPath()));
 }
 
 void UWjWorldGameInstance::SetMigrationState(EHostMigrationState NewState)

@@ -12,6 +12,7 @@ class USceneCaptureComponent2D;
 class UTextureRenderTarget2D;
 class USpotLightComponent;
 class UWjWorldCosmeticCatalogDataAsset;
+class UMeshComponent;
 
 /**
  * 3D 캐릭터 프리뷰 액터
@@ -28,11 +29,17 @@ class WJWORLD_API ACharacterPreviewActor : public AActor
 public:
 	ACharacterPreviewActor();
 
+	/** Pawn에서 SkeletalMesh와 AnimBlueprint 복사 */
+	void SetupFromPawn(APawn* SourcePawn);
+
 	/** 코스메틱 로드아웃으로 프리뷰 설정 */
 	void SetupPreview(const FCosmeticLoadout& Loadout);
 
 	/** 렌더 타겟 반환 */
 	UTextureRenderTarget2D* GetRenderTarget() const { return RenderTarget; }
+
+	/** 기본 메시가 설정되어 있는지 확인 */
+	bool HasBaseMesh() const;
 
 	/** 캡처 갱신 */
 	void RefreshCapture();
@@ -59,9 +66,12 @@ private:
 	UPROPERTY()
 	TObjectPtr<UTextureRenderTarget2D> RenderTarget;
 
-	/** 슬롯별 코스메틱 메시 컴포넌트 */
+	/** 슬롯별 코스메틱 메시 컴포넌트 (StaticMesh 또는 SkeletalMesh) */
 	UPROPERTY()
-	TMap<ECosmeticSlot, TObjectPtr<UStaticMeshComponent>> SlotMeshComponents;
+	TMap<ECosmeticSlot, TObjectPtr<UMeshComponent>> SlotMeshComponents;
+
+	/** 슬롯별 기본 부착 소켓 이름 반환 */
+	static FName GetDefaultSocketName(ECosmeticSlot Slot);
 
 	/** 비동기 로드 핸들 */
 	FStreamableManager StreamableManager;

@@ -490,11 +490,8 @@ void UCosmeticMainWindow::SetSlot(ECosmeticSlot NewSlot)
 	CurrentSlot = NewSlot;
 	SelectedItemId = NAME_None;
 
-	// 시착 취소
-	if (PreviewPanel)
-	{
-		PreviewPanel->ResetPreview();
-	}
+	// 슬롯 전환 시 시착 유지 (다중 슬롯 시착 지원)
+	// 모드 전환 시에만 ResetPreview() 호출
 
 	RefreshUI();
 

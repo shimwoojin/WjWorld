@@ -8,24 +8,7 @@
 
 AWjWorldHUDLobby::AWjWorldHUDLobby()
 {
-	// Blueprint 클래스 자동 로드
-	static ConstructorHelpers::FClassFinder<ULobbyHUDWidget> LobbyHUDWidgetBPClass(
-		TEXT("/Game/UI/Blueprint/Lobby/WBP_LobbyHUDWidget")
-	);
-
-	if (LobbyHUDWidgetBPClass.Succeeded())
-	{
-		LobbyHUDWidgetClass = LobbyHUDWidgetBPClass.Class;
-	}
-
-	static ConstructorHelpers::FClassFinder<UPlacementHUDWidget> PlacementHUDWidgetBPClass(
-		TEXT("/Game/UI/Blueprint/GamePlay/Placement/WBP_PlacementHUD")
-	);
-
-	if (PlacementHUDWidgetBPClass.Succeeded())
-	{
-		PlacementHUDWidgetClass = PlacementHUDWidgetBPClass.Class;
-	}
+	// LobbyHUDWidgetClass와 PlacementHUDWidgetClass는 BP 서브클래스에서 설정
 }
 
 void AWjWorldHUDLobby::BeginPlay()

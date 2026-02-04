@@ -27,34 +27,7 @@ AWjWorldGameModeLobby::AWjWorldGameModeLobby()
 	// GameState 클래스 설정 (멀티플레이 배치 동기화용)
 	GameStateClass = AWjWorldGameStateLobby::StaticClass();
 
-	// Character Blueprint 클래스 설정
-	static ConstructorHelpers::FClassFinder<APawn> CharacterBPClass(
-		TEXT("/Game/Core/Lobby/BP_CharacterLobby")
-	);
-	if (CharacterBPClass.Succeeded())
-	{
-		DefaultPawnClass = CharacterBPClass.Class;
-	}
-
-	// CreateRoomWindow Blueprint 클래스 자동 로드
-	static ConstructorHelpers::FClassFinder<UCreateRoomWindow> CreateRoomWindowBPClass(
-		TEXT("/Game/UI/Blueprint/Session/BP_CreateRoomWindow")
-	);
-
-	if (CreateRoomWindowBPClass.Succeeded())
-	{
-		CreateRoomWindowClass = CreateRoomWindowBPClass.Class;
-	}
-
-	// RoomListWindow Blueprint 클래스 자동 로드
-	static ConstructorHelpers::FClassFinder<URoomListWindow> RoomListWindowBPClass(
-		TEXT("/Game/UI/Blueprint/Session/BP_RoomListWindow")
-	);
-
-	if (RoomListWindowBPClass.Succeeded())
-	{
-		RoomListWindowClass = RoomListWindowBPClass.Class;
-	}
+	// DefaultPawnClass, CreateRoomWindowClass, RoomListWindowClass는 BP 서브클래스에서 설정
 }
 
 void AWjWorldGameModeLobby::BeginPlay()

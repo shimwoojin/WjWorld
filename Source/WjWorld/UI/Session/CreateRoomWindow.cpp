@@ -208,9 +208,9 @@ void UCreateRoomWindow::OnRoomCreated(bool bWasSuccessful)
 		// 팝업 닫기
 		ClosePopup();
 
-		// Lobby 맵을 Listen Server로 열되, GameMode는 BP_GameModeWaitingRoom으로 오버라이드
-		// Blueprint 클래스는 _C 접미사 필요
-		UGameplayStatics::OpenLevel(GetWorld(), TEXT("/Game/Map/02-1_Lobby?game=/Game/Core/WaitingRoom/BP_GameModeWaitingRoom.BP_GameModeWaitingRoom_C?Listen"));
+		// Lobby 맵을 Listen Server로 열되, GameMode는 WaitingRoomGameMode로 오버라이드
+		const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+		UGameplayStatics::OpenLevel(GetWorld(), FName(*Settings->GetWaitingRoomOpenLevelURL()));
 	}
 	else
 	{

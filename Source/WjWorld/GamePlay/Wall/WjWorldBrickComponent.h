@@ -86,7 +86,8 @@ class WJWORLD_API UWjWorldBrickComponent : public UWjWorldGameplaySceneComponent
 	GENERATED_BODY()
 
 public:
-	static const TCHAR* BrickMeshPath;
+	/** DeveloperSettings에서 벽돌 메시 로드 */
+	static UStaticMesh* GetBrickMesh();
 	constexpr static float HitBoxSize = 5.0f;
 
 public:	

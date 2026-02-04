@@ -351,6 +351,18 @@ GameRule 초기화 → 카운트다운 → 게임 시작
 - [x] **Steam 빌드 설정** (조건부 컴파일, 플러그인, 모듈)
 - [x] **개발자 설정** (WjWorldDeveloperSettings)
 - [x] **로그 카테고리** (LogWjWorld, LogWjWorldAbilities, LogWjWorldCosmetic, LogWjWorldStats)
+- [x] **로비 배치 시스템** (PlacementComponent, 저장/로드, 멀티플레이어 리플리케이션)
+- [x] **코스메틱 미리보기/시착 시스템**
+  - [x] CharacterPreviewActor Socket 기반 메시 부착
+  - [x] StaticMesh/SkeletalMesh 동시 지원
+  - [x] 다중 슬롯 시착 유지 (슬롯 전환 시 리셋 안 함)
+  - [x] Pawn에서 SkeletalMesh/AnimBP 복사
+- [x] **하드코딩 경로 제거 및 DeveloperSettings 중앙화**
+  - [x] 맵 경로 (LobbyMapPath)
+  - [x] GameMode 클래스 (WaitingRoom, Play)
+  - [x] 캐릭터 기본 메시/애니메이션
+  - [x] Approaching Wall 에셋 (Brick, Tile, WallDescription)
+  - [x] ConstructorHelpers 제거 → UPROPERTY + DeveloperSettings 폴백 패턴
 
 ### 진행 중
 - [ ] **Approaching Wall 완성**
@@ -358,13 +370,14 @@ GameRule 초기화 → 카운트다운 → 게임 시작
   - [ ] 게임 결과 처리 및 대기실 복귀
 
 ### 예정
-- [ ] 코스메틱 미리보기/시착 시스템
 - [ ] Steam 실제 환경 테스트 (AppID 발급 후)
 - [ ] 추가 미니게임 구현
 
 ## 문서화
 
-Doxygen으로 생성된 문서는 `docs/` 폴더에서 확인할 수 있습니다.
+Doxygen으로 생성된 API 문서는 아래 링크에서 확인할 수 있습니다:
+- **온라인 문서**: https://shimwoojin.github.io/WjWorld/
+- **로컬 문서**: `docs/` 폴더
 
 ## 라이선스
 

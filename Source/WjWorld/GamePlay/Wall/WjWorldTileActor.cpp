@@ -5,6 +5,7 @@
 #include "GamePlay/Wall/WjWorldBrickActor.h"
 #include "GamePlay/Wall/WjWorldBrickComponent.h"
 #include "GamePlay/WjWorldGameplayUtils.h"
+#include "Setting/WjWorldDeveloperSettings.h"
 #include "Components/BoxComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 
@@ -19,9 +20,18 @@
 
 #include "Net/UnrealNetwork.h"
 
-const  FColor AWjWorldTileActor::BombSignalOnColorWarning = FColor::Yellow;
-const  FColor AWjWorldTileActor::BombSignalOnColorDanger = FColor::Red;
-const TCHAR* AWjWorldTileActor::TileMeshPath = TEXT("/Game/GamePlay/Wall/Mesh/Floor");
+const FColor AWjWorldTileActor::BombSignalOnColorWarning = FColor::Yellow;
+const FColor AWjWorldTileActor::BombSignalOnColorDanger = FColor::Red;
+
+UStaticMesh* AWjWorldTileActor::GetTileMesh()
+{
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	if (Settings && !Settings->TileMesh.IsNull())
+	{
+		return Settings->TileMesh.LoadSynchronous();
+	}
+	return nullptr;
+}
 
 AWjWorldTileActor::AWjWorldTileActor()
 {
@@ -43,12 +53,6 @@ AWjWorldTileActor::AWjWorldTileActor()
 
 	TileMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TileMeshComponent"));
 	TileMeshComponent->SetupAttachment(RootComponent);
-
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> TileMesh(TileMeshPath);
-	if(TileMesh.Succeeded())
-	{
-		TileMeshComponent->SetStaticMesh(TileMesh.Object);
-	}
 
 	bIsBombSignalOn = false;
 }
@@ -130,6 +134,16 @@ void AWjWorldTileActor::PostNetInit()
 void AWjWorldTileActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// DeveloperSettings에서 메시 로드
+	if (TileMeshComponent && !TileMeshComponent->GetStaticMesh())
+	{
+		UStaticMesh* Mesh = GetTileMesh();
+		if (Mesh)
+		{
+			TileMeshComponent->SetStaticMesh(Mesh);
+		}
+	}
 
 	if (HasAuthority())
 	{

@@ -78,7 +78,7 @@ Source/WjWorld/
 │   ├── WjWorldStatsSubsystem          # Steam User Stats 래핑 (GameInstanceSubsystem)
 │   └── WjWorldStatTypes               # 스탯 타입 정의 (FMinigameStatEntry, FMinigameStatDescriptor)
 ├── Setting/                           # 개발자 설정
-│   └── WjWorldDeveloperSettings       # BP 설정용 (카탈로그 참조, TileActorClass 등)
+│   └── WjWorldDeveloperSettings       # 중앙 설정 (맵, GameMode, 캐릭터, 게임플레이 에셋)
 ├── DataAsset/                         # 데이터 에셋
 │   ├── CharacterPlaySetupDataAsset    # 캐릭터 셋업 데이터
 │   ├── WjWorldMinigameDataAsset       # 미니게임 카탈로그 (GameModeId → GameRuleClass)
@@ -130,7 +130,7 @@ Source/WjWorld/
     │   └── AbilityPromptWidget         # Confirm/Cancel 프롬프트 (WidgetComponent)
     ├── Profile/                        # 플레이어 프로필
     │   ├── PlayerProfileWidget         # 프로필 UI (3D 프리뷰 + 스탯 표시)
-    │   └── CharacterPreviewActor       # 3D 캐릭터 프리뷰 (SceneCaptureComponent2D)
+    │   └── CharacterPreviewActor       # 3D 캐릭터 프리뷰 (Socket 부착, Static/SkeletalMesh)
     ├── Cosmetic/                        # 코스메틱 UI
     │   ├── CosmeticMainWindow          # 코스메틱 메인 윈도우 (상점/인벤토리 모드)
     │   ├── CosmeticItemEntryWidget     # 아이템 엔트리 위젯
@@ -259,13 +259,24 @@ Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용). `UWjWorldStatsSub
 
 ### 플레이어 프로필 시스템
 - **PlayerProfileWidget**: 3D 캐릭터 프리뷰 + 미니게임별 스탯 표시, 비동기 스탯 로드, CosmeticLoadout 연동
-- **CharacterPreviewActor**: SceneCaptureComponent2D로 오프스크린 3D 렌더링 (256x512), FStreamableManager 비동기 코스메틱 메시 로드, SpotLightComponent 조명
+- **CharacterPreviewActor**: SceneCaptureComponent2D로 오프스크린 3D 렌더링 (256x512), FStreamableManager 비동기 코스메틱 메시 로드, Socket 기반 부착 (GetDefaultSocketName), StaticMesh/SkeletalMesh 동시 지원, SetupFromPawn()으로 Pawn에서 메시/ABP 복사
 
 ### Steam 빌드 설정
 - **조건부 컴파일**: `WITH_STEAM` 매크로 (Win64에서만 활성화)
 - **모듈**: Steamworks, OnlineSubsystemSteam (Win64 전용)
 - **플러그인**: OnlineSubsystemSteam 활성화
 - **코스메틱/구매/스탯 코드**: `#if WITH_STEAM` 블록으로 Steam API 호출 분리
+
+### WjWorldDeveloperSettings (중앙 설정)
+에디터에서 설정 가능한 중앙 집중식 에셋/클래스 참조. Project Settings > Game > WjWorld Developer Settings에서 설정.
+- **맵**: LobbyMapPath
+- **GameMode 클래스**: WaitingRoomGameModeClass, PlayGameModeClass
+- **캐릭터 기본값**: DefaultCharacterMesh, DefaultAnimBlueprintClass, DefaultInputMappingContext
+- **Approaching Wall**: BrickMesh, TileMesh, WallDescriptionAsset
+- **카탈로그**: MinigameCatalog, CosmeticCatalog, PlaceableObjectCatalog
+- **헬퍼 함수**: GetLobbyMapPath(), GetWaitingRoomOpenLevelURL(), GetPlayServerTravelURL()
+
+**설정 우선순위 패턴**: BP 서브클래스 UPROPERTY 값 우선 → DeveloperSettings 폴백
 
 ## 구현 완료 기능
 - 인트로/로그인/로비/대기실 게임모드
@@ -301,9 +312,10 @@ Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용). `UWjWorldStatsSub
 - **미니게임 카탈로그** (MinigameDataAsset, GameRule 동적 조회)
 - **WaitingRoom GameMode 오버라이드** (Lobby 맵 + `?game=` URL 옵션)
 - **대기실 Ready 상태 즉시 동기화** (OnReadyStateChanged 구독)
+- **코스메틱 미리보기/시착 시스템** (CharacterPreviewActor Socket 부착, StaticMesh/SkeletalMesh 지원, 다중 슬롯 시착)
+- **하드코딩 경로 제거 및 DeveloperSettings 중앙화** (맵/GameMode/캐릭터/Approaching Wall 에셋)
 
 ## 진행 중 / 미구현
-- 코스메틱 미리보기/시착 시스템
 - 추가 미니게임 구현
 - Steam 실제 환경 테스트 (AppID 발급 후)
 

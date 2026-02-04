@@ -7,6 +7,7 @@
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Cosmetic/WjWorldCosmeticComponent.h"
 #include "Cosmetic/WjWorldCosmeticSubsystem.h"
+#include "Setting/WjWorldDeveloperSettings.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
@@ -20,47 +21,80 @@ AWjWorldCharacterBase::AWjWorldCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	// Mesh 컴포넌트 설정
+	// Mesh 컴포넌트 위치 설정 (캡슐 컴포넌트 기준)
 	if (GetMesh())
 	{
-		// Mesh 위치 및 회전 설정 (캡슐 컴포넌트 기준)
 		GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -88.0f));
 		GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
-
-		// 기본 SkeletalMesh 설정
-		static ConstructorHelpers::FObjectFinder<USkeletalMesh> MeshAsset(
-			TEXT("/Game/Core/Characters/Mannequins/Meshes/SKM_Quinn_Simple")
-		);
-		if (MeshAsset.Succeeded())
-		{
-			GetMesh()->SetSkeletalMesh(MeshAsset.Object);
-		}
-
-		// 애니메이션 블루프린트 설정
-		static ConstructorHelpers::FClassFinder<UAnimInstance> AnimBPClass(
-			TEXT("/Game/Core/Characters/Mannequins/Anims/Unarmed/ABP_Unarmed")
-		);
-		if (AnimBPClass.Succeeded())
-		{
-			GetMesh()->SetAnimInstanceClass(AnimBPClass.Class);
-		}
-	}
-
-	static ConstructorHelpers::FObjectFinder<UInputMappingContext> DefaultIMC(
-		TEXT("/Game/Core/Input/IMC_Default")
-	);
-	if (DefaultIMC.Succeeded())
-	{
-		DefaultMappingContext = DefaultIMC.Object;
 	}
 
 	// GamePlay 카메라 컴포넌트 생성
 	GamePlayCamera = CreateDefaultSubobject<UGameplayCameraComponent>(TEXT("GamePlayCamera"));
 	GamePlayCamera->SetupAttachment(RootComponent);
-	//GamePlayCamera->bSetControlRotationWhenViewTarget = true;
 
 	// 코스메틱 컴포넌트 생성
 	CosmeticComponent = CreateDefaultSubobject<UWjWorldCosmeticComponent>(TEXT("CosmeticComponent"));
+}
+
+void AWjWorldCharacterBase::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+
+	// SkeletalMesh 설정 (UPROPERTY 우선, 없으면 DeveloperSettings)
+	if (GetMesh())
+	{
+		USkeletalMesh* MeshToUse = nullptr;
+
+		if (!DefaultSkeletalMesh.IsNull())
+		{
+			MeshToUse = DefaultSkeletalMesh.LoadSynchronous();
+		}
+		else if (Settings && !Settings->DefaultCharacterMesh.IsNull())
+		{
+			MeshToUse = Settings->DefaultCharacterMesh.LoadSynchronous();
+		}
+
+		if (MeshToUse)
+		{
+			GetMesh()->SetSkeletalMesh(MeshToUse);
+		}
+
+		// AnimBlueprint 설정
+		UClass* AnimClassToUse = nullptr;
+
+		if (!DefaultAnimBlueprintClass.IsNull())
+		{
+			AnimClassToUse = DefaultAnimBlueprintClass.LoadSynchronous();
+		}
+		else if (Settings && !Settings->DefaultAnimBlueprintClass.IsNull())
+		{
+			AnimClassToUse = Settings->DefaultAnimBlueprintClass.LoadSynchronous();
+		}
+
+		if (AnimClassToUse)
+		{
+			GetMesh()->SetAnimInstanceClass(AnimClassToUse);
+		}
+	}
+}
+
+UInputMappingContext* AWjWorldCharacterBase::GetDefaultMappingContext() const
+{
+	// UPROPERTY 우선, 없으면 DeveloperSettings
+	if (!DefaultMappingContext.IsNull())
+	{
+		return DefaultMappingContext.LoadSynchronous();
+	}
+
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	if (Settings && !Settings->DefaultInputMappingContext.IsNull())
+	{
+		return Settings->DefaultInputMappingContext.LoadSynchronous();
+	}
+
+	return nullptr;
 }
 
 void AWjWorldCharacterBase::SetCharacterViewMode(ECharacterCameraMode NewViewMode)
@@ -98,13 +132,17 @@ void AWjWorldCharacterBase::SetCharacterViewMode(const FGameplayTag& NewViewMode
 void AWjWorldCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	APlayerController* PC = Cast<APlayerController>(GetController());
 	if (PC)
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
 		{
-			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+			UInputMappingContext* IMC = GetDefaultMappingContext();
+			if (IMC)
+			{
+				Subsystem->AddMappingContext(IMC, 0);
+			}
 		}
 	}
 
@@ -158,10 +196,12 @@ void AWjWorldCharacterBase::SetupInputBindings(UInputComponent* PlayerInputCompo
 	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	const FString AbilityInputAction = TEXT("Ability");
 
-	if (EnhancedInputComponent && DefaultMappingContext)
+	UInputMappingContext* IMC = GetDefaultMappingContext();
+
+	if (EnhancedInputComponent && IMC)
 	{
 		TSet<FString> AlreadyBoundActions;
-		const TArray<FEnhancedActionKeyMapping>& Mappings = DefaultMappingContext->GetMappings();
+		const TArray<FEnhancedActionKeyMapping>& Mappings = IMC->GetMappings();
 
 		for (const auto& Mapping : Mappings)
 		{

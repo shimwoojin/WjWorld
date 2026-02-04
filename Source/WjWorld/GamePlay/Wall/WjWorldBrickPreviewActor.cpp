@@ -16,22 +16,22 @@ AWjWorldBrickPreviewActor::AWjWorldBrickPreviewActor()
 
 	// 충돌 비활성화
 	PreviewMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	// 기본 큐브 메시 설정
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeMesh(UWjWorldBrickComponent::BrickMeshPath);
-	if (CubeMesh.Succeeded())
-	{
-		PreviewMeshComponent->SetStaticMesh(CubeMesh.Object);
-	}
 }
 
 void AWjWorldBrickPreviewActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// 동적 머티리얼 인스턴스 생성
 	if (PreviewMeshComponent)
 	{
+		// DeveloperSettings에서 메시 로드
+		UStaticMesh* BrickMesh = UWjWorldBrickComponent::GetBrickMesh();
+		if (BrickMesh)
+		{
+			PreviewMeshComponent->SetStaticMesh(BrickMesh);
+		}
+
+		// 동적 머티리얼 인스턴스 생성
 		DynamicMaterial = PreviewMeshComponent->CreateAndSetMaterialInstanceDynamic(0);
 		if (DynamicMaterial)
 		{

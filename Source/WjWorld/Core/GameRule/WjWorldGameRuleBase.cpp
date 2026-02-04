@@ -7,6 +7,7 @@
 #include "Core/Play/WjWorldPlayerStatePlay.h"
 #include "Core/GameData/WjWorldGameDataComponent.h"
 #include "Core/WjWorldGameInstance.h"
+#include "Setting/WjWorldDeveloperSettings.h"
 
 #include "WjWorldLogCategories.h"
 
@@ -81,7 +82,8 @@ void UWjWorldGameRuleBase::OnGameEnd()
 
 		// Lobby 맵을 사용하되 GameMode는 WaitingRoom으로 오버라이드
 		World->GetTimerManager().SetTimer(GotoWaitingRoomHandle, FTimerDelegate::CreateLambda([this]() {
-			GetWorld()->ServerTravel(TEXT("/Game/Map/02-1_Lobby?game=/Game/Core/WaitingRoom/BP_GameModeWaitingRoom.BP_GameModeWaitingRoom_C"));
+			const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+			GetWorld()->ServerTravel(Settings->GetWaitingRoomServerTravelURL());
 			}), SecondsForGotoWaitingRoom, false);
 
 		ChangeGamePhase(EGamePhase::Finished);

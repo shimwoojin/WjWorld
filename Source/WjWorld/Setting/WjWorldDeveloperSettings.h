@@ -12,8 +12,12 @@ class UGeometryCollection;
 class UWjWorldMinigameDataAsset;
 class UWjWorldPlaceableObjectDataAsset;
 class UWjWorldCosmeticCatalogDataAsset;
+class UWjWorldWallDescriptionDataAsset;
 class UInputMappingContext;
 class UInputAction;
+class USkeletalMesh;
+class UStaticMesh;
+class UAnimInstance;
 
 /**
  * WjWorld 프로젝트 개발자 설정
@@ -29,6 +33,37 @@ public:
 	virtual FName GetContainerName() const override { return TEXT("Project"); }
 	virtual FName GetCategoryName() const override { return TEXT("WjWorld"); }
 	virtual FName GetSectionName() const override { return TEXT("WjWorld"); }
+
+	// ========== Maps ==========
+
+	/** 로비 맵 경로 */
+	UPROPERTY(config, EditAnywhere, Category = "Maps")
+	FSoftObjectPath LobbyMapPath = FSoftObjectPath(TEXT("/Game/Map/02-1_Lobby"));
+
+	/** 대기실 게임모드 클래스 */
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Maps")
+	TSoftClassPtr<AGameModeBase> WaitingRoomGameModeClass;
+
+	/** 플레이 게임모드 클래스 */
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Maps")
+	TSoftClassPtr<AGameModeBase> PlayGameModeClass;
+
+	// ========== Character Defaults ==========
+
+	/** 캐릭터 기본 스켈레탈 메시 */
+	UPROPERTY(config, EditAnywhere, Category = "Character|Default")
+	TSoftObjectPtr<USkeletalMesh> DefaultCharacterMesh;
+
+	/** 캐릭터 기본 애니메이션 블루프린트 클래스 */
+	UPROPERTY(config, EditAnywhere, Category = "Character|Default")
+	TSoftClassPtr<UAnimInstance> DefaultAnimBlueprintClass;
+
+	/** 캐릭터 기본 입력 매핑 컨텍스트 */
+	UPROPERTY(config, EditAnywhere, Category = "Character|Default")
+	TSoftObjectPtr<UInputMappingContext> DefaultInputMappingContext;
+
+	// ========== Approaching Wall ==========
+
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "Approaching Wall|Tile")
 	TSoftClassPtr<AWjWorldTileActor> TileActorClass;
 
@@ -50,21 +85,53 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Approaching Wall|Brick|Destructible", meta = (ClampMin = "0.1"))
 	float DestructibleBrickFractureLifetime = 3.0f;
 
-	// 미니게임 카탈로그 데이터 에셋
+	/** 벽돌 메시 */
+	UPROPERTY(config, EditAnywhere, Category = "Approaching Wall|Mesh")
+	TSoftObjectPtr<UStaticMesh> BrickMesh;
+
+	/** 타일 메시 */
+	UPROPERTY(config, EditAnywhere, Category = "Approaching Wall|Mesh")
+	TSoftObjectPtr<UStaticMesh> TileMesh;
+
+	/** 벽 레이아웃 데이터 에셋 */
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Approaching Wall")
+	TSoftObjectPtr<UWjWorldWallDescriptionDataAsset> WallDescriptionAsset;
+
+	// ========== Minigame ==========
+
+	/** 미니게임 카탈로그 데이터 에셋 */
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "Minigame")
 	TSoftObjectPtr<UWjWorldMinigameDataAsset> MinigameCatalog;
 
-	// 코스메틱 카탈로그 데이터 에셋
+	// ========== Cosmetic ==========
+
+	/** 코스메틱 카탈로그 데이터 에셋 */
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "Cosmetic")
 	TSoftObjectPtr<UWjWorldCosmeticCatalogDataAsset> CosmeticCatalog;
 
-	// 배치 가능한 오브젝트 카탈로그
+	// ========== Placement ==========
+
+	/** 배치 가능한 오브젝트 카탈로그 */
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement")
 	TSoftObjectPtr<UWjWorldPlaceableObjectDataAsset> PlaceableObjectCatalog;
 
-	// 배치 모드 입력 매핑 컨텍스트
+	/** 배치 모드 입력 매핑 컨텍스트 */
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Input")
 	TSoftObjectPtr<UInputMappingContext> PlacementMappingContext;
+
+	// ========== Helper Functions ==========
+
+	/** 로비 맵 경로 반환 (예: "/Game/Map/02-1_Lobby") */
+	FString GetLobbyMapPath() const;
+
+	/** 대기실 OpenLevel URL 반환 (예: "/Game/Map/02-1_Lobby?game=...?Listen") */
+	FString GetWaitingRoomOpenLevelURL() const;
+
+	/** 대기실 ServerTravel URL 반환 (예: "/Game/Map/02-1_Lobby?game=...") */
+	FString GetWaitingRoomServerTravelURL() const;
+
+	/** 플레이 ServerTravel URL 반환 */
+	FString GetPlayServerTravelURL(const FString& LevelPath, const FString& GameModeId) const;
 
 	// 배치 확정 입력 액션 (LMB)
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Input")

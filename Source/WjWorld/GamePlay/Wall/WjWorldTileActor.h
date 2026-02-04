@@ -23,9 +23,11 @@ class WJWORLD_API AWjWorldTileActor : public AActor
 	const static FColor BombSignalOnColorWarning;
 	const static FColor BombSignalOnColorDanger;
 
-	static const TCHAR* TileMeshPath;
+public:
+	/** DeveloperSettings에서 타일 메시 로드 */
+	static UStaticMesh* GetTileMesh();
 
-public:	
+public:
 	AWjWorldTileActor();
 
 	void InitializeTile(const FVector& InSize, const FVector& InCenterOffset, bool bInIsWhiteTile);

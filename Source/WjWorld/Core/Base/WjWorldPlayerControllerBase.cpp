@@ -7,6 +7,7 @@
 #include "InputMappingContext.h"
 #include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "Cosmetic/WjWorldCosmeticTypes.h"
+#include "Setting/WjWorldDeveloperSettings.h"
 #include "WjWorldLogCategories.h"
 
 AWjWorldPlayerControllerBase::AWjWorldPlayerControllerBase()
@@ -70,7 +71,8 @@ void AWjWorldPlayerControllerBase::ChangeCharacterViewMode(int32 InViewMode)
 
 void AWjWorldPlayerControllerBase::ServerTravelWaitingRoom()
 {
-	GetWorld()->ServerTravel("/Game/Map/02-2_WaitingRoom");
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	GetWorld()->ServerTravel(Settings->GetWaitingRoomServerTravelURL());
 }
 
 void AWjWorldPlayerControllerBase::Cosmetic_GrantItem(FString ItemId)

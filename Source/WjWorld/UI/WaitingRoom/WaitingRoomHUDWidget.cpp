@@ -9,6 +9,7 @@
 #include "Core/Base/WjWorldPlayerStateBase.h"
 #include "Core/WjWorldGameInstance.h"
 #include "Core/Session/SessionManager.h"
+#include "Setting/WjWorldDeveloperSettings.h"
 #include "Kismet/GameplayStatics.h"
 #include "WjWorldLogCategories.h"
 
@@ -159,9 +160,10 @@ void UWaitingRoomHUDWidget::OnLeaveClicked()
 		if (bSuccess)
 		{
 			UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Leaving room..."));
-			
+
 			// 로비로 이동
-			UGameplayStatics::OpenLevel(GetWorld(), TEXT("/Game/Map/02-1_Lobby"));
+			const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+			UGameplayStatics::OpenLevel(GetWorld(), FName(*Settings->GetLobbyMapPath()));
 		}
 		else
 		{

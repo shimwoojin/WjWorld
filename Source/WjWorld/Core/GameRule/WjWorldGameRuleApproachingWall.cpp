@@ -10,6 +10,7 @@
 #include "Core/GameData/ApproachingWallGameDataComponent.h"
 #include "GamePlay/Wall/WjWorldBrickSpawner.h"
 #include "GamePlay/Wall/WjWorldWallManager.h"
+#include "Setting/WjWorldDeveloperSettings.h"
 
 #include "WjWorldLogCategories.h"
 
@@ -17,7 +18,15 @@ void UWjWorldGameRuleApproachingWall::Initialize(AWjWorldGameModePlay* InGameMod
 {
 	Super::Initialize(InGameMode);
 
-	BrickSpawner = UWjWorldBrickSpawner::CreateBrickSpawner(this, TSoftObjectPtr<UWjWorldWallDescriptionDataAsset>(WallDescPath));
+	// DeveloperSettings에서 WallDescriptionAsset 로드
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	TSoftObjectPtr<UWjWorldWallDescriptionDataAsset> WallDescAsset;
+	if (Settings && !Settings->WallDescriptionAsset.IsNull())
+	{
+		WallDescAsset = Settings->WallDescriptionAsset;
+	}
+
+	BrickSpawner = UWjWorldBrickSpawner::CreateBrickSpawner(this, WallDescAsset);
 	if (!BrickSpawner)
 	{
 		UE_LOG(LogWjWorld, Error, TEXT("Failed to create BrickSpawner in GameRuleApporachingWall"));

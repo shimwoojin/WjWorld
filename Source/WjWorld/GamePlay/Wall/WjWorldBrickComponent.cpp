@@ -9,13 +9,22 @@
 #include "Core/Play/WjWorldGameModePlay.h"
 #include "Core/Play/WjWorldCharacterPlay.h"
 #include "Core/GameRule/WjWorldGameRuleApproachingWall.h"
+#include "Setting/WjWorldDeveloperSettings.h"
 #include "Components/BoxComponent.h"
 
 #include "Engine/OverlapResult.h"
 
 #include "Net/UnrealNetwork.h"
 
-const TCHAR* UWjWorldBrickComponent::BrickMeshPath = TEXT("/Game/GamePlay/Wall/Mesh/Cube");
+UStaticMesh* UWjWorldBrickComponent::GetBrickMesh()
+{
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	if (Settings && !Settings->BrickMesh.IsNull())
+	{
+		return Settings->BrickMesh.LoadSynchronous();
+	}
+	return nullptr;
+}
 
 UWjWorldBrickComponent::UWjWorldBrickComponent()
 {
@@ -69,11 +78,10 @@ void UWjWorldBrickComponent::BeginPlay()
 	if (BrickMeshComponent)
 	{
 		// Set mesh, size, and color based on BrickProperties
-		// This is a placeholder; actual implementation would depend on available assets and materials
 		FVector Scale = BrickProperties.Size / 100.0f; // Assuming the default mesh size is 100 units
 		BrickMeshComponent->SetWorldScale3D(Scale);
 
-		UStaticMesh* BrickMesh = LoadObject<UStaticMesh>(this, BrickMeshPath);
+		UStaticMesh* BrickMesh = GetBrickMesh();
 		if (BrickMesh)
 		{
 			BrickMeshComponent->SetStaticMesh(BrickMesh);

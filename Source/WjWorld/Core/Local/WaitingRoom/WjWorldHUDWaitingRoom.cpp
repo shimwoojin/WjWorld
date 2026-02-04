@@ -7,15 +7,7 @@
 
 AWjWorldHUDWaitingRoom::AWjWorldHUDWaitingRoom()
 {
-	// Blueprint 클래스 자동 로드
-	static ConstructorHelpers::FClassFinder<UWaitingRoomHUDWidget> WaitingRoomHUDWidgetBPClass(
-		TEXT("/Game/UI/Blueprint/WaitingRoom/BP_WaitingRoomHUDWidget")
-	);
-
-	if (WaitingRoomHUDWidgetBPClass.Succeeded())
-	{
-		WaitingRoomHUDWidgetClass = WaitingRoomHUDWidgetBPClass.Class;
-	}
+	// WaitingRoomHUDWidgetClass는 BP 서브클래스에서 설정
 }
 
 void AWjWorldHUDWaitingRoom::BeginPlay()
