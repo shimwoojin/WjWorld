@@ -56,6 +56,22 @@ struct WJWORLD_API FCosmeticItemDefinition
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int32 Price = 0;
 
+	/** 부착 소켓 이름 (비어있으면 슬롯 기본값 사용) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attachment")
+	FName AttachSocketName;
+
+	/** 부착 시 상대 위치 오프셋 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attachment")
+	FVector AttachLocationOffset = FVector::ZeroVector;
+
+	/** 부착 시 상대 회전 오프셋 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attachment")
+	FRotator AttachRotationOffset = FRotator::ZeroRotator;
+
+	/** 부착 시 스케일 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attachment")
+	FVector AttachScale = FVector::OneVector;
+
 	bool IsValid() const { return !ItemId.IsNone(); }
 };
 

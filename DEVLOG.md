@@ -1,5 +1,34 @@
 # WjWorld 개발 로그
 
+## 2026-02-04
+### 작업 내용
+- **코스메틱 상점 UI 구현** (6개 파일 생성)
+  - `CosmeticItemEntryWidget` - 아이템 그리드 엔트리 (아이콘, 이름, 희귀도, 가격)
+  - `CosmeticPreviewPanel` - 3D 캐릭터 프리뷰 (CharacterPreviewActor 재사용)
+  - `CosmeticMainWindow` - 상점/인벤토리 통합 윈도우 (탭 전환, 4열 그리드)
+  - `LobbyHUDWidget`에 코스메틱 버튼 추가
+- **CosmeticSubsystem 초기화 개선**
+  - DeveloperSettings에 `CosmeticCatalog` 프로퍼티 추가
+  - Initialize()에서 자동 로드하도록 수정
+- **CosmeticComponent 개선**
+  - `OnLoadoutChanged` 델리게이트 구독 추가 (실시간 메시 반영)
+  - `CharacterPlay` → `CharacterBase`로 이동 (모든 캐릭터에서 사용 가능)
+- **Socket 기반 코스메틱 부착 시스템 구현**
+  - `FCosmeticItemDefinition`에 부착 설정 추가 (AttachSocketName, LocationOffset, RotationOffset, Scale)
+  - 슬롯별 기본 소켓 매핑: Head→"head", Back→"spine_03", Effect→"root"
+  - 모자 메시 임포트 및 테스트 완료
+
+### 학습/메모
+- Socket Attachment vs Leader Pose vs Skeletal Mesh Merge: 슬롯 유형별 적합한 부착 방식이 다름
+- 모자 등 고정형 악세서리는 Socket Attachment, 옷/갑옷은 Leader Pose 권장
+- Mesh Merge는 드로우콜 최적화에 효과적이나 아이템 교체 시 재머지 필요
+
+### 이슈/해결
+- UHT 오류: 파라미터명 `Slot`이 UWidget::Slot과 충돌 → `CosmeticSlot`으로 변경
+- `SetBrushFromTexture`가 RenderTarget 미지원 → `SetBrushResourceObject` 사용
+
+---
+
 ## 2026-02-03
 ### 작업 내용
 - CLAUDE.md 문서 업데이트 - 배치 시스템, 카탈로그, 맵 전환 흐름 추가

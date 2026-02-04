@@ -4,6 +4,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
+#include "Cosmetic/WjWorldCosmeticComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
@@ -55,6 +56,9 @@ AWjWorldCharacterBase::AWjWorldCharacterBase()
 	GamePlayCamera = CreateDefaultSubobject<UGameplayCameraComponent>(TEXT("GamePlayCamera"));
 	GamePlayCamera->SetupAttachment(RootComponent);
 	//GamePlayCamera->bSetControlRotationWhenViewTarget = true;
+
+	// 코스메틱 컴포넌트 생성
+	CosmeticComponent = CreateDefaultSubobject<UWjWorldCosmeticComponent>(TEXT("CosmeticComponent"));
 }
 
 void AWjWorldCharacterBase::SetCharacterViewMode(ECharacterCameraMode NewViewMode)

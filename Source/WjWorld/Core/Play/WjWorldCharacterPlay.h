@@ -8,7 +8,6 @@
 #include "WjWorldCharacterPlay.generated.h"
 
 class UWjWorldAbilitySystemComponent;
-class UWjWorldCosmeticComponent;
 class UCharacterPlaySetupDataAsset;
 class UBoxComponent;
 class UWidgetComponent;
@@ -76,9 +75,6 @@ public:
 
 private:
 	TWeakObjectPtr<UWjWorldAbilitySystemComponent> AbilitySystemComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Cosmetic", meta = (AllowPrivateAccess = true))
-	TObjectPtr<UWjWorldCosmeticComponent> CosmeticComponent;
 
 	UPROPERTY(EditDefaultsOnly, category = "DataAsset", meta = (AllowPrivateAccess = true))
 	TSoftObjectPtr<UCharacterPlaySetupDataAsset> SetupDataAsset;

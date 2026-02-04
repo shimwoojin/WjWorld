@@ -8,6 +8,7 @@
 
 class UButton;
 class UPlayerProfileWidget;
+class UCosmeticMainWindow;
 
 /**
  * 로비 HUD 위젯
@@ -54,9 +55,17 @@ protected:
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UButton> PlacementModeButton;
 
+	/** 코스메틱 버튼 */
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UButton> CosmeticButton;
+
 	/** 프로필 위젯 클래스 (Blueprint에서 설정) */
 	UPROPERTY(EditDefaultsOnly, Category = "Profile")
 	TSubclassOf<UPlayerProfileWidget> ProfileWidgetClass;
+
+	/** 코스메틱 윈도우 클래스 (Blueprint에서 설정) */
+	UPROPERTY(EditDefaultsOnly, Category = "Cosmetic")
+	TSubclassOf<UCosmeticMainWindow> CosmeticWindowClass;
 
 protected:
 	//~ 버튼 클릭 이벤트
@@ -79,7 +88,13 @@ protected:
 	UFUNCTION()
 	void OnPlacementModeClicked();
 
+	UFUNCTION()
+	void OnCosmeticClicked();
+
 private:
 	UPROPERTY()
 	TObjectPtr<UPlayerProfileWidget> ProfileWidgetInstance;
+
+	UPROPERTY()
+	TObjectPtr<UCosmeticMainWindow> CosmeticWindowInstance;
 };

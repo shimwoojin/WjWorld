@@ -11,6 +11,7 @@
 
 class UGameplayCameraComponent;
 class UInputMappingContext;
+class UWjWorldCosmeticComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterViewModeChanged, FGameplayTag, CameraMode);
 
@@ -86,9 +87,16 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
 
+	/**
+	 * 코스메틱 컴포넌트
+	 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Cosmetic")
+	TObjectPtr<UWjWorldCosmeticComponent> CosmeticComponent;
+
 public:
 	TObjectPtr<UGameplayCameraComponent> GetGamePlayCamera() { return GamePlayCamera; }
 	TObjectPtr<UInputMappingContext> GetDefaultMappingContext() { return DefaultMappingContext; }
+	UWjWorldCosmeticComponent* GetCosmeticComponent() const { return CosmeticComponent; }
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))

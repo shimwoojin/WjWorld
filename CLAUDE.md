@@ -286,7 +286,6 @@ Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용). `UWjWorldStatsSub
 - 구매 결과 콜백 체인 완성
 - 코스메틱 상점/인벤토리 UI 위젯
 - 코스메틱 미리보기/시착 시스템
-- Approaching Wall 완성 (승리 조건 최종 구현)
 - 추가 미니게임 구현
 
 ## 코딩 컨벤션

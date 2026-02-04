@@ -2,6 +2,7 @@
 
 #include "Cosmetic/WjWorldCosmeticComponent.h"
 #include "Cosmetic/WjWorldCosmeticDataAsset.h"
+#include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/Character.h"
@@ -18,6 +19,24 @@ void UWjWorldCosmeticComponent::BeginPlay()
 	Super::BeginPlay();
 
 	BackupDefaultMeshes();
+
+	// CosmeticSubsystem 구독 및 초기화
+	if (UGameInstance* GI = GetWorld()->GetGameInstance())
+	{
+		if (UWjWorldCosmeticSubsystem* CosmeticSub = GI->GetSubsystem<UWjWorldCosmeticSubsystem>())
+		{
+			// 델리게이트 구독
+			CosmeticSub->OnLoadoutChanged.AddDynamic(this, &ThisClass::OnLoadoutChangedHandler);
+
+			// 카탈로그 설정
+			SetCatalog(CosmeticSub->GetCatalog());
+
+			// 초기 로드아웃 적용
+			ApplyLoadout(CosmeticSub->GetLoadout());
+
+			UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticComponent: 서브시스템 구독 완료"));
+		}
+	}
 }
 
 void UWjWorldCosmeticComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -31,6 +50,15 @@ void UWjWorldCosmeticComponent::EndPlay(const EEndPlayReason::Type EndPlayReason
 		}
 	}
 	ActiveStreamHandles.Reset();
+
+	// CosmeticSubsystem 구독 해제
+	if (UGameInstance* GI = GetWorld()->GetGameInstance())
+	{
+		if (UWjWorldCosmeticSubsystem* CosmeticSub = GI->GetSubsystem<UWjWorldCosmeticSubsystem>())
+		{
+			CosmeticSub->OnLoadoutChanged.RemoveDynamic(this, &ThisClass::OnLoadoutChangedHandler);
+		}
+	}
 
 	Super::EndPlay(EndPlayReason);
 }
@@ -179,6 +207,9 @@ void UWjWorldCosmeticComponent::OnAssetLoaded(ECosmeticSlot Slot, FName ItemId)
 		return;
 	}
 
+	// 소켓 이름 결정 (아이템 정의 우선, 없으면 슬롯 기본값)
+	FName SocketName = Def->AttachSocketName.IsNone() ? GetDefaultSocketName(Slot) : Def->AttachSocketName;
+
 	// SkeletalMesh 적용 (Head, Body 슬롯)
 	if (!Def->SkeletalMesh.IsNull() && Def->SkeletalMesh.IsValid())
 	{
@@ -197,18 +228,25 @@ void UWjWorldCosmeticComponent::OnAssetLoaded(ECosmeticSlot Slot, FName ItemId)
 			}
 			else
 			{
-				// 다른 슬롯: 부착 메시 컴포넌트 생성
+				// 다른 슬롯: 소켓에 부착
 				USkeletalMeshComponent* SlotMesh = NewObject<USkeletalMeshComponent>(OwnerCharacter);
 				SlotMesh->SetSkeletalMesh(LoadedMesh);
 				SlotMesh->AttachToComponent(
 					OwnerCharacter->GetMesh(),
-					FAttachmentTransformRules::SnapToTargetNotIncludingScale
+					FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+					SocketName
 				);
+
+				// 오프셋 적용
+				SlotMesh->SetRelativeLocation(Def->AttachLocationOffset);
+				SlotMesh->SetRelativeRotation(Def->AttachRotationOffset);
+				SlotMesh->SetRelativeScale3D(Def->AttachScale);
+
 				SlotMesh->RegisterComponent();
 				SlotMeshComponents.Add(Slot, SlotMesh);
 
-				UE_LOG(LogWjWorldCosmetic, Log, TEXT("슬롯 %d 메시 부착: %s"),
-					static_cast<int32>(Slot), *LoadedMesh->GetName());
+				UE_LOG(LogWjWorldCosmetic, Log, TEXT("슬롯 %d 메시 소켓 부착: %s → %s"),
+					static_cast<int32>(Slot), *LoadedMesh->GetName(), *SocketName.ToString());
 			}
 		}
 	}
@@ -223,13 +261,20 @@ void UWjWorldCosmeticComponent::OnAssetLoaded(ECosmeticSlot Slot, FName ItemId)
 			SlotStaticMesh->SetStaticMesh(LoadedStaticMesh);
 			SlotStaticMesh->AttachToComponent(
 				OwnerCharacter->GetMesh(),
-				FAttachmentTransformRules::SnapToTargetNotIncludingScale
+				FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+				SocketName
 			);
+
+			// 오프셋 적용
+			SlotStaticMesh->SetRelativeLocation(Def->AttachLocationOffset);
+			SlotStaticMesh->SetRelativeRotation(Def->AttachRotationOffset);
+			SlotStaticMesh->SetRelativeScale3D(Def->AttachScale);
+
 			SlotStaticMesh->RegisterComponent();
 			SlotMeshComponents.Add(Slot, SlotStaticMesh);
 
-			UE_LOG(LogWjWorldCosmetic, Log, TEXT("슬롯 %d 스태틱 메시 부착: %s"),
-				static_cast<int32>(Slot), *LoadedStaticMesh->GetName());
+			UE_LOG(LogWjWorldCosmetic, Log, TEXT("슬롯 %d 스태틱 메시 소켓 부착: %s → %s"),
+				static_cast<int32>(Slot), *LoadedStaticMesh->GetName(), *SocketName.ToString());
 		}
 	}
 
@@ -293,5 +338,39 @@ void UWjWorldCosmeticComponent::RestoreDefaultMesh(ECosmeticSlot Slot)
 				UE_LOG(LogWjWorldCosmetic, Log, TEXT("기본 메시 복원: 슬롯 %d"), static_cast<int32>(Slot));
 			}
 		}
+	}
+}
+
+void UWjWorldCosmeticComponent::OnLoadoutChangedHandler(ECosmeticSlot Slot, FName ItemId)
+{
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticComponent: 로드아웃 변경 감지 - 슬롯 %d, 아이템 %s"),
+		static_cast<int32>(Slot), *ItemId.ToString());
+
+	if (ItemId.IsNone())
+	{
+		// 아이템 해제
+		ClearSlot(Slot);
+	}
+	else
+	{
+		// 아이템 장착
+		ApplySlot(Slot, ItemId);
+	}
+}
+
+FName UWjWorldCosmeticComponent::GetDefaultSocketName(ECosmeticSlot Slot)
+{
+	switch (Slot)
+	{
+	case ECosmeticSlot::Head:
+		return FName(TEXT("head"));  // 스켈레톤의 head 본/소켓
+	case ECosmeticSlot::Body:
+		return NAME_None;  // Body는 메시 교체 방식
+	case ECosmeticSlot::Back:
+		return FName(TEXT("spine_03"));  // 등 부착용
+	case ECosmeticSlot::Effect:
+		return FName(TEXT("root"));  // 이펙트는 루트
+	default:
+		return NAME_None;
 	}
 }

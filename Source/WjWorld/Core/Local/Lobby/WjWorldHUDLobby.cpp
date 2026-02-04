@@ -10,7 +10,7 @@ AWjWorldHUDLobby::AWjWorldHUDLobby()
 {
 	// Blueprint 클래스 자동 로드
 	static ConstructorHelpers::FClassFinder<ULobbyHUDWidget> LobbyHUDWidgetBPClass(
-		TEXT("/Game/UI/Blueprint/Lobby/BP_LobbyHUDWidget")
+		TEXT("/Game/UI/Blueprint/Lobby/WBP_LobbyHUDWidget")
 	);
 
 	if (LobbyHUDWidgetBPClass.Succeeded())

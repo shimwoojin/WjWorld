@@ -11,6 +11,7 @@ class UNiagaraSystem;
 class UGeometryCollection;
 class UWjWorldMinigameDataAsset;
 class UWjWorldPlaceableObjectDataAsset;
+class UWjWorldCosmeticCatalogDataAsset;
 class UInputMappingContext;
 class UInputAction;
 
@@ -52,6 +53,10 @@ public:
 	// 미니게임 카탈로그 데이터 에셋
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "Minigame")
 	TSoftObjectPtr<UWjWorldMinigameDataAsset> MinigameCatalog;
+
+	// 코스메틱 카탈로그 데이터 에셋
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Cosmetic")
+	TSoftObjectPtr<UWjWorldCosmeticCatalogDataAsset> CosmeticCatalog;
 
 	// 배치 가능한 오브젝트 카탈로그
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement")

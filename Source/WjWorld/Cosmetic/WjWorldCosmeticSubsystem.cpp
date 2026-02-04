@@ -2,6 +2,7 @@
 
 #include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "Cosmetic/WjWorldCosmeticDataAsset.h"
+#include "Setting/WjWorldDeveloperSettings.h"
 #include "WjWorldLogCategories.h"
 
 #if WITH_STEAM
@@ -13,6 +14,18 @@ const FString UWjWorldCosmeticSubsystem::LoadoutConfigSection = TEXT("CosmeticLo
 void UWjWorldCosmeticSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+
+	// DeveloperSettings에서 카탈로그 로드
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	if (Settings && !Settings->CosmeticCatalog.IsNull())
+	{
+		Catalog = Settings->CosmeticCatalog.LoadSynchronous();
+		UE_LOG(LogWjWorldCosmetic, Log, TEXT("카탈로그 로드: %s"), Catalog ? *Catalog->GetName() : TEXT("실패"));
+	}
+	else
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("DeveloperSettings에 CosmeticCatalog가 설정되지 않았습니다."));
+	}
 
 	LoadLoadoutFromLocal();
 

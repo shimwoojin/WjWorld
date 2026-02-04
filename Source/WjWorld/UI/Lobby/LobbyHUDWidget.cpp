@@ -2,6 +2,7 @@
 
 #include "UI/Lobby/LobbyHUDWidget.h"
 #include "UI/Profile/PlayerProfileWidget.h"
+#include "UI/Cosmetic/CosmeticMainWindow.h"
 #include "Components/Button.h"
 #include "Core/Local/Lobby/WjWorldGameModeLobby.h"
 #include "Kismet/GameplayStatics.h"
@@ -43,6 +44,12 @@ void ULobbyHUDWidget::NativeConstruct()
 	if (PlacementModeButton)
 	{
 		PlacementModeButton->OnClicked.AddDynamic(this, &ULobbyHUDWidget::OnPlacementModeClicked);
+	}
+
+	// 코스메틱 버튼
+	if (CosmeticButton)
+	{
+		CosmeticButton->OnClicked.AddDynamic(this, &ULobbyHUDWidget::OnCosmeticClicked);
 	}
 
 	UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: NativeConstruct completed"));
@@ -148,5 +155,34 @@ void ULobbyHUDWidget::OnPlacementModeClicked()
 	else
 	{
 		UE_LOG(LogWjWorld, Error, TEXT("LobbyHUDWidget: Failed to get WjWorldGameModeLobby"));
+	}
+}
+
+void ULobbyHUDWidget::OnCosmeticClicked()
+{
+	UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: Cosmetic button clicked"));
+
+	if (!CosmeticWindowClass)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("LobbyHUDWidget: CosmeticWindowClass is not set"));
+		return;
+	}
+
+	// 이미 열려있으면 닫기
+	if (CosmeticWindowInstance && CosmeticWindowInstance->IsInViewport())
+	{
+		CosmeticWindowInstance->ClosePopup();
+		return;
+	}
+
+	// 인스턴스가 없으면 생성
+	if (!CosmeticWindowInstance)
+	{
+		CosmeticWindowInstance = CreateWidget<UCosmeticMainWindow>(GetOwningPlayer(), CosmeticWindowClass);
+	}
+
+	if (CosmeticWindowInstance)
+	{
+		CosmeticWindowInstance->ShowPopup();
 	}
 }

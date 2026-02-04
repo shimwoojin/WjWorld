@@ -21,8 +21,6 @@
 
 AWjWorldCharacterPlay::AWjWorldCharacterPlay()
 {
-	CosmeticComponent = CreateDefaultSubobject<UWjWorldCosmeticComponent>(TEXT("CosmeticComponent"));
-
 	// 어빌리티 프롬프트 WidgetComponent (캐릭터 머리 위에 Screen 공간으로 표시)
 	AbilityPromptComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("AbilityPromptComponent"));
 	AbilityPromptComponent->SetupAttachment(RootComponent);

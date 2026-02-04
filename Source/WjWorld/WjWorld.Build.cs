@@ -41,8 +41,9 @@ public class WjWorld : ModuleRules
             //"WjWorld/Public",
 		});
 
-		// Steam 조건부 빌드
-		bool bWithSteam = (Target.Platform == UnrealTargetPlatform.Win64);
+        // Steam 조건부 빌드
+        //bool bWithSteam = (Target.Platform == UnrealTargetPlatform.Win64);
+        bool bWithSteam = false;
 		if (bWithSteam)
 		{
 			PublicDependencyModuleNames.AddRange(new string[] {

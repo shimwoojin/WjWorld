@@ -51,6 +51,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Cosmetic")
 	const FCosmeticLoadout& GetAppliedLoadout() const { return AppliedLoadout; }
 
+protected:
+	/** CosmeticSubsystem의 OnLoadoutChanged 핸들러 */
+	UFUNCTION()
+	void OnLoadoutChangedHandler(ECosmeticSlot Slot, FName ItemId);
+
 private:
 	/** 비동기 에셋 로드 후 메시 적용 */
 	void OnAssetLoaded(ECosmeticSlot Slot, FName ItemId);
@@ -84,4 +89,7 @@ private:
 
 	/** 기본 메시 백업 완료 여부 */
 	bool bDefaultMeshesBackedUp = false;
+
+	/** 슬롯별 기본 소켓 이름 반환 */
+	static FName GetDefaultSocketName(ECosmeticSlot Slot);
 };
