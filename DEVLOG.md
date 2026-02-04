@@ -2,6 +2,17 @@
 
 ## 2026-02-04
 ### 작업 내용
+- **코스메틱 미리보기/시착 시스템 구현**
+  - CharacterPreviewActor: Socket 기반 메시 부착, StaticMesh/SkeletalMesh 동시 지원
+  - SetupFromPawn()으로 Pawn에서 메시/ABP 복사
+  - 다중 슬롯 시착 유지 (슬롯 전환 시 리셋 안 함)
+- **하드코딩 경로 제거 및 DeveloperSettings 중앙화**
+  - 맵/GameMode/캐릭터/Approaching Wall 에셋 중앙 설정
+  - ConstructorHelpers 제거 → UPROPERTY + DeveloperSettings 폴백 패턴
+- **Approaching Wall 미니게임 완성**
+  - Kills 스탯 추적: LastAttacker 시스템 (CharacterPlay)
+  - 플레이어 이탈 시 캐릭터 Eliminate 처리
+  - 엣지 케이스: 솔로 승리, 동시 제거(무승부), 전원 이탈
 - **코스메틱 상점 UI 구현** (6개 파일 생성)
   - `CosmeticItemEntryWidget` - 아이템 그리드 엔트리 (아이콘, 이름, 희귀도, 가격)
   - `CosmeticPreviewPanel` - 3D 캐릭터 프리뷰 (CharacterPreviewActor 재사용)
@@ -46,6 +57,13 @@
 - `SetBrushFromTexture`가 RenderTarget 미지원 → `SetBrushResourceObject` 사용
 - 멀티플레이어에서 OnLoadoutChanged 브로드캐스트가 모든 Pawn에 영향 → `IsLocallyControlled()` 체크 추가
 - WaitingRoom 3자 코스메틱 미동기화 → `CharacterBase.OnRep_PlayerState()`에서 `OnPawnSet()` 호출하도록 수정
+
+### 다음 작업 예정 (Approaching Wall 개선)
+- [ ] Normal Attack 시 Montage 발동
+- [ ] Lift Brick 시 드는 포즈 (Animation 필요) 및 실제 벽돌을 든 모습 3자 Replicate
+- [ ] Brick 이동 시 다른 색 벽돌 간 Z-Fight 현상 수정
+- [ ] 벽돌과 플레이어 끼임 케이스 추가 처리
+- [ ] GameplayCue 사용으로 Ability 발동 시 사운드 효과 추가
 
 ---
 
