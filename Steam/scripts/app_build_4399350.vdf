@@ -1,0 +1,11 @@
+"AppBuild"
+{
+	"AppID" "4399350"
+	"Desc" "WjWorld Build"
+	"ContentRoot" "..\content\"
+	"BuildOutput" "..\output\"
+	"Depots"
+	{
+		"4399351" "depot_build_4399351.vdf"
+	}
+}

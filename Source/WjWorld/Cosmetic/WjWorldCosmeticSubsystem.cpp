@@ -369,6 +369,72 @@ void UWjWorldCosmeticSubsystem::ParseInventoryResult()
 #endif
 }
 
+bool UWjWorldCosmeticSubsystem::AddPromoItem(int32 SteamItemDefId)
+{
+#if WITH_STEAM
+	ISteamInventory* SteamInv = SteamInventory();
+	if (!SteamInv)
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("AddPromoItem: Steam Inventory API 사용 불가"));
+		return false;
+	}
+
+	SteamItemDef_t ItemDef = static_cast<SteamItemDef_t>(SteamItemDefId);
+	SteamInventoryResult_t ResultHandle = k_SteamInventoryResultInvalid;
+
+	if (SteamInv->AddPromoItem(&ResultHandle, ItemDef))
+	{
+		UE_LOG(LogWjWorldCosmetic, Log, TEXT("AddPromoItem: 프로모 아이템 지급 요청 성공 (DefId: %d)"), SteamItemDefId);
+
+		// 결과 핸들 정리 (비동기 결과는 나중에 인벤토리 갱신으로 확인)
+		SteamInv->DestroyResult(ResultHandle);
+
+		// 인벤토리 갱신 요청
+		RequestInventoryRefresh();
+		return true;
+	}
+	else
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("AddPromoItem: Steam AddPromoItem 실패 (DefId: %d)"), SteamItemDefId);
+		return false;
+	}
+#else
+	UE_LOG(LogWjWorldCosmetic, Warning, TEXT("AddPromoItem: Steam 미지원 환경"));
+	return false;
+#endif
+}
+
+bool UWjWorldCosmeticSubsystem::AddAllPromoItems()
+{
+#if WITH_STEAM
+	ISteamInventory* SteamInv = SteamInventory();
+	if (!SteamInv)
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("AddAllPromoItems: Steam Inventory API 사용 불가"));
+		return false;
+	}
+
+	SteamInventoryResult_t ResultHandle = k_SteamInventoryResultInvalid;
+
+	if (SteamInv->AddPromoItems(&ResultHandle, nullptr, 0))
+	{
+		UE_LOG(LogWjWorldCosmetic, Log, TEXT("AddAllPromoItems: 모든 프로모 아이템 지급 요청 성공"));
+
+		SteamInv->DestroyResult(ResultHandle);
+		RequestInventoryRefresh();
+		return true;
+	}
+	else
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("AddAllPromoItems: Steam AddPromoItems 실패"));
+		return false;
+	}
+#else
+	UE_LOG(LogWjWorldCosmetic, Warning, TEXT("AddAllPromoItems: Steam 미지원 환경"));
+	return false;
+#endif
+}
+
 bool UWjWorldCosmeticSubsystem::GenerateTestItem(FName ItemId)
 {
 #if WITH_STEAM && !UE_BUILD_SHIPPING

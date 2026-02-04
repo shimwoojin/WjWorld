@@ -45,14 +45,22 @@ void UIntroWindow::PlayIntroVideo()
     if (MediaPlayer && MediaSource)
     {
         // 미디어 소스 설정 및 재생
-        MediaPlayer->OpenSource(MediaSource);
-        MediaPlayer->Play();
-
-        UE_LOG(LogWjWorld, Warning, TEXT("Started playing intro video"));
+        if (MediaPlayer->OpenSource(MediaSource))
+        {
+            MediaPlayer->Play();
+            UE_LOG(LogWjWorld, Warning, TEXT("Started playing intro video"));
+        }
+        else
+        {
+            UE_LOG(LogWjWorld, Error, TEXT("Failed to open MediaSource - skipping intro"));
+            OnVideoCompleted.Broadcast();
+        }
     }
     else
     {
-        UE_LOG(LogWjWorld, Error, TEXT("MediaPlayer or MediaSource is null!"));
+        UE_LOG(LogWjWorld, Error, TEXT("MediaPlayer or MediaSource is null - skipping intro"));
+        // 비디오 재생 불가 시 바로 완료 이벤트 발생
+        OnVideoCompleted.Broadcast();
     }
 }
 

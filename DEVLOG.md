@@ -1,5 +1,71 @@
 # WjWorld 개발 로그
 
+## 2026-02-04 (저녁)
+### 작업 내용 - Steam 테스트 환경 구축
+- **Steam 앱 설정 완료**
+  - AppID: 4399350, DepotID: 4399351
+  - VDF 스크립트 생성 (`Steam/scripts/`)
+  - DefaultEngine.ini Steam 설정 추가
+  - steam_appid.txt 생성 (로컬 테스트용)
+- **Steam 빌드 업로드** (BuildID: 21779250)
+  - SteamCMD 기반 업로드 스크립트 (`Steam/upload.bat`)
+  - Dev Comp Package로 테스트 계정 접근 설정
+- **Steam Inventory Service 설정**
+  - itemdefs.json 생성 (100: Delivery Bag, 101: Military Hat)
+  - AddPromoItem/AddAllPromoItems 함수 추가 (CosmeticSubsystem)
+  - Cosmetic_AddPromo/Cosmetic_AddAllPromos 콘솔 명령어 추가
+- **패키징 이슈 수정**
+  - ToolWidgets 모듈 제거 (에디터 전용 모듈)
+  - IntroWindow: 비디오 재생 실패 시 폴백 로직 추가
+  - WjWorldGameModeIntro: IntroWidgetClass 미설정 시 스킵 로직 추가
+- **멀티플레이어 테스트 환경**
+  - 두 번째 Steam 계정으로 테스트 환경 구축
+  - Steamworks 파트너 그룹에 테스트 계정 추가
+
+### 이슈/해결 (진행 중)
+- **[버그] Approaching Wall 벽돌 스폰 안됨** (Development/Shipping 빌드 전용)
+  - 증상 정리:
+    1. DebugGameEditor (에디터에서 실행, 리슨서버 2명) - **문제 없음**
+    2. DebugGame 패키징 + VS 디버깅 - **문제 없음**
+    3. Steam 빌드 (Development/Shipping) - **벽돌 스폰 안됨**
+    4. Development 패키징 (로컬 실행) - **벽돌 스폰 안됨**
+  - 시도한 수정:
+    - `WjWorldBrickSpawner::CreateBrickSpawner()`: `LoadObject` → `LoadSynchronous()` 변경
+    - 결과: 여전히 동일한 증상
+  - **원인 확정**: WallLayout `.txt` 파일 경로 문제
+    1. `FFilePath`에 저장된 절대 경로가 패키지 빌드에서 유효하지 않음
+    2. `.txt` 파일이 자동으로 패키지에 포함되지 않음
+  - **수정 내용**:
+    1. `DefaultGame.ini`: `+DirectoriesToAlwaysStageAsNonUFS=(Path="GamePlay/Wall")` 추가
+    2. `WjWorldWallDescriptionDataAsset.cpp`: 절대 경로 → Content 상대 경로 변환 로직 추가
+  - **상태**: ✅ 해결 확인 (패키징 빌드에서 벽돌 스폰 정상 동작)
+
+### 발견된 추가 이슈 (Steam 환경 2PC 테스트)
+1. **[버그] Approaching Wall 종료 후 WaitingRoom 복귀 실패**
+   - 증상: 게임 종료 후 WaitingRoom으로 ServerTravel 안됨
+   - 추정 원인: 하드코딩 경로 수정 시 누락된 부분
+   - 상태: 조사 필요
+
+2. **[버그] LobbyLayout SaveGame 주체 문제**
+   - 증상: 배치하지 않은 클라이언트 기준으로 SaveGame되는 경우 발생
+   - 재현: 재접속 시 상대방의 일부 배치물이 보임
+   - 추정 원인: SaveLayout() 호출 주체 검증 누락
+   - 상태: 조사 필요
+
+3. **[버그] WaitingRoom 코스메틱 리플리케이션 실패**
+   - 증상: WaitingRoom에서 다른 플레이어 코스메틱이 보이지 않음
+   - 참고: Lobby/Play에서는 정상 동작
+   - 상태: 조사 필요
+
+### 학습/메모
+- Steam Dev Comp Package: 파트너 그룹 계정에게 무료로 앱 접근 권한 부여
+- itemdefs.json: 모든 값은 문자열이어야 함 (`false` → `"false"`)
+- **Non-asset 파일 패키징**: `.txt`, `.csv` 등은 `DirectoriesToAlwaysStageAsNonUFS`로 명시적 포함 필요
+- **FFilePath 경로 문제**: 에디터에서 절대 경로 저장 → 패키지 빌드에서 `FPaths::ProjectContentDir()` 기준으로 변환 필요
+- **Debug vs Development 빌드 차이**: Debug는 개발 PC 파일 시스템 직접 접근, Development/Shipping은 .pak 파일 사용
+
+---
+
 ## 2026-02-04
 ### 작업 내용
 - **코스메틱 미리보기/시착 시스템 구현**
@@ -51,6 +117,10 @@
 - Steam Inventory API는 비동기 → 폴링 기반 콜백 패턴 필요
 - 멀티플레이어 코스메틱 동기화: `PossessedBy()`(서버) + `OnRep_PlayerState()`(클라이언트) 양쪽 필요
 - `OnRep_PlayerState()`는 자신/3자 모두에게 호출됨 → 3자 캐릭터 초기화에 활용
+- **GameplayCue 자동 매칭**: 태그 `GameplayCue.Ability.NormalAttack` → BP명 `GCN_Ability_NormalAttack`
+- **GameplayCueNotify_Static**: 단발성 효과용, `OnExecute` 오버라이드
+- **GameplayCueNotify_Actor**: 지속 효과용, `OnActive`/`WhileActive`/`OnRemove` 오버라이드
+- **Z-Fight 해결**: 이동 중인 오브젝트에 미세한 Z 오프셋 적용
 
 ### 이슈/해결
 - UHT 오류: 파라미터명 `Slot`이 UWidget::Slot과 충돌 → `CosmeticSlot`으로 변경

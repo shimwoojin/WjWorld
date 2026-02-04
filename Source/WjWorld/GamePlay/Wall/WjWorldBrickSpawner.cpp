@@ -19,8 +19,14 @@ UWjWorldBrickSpawner* UWjWorldBrickSpawner::CreateBrickSpawner(UObject* Outer, T
 		if (BrickSpawner)
 		{
 			BrickSpawner->WallDescriptionDataAsset = WallDescDataAsset;
-			BrickSpawner->LoadedWallDescriptionDataAsset = LoadObject<UWjWorldWallDescriptionDataAsset>(Outer, *WallDescDataAsset.ToString());
+			BrickSpawner->LoadedWallDescriptionDataAsset = WallDescDataAsset.LoadSynchronous();
 			BrickSpawner->TileActorClass = GetDefault<UWjWorldDeveloperSettings>()->TileActorClass.LoadSynchronous();
+
+			if (!BrickSpawner->LoadedWallDescriptionDataAsset)
+			{
+				UE_LOG(LogWjWorld, Error, TEXT("Failed to load WallDescriptionDataAsset: %s"), *WallDescDataAsset.ToString());
+			}
+
 			return BrickSpawner;
 		}
 	}

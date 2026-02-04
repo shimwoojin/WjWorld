@@ -15,8 +15,7 @@ public class WjWorld : ModuleRules
             "InputCore",
             "UMG",              // UI 위젯용
             "Slate",            // UI 관련
-            "SlateCore",        // UI 관련
-            "ToolWidgets",      // Slate Brush 관련
+            "SlateCore",        // UI 관련 (FSlateBrush 포함)
             "EnhancedInput",    // 입력 시스템 확장
             "GameplayAbilities",  // GAS 핵심
             "GameplayTags",       // 태그 시스템
@@ -42,9 +41,9 @@ public class WjWorld : ModuleRules
 		});
 
         // Steam 조건부 빌드
-        //bool bWithSteam = (Target.Platform == UnrealTargetPlatform.Win64);
-        bool bWithSteam = false;
-		if (bWithSteam)
+        bool bWithSteam = (Target.Platform == UnrealTargetPlatform.Win64);
+        //bool bWithSteam = false;
+        if (bWithSteam)
 		{
 			PublicDependencyModuleNames.AddRange(new string[] {
 				"Steamworks",

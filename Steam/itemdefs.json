@@ -1,0 +1,35 @@
+{
+    "appid": 4399350,
+    "items": [
+        {
+            "itemdefid": "100",
+            "type": "item",
+            "name": "Delivery Bag",
+            "name_english": "Delivery Bag",
+            "description": "A stylish delivery bag for your back",
+            "description_english": "A stylish delivery bag for your back",
+            "background_color": "3C352E",
+            "icon_url": "",
+            "tradable": "false",
+            "marketable": "false",
+            "promo": "manual",
+            "price": "1;USD",
+            "tags": "slot:Back;rarity:Common"
+        },
+        {
+            "itemdefid": "101",
+            "type": "item",
+            "name": "Military Hat",
+            "name_english": "Military Hat",
+            "description": "A military hat to wear",
+            "description_english": "A military hat to wear",
+            "background_color": "3C352E",
+            "icon_url": "",
+            "tradable": "false",
+            "marketable": "false",
+            "promo": "manual",
+            "price": "1;USD",
+            "tags": "slot:Head;rarity:Uncommon"
+        }
+    ]
+}

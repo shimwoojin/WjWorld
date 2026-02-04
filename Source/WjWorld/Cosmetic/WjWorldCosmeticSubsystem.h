@@ -60,6 +60,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Cosmetic")
 	void GrantItemLocally(FName ItemId, int32 Quantity = 1);
 
+	// ---- Promo 아이템 ----
+
+	/** Steam AddPromoItem을 사용하여 프로모 아이템 지급 (promo: "manual" 설정된 아이템) */
+	UFUNCTION(BlueprintCallable, Category = "Cosmetic")
+	bool AddPromoItem(int32 SteamItemDefId);
+
+	/** 모든 프로모 아이템 지급 (promo 설정된 모든 아이템) */
+	UFUNCTION(BlueprintCallable, Category = "Cosmetic")
+	bool AddAllPromoItems();
+
 	// ---- 테스트/디버그 ----
 
 	/** Steam GenerateItems를 사용하여 테스트 아이템 생성 (개발 빌드 전용) */

@@ -82,6 +82,14 @@ public:
 	UFUNCTION(Exec)
 	void Cosmetic_RefreshInventory();
 
+	/** Steam 프로모 아이템 지급 (SteamItemDefId 사용) */
+	UFUNCTION(Exec)
+	void Cosmetic_AddPromo(int32 SteamItemDefId);
+
+	/** 모든 Steam 프로모 아이템 지급 */
+	UFUNCTION(Exec)
+	void Cosmetic_AddAllPromos();
+
 	/** 코스메틱 상점 UI 열기 */
 	UFUNCTION(Exec)
 	void Cosmetic_OpenShop();

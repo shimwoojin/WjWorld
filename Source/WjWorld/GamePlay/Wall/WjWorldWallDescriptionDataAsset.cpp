@@ -18,13 +18,37 @@ bool FWjWorldWallDescription::LoadWallLayoutFromFile()
     }
 
     FString FileContent;
-    const FString AbsolutePath = WallLayoutFilePath.FilePath;
+    FString FilePath = WallLayoutFilePath.FilePath;
 
-    if (!FFileHelper::LoadFileToString(FileContent, *AbsolutePath))
+    // 에디터에서 설정한 절대 경로를 Content 상대 경로로 변환
+    FString ContentRelativePath;
+    int32 ContentIndex = FilePath.Find(TEXT("/Content/"), ESearchCase::IgnoreCase);
+    if (ContentIndex == INDEX_NONE)
     {
-        UE_LOG(LogWjWorld, Error, TEXT("Failed to load file: %s"), *AbsolutePath);
-        return false;
+        ContentIndex = FilePath.Find(TEXT("\\Content\\"), ESearchCase::IgnoreCase);
     }
+
+    if (ContentIndex != INDEX_NONE)
+    {
+        // "/Content/" 또는 "\\Content\\" 이후의 상대 경로 추출
+        ContentRelativePath = FilePath.RightChop(ContentIndex + 9);
+        ContentRelativePath = ContentRelativePath.Replace(TEXT("\\"), TEXT("/"));
+    }
+
+    // 1차 시도: Content 디렉토리 기준 경로
+    FString ResolvedPath = FPaths::ProjectContentDir() / ContentRelativePath;
+
+    if (!FFileHelper::LoadFileToString(FileContent, *ResolvedPath))
+    {
+        // 2차 시도: 원본 절대 경로 (에디터에서만 동작)
+        if (!FFileHelper::LoadFileToString(FileContent, *FilePath))
+        {
+            UE_LOG(LogWjWorld, Error, TEXT("Failed to load file. Tried paths:\n  1) %s\n  2) %s"), *ResolvedPath, *FilePath);
+            return false;
+        }
+    }
+
+    UE_LOG(LogWjWorld, Log, TEXT("Successfully loaded wall layout from: %s"), *ResolvedPath);
 
     bool bParseResult = ParseWallLayout(FileContent);
     if(!bParseResult)

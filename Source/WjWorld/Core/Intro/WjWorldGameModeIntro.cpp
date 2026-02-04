@@ -43,29 +43,37 @@ void AWjWorldGameModeIntro::OnVideoFinished()
 
 void AWjWorldGameModeIntro::CreateAndShowIntroUI()
 {
-    if (IntroWidgetClass)
+    if (!IntroWidgetClass)
     {
-        // 위젯 생성
-        IntroWidget = CreateWidget<UIntroWindow>(GetWorld(), IntroWidgetClass);
+        UE_LOG(LogWjWorld, Warning, TEXT("IntroWidgetClass is not set - skipping intro"));
+        OnVideoFinished();
+        return;
+    }
 
-        if (IntroWidget)
-        {
-            // 화면에 추가
-            IntroWidget->AddToViewport();
+    // 위젯 생성
+    IntroWidget = CreateWidget<UIntroWindow>(GetWorld(), IntroWidgetClass);
 
-            // 동영상 종료 이벤트 바인딩
-            IntroWidget->OnVideoCompleted.AddDynamic(this, &AWjWorldGameModeIntro::OnVideoFinished);
+    if (!IntroWidget)
+    {
+        UE_LOG(LogWjWorld, Warning, TEXT("Failed to create IntroWidget - skipping intro"));
+        OnVideoFinished();
+        return;
+    }
 
-            // 동영상 재생 시작
-            IntroWidget->PlayIntroVideo();
+    // 화면에 추가
+    IntroWidget->AddToViewport();
 
-            // 마우스 커서 표시 (필요시)
-            APlayerController* PC = GetWorld()->GetFirstPlayerController();
-            if (PC)
-            {
-                PC->bShowMouseCursor = true;
-                PC->SetInputMode(FInputModeUIOnly());
-            }
-        }
+    // 동영상 종료 이벤트 바인딩
+    IntroWidget->OnVideoCompleted.AddDynamic(this, &AWjWorldGameModeIntro::OnVideoFinished);
+
+    // 동영상 재생 시작
+    IntroWidget->PlayIntroVideo();
+
+    // 마우스 커서 표시 (필요시)
+    APlayerController* PC = GetWorld()->GetFirstPlayerController();
+    if (PC)
+    {
+        PC->bShowMouseCursor = true;
+        PC->SetInputMode(FInputModeUIOnly());
     }
 }

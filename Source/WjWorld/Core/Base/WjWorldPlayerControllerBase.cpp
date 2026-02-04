@@ -231,6 +231,50 @@ void AWjWorldPlayerControllerBase::Cosmetic_RefreshInventory()
 	UE_LOG(LogWjWorld, Log, TEXT("Cosmetic_RefreshInventory: 인벤토리 갱신 요청"));
 }
 
+void AWjWorldPlayerControllerBase::Cosmetic_AddPromo(int32 SteamItemDefId)
+{
+	UGameInstance* GI = GetGameInstance();
+	if (!GI) return;
+
+	UWjWorldCosmeticSubsystem* CosmeticSub = GI->GetSubsystem<UWjWorldCosmeticSubsystem>();
+	if (!CosmeticSub)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("Cosmetic_AddPromo: CosmeticSubsystem 없음"));
+		return;
+	}
+
+	if (CosmeticSub->AddPromoItem(SteamItemDefId))
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("Cosmetic_AddPromo: SteamItemDefId %d 프로모 아이템 지급 요청 완료"), SteamItemDefId);
+	}
+	else
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("Cosmetic_AddPromo: 프로모 아이템 지급 실패 (DefId: %d)"), SteamItemDefId);
+	}
+}
+
+void AWjWorldPlayerControllerBase::Cosmetic_AddAllPromos()
+{
+	UGameInstance* GI = GetGameInstance();
+	if (!GI) return;
+
+	UWjWorldCosmeticSubsystem* CosmeticSub = GI->GetSubsystem<UWjWorldCosmeticSubsystem>();
+	if (!CosmeticSub)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("Cosmetic_AddAllPromos: CosmeticSubsystem 없음"));
+		return;
+	}
+
+	if (CosmeticSub->AddAllPromoItems())
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("Cosmetic_AddAllPromos: 모든 프로모 아이템 지급 요청 완료"));
+	}
+	else
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("Cosmetic_AddAllPromos: 프로모 아이템 지급 실패"));
+	}
+}
+
 void AWjWorldPlayerControllerBase::Cosmetic_OpenShop()
 {
 	// 로비 HUD에서 코스메틱 상점을 여는 로직
