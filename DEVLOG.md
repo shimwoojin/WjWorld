@@ -141,6 +141,27 @@
   - `Build.cs`에 `Sockets`, `Networking` 모듈 의존성 추가
 - **결과**: LAN 2PC 접속 성공 확인, WaitingRoom 정상 동작
 
+#### GA_Jump 어빌리티 구현 (Sumo 전용 점프)
+- **GA_Jump** (`AbilitySystem/Abilities/GA_Jump.h/.cpp`)
+  - UE 기본 `UGameplayAbility_CharacterJump` 패턴 기반, `WjWorldGameplayAbilityBase` 상속
+  - `Character->Jump()` / `StopJumping()` 사용 (가변 높이 점프 지원)
+  - `NetExecutionPolicy::LocalPredicted` (서버 왕복 없이 즉시 점프)
+  - `CanActivateAbility()`: Super(AllowedAbilityTags) + `Character->CanJump()` 체크
+  - `CommitAbility()` 패턴 사용 (GA_Push의 직접 ApplyCooldown과 다름)
+  - `InputReleased()` → `StopJumping()` + `EndAbility()`
+  - `CancelAbility()` → `StopJumping()` + Super
+- **GameplayTag 추가**: `Ability.Jump`, `Cooldown.Jump` (WjWorldGameplayTag + DefaultGameplayTags.ini)
+- **WjTypes**: `EWjWorldAbilityInputID::Ability7 = 7` 추가
+- **에디터 세팅 필요**: IA_Ability7 + Spacebar, BP_GA_Jump, SetupDA 등록, Sumo AllowedAbilityTags
+
+#### PackageAndUploadSteam.bat 버그 수정
+- **[버그] RunUAT.bat `call` 누락** → .bat를 call 없이 실행하면 호출 스크립트가 종료됨
+  - 수정: `call "%UE_ROOT%\...\RunUAT.bat"` 로 변경
+- **[버그] 스크립트 끝에 `pause` 없음** → 정상 완료 시에도 창 즉시 닫힘
+  - 수정: `endlocal` 뒤에 `pause` 추가
+- **[버그] Development 에디터 빌드 누락** → `WjWorldEditor.target` 파일 없음 (DebugGame만 빌드)
+  - 수정: `-build` 플래그 추가 → 패키징 전 에디터+게임 자동 빌드
+
 ### 학습/메모
 - `GetAuthGameMode()`는 클라이언트에서 null 반환 → GameState의 리플리케이트된 데이터로 폴백
 - ServerTravel URL 포맷: `GetAssetPathString()` (`.MapName` 포함) vs `GetLongPackageName()` (순수 경로)
@@ -164,6 +185,10 @@
 - **TObjectPtr Sort 호환성**: UE 5.7에서 `TArray<TObjectPtr<T>>::Sort()` 시 deprecation warning 발생 → `TArray<T*>`로 변경하면 해결
 - **InheritableOwnedTagsContainer deprecated** (UE 5.7): GE 생성자에서 태그 직접 추가 불가 → AddLooseGameplayTag()로 런타임에 태그 적용
 - **AddLooseGameplayTag vs GE 태그**: Loose 태그는 GE 없이 직접 ASC에 추가/제거, 일회성 버프에 적합
+- **Batch 스크립트에서 .bat 호출 시 `call` 필수**: `call` 없이 실행하면 호출 스크립트가 종료되고 돌아오지 않음. RunUAT.bat 등 외부 .bat 호출 시 반드시 `call` 사용
+- **RunUAT `-build` 플래그**: Cook 단계에서 `{Target}.target` 파일이 필요. DebugGame 빌드만 있으면 Development 에디터 .target 파일이 없어 실패. `-build` 추가하면 자동으로 빌드 후 Cook 진행
+- **GA_Jump `LocalPredicted` vs GA_Push `ServerInitiated`**: 점프는 즉각적인 응답이 필요하므로 LocalPredicted, 밀치기는 서버 권한이 중요하므로 ServerInitiated
+- **`CommitAbility()` vs 직접 `ApplyCooldown()`**: CommitAbility는 Cost+Cooldown 한꺼번에 처리. 베이스 클래스의 virtual ApplyCooldown이 정상 호출됨
 
 ### 이슈/해결
 - COMDAT 중복 링크 오류 → Intermediate 폴더 정리 후 재빌드
@@ -218,20 +243,26 @@
 - [x] IMC_Default: IA_Ability6 InputAction 생성 + 키 바인딩
 - [x] MinigameCatalog Sumo 엔트리에 AllowedAbilityTags 설정 (Ability.Push 등)
 
-#### Sumo Knockoff 6대 기능 에디터 세팅 (필수)
-- [ ] BP_SumoPowerUpActor 생성 (ASumoPowerUpActor 기반, 메시/콜리전 설정)
-- [ ] BP_GameRuleSumo에 `PowerUpActorClass` → BP_SumoPowerUpActor 할당
-- [ ] BP_SumoFloorRingActor에 `WarningMaterial` 할당 (경고 머티리얼 생성 필요)
-- [ ] 03-2_Sumo 맵에 SumoFloorRingActor 동심원 배치 (RingOrder/RingRadius 개별 설정)
-- [ ] WBP_SumoHUD에 `KillFeedText`, `RoundText` TextBlock 위젯 추가
-- [ ] BP_HUDPlay `GameRuleHUDWidgetClasses`에 BP_GameRuleSumo → WBP_SumoHUD 매핑 확인
-- [ ] DA_MinigameCatalog Sumo 항목에 MapOptions 추가 (Default/Bridge/Obstacle)
+#### Sumo Knockoff 6대 기능 에디터 세팅 (완료)
+- [x] BP_SumoPowerUpActor 생성 (ASumoPowerUpActor 기반, 메시/콜리전 설정)
+- [x] BP_GameRuleSumo에 `PowerUpActorClass` → BP_SumoPowerUpActor 할당
+- [x] BP_SumoFloorRingActor에 `WarningMaterial` 할당
+- [x] 03-2_Sumo 맵에 SumoFloorRingActor 동심원 배치
+- [x] WBP_SumoHUD에 `KillFeedText`, `RoundText` TextBlock 위젯 추가
+- [x] BP_HUDPlay `GameRuleHUDWidgetClasses`에 BP_GameRuleSumo → WBP_SumoHUD 매핑 확인
+- [x] DA_MinigameCatalog Sumo 항목에 MapOptions 추가 (Default/Bridge/Obstacle)
+- [x] CameraShake BP 생성 → BPGA_Push에 `PushHitCameraShake` 할당
+- [x] 링 파괴 VFX/사운드 추가
+- [x] GameplayCue.Sumo.PowerUp.Pickup 에셋 생성
 
-#### Sumo Knockoff 6대 기능 에디터 세팅 (권장)
-- [ ] CameraShake BP 생성 → BPGA_Push에 `PushHitCameraShake` 할당
+#### GA_Jump 에디터 세팅 (필요)
+- [ ] IA_Ability7 Input Action + Spacebar 바인딩 (IMC)
+- [ ] BP_GA_Jump 생성 (GA_Jump 기반)
+- [ ] CharacterPlaySetupDataAsset: Ability7 → BP_GA_Jump
+- [ ] MinigameCatalog Sumo AllowedAbilityTags에 `Ability.Jump` 추가
+
+#### 에디터 세팅 (남은 권장)
 - [ ] 파워업 타입별 비주얼 구분 (SpeedBoost=파랑, SuperPush=빨강, Shield=노랑)
-- [ ] 링 파괴 VFX/사운드 추가
-- [ ] GameplayCue.Sumo.PowerUp.Pickup 에셋 생성 (파워업 획득 VFX/SFX)
 
 #### 에셋/폴리싱
 - [ ] Lobby 맵 풍성하게 꾸미기

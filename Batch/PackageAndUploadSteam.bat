@@ -7,7 +7,7 @@ REM ========================================
 
 set PROJECT_ROOT=C:\UEProjects\WjWorld
 set UE_ROOT=C:\Program Files\Epic Games\UE_5.7
-set PACKAGE_OUTPUT=%PROJECT_ROOT%\Windows
+set PACKAGE_OUTPUT=%PROJECT_ROOT%\DevelopmentPackage\Windows
 set STEAM_CONTENT=%PROJECT_ROOT%\Steam\content
 
 echo ========================================
@@ -26,12 +26,12 @@ REM ----------------------------------------
 echo [1/3] Packaging Development build...
 echo.
 
-"%UE_ROOT%\Engine\Build\BatchFiles\RunUAT.bat" ^
+call "%UE_ROOT%\Engine\Build\BatchFiles\RunUAT.bat" ^
 BuildCookRun ^
 -project="%PROJECT_ROOT%\WjWorld.uproject" ^
 -platform=Win64 ^
 -clientconfig=Development ^
--cook -stage -pak -package ^
+-build -cook -stage -pak -package ^
 -archive -archivedirectory="%PACKAGE_OUTPUT%" ^
 -nodebuginfo
 
@@ -85,4 +85,9 @@ echo.
 
 call "%PROJECT_ROOT%\Steam\upload.bat"
 
+echo.
+echo ========================================
+echo  Pipeline complete.
+echo ========================================
 endlocal
+pause

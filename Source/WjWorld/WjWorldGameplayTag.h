@@ -24,6 +24,7 @@ public:
 	static FGameplayTag Ability_SpawnBrick();
 	static FGameplayTag Ability_LiftBrick();
 	static FGameplayTag Ability_Push();
+	static FGameplayTag Ability_Jump();
 
 	//State
 	static FGameplayTag State_SpawnBrickPreview();
@@ -34,6 +35,7 @@ public:
 	static FGameplayTag Cooldown_NormalAttack();
 	static FGameplayTag Cooldown_LiftBrick();
 	static FGameplayTag Cooldown_Push();
+	static FGameplayTag Cooldown_Jump();
 
 	//Data (SetByCaller용)
 	static FGameplayTag Data_Cooldown();

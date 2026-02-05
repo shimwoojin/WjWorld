@@ -29,4 +29,5 @@ enum class EWjWorldAbilityInputID : uint8
 	Ability4 = 4,	// SpawnBrick
 	Ability5 = 5,	// LiftBrick
 	Ability6 = 6,	// Push
+	Ability7 = 7,	// Jump
 };

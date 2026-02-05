@@ -46,6 +46,11 @@ FGameplayTag WjWorldGameplayTag::Ability_Push()
 	return FGameplayTag::RequestGameplayTag(TEXT("Ability.Push"));
 }
 
+FGameplayTag WjWorldGameplayTag::Ability_Jump()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("Ability.Jump"));
+}
+
 FGameplayTag WjWorldGameplayTag::State_SpawnBrickPreview()
 {
 	return FGameplayTag::RequestGameplayTag(TEXT("State.SpawnBrickPreview"));
@@ -74,6 +79,11 @@ FGameplayTag WjWorldGameplayTag::Cooldown_LiftBrick()
 FGameplayTag WjWorldGameplayTag::Cooldown_Push()
 {
 	return FGameplayTag::RequestGameplayTag(TEXT("Cooldown.Push"));
+}
+
+FGameplayTag WjWorldGameplayTag::Cooldown_Jump()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("Cooldown.Jump"));
 }
 
 FGameplayTag WjWorldGameplayTag::Data_Cooldown()

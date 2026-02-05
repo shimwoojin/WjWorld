@@ -28,7 +28,7 @@ Steam에 무료로 출시하며 코스메틱 아이템을 유료 판매합니다
 ```
 Source/WjWorld/
 ├── AbilitySystem/                     # Gameplay Ability System
-│   ├── Abilities/                     # 어빌리티 (NormalAttack, SpawnBrick, LiftBrick)
+│   ├── Abilities/                     # 어빌리티 (NormalAttack, SpawnBrick, LiftBrick, Push, Jump)
 │   ├── AttributeSets/                 # 어트리뷰트 셋 (HP, 충전 등)
 │   ├── Effects/                       # GameplayEffect (쿨다운, 충전 비용)
 │   └── WjWorldAbilitySystemComponent  # ASC 컴포넌트
@@ -61,6 +61,7 @@ Source/WjWorld/
 │   ├── Camera/                        # 카메라 시스템
 │   ├── Interact/                      # 상호작용
 │   ├── Quest/                         # 퀘스트 시스템
+│   ├── Sumo/                          # Sumo Knockoff 미니게임
 │   └── Wall/                          # Approaching Wall 미니게임
 ├── Network/                           # 네트워크/패킷 관련
 └── UI/                                # UI 위젯들
@@ -102,7 +103,8 @@ AWjWorldPlayerControllerBase
 ### GameRule (미니게임 규칙)
 ```
 UWjWorldGameRuleBase
-└── UWjWorldGameRuleApproachingWall   # Approaching Wall 미니게임
+├── UWjWorldGameRuleApproachingWall   # Approaching Wall 미니게임
+└── UWjWorldGameRuleSumo              # Sumo Knockoff 미니게임
 ```
 
 ### Gameplay Ability
@@ -110,7 +112,9 @@ UWjWorldGameRuleBase
 UWjWorldGameplayAbilityBase
 ├── UGA_NormalAttack               # 4방향 벽돌 공격
 ├── UGA_SpawnBrick                 # 충전 기반 벽돌 배치
-└── UGA_LiftBrick                  # 벽돌 이동/재배치
+├── UGA_LiftBrick                  # 벽돌 이동/재배치
+├── UGA_Push                       # Sumo 넉백 (구형 오버랩 + LaunchCharacter)
+└── UGA_Jump                       # Sumo 점프 (UE CharacterJump 패턴)
 ```
 
 ### Subsystem (GameInstanceSubsystem)
@@ -132,6 +136,7 @@ UWjWorldUserWidgetBase
 ├── UApproachingWallHUDWidget       # Approaching Wall 전용 HUD
 ├── UAbilitySlotWidget              # 어빌리티 슬롯 (쿨다운/충전)
 ├── UAbilityPromptWidget            # Confirm/Cancel 프롬프트
+├── USumoHUDWidget                 # Sumo Knockoff 전용 HUD
 ├── UPlayerProfileWidget            # 플레이어 프로필 (3D 프리뷰 + 스탯)
 ├── UCreateRoomWindow
 ├── URoomListWindow
@@ -177,6 +182,24 @@ GameplayTag 기반 타입 세이프 데이터 저장 시스템.
 - `WjWorldBrickPreviewActor` - 어빌리티 배치 프리뷰 (유효/무효 색상)
 - `WjWorldWallDescriptionDataAsset` - 벽 레이아웃 데이터
 
+### Sumo Knockoff 미니게임
+두 번째 미니게임. 원형 플랫폼 위에서 상대를 밀어 떨어뜨리는 PvP 서바이벌.
+
+**게임 규칙:**
+- Z 위치 체크로 낙하 감지 (FallThresholdZ=-500)
+- 3라운드 시스템, 탈락 순서 기반 점수 배분
+- 킬피드 시스템 (LastAttacker 기반 킬 추적)
+- 축소 플랫폼 링 (외곽부터 Warning→Destroyed)
+- 파워업 (SpeedBoost/SuperPush/Shield)
+- 맵 변형 (Default/Bridge/Obstacle)
+
+**주요 클래스:**
+- `WjWorldGameRuleSumo` - 게임 규칙 (라운드, 탈락, 승리)
+- `SumoFloorRingActor` - 축소 플랫폼 링
+- `SumoPowerUpActor` - 파워업 픽업 (GameplayTag 버프)
+- `SumoGameDataComponent` - 게임 데이터 (AliveCount, KillFeed, Round)
+- `SumoPlayerDataComponent` - 플레이어 데이터 (bIsAlive, Score)
+
 ### Gameplay Ability System
 GAS 기반 어빌리티 시스템. `UWjWorldGameplayAbilityBase`에서 공통 기능 제공.
 
@@ -184,11 +207,14 @@ GAS 기반 어빌리티 시스템. `UWjWorldGameplayAbilityBase`에서 공통 �
 - AbilityName, AbilityIcon (UI 메타데이터)
 - 충전 시스템 인터페이스 (IsChargeBased, GetCurrentCharges, GetMaxCharges)
 - GetPromptDescription() (어빌리티별 프롬프트 텍스트)
+- 미니게임별 어빌리티 제한 (AllowedAbilityTags 체크)
 
 **어빌리티:**
 - `GA_NormalAttack` - 4방향 스냅(Yaw 기반) 벽돌 공격, BrickType별 처리
 - `GA_SpawnBrick` - 충전 기반 벽돌 배치, Preview → Confirm/Cancel 패턴
 - `GA_LiftBrick` - 벽돌 재배치, Cancel 시 원래 위치 복원
+- `GA_Push` - Sumo 넉백, 전방 구형 오버랩 → LaunchCharacter(), ServerInitiated
+- `GA_Jump` - Sumo 점프, UE CharacterJump 패턴 기반, LocalPredicted
 
 **어트리뷰트:** HP, MaxSpawnBrickCharges, SpawnBrickCharges
 **이펙트:** GE_AbilityCooldown (쿨다운), GE_SpawnBrickChargeCost (충전 비용)
@@ -237,11 +263,18 @@ Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용).
 - `AbilitySlotWidget` - 어빌리티 아이콘, 키바인딩, 쿨다운/충전 오버레이 표시
 - `AbilityPromptWidget` - Confirm/Cancel 키 이름 + 어빌리티 설명 표시 (WidgetComponent)
 
+### 세션 관리 시스템
+`USessionManager` 기반 Online Subsystem Session 관리.
+- LAN/Steam 네트워크 모드 분기
+- Steam OSS 우선 → NULL OSS 폴백
+- 검색 큐 패턴 (이전 검색 완료 후 자동 실행)
+
 ### Steam 빌드 설정
 - `WITH_STEAM` 매크로로 조건부 컴파일 (Win64 전용)
 - Steamworks, OnlineSubsystemSteam 모듈
-- OnlineSubsystemSteam 플러그인 활성화
+- OnlineSubsystemSteam, SocketSubsystemSteamIP 플러그인 활성화
 - Steam API 호출은 `#if WITH_STEAM` 블록으로 분리
+- Steam=SteamNetDriver, LAN=WjWorldLanNetDriver (런타임 전환)
 
 ## 빌드 방법
 
@@ -270,6 +303,7 @@ cd WjWorld
 - `RebuildProject.bat` - 전체 리빌드
 - `RunDebugEditor.bat` - 디버그 에디터 실행
 - `GenerateDocs.bat` - Doxygen 문서 생성
+- `PackageAndUploadSteam.bat` - Development 패키징 + Steam 업로드 자동화
 - `SetEnvironmentVariable.bat` - 환경 변수 설정
 
 ## 게임 플로우
@@ -369,10 +403,22 @@ GameRule 초기화 → 카운트다운 → 게임 시작
   - [x] Kills 스탯 추적 (LastAttacker 시스템)
   - [x] 플레이어 이탈 시 캐릭터 제거 처리
   - [x] 엣지 케이스 처리 (솔로 게임, 동시 제거, 전원 이탈)
+- [x] **LAN/Steam 네트워크 모드 토글** (ENetworkMode, UI 선택, 세션 분기)
+- [x] **Steam P2P 네트워킹** (SteamNetDriver, SocketSubsystemSteamIP)
+- [x] **LAN SocketSubsystem 충돌 수정** (WjWorldLanNetDriver)
+- [x] **빌드 자동화** (PackageAndUploadSteam.bat)
+- [x] **Sumo Knockoff 미니게임**
+  - [x] 기본 코드 구현 (GA_Push, GameRuleSumo, DataComponents)
+  - [x] 6대 기능 (킬피드, 축소 플랫폼, 라운드, 파워업, 맵 변형, 히트 피드백)
+  - [x] 기본 에디터 세팅 (맵, 카탈로그 등록, BP, 입력 바인딩)
+- [x] **미니게임별 어빌리티 제한** (AllowedAbilityTags)
+- [x] **GA_Jump 어빌리티** (UE CharacterJump 패턴, Sumo 전용)
 
 ### 예정
-- [ ] Steam 실제 환경 테스트 (AppID 발급 후)
+- [ ] GA_Jump 에디터 세팅 (IA_Ability7, BP_GA_Jump, SetupDA, MinigameCatalog)
+- [ ] Sumo Knockoff 6대 기능 에디터 세팅 (링 배치, HUD 위젯, 파워업 비주얼)
 - [ ] 추가 미니게임 구현
+- [ ] Steam 정식 출시 준비
 
 ## 문서화
 

@@ -16,7 +16,8 @@ Source/WjWorld/
 │   │   ├── GA_NormalAttack            # 4방향 벽돌 공격
 │   │   ├── GA_SpawnBrick              # 충전 기반 벽돌 배치 (Preview + Confirm/Cancel)
 │   │   ├── GA_LiftBrick              # 벽돌 이동/재배치 (Preview + Confirm/Cancel)
-│   │   └── GA_Push                   # Sumo 넉백 (구형 오버랩 + LaunchCharacter)
+│   │   ├── GA_Push                   # Sumo 넉백 (구형 오버랩 + LaunchCharacter)
+│   │   └── GA_Jump                   # Sumo 점프 (UE CharacterJump 패턴, LocalPredicted)
 │   ├── AttributeSets/                 # 어트리뷰트 셋
 │   │   └── WjWorldCharacterAttributeSet  # HP, MaxSpawnBrickCharges, SpawnBrickCharges 등
 │   ├── Effects/                       # GameplayEffect 파일들
@@ -165,7 +166,7 @@ HUD: AWjWorldHUDBase → Lobby, WaitingRoom, Play
 UI Widget: UWjWorldUserWidgetBase → 각종 HUD 및 윈도우 위젯
 GameRule: UWjWorldGameRuleBase → ApproachingWall, Sumo (미니게임 규칙, MinigameCatalog에서 조회)
 GameData: UWjWorldGameDataComponent → ApproachingWall, Sumo 전용 데이터
-Ability: UWjWorldGameplayAbilityBase → GA_NormalAttack, GA_SpawnBrick, GA_LiftBrick, GA_Push
+Ability: UWjWorldGameplayAbilityBase → GA_NormalAttack, GA_SpawnBrick, GA_LiftBrick, GA_Push, GA_Jump
 NetDriver: UIpNetDriver → UWjWorldLanNetDriver (LAN 전용, PLATFORM_SOCKETSUBSYSTEM)
 Subsystem: UGameInstanceSubsystem → CosmeticSubsystem, PurchaseSubsystem, StatsSubsystem
 AnimInstance: UWjWorldAnimInstance (LiftBrickBlendWeight, GameplayTag 기반 상태)
@@ -239,6 +240,7 @@ GAS 기반 어빌리티 시스템. `UWjWorldGameplayAbilityBase`를 상속받아
 - **GA_SpawnBrick**: 충전 기반 벽돌 배치, Preview → Confirm/Cancel 패턴, GE 기반 충전 리필, 어트리뷰트 변경 위임
 - **GA_LiftBrick**: 벽돌 재배치 어빌리티, Moving/Destructible 벽돌 들어올리기, Cancel 시 원래 위치 복원, 들고 있는 벽돌 색상 리플리케이션
 - **GA_Push**: Sumo 넉백 어빌리티, 전방 구형 오버랩 → LaunchCharacter(), PushForce=1200, CooldownDuration=1.5s, SetLastAttacker(), SuperPushMultiplier(2x), PushHitCameraShake
+- **GA_Jump**: Sumo 점프 어빌리티, UE CharacterJump 패턴 기반, LocalPredicted, CommitAbility(), Character->Jump()/StopJumping(), 가변 높이 점프, InputReleased로 종료
 - **AttributeSet**: HP, MaxSpawnBrickCharges, SpawnBrickCharges, OnRep 콜백
 - **Effects**: GE_AbilityCooldown (쿨다운), GE_SpawnBrickChargeCost (충전 비용), GE_SumoSpeedBoost/SuperPush/Shield (참조용 GE, 실제 버프는 AddLooseGameplayTag)
 
@@ -254,6 +256,8 @@ GAS 기반 어빌리티 시스템. `UWjWorldGameplayAbilityBase`를 상속받아
 - `Buff_SuperPush` - Sumo 강화 넉백 버프 (1회 소모)
 - `Buff_Shield` - Sumo 보호막 (제거 1회 무시)
 - `GameplayCue_Sumo_PowerUp_Pickup` - 파워업 획득 이펙트
+- `Ability_Jump` - GA_Jump 어빌리티 태그
+- `Cooldown_Jump` - GA_Jump 쿨다운 태그
 
 ### 코스메틱 시스템
 Steam 무료 출시 후 유료 코스메틱 판매를 위한 시스템. ItemId(FName) 기반 플랫폼 독립 식별.
@@ -418,8 +422,11 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
 - **미니게임별 어빌리티 제한 시스템** (AllowedAbilityTags, CanActivateAbility 오버라이드)
 - **스탯 네임스페이스 범용화** (StatNamespace 기반 동적 스탯 키)
 - **LAN SocketSubsystem 충돌 수정** (WjWorldLanNetDriver + ApplyNetDriverForMode 런타임 전환)
+- **GA_Jump 어빌리티 구현** (UE CharacterJump 패턴, LocalPredicted, Ability7 InputID)
+- **PackageAndUploadSteam.bat 버그 수정** (call 키워드, -build 플래그, pause 추가)
 
 ## 진행 중 / 미구현
+- GA_Jump 에디터 세팅 (IA_Ability7, BP_GA_Jump, SetupDA, MinigameCatalog AllowedAbilityTags)
 - Sumo Knockoff 6대 기능 에디터 세팅 (BP 생성/프로퍼티 할당, 링 배치, HUD 위젯, 파워업 비주얼)
 - 추가 미니게임 구현
 - Steam 정식 출시 준비
