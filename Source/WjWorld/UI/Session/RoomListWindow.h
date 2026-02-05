@@ -30,8 +30,16 @@ public:
 	/** 팝업 표시 */
 	void ShowPopup();
 
+	/** 팝업 표시 (네트워크 모드 지정) */
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void ShowPopupWithNetworkMode(ENetworkMode InNetworkMode);
+
 	/** 팝업 닫기 */
 	void ClosePopup();
+
+	/** 네트워크 모드 설정 */
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void SetNetworkMode(ENetworkMode InNetworkMode) { CurrentNetworkMode = InNetworkMode; }
 
 protected:
 	//~ UI 위젯 바인딩
@@ -72,4 +80,7 @@ private:
 
 	/** 방 검색 시작 */
 	void StartSearching();
+
+	/** 현재 네트워크 모드 */
+	ENetworkMode CurrentNetworkMode = ENetworkMode::LAN;
 };

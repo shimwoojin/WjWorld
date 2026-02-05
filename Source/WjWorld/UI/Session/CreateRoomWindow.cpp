@@ -50,6 +50,7 @@ void UCreateRoomWindow::NativeConstruct()
 		MinigameCatalog = DevSettings->MinigameCatalog.LoadSynchronous();
 	}
 
+	InitializeNetworkModeOptions();
 	InitializeGameModeOptions();
 	InitializeMapOptions();
 
@@ -346,8 +347,20 @@ FRoomSettings UCreateRoomWindow::BuildRoomSettings()
 		Settings.bAllowJoinInProgress = AllowJoinInProgressCheckBox->IsChecked();
 	}
 
-	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Built settings - Name: %s, Mode: %s, Map: %s, Players: %d"),
-		*Settings.RoomName, *Settings.GameMode, *Settings.MapName, Settings.MaxPlayers);
+	// 네트워크 모드
+	if (NetworkModeComboBox)
+	{
+		FString SelectedMode = NetworkModeComboBox->GetSelectedOption();
+		Settings.NetworkMode = (SelectedMode == TEXT("Steam")) ? ENetworkMode::Steam : ENetworkMode::LAN;
+	}
+	else
+	{
+		Settings.NetworkMode = ENetworkMode::LAN; // 기본값
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Built settings - Name: %s, Mode: %s, Map: %s, Players: %d, Network: %s"),
+		*Settings.RoomName, *Settings.GameMode, *Settings.MapName, Settings.MaxPlayers,
+		Settings.NetworkMode == ENetworkMode::Steam ? TEXT("Steam") : TEXT("LAN"));
 
 	return Settings;
 }
@@ -426,4 +439,28 @@ void UCreateRoomWindow::InitializeMapOptions()
 	}
 
 	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Map options initialized (%d items)"), MapOptionDisplayToValue.Num());
+}
+
+void UCreateRoomWindow::InitializeNetworkModeOptions()
+{
+	if (!NetworkModeComboBox)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("CreateRoomWindow: NetworkModeComboBox not found (optional)"));
+		return;
+	}
+
+	NetworkModeComboBox->ClearOptions();
+
+	// LAN 옵션 추가
+	NetworkModeComboBox->AddOption(TEXT("LAN"));
+
+	// Steam 옵션 추가 (Steam 빌드에서만 활성화)
+#if WITH_STEAM
+	NetworkModeComboBox->AddOption(TEXT("Steam"));
+#endif
+
+	// 기본값은 LAN
+	NetworkModeComboBox->SetSelectedOption(TEXT("LAN"));
+
+	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Network mode options initialized"));
 }

@@ -93,12 +93,23 @@ bool USessionManager::CreateSession(const FRoomSettings& Settings)
 	FOnlineSessionSettings SessionSettings;
 	SessionSettings.NumPublicConnections = Settings.MaxPlayers;
 	SessionSettings.bShouldAdvertise = true;
-	SessionSettings.bUsesPresence = false;
-	SessionSettings.bUseLobbiesIfAvailable = false;
 	SessionSettings.bAllowJoinInProgress = Settings.bAllowJoinInProgress;
-	SessionSettings.bIsLANMatch = true;
 	SessionSettings.bAllowJoinViaPresence = false;
 	SessionSettings.bAllowJoinViaPresenceFriendsOnly = false;
+
+	// 네트워크 모드에 따른 설정
+	if (Settings.NetworkMode == ENetworkMode::Steam)
+	{
+		SessionSettings.bIsLANMatch = false;
+		SessionSettings.bUsesPresence = true;
+		SessionSettings.bUseLobbiesIfAvailable = true;
+	}
+	else // LAN
+	{
+		SessionSettings.bIsLANMatch = true;
+		SessionSettings.bUsesPresence = false;
+		SessionSettings.bUseLobbiesIfAvailable = false;
+	}
 
 	// 커스텀 데이터 설정
 	SessionSettings.Set(FName("ROOM_NAME"), Settings.RoomName, EOnlineDataAdvertisementType::ViaOnlineService);
@@ -119,17 +130,19 @@ bool USessionManager::CreateSession(const FRoomSettings& Settings)
 	{
 		LastRoomSettings = Settings;
 		bIsHost = true;
-		UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Creating LAN session '%s'"), *Settings.RoomName);
+		UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Creating %s session '%s'"),
+			Settings.NetworkMode == ENetworkMode::Steam ? TEXT("Steam") : TEXT("LAN"),
+			*Settings.RoomName);
 	}
 	else
 	{
-		UE_LOG(LogWjWorld, Error, TEXT("SessionManager: Failed to create LAN session"));
+		UE_LOG(LogWjWorld, Error, TEXT("SessionManager: Failed to create session"));
 	}
 
 	return bSuccess;
 }
 
-bool USessionManager::FindSessions(int32 MaxSearchResults)
+bool USessionManager::FindSessions(ENetworkMode NetworkMode, int32 MaxSearchResults)
 {
 	if (!SessionInterface.IsValid())
 	{
@@ -140,8 +153,18 @@ bool USessionManager::FindSessions(int32 MaxSearchResults)
 	// 검색 설정
 	SessionSearch = MakeShareable(new FOnlineSessionSearch());
 	SessionSearch->MaxSearchResults = MaxSearchResults;
-	SessionSearch->bIsLanQuery = true;
-	SessionSearch->QuerySettings.Set(SEARCH_LOBBIES, false, EOnlineComparisonOp::Equals);
+
+	// 네트워크 모드에 따른 검색 설정
+	if (NetworkMode == ENetworkMode::Steam)
+	{
+		SessionSearch->bIsLanQuery = false;
+		SessionSearch->QuerySettings.Set(SEARCH_LOBBIES, true, EOnlineComparisonOp::Equals);
+	}
+	else // LAN
+	{
+		SessionSearch->bIsLanQuery = true;
+		SessionSearch->QuerySettings.Set(SEARCH_LOBBIES, false, EOnlineComparisonOp::Equals);
+	}
 
 	// 검색 시작
 	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
@@ -149,11 +172,12 @@ bool USessionManager::FindSessions(int32 MaxSearchResults)
 
 	if (bSuccess)
 	{
-		UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Searching for LAN sessions..."));
+		UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Searching for %s sessions..."),
+			NetworkMode == ENetworkMode::Steam ? TEXT("Steam") : TEXT("LAN"));
 	}
 	else
 	{
-		UE_LOG(LogWjWorld, Error, TEXT("SessionManager: Failed to start LAN session search"));
+		UE_LOG(LogWjWorld, Error, TEXT("SessionManager: Failed to start session search"));
 	}
 
 	return bSuccess;
@@ -505,12 +529,23 @@ bool USessionManager::CreateMigrationSession(const FRoomSettings& Settings, cons
 	FOnlineSessionSettings SessionSettings;
 	SessionSettings.NumPublicConnections = Settings.MaxPlayers;
 	SessionSettings.bShouldAdvertise = true;
-	SessionSettings.bUsesPresence = false;
-	SessionSettings.bUseLobbiesIfAvailable = false;
 	SessionSettings.bAllowJoinInProgress = true;
-	SessionSettings.bIsLANMatch = true;
 	SessionSettings.bAllowJoinViaPresence = false;
 	SessionSettings.bAllowJoinViaPresenceFriendsOnly = false;
+
+	// 네트워크 모드에 따른 설정
+	if (Settings.NetworkMode == ENetworkMode::Steam)
+	{
+		SessionSettings.bIsLANMatch = false;
+		SessionSettings.bUsesPresence = true;
+		SessionSettings.bUseLobbiesIfAvailable = true;
+	}
+	else // LAN
+	{
+		SessionSettings.bIsLANMatch = true;
+		SessionSettings.bUsesPresence = false;
+		SessionSettings.bUseLobbiesIfAvailable = false;
+	}
 
 	// 커스텀 데이터 설정
 	SessionSettings.Set(FName("ROOM_NAME"), Settings.RoomName, EOnlineDataAdvertisementType::ViaOnlineService);
@@ -553,8 +588,18 @@ bool USessionManager::FindMigrationSession(const FString& MigrationTag)
 	// 검색 설정
 	SessionSearch = MakeShareable(new FOnlineSessionSearch());
 	SessionSearch->MaxSearchResults = 50;
-	SessionSearch->bIsLanQuery = true;
-	SessionSearch->QuerySettings.Set(SEARCH_LOBBIES, false, EOnlineComparisonOp::Equals);
+
+	// 네트워크 모드에 따른 검색 설정 (LastRoomSettings에서 가져옴)
+	if (LastRoomSettings.NetworkMode == ENetworkMode::Steam)
+	{
+		SessionSearch->bIsLanQuery = false;
+		SessionSearch->QuerySettings.Set(SEARCH_LOBBIES, true, EOnlineComparisonOp::Equals);
+	}
+	else // LAN
+	{
+		SessionSearch->bIsLanQuery = true;
+		SessionSearch->QuerySettings.Set(SEARCH_LOBBIES, false, EOnlineComparisonOp::Equals);
+	}
 
 	// 검색 시작
 	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();

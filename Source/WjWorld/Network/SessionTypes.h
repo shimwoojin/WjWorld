@@ -6,6 +6,16 @@
 #include "SessionTypes.generated.h"
 
 /**
+ * 네트워크 모드
+ */
+UENUM(BlueprintType)
+enum class ENetworkMode : uint8
+{
+	LAN		UMETA(DisplayName = "LAN"),
+	Steam	UMETA(DisplayName = "Steam")
+};
+
+/**
  * 방 생성 설정
  */
 USTRUCT(BlueprintType)
@@ -40,6 +50,10 @@ struct FRoomSettings
 	/** 비밀번호 (비공개 방용) */
 	UPROPERTY(BlueprintReadWrite, Category = "Room")
 	FString Password;
+
+	/** 네트워크 모드 (LAN 또는 Steam) */
+	UPROPERTY(BlueprintReadWrite, Category = "Room")
+	ENetworkMode NetworkMode = ENetworkMode::LAN;
 };
 
 /**

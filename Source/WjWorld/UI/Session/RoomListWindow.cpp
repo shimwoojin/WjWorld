@@ -35,6 +35,13 @@ void URoomListWindow::NativeConstruct()
 
 void URoomListWindow::ShowPopup()
 {
+	ShowPopupWithNetworkMode(ENetworkMode::LAN);
+}
+
+void URoomListWindow::ShowPopupWithNetworkMode(ENetworkMode InNetworkMode)
+{
+	CurrentNetworkMode = InNetworkMode;
+
 	// 화면에 추가
 	AddToViewport(100); // 높은 Z-Order
 
@@ -44,7 +51,7 @@ void URoomListWindow::ShowPopup()
 	{
 		FInputModeUIOnly InputMode;
 		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-		
+
 		PC->SetInputMode(InputMode);
 		PC->bShowMouseCursor = true;
 	}
@@ -52,7 +59,8 @@ void URoomListWindow::ShowPopup()
 	// 자동으로 방 검색 시작
 	StartSearching();
 
-	UE_LOG(LogWjWorld, Log, TEXT("RoomListWindow: Popup shown"));
+	UE_LOG(LogWjWorld, Log, TEXT("RoomListWindow: Popup shown (NetworkMode: %s)"),
+		CurrentNetworkMode == ENetworkMode::Steam ? TEXT("Steam") : TEXT("LAN"));
 }
 
 void URoomListWindow::ClosePopup()
@@ -138,13 +146,14 @@ void URoomListWindow::UpdateRoomList(const TArray<FRoomInfo>& Rooms)
 
 void URoomListWindow::StartSearching()
 {
-	UE_LOG(LogWjWorld, Log, TEXT("RoomListWindow: Starting room search..."));
+	UE_LOG(LogWjWorld, Log, TEXT("RoomListWindow: Starting room search (NetworkMode: %s)..."),
+		CurrentNetworkMode == ENetworkMode::Steam ? TEXT("Steam") : TEXT("LAN"));
 
 	// GameInstance를 통해 방 검색
 	UWjWorldGameInstance* GameInstance = Cast<UWjWorldGameInstance>(GetGameInstance());
 	if (GameInstance)
 	{
-		bool bSuccess = GameInstance->FindRooms();
+		bool bSuccess = GameInstance->FindRooms(CurrentNetworkMode);
 		if (bSuccess)
 		{
 			UE_LOG(LogWjWorld, Log, TEXT("RoomListWindow: Room search initiated"));

@@ -42,11 +42,12 @@ public:
 	//~ Session 검색
 	/**
 	 * 세션(방) 검색
+	 * @param NetworkMode 네트워크 모드 (LAN 또는 Steam)
 	 * @param MaxSearchResults 최대 검색 결과 수
 	 * @return 성공 여부
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Session")
-	bool FindSessions(int32 MaxSearchResults = 100);
+	bool FindSessions(ENetworkMode NetworkMode = ENetworkMode::LAN, int32 MaxSearchResults = 100);
 
 	//~ Session 참가
 	/**

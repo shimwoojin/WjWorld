@@ -37,7 +37,7 @@ public:
 	bool CreateRoom(const FRoomSettings& Settings);
 
 	UFUNCTION(BlueprintCallable, Category = "Session")
-	bool FindRooms(int32 MaxResults = 100);
+	bool FindRooms(ENetworkMode NetworkMode = ENetworkMode::LAN, int32 MaxResults = 100);
 
 	UFUNCTION(BlueprintCallable, Category = "Session")
 	bool JoinRoom(int32 RoomIndex);

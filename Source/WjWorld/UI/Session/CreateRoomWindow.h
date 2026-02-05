@@ -78,6 +78,10 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UCheckBox> AllowJoinInProgressCheckBox;
 
+	/** 네트워크 모드 선택 (LAN/Steam) */
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UComboBoxString> NetworkModeComboBox;
+
 	/** 취소 버튼 */
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> CancelButton;
@@ -122,6 +126,9 @@ private:
 
 	/** RoomSettings 생성 */
 	FRoomSettings BuildRoomSettings();
+
+	/** 네트워크 모드 옵션 초기화 */
+	void InitializeNetworkModeOptions();
 
 	/** 게임 모드 옵션 초기화 */
 	void InitializeGameModeOptions();

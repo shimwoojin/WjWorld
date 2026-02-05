@@ -70,11 +70,11 @@ bool UWjWorldGameInstance::CreateRoom(const FRoomSettings& Settings)
 	return false;
 }
 
-bool UWjWorldGameInstance::FindRooms(int32 MaxResults)
+bool UWjWorldGameInstance::FindRooms(ENetworkMode NetworkMode, int32 MaxResults)
 {
 	if (SessionManager)
 	{
-		return SessionManager->FindSessions(MaxResults);
+		return SessionManager->FindSessions(NetworkMode, MaxResults);
 	}
 
 	UE_LOG(LogWjWorld, Error, TEXT("WjWorldGameInstance: SessionManager is null"));
