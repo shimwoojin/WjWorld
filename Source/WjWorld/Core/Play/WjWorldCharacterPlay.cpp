@@ -169,7 +169,10 @@ void AWjWorldCharacterPlay::PossessedBy(AController* NewController)
 	if (AbilitySystemInterface)
 	{
 		AbilitySystemComponent = Cast<UWjWorldAbilitySystemComponent>(AbilitySystemInterface->GetAbilitySystemComponent());
-		check(AbilitySystemComponent.IsValid());
+		if (!ensureMsgf(AbilitySystemComponent.IsValid(), TEXT("AWjWorldCharacterPlay::PossessedBy - AbilitySystemComponent is invalid")))
+		{
+			return;
+		}
 		AbilitySystemComponent->InitAbilityActorInfo(WJPlayerState, this);
 		AbilitySystemComponent->SetOwnerActor(NewController);
 

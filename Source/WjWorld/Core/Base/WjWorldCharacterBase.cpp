@@ -19,7 +19,7 @@
 
 AWjWorldCharacterBase::AWjWorldCharacterBase()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	// Mesh 컴포넌트 위치 설정 (캡슐 컴포넌트 기준)
 	if (GetMesh())

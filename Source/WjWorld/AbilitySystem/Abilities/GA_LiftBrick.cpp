@@ -57,7 +57,8 @@ void UGA_LiftBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 	bHasLiftedBrick = false;
 
 	// WallDesc 캐시
-	AWjWorldGameModePlay* GameModePlay = GetWorld()->GetAuthGameMode<AWjWorldGameModePlay>();
+	UWorld* World = GetWorld();
+	AWjWorldGameModePlay* GameModePlay = World ? World->GetAuthGameMode<AWjWorldGameModePlay>() : nullptr;
 	if (GameModePlay)
 	{
 		UWjWorldGameRuleApproachingWall* GameRule = GameModePlay->GetCurrentGameRule<UWjWorldGameRuleApproachingWall>();
@@ -73,7 +74,7 @@ void UGA_LiftBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 		FString WallNameToLoad;
 
 		// GameState에서 현재 Wall 이름 가져오기
-		if (UWorld* World = GetWorld())
+		if (World)
 		{
 			if (AWjWorldGameStatePlay* GameState = World->GetGameState<AWjWorldGameStatePlay>())
 			{
@@ -191,7 +192,7 @@ void UGA_LiftBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 	{
 		SpawnPreviewActor();
 
-		if (UWorld* World = GetWorld())
+		if (World)
 		{
 			World->GetTimerManager().SetTimer(
 				PreviewUpdateTimerHandle,
@@ -225,9 +226,9 @@ void UGA_LiftBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 
 void UGA_LiftBrick::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
-	if (UWorld* World = GetWorld())
+	if (UWorld* WorldPtr = GetWorld())
 	{
-		World->GetTimerManager().ClearTimer(PreviewUpdateTimerHandle);
+		WorldPtr->GetTimerManager().ClearTimer(PreviewUpdateTimerHandle);
 	}
 
 	DestroyPreviewActor();

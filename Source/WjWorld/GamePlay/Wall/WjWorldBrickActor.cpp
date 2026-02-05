@@ -18,7 +18,7 @@
 // Sets default values
 AWjWorldBrickActor::AWjWorldBrickActor()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	BrickComponent = CreateDefaultSubobject<UWjWorldBrickComponent>(TEXT("BrickComponent"));
 	SetRootComponent(BrickComponent);
@@ -38,7 +38,6 @@ void AWjWorldBrickActor::PostNetInit()
 	Super::PostNetInit();
 }
 
-// Called every frame
 void AWjWorldBrickActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

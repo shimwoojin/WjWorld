@@ -48,7 +48,8 @@ void UGA_NormalAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 	CachedActivationInfo = ActivationInfo;
 
 	// WallDesc 캐시
-	AWjWorldGameModePlay* GameModePlay = GetWorld()->GetAuthGameMode<AWjWorldGameModePlay>();
+	UWorld* World = GetWorld();
+	AWjWorldGameModePlay* GameModePlay = World ? World->GetAuthGameMode<AWjWorldGameModePlay>() : nullptr;
 	if (GameModePlay)
 	{
 		UWjWorldGameRuleApproachingWall* GameRule = GameModePlay->GetCurrentGameRule<UWjWorldGameRuleApproachingWall>();

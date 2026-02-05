@@ -117,7 +117,8 @@ void UGA_SpawnBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 	// WallDesc 캐시
-	AWjWorldGameModePlay* GameModePlay = GetWorld()->GetAuthGameMode<AWjWorldGameModePlay>();
+	UWorld* World = GetWorld();
+	AWjWorldGameModePlay* GameModePlay = World ? World->GetAuthGameMode<AWjWorldGameModePlay>() : nullptr;
 	if (GameModePlay)
 	{
 		UWjWorldGameRuleApproachingWall* GameRule = GameModePlay->GetCurrentGameRule<UWjWorldGameRuleApproachingWall>();
@@ -133,7 +134,7 @@ void UGA_SpawnBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 		FString WallNameToLoad;
 
 		// GameState에서 현재 Wall 이름 가져오기
-		if (UWorld* World = GetWorld())
+		if (World)
 		{
 			if (AWjWorldGameStatePlay* GameState = World->GetGameState<AWjWorldGameStatePlay>())
 			{
@@ -179,7 +180,7 @@ void UGA_SpawnBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 		SpawnPreviewActor();
 
 		// Preview 위치 업데이트 타이머 시작
-		if (UWorld* World = GetWorld())
+		if (World)
 		{
 			World->GetTimerManager().SetTimer(
 				PreviewUpdateTimerHandle,
@@ -214,9 +215,9 @@ void UGA_SpawnBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 void UGA_SpawnBrick::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	// 타이머 정리
-	if (UWorld* World = GetWorld())
+	if (UWorld* WorldPtr = GetWorld())
 	{
-		World->GetTimerManager().ClearTimer(PreviewUpdateTimerHandle);
+		WorldPtr->GetTimerManager().ClearTimer(PreviewUpdateTimerHandle);
 	}
 
 	// Preview 정리

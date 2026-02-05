@@ -385,7 +385,10 @@ void UWjWorldGameRuleApproachingWall::InternalGameReadyProcess()
 					PC->ClientMessage(TEXT("Game Ready! Wall has spawned."));
 					FVector SpawnLocation = SpawnSafeZones.IsValidIndex(SafeZoneIndex) ? SpawnSafeZones[SafeZoneIndex] : FVector::ZeroVector;
 					SafeZoneIndex++;
-					PC->GetPawn()->SetActorLocation(SpawnLocation);
+					if (APawn* Pawn = PC->GetPawn())
+					{
+						Pawn->SetActorLocation(SpawnLocation);
+					}
 				}
 			}
 		}

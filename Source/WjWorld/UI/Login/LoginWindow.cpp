@@ -34,13 +34,17 @@ void ULoginWindow::NativeConstruct()
         LoginProgressBar->SetPercent(0.0f);
 
         // 진행 바 애니메이션 시작
-        GetWorld()->GetTimerManager().SetTimer(
-            ProgressTimerHandle,
-            this,
-            &ULoginWindow::UpdateProgressBar,
-            0.1f,
-            true
-        );
+        UWorld* World = GetWorld();
+        if (World)
+        {
+            World->GetTimerManager().SetTimer(
+                ProgressTimerHandle,
+                this,
+                &ULoginWindow::UpdateProgressBar,
+                0.1f,
+                true
+            );
+        }
     }
 }
 
@@ -53,7 +57,11 @@ void ULoginWindow::UpdateProgressBar()
 
         if (CurrentProgress >= 1.0f)
         {
-            GetWorld()->GetTimerManager().ClearTimer(ProgressTimerHandle);
+            UWorld* World = GetWorld();
+            if (World)
+            {
+                World->GetTimerManager().ClearTimer(ProgressTimerHandle);
+            }
         }
     }
 }

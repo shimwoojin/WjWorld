@@ -61,16 +61,20 @@ void UWjWorldCharacterAttributeSet::PostGameplayEffectExecute(const FGameplayEff
 
 void UWjWorldCharacterAttributeSet::OnRep_MaxHP(const FGameplayAttributeData& OldMaxHP)
 {
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWjWorldCharacterAttributeSet, MaxHP, OldMaxHP);
 }
 
 void UWjWorldCharacterAttributeSet::OnRep_HP(const FGameplayAttributeData& OldHP)
 {
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWjWorldCharacterAttributeSet, HP, OldHP);
 }
 
 void UWjWorldCharacterAttributeSet::OnRep_MaxSpawnBrickCharges(const FGameplayAttributeData& OldMaxSpawnBrickCharges)
 {
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWjWorldCharacterAttributeSet, MaxSpawnBrickCharges, OldMaxSpawnBrickCharges);
 }
 
 void UWjWorldCharacterAttributeSet::OnRep_SpawnBrickCharges(const FGameplayAttributeData& OldSpawnBrickCharges)
 {
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWjWorldCharacterAttributeSet, SpawnBrickCharges, OldSpawnBrickCharges);
 }

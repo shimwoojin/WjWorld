@@ -113,7 +113,16 @@ void AWjWorldGameStatePlay::OnRep_IsGameStartCountDownReady()
 {
 	if (bIsGameStartCountDownReady)
 	{
-		GetWorld()->GetFirstPlayerController()->GetHUD<AWjWorldHUDPlay>()->StartGameStartCountDown(StartCountDownTime);
+		UWorld* World = GetWorld();
+		if (!World) return;
+
+		APlayerController* PC = World->GetFirstPlayerController();
+		if (!PC) return;
+
+		AWjWorldHUDPlay* HUD = PC->GetHUD<AWjWorldHUDPlay>();
+		if (!HUD) return;
+
+		HUD->StartGameStartCountDown(StartCountDownTime);
 
 		UE_LOG(LogWjWorld, Log, TEXT("GameState: Game Start Countdown Ready - %f seconds"), StartCountDownTime);
 	}
@@ -123,7 +132,16 @@ void AWjWorldGameStatePlay::OnRep_IsGameEndCountDownReady()
 {
 	if (bIsGameEndCountDownReady)
 	{
-		GetWorld()->GetFirstPlayerController()->GetHUD<AWjWorldHUDPlay>()->StartGameStartCountDown(EndCountDownTime);
+		UWorld* World = GetWorld();
+		if (!World) return;
+
+		APlayerController* PC = World->GetFirstPlayerController();
+		if (!PC) return;
+
+		AWjWorldHUDPlay* HUD = PC->GetHUD<AWjWorldHUDPlay>();
+		if (!HUD) return;
+
+		HUD->StartGameStartCountDown(EndCountDownTime);
 
 		UE_LOG(LogWjWorld, Log, TEXT("GameState: Game End Countdown Ready - %f seconds"), EndCountDownTime);
 	}

@@ -14,7 +14,7 @@ void UWjWorldStatsSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 
-	UE_LOG(LogWjWorld, Log, TEXT("StatsSubsystem: Initialize"));
+	UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: Initialize"));
 
 	RequestCurrentStats();
 }
@@ -50,7 +50,7 @@ void UWjWorldStatsSubsystem::RequestCurrentStats()
 		}
 
 		OnLocalStatsReady.Broadcast();
-		UE_LOG(LogWjWorld, Log, TEXT("StatsSubsystem: Steam stats loaded (auto-synced by client)"));
+		UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: Steam stats loaded (auto-synced by client)"));
 	}
 	else
 	{
@@ -61,7 +61,7 @@ void UWjWorldStatsSubsystem::RequestCurrentStats()
 #else
 	LoadLocalStatsFromConfig();
 	OnLocalStatsReady.Broadcast();
-	UE_LOG(LogWjWorld, Log, TEXT("StatsSubsystem: Loaded local stats from config (non-Steam)"));
+	UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: Loaded local stats from config (non-Steam)"));
 #endif
 }
 
@@ -99,7 +99,7 @@ void UWjWorldStatsSubsystem::IncrementLocalStat(FName StatName, int32 Delta)
 
 	LocalStats.FindOrAdd(StatName) = NewValue;
 
-	UE_LOG(LogWjWorld, Log, TEXT("StatsSubsystem: %s incremented %d -> %d"), *StatName.ToString(), CurrentValue, NewValue);
+	UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: %s incremented %d -> %d"), *StatName.ToString(), CurrentValue, NewValue);
 }
 
 void UWjWorldStatsSubsystem::StoreStats()
@@ -109,13 +109,13 @@ void UWjWorldStatsSubsystem::StoreStats()
 	if (SteamStats && bLocalStatsLoaded)
 	{
 		SteamStats->StoreStats();
-		UE_LOG(LogWjWorld, Log, TEXT("StatsSubsystem: StoreStats called (Steam)"));
+		UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: StoreStats called (Steam)"));
 		return;
 	}
 #endif
 
 	SaveLocalStatsToConfig();
-	UE_LOG(LogWjWorld, Log, TEXT("StatsSubsystem: StoreStats called (config fallback)"));
+	UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: StoreStats called (config fallback)"));
 }
 
 void UWjWorldStatsSubsystem::RequestUserStats(const FUniqueNetIdRepl& UserId)
@@ -135,7 +135,7 @@ void UWjWorldStatsSubsystem::RequestUserStats(const FUniqueNetIdRepl& UserId)
 		uint64 SteamId64 = FCString::Atoi64(*UserIdStr);
 		CSteamID SteamId(SteamId64);
 		SteamStats->RequestUserStats(SteamId);
-		UE_LOG(LogWjWorld, Log, TEXT("StatsSubsystem: Requested user stats for %s"), *UserIdStr);
+		UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: Requested user stats for %s"), *UserIdStr);
 		return;
 	}
 #endif
@@ -255,7 +255,7 @@ void UWjWorldStatsSubsystem::OnSteamUserStatsReceived(uint64 SteamId, bool bSucc
 			}
 		}
 		OnLocalStatsReady.Broadcast();
-		UE_LOG(LogWjWorld, Log, TEXT("StatsSubsystem: Local stats received (success=%d)"), bSuccess);
+		UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: Local stats received (success=%d)"), bSuccess);
 	}
 	else
 	{
@@ -266,12 +266,12 @@ void UWjWorldStatsSubsystem::OnSteamUserStatsReceived(uint64 SteamId, bool bSucc
 		FUniqueNetIdRepl UserId;
 		// 타 유저의 OnUserStatsReceived 브로드캐스트
 		OnUserStatsReceived.Broadcast(UserId);
-		UE_LOG(LogWjWorld, Log, TEXT("StatsSubsystem: User stats received for %s (success=%d)"), *UserIdStr, bSuccess);
+		UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: User stats received for %s (success=%d)"), *UserIdStr, bSuccess);
 	}
 }
 
 void UWjWorldStatsSubsystem::OnSteamUserStatsStored(uint64 SteamId, bool bSuccess)
 {
-	UE_LOG(LogWjWorld, Log, TEXT("StatsSubsystem: Stats stored (success=%d)"), bSuccess);
+	UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: Stats stored (success=%d)"), bSuccess);
 }
 #endif

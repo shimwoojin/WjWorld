@@ -15,6 +15,6 @@ void UQuestSubsystem::ProcessQuestLoadNtf(TSharedRef<PacketData> Packet)
 	}
 	else
 	{
-		check(false && "퀘스트 데이터 로드 실패");
+		UE_LOG(LogTemp, Error, TEXT("UQuestSubsystem::ProcessQuestLoadNtf - 퀘스트 데이터 로드 실패"));
 	}
 }
