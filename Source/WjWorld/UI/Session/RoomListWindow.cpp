@@ -4,6 +4,7 @@
 #include "UI/Session/RoomListEntryWidget.h"
 #include "Components/Button.h"
 #include "Components/ScrollBox.h"
+#include "Components/ComboBoxString.h"
 #include "Core/WjWorldGameInstance.h"
 #include "Core/Session/SessionManager.h"
 #include "WjWorldLogCategories.h"
@@ -23,6 +24,9 @@ void URoomListWindow::NativeConstruct()
 		CloseButton->OnClicked.AddDynamic(this, &URoomListWindow::OnCloseClicked);
 	}
 
+	// 네트워크 모드 옵션 초기화
+	InitializeNetworkModeOptions();
+
 	// SessionManager 델리게이트 바인딩
 	UWjWorldGameInstance* GameInstance = Cast<UWjWorldGameInstance>(GetGameInstance());
 	if (GameInstance && GameInstance->GetSessionManager())
@@ -41,6 +45,13 @@ void URoomListWindow::ShowPopup()
 void URoomListWindow::ShowPopupWithNetworkMode(ENetworkMode InNetworkMode)
 {
 	CurrentNetworkMode = InNetworkMode;
+
+	// 콤보박스 선택 동기화
+	if (NetworkModeComboBox)
+	{
+		FString ModeStr = (InNetworkMode == ENetworkMode::Steam) ? TEXT("Steam") : TEXT("LAN");
+		NetworkModeComboBox->SetSelectedOption(ModeStr);
+	}
 
 	// 화면에 추가
 	AddToViewport(100); // 높은 Z-Order
@@ -142,6 +153,53 @@ void URoomListWindow::UpdateRoomList(const TArray<FRoomInfo>& Rooms)
 	}
 
 	UE_LOG(LogWjWorld, Log, TEXT("RoomListWindow: Room list updated with %d entries"), Rooms.Num());
+}
+
+void URoomListWindow::OnNetworkModeSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
+{
+	// 프로그램적 변경은 무시 (ShowPopupWithNetworkMode에서 설정할 때)
+	if (SelectionType == ESelectInfo::Direct)
+	{
+		return;
+	}
+
+	ENetworkMode NewMode = (SelectedItem == TEXT("Steam")) ? ENetworkMode::Steam : ENetworkMode::LAN;
+
+	if (CurrentNetworkMode != NewMode)
+	{
+		CurrentNetworkMode = NewMode;
+		UE_LOG(LogWjWorld, Log, TEXT("RoomListWindow: Network mode changed to %s"), *SelectedItem);
+
+		// 모드 변경 시 자동으로 다시 검색
+		StartSearching();
+	}
+}
+
+void URoomListWindow::InitializeNetworkModeOptions()
+{
+	if (!NetworkModeComboBox)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("RoomListWindow: NetworkModeComboBox not found (optional)"));
+		return;
+	}
+
+	NetworkModeComboBox->ClearOptions();
+
+	// LAN 옵션 추가
+	NetworkModeComboBox->AddOption(TEXT("LAN"));
+
+	// Steam 옵션 추가 (Steam 빌드에서만 활성화)
+#if WITH_STEAM
+	NetworkModeComboBox->AddOption(TEXT("Steam"));
+#endif
+
+	// 기본값은 LAN
+	NetworkModeComboBox->SetSelectedOption(TEXT("LAN"));
+
+	// 콜백 바인딩
+	NetworkModeComboBox->OnSelectionChanged.AddDynamic(this, &URoomListWindow::OnNetworkModeSelectionChanged);
+
+	UE_LOG(LogWjWorld, Log, TEXT("RoomListWindow: Network mode options initialized"));
 }
 
 void URoomListWindow::StartSearching()

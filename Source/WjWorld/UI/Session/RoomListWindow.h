@@ -9,6 +9,7 @@
 
 class UButton;
 class UScrollBox;
+class UComboBoxString;
 class URoomListEntryWidget;
 
 /**
@@ -48,6 +49,10 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UScrollBox> RoomListScrollBox;
 
+	/** 네트워크 모드 선택 (LAN/Steam) */
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UComboBoxString> NetworkModeComboBox;
+
 	/** 새로고침 버튼 */
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> RefreshButton;
@@ -69,12 +74,18 @@ protected:
 	UFUNCTION()
 	void OnCloseClicked();
 
+	UFUNCTION()
+	void OnNetworkModeSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+
 	//~ SessionManager 콜백
 
 	UFUNCTION()
 	void OnRoomsFound(bool bWasSuccessful, const TArray<FRoomInfo>& Rooms);
 
 private:
+	/** 네트워크 모드 옵션 초기화 */
+	void InitializeNetworkModeOptions();
+
 	/** 방 목록 UI 업데이트 */
 	void UpdateRoomList(const TArray<FRoomInfo>& Rooms);
 
