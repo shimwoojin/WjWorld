@@ -5,6 +5,8 @@
 #include "OnlineSubsystemNames.h"
 #include "OnlineSessionSettings.h"
 #include "Online/OnlineSessionNames.h"
+#include "Engine/Engine.h"
+#include "Engine/NetDriver.h"
 #include "WjWorldLogCategories.h"
 
 USessionManager::USessionManager()
@@ -66,6 +68,34 @@ void USessionManager::Shutdown()
 	}
 }
 
+void USessionManager::ApplyNetDriverForMode(ENetworkMode Mode)
+{
+	if (!GEngine) return;
+
+	for (FNetDriverDefinition& Def : GEngine->NetDriverDefinitions)
+	{
+		if (Def.DefName == FName(TEXT("GameNetDriver")))
+		{
+			if (Mode == ENetworkMode::LAN)
+			{
+				// SocketSubsystemSteamIP가 기본 소켓을 Steam으로 오버라이드하므로
+				// IpNetDriver 대신 WjWorldLanNetDriver 사용 (PLATFORM_SOCKETSUBSYSTEM 명시)
+				Def.DriverClassName = FName(TEXT("/Script/WjWorld.WjWorldLanNetDriver"));
+				Def.DriverClassNameFallback = FName(TEXT("/Script/OnlineSubsystemUtils.IpNetDriver"));
+			}
+			else // Steam
+			{
+				Def.DriverClassName = FName(TEXT("/Script/SocketSubsystemSteamIP.SteamNetDriver"));
+				Def.DriverClassNameFallback = FName(TEXT("/Script/OnlineSubsystemUtils.IpNetDriver"));
+			}
+			UE_LOG(LogWjWorld, Log, TEXT("SessionManager: NetDriver set to '%s' for %s mode"),
+				*Def.DriverClassName.ToString(),
+				Mode == ENetworkMode::Steam ? TEXT("Steam") : TEXT("LAN"));
+			break;
+		}
+	}
+}
+
 bool USessionManager::CreateSession(const FRoomSettings& Settings)
 {
 	if (!SessionInterface.IsValid())
@@ -97,6 +127,9 @@ bool USessionManager::CreateSession(const FRoomSettings& Settings)
 		
 		UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Existing session destroyed successfully"));
 	}
+
+	// 네트워크 모드에 맞게 NetDriver 전환 (Listen Server가 올바른 드라이버 사용)
+	ApplyNetDriverForMode(Settings.NetworkMode);
 
 	// 세션 설정
 	FOnlineSessionSettings SessionSettings;
@@ -168,6 +201,9 @@ bool USessionManager::FindSessions(ENetworkMode NetworkMode, int32 MaxSearchResu
 		PendingSearchRequest = TPair<ENetworkMode, int32>(NetworkMode, MaxSearchResults);
 		return true;
 	}
+
+	// 검색 네트워크 모드 저장 (JoinSession에서 NetDriver 전환용)
+	LastSearchNetworkMode = NetworkMode;
 
 	// 검색 설정
 	SessionSearch = MakeShareable(new FOnlineSessionSearch());
@@ -486,6 +522,9 @@ void USessionManager::OnJoinSessionComplete(FName SessionName, EOnJoinSessionCom
 				}
 			}
 
+			// 검색 시 사용한 네트워크 모드에 맞게 NetDriver 전환
+			ApplyNetDriverForMode(LastSearchNetworkMode);
+
 			APlayerController* PC = GetWorld()->GetFirstPlayerController();
 			if (PC && !ConnectInfo.IsEmpty())
 			{
@@ -558,6 +597,9 @@ bool USessionManager::CreateMigrationSession(const FRoomSettings& Settings, cons
 			return false;
 		}
 	}
+
+	// 네트워크 모드에 맞게 NetDriver 전환
+	ApplyNetDriverForMode(Settings.NetworkMode);
 
 	// 세션 설정 (CreateSession과 동일하되 MIGRATION_TAG 추가)
 	FOnlineSessionSettings SessionSettings;

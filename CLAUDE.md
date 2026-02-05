@@ -15,7 +15,8 @@ Source/WjWorld/
 │   │   ├── WjWorldGameplayAbilityBase # 어빌리티 베이스 (UI 메타, 충전 시스템 인터페이스)
 │   │   ├── GA_NormalAttack            # 4방향 벽돌 공격
 │   │   ├── GA_SpawnBrick              # 충전 기반 벽돌 배치 (Preview + Confirm/Cancel)
-│   │   └── GA_LiftBrick              # 벽돌 이동/재배치 (Preview + Confirm/Cancel)
+│   │   ├── GA_LiftBrick              # 벽돌 이동/재배치 (Preview + Confirm/Cancel)
+│   │   └── GA_Push                   # Sumo 넉백 (구형 오버랩 + LaunchCharacter)
 │   ├── AttributeSets/                 # 어트리뷰트 셋
 │   │   └── WjWorldCharacterAttributeSet  # HP, MaxSpawnBrickCharges, SpawnBrickCharges 등
 │   ├── Effects/                       # GameplayEffect 파일들
@@ -56,11 +57,14 @@ Source/WjWorld/
 │   │   └── WjWorldHUDPlay             # 게임플레이 HUD (GameRule별 HUD 위젯 매핑)
 │   ├── GameRule/                      # 미니게임 규칙 시스템
 │   │   ├── WjWorldGameRuleBase        # 게임 규칙 베이스 클래스
-│   │   └── WjWorldGameRuleApproachingWall  # Approaching Wall 규칙
+│   │   ├── WjWorldGameRuleApproachingWall  # Approaching Wall 규칙
+│   │   └── WjWorldGameRuleSumo       # Sumo Knockoff 규칙 (Z 낙하 감지)
 │   ├── GameData/                      # 게임 데이터 컴포넌트
 │   │   ├── WjWorldGameDataComponent   # 데이터 컴포넌트 베이스
 │   │   ├── ApproachingWallGameDataComponent   # AW 게임 데이터
-│   │   └── ApproachingWallPlayerDataComponent # AW 플레이어 데이터
+│   │   ├── ApproachingWallPlayerDataComponent # AW 플레이어 데이터
+│   │   ├── SumoGameDataComponent      # Sumo 게임 데이터 (AlivePlayerCount)
+│   │   └── SumoPlayerDataComponent    # Sumo 플레이어 데이터 (bIsAlive)
 │   ├── Components/                    # 게임플레이 헬퍼 컴포넌트
 │   │   ├── WjWorldGameplaySceneComponent
 │   │   └── WjWorldGameplayActorComponent
@@ -113,7 +117,8 @@ Source/WjWorld/
 ├── Network/                           # 네트워크/패킷 관련
 │   ├── PacketData
 │   ├── PacketDataQuest
-│   └── SessionTypes
+│   ├── SessionTypes
+│   └── WjWorldLanNetDriver           # LAN 전용 NetDriver (PLATFORM_SOCKETSUBSYSTEM 명시)
 └── UI/                                # UI 위젯들
     ├── WjWorldUserWidgetBase          # UI 베이스 클래스
     ├── Intro/IntroWindow
@@ -151,9 +156,10 @@ GameState: AWjWorldGameStateBase → GameStateLobby → GameStateWaitingRoom, Ga
 PlayerState: AWjWorldPlayerStateBase (+ FCosmeticLoadout) → Play (+ IAbilitySystemInterface)
 HUD: AWjWorldHUDBase → Lobby, WaitingRoom, Play
 UI Widget: UWjWorldUserWidgetBase → 각종 HUD 및 윈도우 위젯
-GameRule: UWjWorldGameRuleBase → ApproachingWall (미니게임 규칙, MinigameCatalog에서 조회)
-GameData: UWjWorldGameDataComponent → ApproachingWall 전용 데이터
-Ability: UWjWorldGameplayAbilityBase → GA_NormalAttack, GA_SpawnBrick, GA_LiftBrick
+GameRule: UWjWorldGameRuleBase → ApproachingWall, Sumo (미니게임 규칙, MinigameCatalog에서 조회)
+GameData: UWjWorldGameDataComponent → ApproachingWall, Sumo 전용 데이터
+Ability: UWjWorldGameplayAbilityBase → GA_NormalAttack, GA_SpawnBrick, GA_LiftBrick, GA_Push
+NetDriver: UIpNetDriver → UWjWorldLanNetDriver (LAN 전용, PLATFORM_SOCKETSUBSYSTEM)
 Subsystem: UGameInstanceSubsystem → CosmeticSubsystem, PurchaseSubsystem, StatsSubsystem
 AnimInstance: UWjWorldAnimInstance (LiftBrickBlendWeight, GameplayTag 기반 상태)
 ```
@@ -177,8 +183,10 @@ AnimInstance: UWjWorldAnimInstance (LiftBrickBlendWeight, GameplayTag 기반 상
 
 ### 미니게임 카탈로그 시스템
 `UWjWorldMinigameDataAsset` 기반 미니게임 정의 및 동적 조회.
-- **FWjWorldMinigameDefinition**: DisplayName, GameModeId, LevelPath, GameRuleClass, MapOptions
+- **FWjWorldMinigameDefinition**: DisplayName, GameModeId, LevelPath, GameRuleClass, MapOptions, AllowedAbilityTags, StatNamespace
 - **FWjWorldMinigameMapOption**: 맵 변형 옵션 (예: 기본, 랜덤)
+- **AllowedAbilityTags**: 미니게임별 허용 어빌리티 태그 (빈 = 전부 허용, 하위 호환)
+- **StatNamespace**: 미니게임별 스탯 키 접두사 (예: "AW", "Sumo")
 - **동적 GameRule 조회**: `GameModePlay::InitGame()`에서 URL Options의 `GameModeId`로 카탈로그 조회
 - **DeveloperSettings 참조**: `MinigameCatalog` 소프트 참조
 
@@ -202,12 +210,24 @@ AnimInstance: UWjWorldAnimInstance (LiftBrickBlendWeight, GameplayTag 기반 상
 - **TileActor**: 안전 구역 타일, 폭탄 신호 시스템 (3초 차징), 노랑→빨강 색상 전환, 방향별 오버랩 체크
 - **BrickPreviewActor**: 어빌리티 배치 프리뷰, 유효(초록)/무효(빨강) 색상 표시, 동적 머티리얼
 
+### Sumo Knockoff 미니게임
+두 번째 미니게임. 원형 플랫폼 위에서 상대를 밀어 떨어뜨리는 PvP 서바이벌.
+- **WjWorldGameRuleSumo**: TickGameRule에서 매 프레임 Z 위치 체크, FallThresholdZ(-500) 미만 시 Eliminate
+- **GA_Push**: 전방 구형 오버랩 → LaunchCharacter() 넉백, SetLastAttacker() 킬 추적
+- **SumoGameDataComponent**: AlivePlayerCount, TotalPlayerCount (Replicated)
+- **SumoPlayerDataComponent**: bIsAlive (Replicated + OnRep + Delegate)
+- **승리 조건**: AlivePlayerCount <= 1 && bIsGameStarted
+- **엣지 케이스**: 솔로 자동 승리, 동시 탈락, 전원 이탈
+- **상태**: 코드 완료, 에디터 세팅 필요 (맵, 카탈로그, 입력 바인딩)
+
 ### Gameplay Ability System
 GAS 기반 어빌리티 시스템. `UWjWorldGameplayAbilityBase`를 상속받아 각 어빌리티 구현.
 - **AbilityBase 공통 기능**: AbilityName, AbilityIcon (UI 메타), GetPromptDescription(), 충전 시스템 인터페이스 (IsChargeBased, GetCurrentCharges, GetMaxCharges, GetChargeRefillTimeRemaining)
+- **AbilityBase 어빌리티 제한**: `CanActivateAbility()` 오버라이드 - GameState의 `AllowedAbilityTags` 체크 (빈 = 전부 허용)
 - **GA_NormalAttack**: 4방향 스냅(Yaw 기반) 벽돌 공격, BrickType별 처리 (Standard 파괴 불가, Explosive/Moving/Destructible)
 - **GA_SpawnBrick**: 충전 기반 벽돌 배치, Preview → Confirm/Cancel 패턴, GE 기반 충전 리필, 어트리뷰트 변경 위임
 - **GA_LiftBrick**: 벽돌 재배치 어빌리티, Moving/Destructible 벽돌 들어올리기, Cancel 시 원래 위치 복원, 들고 있는 벽돌 색상 리플리케이션
+- **GA_Push**: Sumo 넉백 어빌리티, 전방 구형 오버랩 → LaunchCharacter(), PushForce=1200, CooldownDuration=1.5s, SetLastAttacker()
 - **AttributeSet**: HP, MaxSpawnBrickCharges, SpawnBrickCharges, OnRep 콜백
 - **Effects**: GE_AbilityCooldown (쿨다운), GE_SpawnBrickChargeCost (충전 비용)
 
@@ -216,6 +236,9 @@ GAS 기반 어빌리티 시스템. `UWjWorldGameplayAbilityBase`를 상속받아
 - `State_LiftBrickCarry` - GA_LiftBrick 활성 상태
 - `Cooldown_NormalAttack` - NormalAttack 쿨다운 태그
 - `Cooldown_LiftBrick` - LiftBrick 쿨다운 태그
+- `Ability_Push` - GA_Push 어빌리티 태그
+- `Cooldown_Push` - GA_Push 쿨다운 태그
+- `GameplayCue_Ability_Push` - Push 이펙트/사운드
 
 ### 코스메틱 시스템
 Steam 무료 출시 후 유료 코스메틱 판매를 위한 시스템. ItemId(FName) 기반 플랫폼 독립 식별.
@@ -255,26 +278,59 @@ CosmeticComponent.ApplyLoadout() (비동기 메시 로드)
 Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용). `UWjWorldStatsSubsystem` (GameInstanceSubsystem).
 - **로컬 스탯**: ReadLocalStat, IncrementLocalStat, StoreStats (GConfig 또는 Steam API)
 - **원격 스탯**: RequestUserStats() + OnUserStatsReceived 비동기 델리게이트
-- **미니게임 스탯**: 네임스페이스 기반 (`WjWorldStats::ApproachingWall::Wins/Losses/Kills/GamesPlayed`)
+- **미니게임 스탯**: 네임스페이스 기반 (`WjWorldStats::ApproachingWall`, `WjWorldStats::Sumo`)
 - **FMinigameStatEntry**: 개별 스탯 항목
 - **FMinigameStatDescriptor**: UI 표시용 스탯 설명자
-- **자동 기록**: GameStatePlay에서 게임 종료 시 승/패/킬 자동 증가
+- **자동 기록**: GameStatePlay에서 게임 종료 시 `StatNamespace` 기반 동적 스탯 키로 승/패/킬 자동 증가
 - **WITH_STEAM 조건부 컴파일**: Steam API 사용, 비Steam 빌드는 TMap 폴백
 
 ### 플레이어 프로필 시스템
 - **PlayerProfileWidget**: 3D 캐릭터 프리뷰 + 미니게임별 스탯 표시, 비동기 스탯 로드, CosmeticLoadout 연동
 - **CharacterPreviewActor**: SceneCaptureComponent2D로 오프스크린 3D 렌더링 (256x512), FStreamableManager 비동기 코스메틱 메시 로드, Socket 기반 부착 (GetDefaultSocketName), StaticMesh/SkeletalMesh 동시 지원, SetupFromPawn()으로 Pawn에서 메시/ABP 복사
 
+### 세션 관리 시스템
+`USessionManager` (UObject, GameInstance 소유). Online Subsystem Session 관리.
+- **OSS 초기화**: Steam OSS 우선 → 실패 시 NULL OSS 폴백
+- **세션 CRUD**: `CreateSession()`, `FindSessions()`, `JoinSession()`, `StartSession()`, `EndSession()`, `DestroySession()`
+- **네트워크 모드**: `ENetworkMode::LAN` / `ENetworkMode::Steam` 분기
+  - LAN: `bIsLANMatch=true`, `bUsesPresence=false`
+  - Steam: `bIsLANMatch=false`, `bUsesPresence=true`, `bUseLobbiesIfAvailable=true` (반드시 매칭)
+- **검색 큐**: `bIsSearchInProgress` 플래그 + `PendingSearchRequest` (이전 검색 완료 후 자동 실행)
+- **호스트 마이그레이션**: `CreateMigrationSession()`, `FindMigrationSession()` (MIGRATION_TAG 커스텀 세팅)
+- **델리게이트**: `OnRoomCreatedEvent`, `OnRoomsFoundEvent`, `OnRoomJoinedEvent`, `OnRoomDestroyedEvent`, `OnRoomStartedEvent`, `OnRoomEndedEvent`
+
 ### Steam 빌드 설정
 - **AppID**: 4399350, **DepotID**: 4399351
 - **조건부 컴파일**: `WITH_STEAM` 매크로 (Win64에서만 활성화)
 - **모듈**: Steamworks, OnlineSubsystemSteam (Win64 전용)
-- **플러그인**: OnlineSubsystemSteam 활성화
+- **플러그인**: OnlineSubsystemSteam, SocketSubsystemSteamIP 활성화
+- **네트워킹**: Steam=SteamNetDriver, LAN=WjWorldLanNetDriver (런타임 전환 via ApplyNetDriverForMode)
 - **코스메틱/구매/스탯 코드**: `#if WITH_STEAM` 블록으로 Steam API 호출 분리
 - **Inventory Service**: `Steam/itemdefs.json`에 아이템 정의
 - **빌드 업로드**: `Steam/upload.bat` (SteamCMD 사용)
+- **빌드 자동화**: `Batch/PackageAndUploadSteam.bat` (패키징→복사→업로드)
+
+### Steam 네트워킹 Config (DefaultEngine.ini)
+```ini
+[/Script/Engine.Engine]
+!NetDriverDefinitions=ClearArray
++NetDriverDefinitions=(DefName="GameNetDriver",DriverClassName="/Script/SocketSubsystemSteamIP.SteamNetDriver",DriverClassNameFallback="/Script/OnlineSubsystemUtils.IpNetDriver")
+
+[OnlineSubsystemSteam]
+bEnabled=true
+SteamDevAppId=4399350
+bUseSteamNetworking=true
+
+[/Script/SocketSubsystemSteamIP.SteamNetDriver]
+NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
+```
+- **DriverClassName 형식**: `/Script/ModuleName.ClassName` (StaticLoadClass 정규 경로, 짧은 형식 불가)
+- **bUseSteamNetworking**: SocketSubsystemSteamIP 모듈이 Steam 소켓 서브시스템 등록하는 조건
+- **에디터 제한**: SocketSubsystemSteamIP은 패키징된 빌드에서만 동작 (에디터에서 자동 비활성화)
+- **LAN 소켓 충돌 해결**: SocketSubsystemSteamIP가 기본 소켓을 Steam으로 오버라이드 → IpNetDriver 사용 불가 → `WjWorldLanNetDriver`(UIpNetDriver 서브클래스)에서 `GetSocketSubsystem()` → `PLATFORM_SOCKETSUBSYSTEM` 명시
 
 ### 패키징 주의사항
+- **새 레벨/맵 추가 시**: Project Settings > Packaging > List of maps to include in a packaged build에 반드시 추가. 누락 시 `Failed to load package` 에러로 ServerTravel 실패
 - **Non-asset 파일** (`.txt`, `.csv` 등): `DefaultGame.ini`의 `DirectoriesToAlwaysStageAsNonUFS`로 명시적 포함 필요
 - **FFilePath 경로**: 에디터에서 절대 경로 저장 → 패키지 빌드에서 `FPaths::ProjectContentDir()` 기준으로 변환 필요
 - **Debug vs Development 빌드**: Debug는 개발 PC 파일 시스템 직접 접근, Development/Shipping은 .pak 파일 사용
@@ -337,8 +393,17 @@ Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용). `UWjWorldStatsSub
   - 클라이언트 어빌리티 프리뷰 → `CurrentWallName` 리플리케이트 기반 WallDesc 로드
 - **WjWorldAnimInstance** (GameplayTag 기반 LiftBrickBlendWeight)
 - **LiftBrick 벽돌 색상 리플리케이션** (CarriedBrickColor + Dynamic Material)
+- **LAN/Steam 네트워크 모드 토글** (ENetworkMode, UI 선택, 세션 생성/검색 분기)
+- **Steam P2P 네트워킹** (SteamNetDriver via SocketSubsystemSteamIP, IpNetDriver 폴백)
+- **세션 관리 고도화** (Steam→NULL OSS 폴백, 검색 큐 패턴, 호스트 마이그레이션)
+- **빌드 자동화** (PackageAndUploadSteam.bat: 패키징→Steam content 복사→업로드)
+- **Sumo Knockoff 코드 구현** (GA_Push, GameRuleSumo, SumoGameData/PlayerDataComponent, 스탯)
+- **미니게임별 어빌리티 제한 시스템** (AllowedAbilityTags, CanActivateAbility 오버라이드)
+- **스탯 네임스페이스 범용화** (StatNamespace 기반 동적 스탯 키)
+- **LAN SocketSubsystem 충돌 수정** (WjWorldLanNetDriver + ApplyNetDriverForMode 런타임 전환)
 
 ## 진행 중 / 미구현
+- **Sumo Knockoff 에디터 세팅** (맵 생성, 카탈로그 등록, 입력 바인딩, 패키징 맵 목록 추가)
 - 추가 미니게임 구현
 - Steam 정식 출시 준비
 
@@ -354,6 +419,7 @@ Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용). `UWjWorldStatsSub
   - `GenerateProjectFiles.bat` - 프로젝트 파일 생성
   - `OpenSolution.bat` - VS 솔루션 열기
   - `PackageDebugGame.bat` - 디버그 게임 패키징
+  - `PackageAndUploadSteam.bat` - Development 패키징 + Steam 업로드 자동화
   - `RebuildProject.bat` - 전체 리빌드
   - `RunDebugEditor.bat` - 디버그 에디터 실행
   - `GenerateDocs.bat` - Doxygen 문서 생성

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "GameplayTagContainer.h"
 #include "Core/GameRule/WjWorldGameRuleBase.h"
 #include "WjWorldMinigameDataAsset.generated.h"
 
@@ -51,6 +52,14 @@ struct FWjWorldMinigameDefinition
 	/** 맵 옵션 목록 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minigame")
 	TArray<FWjWorldMinigameMapOption> MapOptions;
+
+	/** 허용된 어빌리티 태그 (빈 컨테이너 = 전부 허용, 하위 호환) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minigame")
+	FGameplayTagContainer AllowedAbilityTags;
+
+	/** 스탯 네임스페이스 (예: "AW", "Sumo") - 스탯 키 접두사로 사용 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minigame")
+	FName StatNamespace;
 };
 
 /**

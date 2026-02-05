@@ -28,9 +28,10 @@ AWjWorldCharacterBase::AWjWorldCharacterBase()
 		GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 	}
 
-	// GamePlay 카메라 컴포넌트 생성
+	// GamePlay 카메라 컴포넌트 생성 (클라이언트 InputComponent 타이밍 이슈 방지를 위해 수동 활성화)
 	GamePlayCamera = CreateDefaultSubobject<UGameplayCameraComponent>(TEXT("GamePlayCamera"));
 	GamePlayCamera->SetupAttachment(RootComponent);
+	GamePlayCamera->SetAutoActivate(false);
 
 	// 코스메틱 컴포넌트 생성
 	CosmeticComponent = CreateDefaultSubobject<UWjWorldCosmeticComponent>(TEXT("CosmeticComponent"));
@@ -133,19 +134,6 @@ void AWjWorldCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	APlayerController* PC = Cast<APlayerController>(GetController());
-	if (PC)
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
-		{
-			UInputMappingContext* IMC = GetDefaultMappingContext();
-			if (IMC)
-			{
-				Subsystem->AddMappingContext(IMC, 0);
-			}
-		}
-	}
-
 	InitializeCharacter();
 }
 
@@ -182,8 +170,28 @@ void AWjWorldCharacterBase::OnRep_PlayerState()
 void AWjWorldCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	
+
+	// Enhanced Input Mapping Context 등록 (InputComponent 생성 이후 보장)
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (PC)
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
+		{
+			UInputMappingContext* IMC = GetDefaultMappingContext();
+			if (IMC)
+			{
+				Subsystem->AddMappingContext(IMC, 0);
+			}
+		}
+	}
+
 	SetupInputBindings(PlayerInputComponent);
+
+	// GameplayCamera 활성화 (InputComponent + IMC 준비 완료 후)
+	if (GamePlayCamera)
+	{
+		GamePlayCamera->Activate();
+	}
 }
 
 void AWjWorldCharacterBase::InitializeCharacter()

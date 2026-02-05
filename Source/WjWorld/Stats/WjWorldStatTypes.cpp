@@ -22,6 +22,20 @@ const TArray<FMinigameStatDescriptor>& GetAllMinigameDescriptors()
 			Descriptors.Add(MoveTemp(Desc));
 		}
 
+		// Sumo
+		{
+			FMinigameStatDescriptor Desc;
+			Desc.MinigameName = NSLOCTEXT("WjWorldStats", "Sumo_Name", "Sumo Knockoff");
+			Desc.GameModeId = TEXT("Sumo");
+			Desc.Stats = {
+				{ WjWorldStats::Sumo::GamesPlayed, NSLOCTEXT("WjWorldStats", "Sumo_GamesPlayed", "Games Played") },
+				{ WjWorldStats::Sumo::Wins,        NSLOCTEXT("WjWorldStats", "Sumo_Wins", "Wins") },
+				{ WjWorldStats::Sumo::Losses,      NSLOCTEXT("WjWorldStats", "Sumo_Losses", "Losses") },
+				{ WjWorldStats::Sumo::Kills,       NSLOCTEXT("WjWorldStats", "Sumo_Kills", "Kills") },
+			};
+			Descriptors.Add(MoveTemp(Desc));
+		}
+
 		// 향후 미니게임 추가 시 여기에 디스크립터 추가
 	}
 

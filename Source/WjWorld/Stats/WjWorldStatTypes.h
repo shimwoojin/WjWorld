@@ -18,6 +18,13 @@ namespace WjWorldStats
 		inline const FName Kills("AW_Kills");
 		inline const FName GamesPlayed("AW_GamesPlayed");
 	}
+	namespace Sumo
+	{
+		inline const FName Wins("Sumo_Wins");
+		inline const FName Losses("Sumo_Losses");
+		inline const FName Kills("Sumo_Kills");
+		inline const FName GamesPlayed("Sumo_GamesPlayed");
+	}
 	// 향후 미니게임 추가 시 새 namespace 추가
 }
 

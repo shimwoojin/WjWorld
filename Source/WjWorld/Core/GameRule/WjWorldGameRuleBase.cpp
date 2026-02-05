@@ -7,6 +7,7 @@
 #include "Core/Play/WjWorldPlayerStatePlay.h"
 #include "Core/GameData/WjWorldGameDataComponent.h"
 #include "Core/WjWorldGameInstance.h"
+#include "DataAsset/WjWorldMinigameDataAsset.h"
 #include "Setting/WjWorldDeveloperSettings.h"
 
 #include "WjWorldLogCategories.h"
@@ -32,6 +33,40 @@ void UWjWorldGameRuleBase::OnGameReady()
 	{
 		GameState->AddGameDataComponent(GameDataComponentClass);
 		UE_LOG(LogWjWorld, Log, TEXT("GameRuleBase: GameDataComponent added to GameState"));
+	}
+
+	// MinigameCatalog에서 AllowedAbilityTags, StatNamespace 설정
+	if (GameState && GameMode.IsValid())
+	{
+		const UWjWorldDeveloperSettings* DevSettings = GetDefault<UWjWorldDeveloperSettings>();
+		if (DevSettings && !DevSettings->MinigameCatalog.IsNull())
+		{
+			UWjWorldMinigameDataAsset* Catalog = DevSettings->MinigameCatalog.LoadSynchronous();
+			FString CurrentGameModeId = GameMode->GetMapOption();
+			// GameModeId는 URL Options에서 직접 가져오기
+			const FWjWorldMinigameDefinition* Def = nullptr;
+			if (Catalog)
+			{
+				// GameModePlay의 InitGame에서 파싱된 GameModeId를 사용해야 하므로
+				// 카탈로그에서 현재 GameRule 클래스를 기준으로 찾기
+				for (const FWjWorldMinigameDefinition& MiniDef : Catalog->Minigames)
+				{
+					if (MiniDef.GameRuleClass == GetClass())
+					{
+						Def = &MiniDef;
+						break;
+					}
+				}
+			}
+
+			if (Def)
+			{
+				GameState->SetAllowedAbilityTags(Def->AllowedAbilityTags);
+				GameState->SetStatNamespace(Def->StatNamespace);
+				UE_LOG(LogWjWorld, Log, TEXT("GameRuleBase: AllowedAbilityTags set (%d tags), StatNamespace='%s'"),
+					Def->AllowedAbilityTags.Num(), *Def->StatNamespace.ToString());
+			}
+		}
 	}
 
 	UWorld* World = GetWorld();

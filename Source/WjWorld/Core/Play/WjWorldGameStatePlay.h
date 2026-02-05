@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Core/Base/WjWorldGameStateBase.h"
 #include "Core/WjWorldCoreTypes.h"
+#include "GameplayTagContainer.h"
 #include "WjWorldGameStatePlay.generated.h"
 
 class UWjWorldGameDataComponent;
@@ -44,6 +45,14 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Game Result")
 	bool HasWinner() const { return bGameHasWinner; }
+
+	// 어빌리티 제한 시스템
+	void SetAllowedAbilityTags(const FGameplayTagContainer& InTags);
+	const FGameplayTagContainer& GetAllowedAbilityTags() const { return AllowedAbilityTags; }
+
+	// 스탯 네임스페이스
+	void SetStatNamespace(FName InNamespace);
+	FName GetStatNamespace() const { return StatNamespace; }
 
 public:
     // 게임별 데이터는 컴포넌트로
@@ -99,4 +108,12 @@ private:
 
     UPROPERTY(ReplicatedUsing = OnRep_GameRuleClass)
 	TSubclassOf<UWjWorldGameRuleBase> GameRuleClass;
+
+    // 허용된 어빌리티 태그 (빈 컨테이너 = 전부 허용)
+    UPROPERTY(Replicated)
+    FGameplayTagContainer AllowedAbilityTags;
+
+    // 스탯 네임스페이스 (미니게임별)
+    UPROPERTY(Replicated)
+    FName StatNamespace;
 };

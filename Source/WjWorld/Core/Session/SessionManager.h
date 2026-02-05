@@ -140,6 +140,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Session")
 	bool FindMigrationSession(const FString& MigrationTag);
 
+	/**
+	 * 네트워크 모드에 따라 GameNetDriver를 전환
+	 * LAN → IpNetDriver, Steam → SteamNetDriver
+	 * 세션 생성/참가 전에 호출하여 Listen Server 및 ClientTravel이 올바른 드라이버 사용
+	 */
+	static void ApplyNetDriverForMode(ENetworkMode Mode);
+
 private:
 	//~ Online Subsystem 콜백
 	void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
@@ -173,6 +180,9 @@ private:
 
 	/** 마지막으로 참가한 방 인덱스 */
 	int32 LastJoinedRoomIndex = -1;
+
+	/** 마지막 검색 네트워크 모드 (JoinSession에서 NetDriver 전환용) */
+	ENetworkMode LastSearchNetworkMode = ENetworkMode::LAN;
 
 	/** 마이그레이션 검색 시 사용할 태그 */
 	FString PendingMigrationTag;

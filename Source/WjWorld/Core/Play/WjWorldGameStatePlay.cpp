@@ -32,6 +32,8 @@ void AWjWorldGameStatePlay::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	DOREPLIFETIME(AWjWorldGameStatePlay, bGameHasWinner);
 	DOREPLIFETIME(AWjWorldGameStatePlay, bGameResultReady);
 	DOREPLIFETIME(AWjWorldGameStatePlay, GameRuleClass);
+	DOREPLIFETIME(AWjWorldGameStatePlay, AllowedAbilityTags);
+	DOREPLIFETIME(AWjWorldGameStatePlay, StatNamespace);
 }
 
 bool AWjWorldGameStatePlay::HasMatchStarted() const
@@ -208,18 +210,20 @@ void AWjWorldGameStatePlay::OnRep_GameResult()
 	HUD->ShowGameResultText(ResultText, 5.0f);
 
 	// 스탯 기록 (각 클라이언트가 자신의 스탯만 기록)
+	// StatNamespace 기반 동적 스탯 키 생성
 	UWjWorldStatsSubsystem* Stats = GetGameInstance()->GetSubsystem<UWjWorldStatsSubsystem>();
-	if (Stats && PC->PlayerState)
+	if (Stats && PC->PlayerState && !StatNamespace.IsNone())
 	{
-		Stats->IncrementLocalStat(WjWorldStats::ApproachingWall::GamesPlayed);
+		FString NS = StatNamespace.ToString();
+		Stats->IncrementLocalStat(FName(*FString::Printf(TEXT("%s_GamesPlayed"), *NS)));
 
 		if (bGameHasWinner && WinnerPlayerName == LocalPlayerName)
 		{
-			Stats->IncrementLocalStat(WjWorldStats::ApproachingWall::Wins);
+			Stats->IncrementLocalStat(FName(*FString::Printf(TEXT("%s_Wins"), *NS)));
 		}
 		else
 		{
-			Stats->IncrementLocalStat(WjWorldStats::ApproachingWall::Losses);
+			Stats->IncrementLocalStat(FName(*FString::Printf(TEXT("%s_Losses"), *NS)));
 		}
 
 		Stats->StoreStats();
@@ -240,4 +244,14 @@ void AWjWorldGameStatePlay::OnRep_GameRuleClass()
 	if (!HUD) return;
 
 	HUD->ShowGameRuleHUDWidget(GameRuleClass);
+}
+
+void AWjWorldGameStatePlay::SetAllowedAbilityTags(const FGameplayTagContainer& InTags)
+{
+	AllowedAbilityTags = InTags;
+}
+
+void AWjWorldGameStatePlay::SetStatNamespace(FName InNamespace)
+{
+	StatNamespace = InNamespace;
 }

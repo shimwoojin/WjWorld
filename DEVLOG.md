@@ -74,6 +74,40 @@
   - Development Win64 패키징 → `Steam/content/` 복사 → `upload.bat` 실행
   - 각 단계 실패 시 즉시 중단, `steam_appid.txt` 자동 생성
 
+#### Sumo Knockoff 미니게임 코드 구현 (전체)
+- **GA_Push 어빌리티** (`AbilitySystem/Abilities/GA_Push.h/.cpp`)
+  - 전방 구형 오버랩 → 히트 캐릭터에 `LaunchCharacter()` 넉백
+  - PushForce=1200, PushRange=300, PushUpForce=400, CooldownDuration=1.5s
+  - `SetLastAttacker()` 호출 (킬 추적), GameplayCue 트리거
+- **WjWorldGameRuleSumo** (`Core/GameRule/WjWorldGameRuleSumo.h/.cpp`)
+  - TickGameRule에서 매 프레임 Z 위치 체크 → FallThresholdZ(-500) 미만 시 Eliminate
+  - 엣지 케이스: 솔로 자동 승리, 동시 탈락, 전원 이탈
+- **SumoGameDataComponent / SumoPlayerDataComponent** (`Core/GameData/`)
+  - 게임: AlivePlayerCount, TotalPlayerCount (Replicated)
+  - 플레이어: bIsAlive (Replicated + OnRep + Delegate)
+- **GameplayTag 추가**: `Ability.Push`, `Cooldown.Push`, `GameplayCue.Ability.Push`
+- **WjTypes**: `EWjWorldAbilityInputID::Ability6 = 6` 추가
+- **WjWorldStatTypes**: `WjWorldStats::Sumo` 네임스페이스 + Sumo 디스크립터
+
+#### 미니게임별 어빌리티 제한 시스템
+- **WjWorldMinigameDataAsset**: `AllowedAbilityTags`, `StatNamespace` 필드 추가
+- **WjWorldGameStatePlay**: `AllowedAbilityTags`, `StatNamespace` Replicated 프로퍼티
+- **WjWorldGameRuleBase**: `OnGameReady()`에서 MinigameCatalog 조회 → GameState에 설정
+- **WjWorldGameplayAbilityBase**: `CanActivateAbility()` 오버라이드
+  - 빈 컨테이너 = 전부 허용 (하위 호환), 비어있지 않으면 AssetTag 매칭 필요
+
+#### 스탯 네임스페이스 범용화
+- **WjWorldGameStatePlay::OnRep_GameResult()**: 하드코딩된 `ApproachingWall` 네임스페이스 대신 `StatNamespace` 기반 동적 스탯 키 생성
+
+#### LAN SocketSubsystem 충돌 수정
+- **문제**: `SocketSubsystemSteamIP`가 기본 소켓을 Steam으로 오버라이드 → `IpNetDriver`가 SteamSocketsP2P 주소로 바인딩 시도 → 실패
+- **수정**: `WjWorldLanNetDriver` 생성 (`Network/WjWorldLanNetDriver.h/.cpp`)
+  - `UIpNetDriver` 서브클래스, `GetSocketSubsystem()` → `PLATFORM_SOCKETSUBSYSTEM` 명시
+  - `ApplyNetDriverForMode()`: LAN 시 `/Script/WjWorld.WjWorldLanNetDriver` 사용
+  - `DefaultEngine.ini`에 `WjWorldLanNetDriver` 설정 섹션 추가
+  - `Build.cs`에 `Sockets`, `Networking` 모듈 의존성 추가
+- **결과**: LAN 2PC 접속 성공 확인, WaitingRoom 정상 동작
+
 ### 학습/메모
 - `GetAuthGameMode()`는 클라이언트에서 null 반환 → GameState의 리플리케이트된 데이터로 폴백
 - ServerTravel URL 포맷: `GetAssetPathString()` (`.MapName` 포함) vs `GetLongPackageName()` (순수 경로)
@@ -90,23 +124,64 @@
 - **UE Config NetDriverDefinitions 형식**: `/Script/ModuleName.ClassName` (StaticLoadClass 정규 경로)
 - **Config 섹션 상속**: `UGameEngine` → `UEngine`, NetDriverDefinitions는 `UEngine`에 선언 → `[/Script/Engine.Engine]` 섹션 사용
 - **CancelFindSessions()** → `OnCancelFindSessionsComplete` 콜백 발생 (OnFindSessionsComplete 아님) → 대기열 패턴에서 사용 금지
+- **SocketSubsystemSteamIP 기본 소켓 오버라이드**: 이 플러그인은 `RegisterSocketSubsystem()`으로 Steam 소켓을 기본으로 등록 → `ISocketSubsystem::Get()` 호출 시 Steam 반환 → IpNetDriver 사용 시 프로토콜 불일치. 해결: NetDriver 서브클래스에서 `Get(PLATFORM_SOCKETSUBSYSTEM)` 명시
+- **UE 5.7 GetAssetTags() API**: `const FGameplayTagContainer&` 직접 반환 (출력 파라미터 아님)
+- **새 레벨 추가 시 패키징 목록 필수**: Project Settings > Packaging > List of maps to include in a packaged build에 추가 안 하면 `Failed to load package` 에러
 
 ### 이슈/해결
 - COMDAT 중복 링크 오류 → Intermediate 폴더 정리 후 재빌드
 - **Steam 세션 전체 흐름**: OSS 초기화 → 세션 생성(Lobby) → 검색 → 참가 → SteamNetDriver P2P 연결 → 정상 동작 확인
 
-### 발견된 이슈 (Steam 2PC 테스트)
-1. **[버그] 클라이언트 마우스 Control Rotation 미적용**
-   - 증상: 멀티 환경에서 클라이언트 마우스 조작으로 Control Rotation이 적용 안 됨
-   - 추정 원인: Gameplay Camera의 Camera Rig 노드에서 에러 로그 발생
-   - 상태: 조사 필요
+### 버그 수정
+- **[해결] 클라이언트 마우스 Control Rotation 미적용**
+  - 원인: `UGameplayCameraComponent`가 클라이언트에서 `InputComponent` 생성 전에 활성화되어 `InputAxisBinding2DCameraNode`가 입력을 찾지 못함
+  - 수정: `SetAutoActivate(false)` + `SetupPlayerInputComponent()`에서 IMC 등록 후 `Activate()` 호출
+  - 파일: `WjWorldCharacterBase.cpp`
+
+### 발견된 이슈
+1. ~~**[해결] LAN 모드 클라이언트 방 입장 시 강제종료**~~
+   - 원인: SteamNetDriver가 LAN에서도 사용됨 + SocketSubsystemSteamIP가 기본 소켓 오버라이드
+   - 수정: `WjWorldLanNetDriver` (PLATFORM_SOCKETSUBSYSTEM 명시) + `ApplyNetDriverForMode()` 런타임 전환
 
 2. **[버그] 비디오 플레이어 재생 안 됨 (Steam 다운로드 환경)**
    - 증상: 로컬 환경에서는 정상, 다른 PC에서 Steam 다운로드 받은 환경에서 재생 안 됨
    - 추정 원인: 패키징 이슈 (비디오 파일 미포함 또는 코덱 문제)
    - 상태: 조사 필요
 
-### 할 일 (에셋/폴리싱)
+### 향후 미니게임 로드맵
+
+#### 다음 구현: Sumo Knockoff (넉백 대전)
+- 원형 플랫폼 위에서 상대를 밀어 떨어뜨리는 서바이벌
+- 축소되는 플랫폼 + 넉백 어빌리티 (GA_Push)
+- 재활용: GameRule 서바이벌, TileActor (축소), 캐릭터 제거 판정
+- 신규: 넉백 어빌리티, 원형 맵, 낙하 판정
+
+#### 이후 구현: Obstacle Race (장애물 레이스) + 유저 맵 제작 시스템
+- 출발점→골인점 장애물 통과 레이스
+- 기본 맵 1개 제공 + **유저가 Lobby에서 커스텀 맵 제작 가능**
+- 재활용: BrickMovement (이동 장애물), WallManager, TileActor
+
+#### 배치 시스템 확장 계획 (Obstacle Race와 함께 구현)
+현재 Lobby 전용인 배치 시스템을 미니게임별 맵 에디터로 확장:
+1. **Lobby용 자유 배치** (현재 구현 완료)
+2. **Approaching Wall 전용 배치** (벽 레이아웃 커스텀)
+3. **Obstacle Race 전용 배치** (장애물 코스 제작)
+- PlacementComponent를 컨텍스트별로 분리 (PlaceableObjectCatalog를 모드별로 관리)
+- LayoutSaveGame에 모드별 슬롯 추가
+- 호스트의 커스텀 맵을 대기실에서 로드하여 게임에 적용
+
+### 할 일
+
+#### Sumo Knockoff 에디터 세팅 (코드 완료, 에디터 작업 필요)
+- [ ] Sumo 레벨 맵 생성 (`Content/Map/03-2_Sumo`) - 원형 플랫폼 + 배경
+- [ ] **패키징 맵 목록에 추가** (Project Settings > Packaging)
+- [ ] MinigameCatalog에 Sumo 엔트리 추가 (GameModeId="Sumo", GameRuleClass=BP_GameRuleSumo)
+- [ ] BP_GameRuleSumo 블루프린트 생성 (WjWorldGameRuleSumo 기반)
+- [ ] CharacterPlaySetupDataAsset: StartInputAbilities에 Ability6→GA_Push 추가
+- [ ] IMC_Default: IA_Ability6 InputAction 생성 + 키 바인딩
+- [ ] MinigameCatalog Sumo 엔트리에 AllowedAbilityTags 설정 (Ability.Push 등)
+
+#### 에셋/폴리싱
 - [ ] Lobby 맵 풍성하게 꾸미기
 - [ ] 배치 모드 Mesh 추가
 - [ ] Approaching Wall 나이아가라 에셋 폴리싱
