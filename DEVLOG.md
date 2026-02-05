@@ -1,7 +1,28 @@
 # WjWorld 개발 로그
 
 ## 2026-02-05
-### 작업 내용 - Steam 2PC 테스트 버그 수정
+### 작업 내용 - Steam 출시 Polishing & 네트워크 모드 토글
+
+#### LAN/Steam 네트워크 모드 토글 기능
+- **ENetworkMode enum 추가** (`SessionTypes.h`)
+  - `LAN`, `Steam` 두 가지 모드 지원
+- **SessionManager 네트워크 모드 분기**
+  - LAN: `bIsLANMatch=true`, `bUsesPresence=false`
+  - Steam: `bIsLANMatch=false`, `bUsesPresence=true`, `bUseLobbiesIfAvailable=true`
+  - `CreateSession()`, `FindSessions()`, `CreateMigrationSession()`, `FindMigrationSession()` 모두 적용
+- **UI 지원**
+  - `CreateRoomWindow`: `NetworkModeComboBox` 추가 (WITH_STEAM 빌드에서만 Steam 옵션 표시)
+  - `RoomListWindow`: `SetNetworkMode()`, `ShowPopupWithNetworkMode()` 추가
+
+#### Steam 출시 Polishing (크래시 안전성 & 코드 품질)
+- **Critical null 체크 추가** (6개 파일)
+  - `OnRep_IsGameStartCountDownReady()`, `OnRep_GameResult()` 등
+- **빈 Tick() 비활성화** - `bCanEverTick = false` 설정
+- **로그 카테고리 일관성** - `LogWjWorld` → `LogWjWorldStats`
+- **check() → ensureMsgf() 변경** - 릴리스 빌드 크래시 방지
+- **AttributeSet OnRep 매크로 추가** - `GAMEPLAYATTRIBUTE_REPNOTIFY`
+
+#### Steam 2PC 테스트 버그 수정
 - **[버그] Approaching Wall 종료 후 WaitingRoom 복귀 실패**
   - 원인: `OnGameEnd()` 타이머 람다에서 `this` 캡처 후 `GetWorld()` 호출
   - 수정: `TravelURL` 값 캡처 + `TWeakObjectPtr<UWorld>` 사용
@@ -27,13 +48,70 @@
   - `LiftedBrickDynamicMaterial`로 런타임 색상 적용
   - 파일: `WjWorldCharacterPlay.h/.cpp`
 
+#### Steam P2P 네트워킹 (SteamNetDriver) 문제 해결
+- **SessionManager::Initialize() 폴백 로직 추가**
+  - `IOnlineSubsystem::Get(STEAM_SUBSYSTEM)` 우선 시도 → 실패 시 `NULL_SUBSYSTEM` 폴백
+  - `#include "OnlineSubsystemNames.h"` 추가
+- **steam_appid.txt 패키징 빌드 누락**
+  - 증상: `SteamAPI failed to initialize`, `[AppId: 0]`
+  - 수정: 패키징 빌드 폴더에 수동 복사 → 이후 자동화 배치에 포함
+- **bUsesPresence/bUseLobbiesIfAvailable 매칭**
+  - Steam OSS에서 두 값이 다르면 세션 생성 실패
+  - 수정: Steam 모드에서 둘 다 `true`로 설정
+- **검색 타이밍 이슈 해결**
+  - 증상: LAN 검색 진행 중 Steam 전환 시 "Ignoring game search request while one is pending"
+  - 수정: `bIsSearchInProgress` 플래그 + `PendingSearchRequest` 큐 패턴
+  - `CancelFindSessions()` 사용 시 앱 행 → 제거하고 wait-and-queue 패턴 채택
+- **SteamNetDriver 로딩 안됨 근본 원인 3가지 수정**
+  1. Config 섹션: `[/Script/Engine.GameEngine]` → `[/Script/Engine.Engine]` (BaseEngine.ini와 동일)
+  2. DriverClassName: `"SocketSubsystemSteamIP.SteamNetDriver"` → `"/Script/SocketSubsystemSteamIP.SteamNetDriver"` (StaticLoadClass 정규 경로)
+  3. `[OnlineSubsystemSteam]`에 `bUseSteamNetworking=true` 추가 (Steam 소켓 서브시스템 등록 조건)
+- **NetConnectionClassName도 `/Script/` 접두사 형식으로 통일**
+- **BeaconNetDriver, DemoNetDriver 재정의** (ClearArray 후 누락 방지)
+
+#### 빌드 자동화
+- **PackageAndUploadSteam.bat 생성** (`Batch/`)
+  - Development Win64 패키징 → `Steam/content/` 복사 → `upload.bat` 실행
+  - 각 단계 실패 시 즉시 중단, `steam_appid.txt` 자동 생성
+
 ### 학습/메모
 - `GetAuthGameMode()`는 클라이언트에서 null 반환 → GameState의 리플리케이트된 데이터로 폴백
 - ServerTravel URL 포맷: `GetAssetPathString()` (`.MapName` 포함) vs `GetLongPackageName()` (순수 경로)
 - Timer 람다에서 `this` 캡처 주의 → 객체 소멸 후 호출 시 크래시, `TWeakObjectPtr` 사용
+- **Steam vs LAN 세션 설정 차이점**:
+  - LAN: `bIsLANMatch=true`, `bUsesPresence=false`, `bUseLobbiesIfAvailable=false`
+  - Steam: `bIsLANMatch=false`, `bUsesPresence=true`, `bUseLobbiesIfAvailable=true`
+  - 검색 시 `bIsLanQuery` 플래그도 맞춰줘야 함
+- `SEARCH_PRESENCE` 상수는 UE 5.7에서 변경됨 → 직접 사용 불가, 제거하거나 문자열로 대체
+- **SocketSubsystemSteamIP 모듈 동작 조건**:
+  - 에디터에서는 자동 비활성화 (`IsRunningDedicatedServer() || IsRunningGame()` 체크)
+  - `bUseSteamNetworking=true` 설정 필요 (Steam 소켓 서브시스템 등록)
+  - `SteamNetDriver::IsAvailable()`이 Steam 소켓 서브시스템 등록 여부로 판단
+- **UE Config NetDriverDefinitions 형식**: `/Script/ModuleName.ClassName` (StaticLoadClass 정규 경로)
+- **Config 섹션 상속**: `UGameEngine` → `UEngine`, NetDriverDefinitions는 `UEngine`에 선언 → `[/Script/Engine.Engine]` 섹션 사용
+- **CancelFindSessions()** → `OnCancelFindSessionsComplete` 콜백 발생 (OnFindSessionsComplete 아님) → 대기열 패턴에서 사용 금지
 
 ### 이슈/해결
 - COMDAT 중복 링크 오류 → Intermediate 폴더 정리 후 재빌드
+- **Steam 세션 전체 흐름**: OSS 초기화 → 세션 생성(Lobby) → 검색 → 참가 → SteamNetDriver P2P 연결 → 정상 동작 확인
+
+### 발견된 이슈 (Steam 2PC 테스트)
+1. **[버그] 클라이언트 마우스 Control Rotation 미적용**
+   - 증상: 멀티 환경에서 클라이언트 마우스 조작으로 Control Rotation이 적용 안 됨
+   - 추정 원인: Gameplay Camera의 Camera Rig 노드에서 에러 로그 발생
+   - 상태: 조사 필요
+
+2. **[버그] 비디오 플레이어 재생 안 됨 (Steam 다운로드 환경)**
+   - 증상: 로컬 환경에서는 정상, 다른 PC에서 Steam 다운로드 받은 환경에서 재생 안 됨
+   - 추정 원인: 패키징 이슈 (비디오 파일 미포함 또는 코덱 문제)
+   - 상태: 조사 필요
+
+### 할 일 (에셋/폴리싱)
+- [ ] Lobby 맵 풍성하게 꾸미기
+- [ ] 배치 모드 Mesh 추가
+- [ ] Approaching Wall 나이아가라 에셋 폴리싱
+- [ ] Destructible 에셋 추가
+- [ ] 배경 음악 추가
 
 ---
 

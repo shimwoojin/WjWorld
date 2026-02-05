@@ -166,6 +166,7 @@ private:
 	/** 상태 플래그 */
 	bool bIsInSession = false;
 	bool bIsHost = false;
+	bool bIsSearchInProgress = false;
 
 	/** 마지막 방 설정 (재생성용) */
 	FRoomSettings LastRoomSettings;
@@ -175,4 +176,7 @@ private:
 
 	/** 마이그레이션 검색 시 사용할 태그 */
 	FString PendingMigrationTag;
+
+	/** 대기 중인 검색 요청 (이전 검색 취소 후 실행) */
+	TOptional<TPair<ENetworkMode, int32>> PendingSearchRequest;
 };

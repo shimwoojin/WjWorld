@@ -2,6 +2,7 @@
 
 #include "Core/Session/SessionManager.h"
 #include "OnlineSubsystem.h"
+#include "OnlineSubsystemNames.h"
 #include "OnlineSessionSettings.h"
 #include "Online/OnlineSessionNames.h"
 #include "WjWorldLogCategories.h"
@@ -12,10 +13,18 @@ USessionManager::USessionManager()
 
 void USessionManager::Initialize()
 {
-	// Online Subsystem 가져오기
-	IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get();
+	// Online Subsystem 가져오기 - 우선순위: Steam > NULL
+	IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get(STEAM_SUBSYSTEM);
+	if (!OnlineSubsystem)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("SessionManager: Steam subsystem not available, trying NULL subsystem"));
+		OnlineSubsystem = IOnlineSubsystem::Get(NULL_SUBSYSTEM);
+	}
+
 	if (OnlineSubsystem)
 	{
+		UE_LOG(LogWjWorld, Log, TEXT("SessionManager: OnlineSubsystem found - Name: %s"), *OnlineSubsystem->GetSubsystemName().ToString());
+
 		SessionInterface = OnlineSubsystem->GetSessionInterface();
 
 		if (SessionInterface.IsValid())
@@ -28,16 +37,16 @@ void USessionManager::Initialize()
 			SessionInterface->OnStartSessionCompleteDelegates.AddUObject(this, &USessionManager::OnStartSessionComplete);
 			SessionInterface->OnEndSessionCompleteDelegates.AddUObject(this, &USessionManager::OnEndSessionComplete);
 
-			UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Initialized successfully"));
+			UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Initialized successfully with %s"), *OnlineSubsystem->GetSubsystemName().ToString());
 		}
 		else
 		{
-			UE_LOG(LogWjWorld, Error, TEXT("SessionManager: Failed to get SessionInterface"));
+			UE_LOG(LogWjWorld, Error, TEXT("SessionManager: Failed to get SessionInterface from %s"), *OnlineSubsystem->GetSubsystemName().ToString());
 		}
 	}
 	else
 	{
-		UE_LOG(LogWjWorld, Error, TEXT("SessionManager: OnlineSubsystem is null"));
+		UE_LOG(LogWjWorld, Error, TEXT("SessionManager: No OnlineSubsystem available (Steam and NULL both failed)"));
 	}
 }
 
@@ -98,6 +107,7 @@ bool USessionManager::CreateSession(const FRoomSettings& Settings)
 	SessionSettings.bAllowJoinViaPresenceFriendsOnly = false;
 
 	// 네트워크 모드에 따른 설정
+	// Steam: bUsesPresence와 bUseLobbiesIfAvailable은 반드시 같은 값이어야 함
 	if (Settings.NetworkMode == ENetworkMode::Steam)
 	{
 		SessionSettings.bIsLANMatch = false;
@@ -150,6 +160,15 @@ bool USessionManager::FindSessions(ENetworkMode NetworkMode, int32 MaxSearchResu
 		return false;
 	}
 
+	// 이전 검색이 진행 중이면 대기열에 등록 (완료 후 자동 실행)
+	if (bIsSearchInProgress)
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Previous search in progress, queuing new %s search"),
+			NetworkMode == ENetworkMode::Steam ? TEXT("Steam") : TEXT("LAN"));
+		PendingSearchRequest = TPair<ENetworkMode, int32>(NetworkMode, MaxSearchResults);
+		return true;
+	}
+
 	// 검색 설정
 	SessionSearch = MakeShareable(new FOnlineSessionSearch());
 	SessionSearch->MaxSearchResults = MaxSearchResults;
@@ -172,6 +191,7 @@ bool USessionManager::FindSessions(ENetworkMode NetworkMode, int32 MaxSearchResu
 
 	if (bSuccess)
 	{
+		bIsSearchInProgress = true;
 		UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Searching for %s sessions..."),
 			NetworkMode == ENetworkMode::Steam ? TEXT("Steam") : TEXT("LAN"));
 	}
@@ -350,7 +370,21 @@ void USessionManager::OnCreateSessionComplete(FName SessionName, bool bWasSucces
 
 void USessionManager::OnFindSessionsComplete(bool bWasSuccessful)
 {
+	bIsSearchInProgress = false;
+
 	UE_LOG(LogWjWorld, Log, TEXT("SessionManager: OnFindSessionsComplete - Success: %d"), bWasSuccessful);
+
+	// 대기 중인 검색 요청이 있으면 즉시 실행
+	if (PendingSearchRequest.IsSet())
+	{
+		ENetworkMode PendingMode = PendingSearchRequest.GetValue().Key;
+		int32 PendingMax = PendingSearchRequest.GetValue().Value;
+		PendingSearchRequest.Reset();
+		UE_LOG(LogWjWorld, Log, TEXT("SessionManager: Executing pending %s search"),
+			PendingMode == ENetworkMode::Steam ? TEXT("Steam") : TEXT("LAN"));
+		FindSessions(PendingMode, PendingMax);
+		return;
+	}
 
 	// 마이그레이션 세션 검색인 경우
 	if (!PendingMigrationTag.IsEmpty())
@@ -534,6 +568,7 @@ bool USessionManager::CreateMigrationSession(const FRoomSettings& Settings, cons
 	SessionSettings.bAllowJoinViaPresenceFriendsOnly = false;
 
 	// 네트워크 모드에 따른 설정
+	// Steam: bUsesPresence와 bUseLobbiesIfAvailable은 반드시 같은 값이어야 함
 	if (Settings.NetworkMode == ENetworkMode::Steam)
 	{
 		SessionSettings.bIsLANMatch = false;
