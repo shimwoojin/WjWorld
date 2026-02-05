@@ -80,11 +80,26 @@ void UWjWorldGameRuleBase::OnGameEnd()
 			GI->EndGame();
 		}
 
+		// ServerTravel URL 미리 계산 (타이머 콜백에서 this 접근 문제 방지)
+		const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+		FString TravelURL = Settings->GetWaitingRoomServerTravelURL();
+
+		UE_LOG(LogWjWorld, Log, TEXT("GameRuleBase::OnGameEnd - Will travel to: %s in %f seconds"), *TravelURL, SecondsForGotoWaitingRoom);
+
 		// Lobby 맵을 사용하되 GameMode는 WaitingRoom으로 오버라이드
-		World->GetTimerManager().SetTimer(GotoWaitingRoomHandle, FTimerDelegate::CreateLambda([this]() {
-			const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
-			GetWorld()->ServerTravel(Settings->GetWaitingRoomServerTravelURL());
-			}), SecondsForGotoWaitingRoom, false);
+		// World를 WeakPtr로 캡처하여 타이머 콜백에서 안전하게 접근
+		TWeakObjectPtr<UWorld> WeakWorld = World;
+		World->GetTimerManager().SetTimer(GotoWaitingRoomHandle, FTimerDelegate::CreateLambda([WeakWorld, TravelURL]() {
+			if (UWorld* ValidWorld = WeakWorld.Get())
+			{
+				UE_LOG(LogWjWorld, Log, TEXT("GameRuleBase - Executing ServerTravel to: %s"), *TravelURL);
+				ValidWorld->ServerTravel(TravelURL);
+			}
+			else
+			{
+				UE_LOG(LogWjWorld, Error, TEXT("GameRuleBase - ServerTravel failed: World is invalid"));
+			}
+		}), SecondsForGotoWaitingRoom, false);
 
 		ChangeGamePhase(EGamePhase::Finished);
 	}

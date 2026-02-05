@@ -26,6 +26,9 @@ public:
 	int32 GetTotalPlayerCount() const { return TotalPlayerCount; }
 	void SetTotalPlayerCount(int32 InCount) { TotalPlayerCount = InCount; }
 
+	const FString& GetCurrentWallName() const { return CurrentWallName; }
+	void SetCurrentWallName(const FString& InWallName) { CurrentWallName = InWallName; }
+
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -41,4 +44,7 @@ public:
 
 	UPROPERTY(Replicated)
 	int32 TotalPlayerCount = 0;
+
+	UPROPERTY(Replicated)
+	FString CurrentWallName;
 };

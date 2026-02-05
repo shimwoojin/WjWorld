@@ -236,6 +236,21 @@ void UWjWorldPlacementComponent::SetCatalog(UWjWorldPlaceableObjectDataAsset* In
 
 void UWjWorldPlacementComponent::SaveLayout()
 {
+	// 호스트(ListenServer 또는 Standalone)인 경우에만 SaveGame 저장
+	// 클라이언트가 저장하면 다른 세션의 배치물이 섞이는 문제 발생
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	ENetMode NetMode = World->GetNetMode();
+	if (NetMode != NM_Standalone && NetMode != NM_ListenServer)
+	{
+		UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: SaveLayout skipped (not host)"));
+		return;
+	}
+
 	// GameStateLobby에서 데이터를 가져와 로컬 SaveGame에 저장 (호스트 영구 저장용)
 	AWjWorldGameStateLobby* LobbyGameState = GetLobbyGameState();
 	if (!LobbyGameState)

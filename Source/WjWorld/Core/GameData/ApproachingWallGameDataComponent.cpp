@@ -20,4 +20,5 @@ void UApproachingWallGameDataComponent::GetLifetimeReplicatedProps(TArray<FLifet
 	DOREPLIFETIME(UApproachingWallGameDataComponent, CurrentLevel);
 	DOREPLIFETIME(UApproachingWallGameDataComponent, AlivePlayerCount);
 	DOREPLIFETIME(UApproachingWallGameDataComponent, TotalPlayerCount);
+	DOREPLIFETIME(UApproachingWallGameDataComponent, CurrentWallName);
 }

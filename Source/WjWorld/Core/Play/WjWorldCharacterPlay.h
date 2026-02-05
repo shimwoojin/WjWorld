@@ -60,7 +60,7 @@ public:
 
 	// 들고 있는 벽돌 시각화 (3자에게도 보임)
 	UFUNCTION(BlueprintCallable, Category = "LiftBrick")
-	void ShowLiftedBrick(UStaticMesh* BrickMesh, const FVector& BrickScale);
+	void ShowLiftedBrick(UStaticMesh* BrickMesh, const FVector& BrickScale, const FLinearColor& BrickColor);
 
 	UFUNCTION(BlueprintCallable, Category = "LiftBrick")
 	void HideLiftedBrick();
@@ -126,4 +126,12 @@ private:
 	// 들고 있는 벽돌 스케일 (리플리케이션용 캐시)
 	UPROPERTY(Replicated)
 	FVector CarriedBrickScale = FVector::OneVector;
+
+	// 들고 있는 벽돌 색상 (리플리케이션용 캐시)
+	UPROPERTY(Replicated)
+	FLinearColor CarriedBrickColor = FLinearColor::White;
+
+	// 벽돌 메시 Dynamic Material Instance (색상 적용용)
+	UPROPERTY()
+	TObjectPtr<UMaterialInstanceDynamic> LiftedBrickDynamicMaterial;
 };

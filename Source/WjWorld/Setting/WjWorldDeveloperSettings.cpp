@@ -4,12 +4,14 @@
 
 FString UWjWorldDeveloperSettings::GetLobbyMapPath() const
 {
-	return LobbyMapPath.GetAssetPathString();
+	// ServerTravel/OpenLevel에는 패키지 경로만 필요 (에셋 이름 제외)
+	return LobbyMapPath.GetLongPackageName();
 }
 
 FString UWjWorldDeveloperSettings::GetWaitingRoomOpenLevelURL() const
 {
-	FString MapPath = LobbyMapPath.GetAssetPathString();
+	// ServerTravel/OpenLevel에는 패키지 경로만 필요 (에셋 이름 제외)
+	FString MapPath = LobbyMapPath.GetLongPackageName();
 	FString GameModeClassPath = WaitingRoomGameModeClass.IsNull()
 		? TEXT("")
 		: WaitingRoomGameModeClass.ToString();
@@ -25,7 +27,8 @@ FString UWjWorldDeveloperSettings::GetWaitingRoomOpenLevelURL() const
 
 FString UWjWorldDeveloperSettings::GetWaitingRoomServerTravelURL() const
 {
-	FString MapPath = LobbyMapPath.GetAssetPathString();
+	// ServerTravel에는 패키지 경로만 필요 (에셋 이름 제외)
+	FString MapPath = LobbyMapPath.GetLongPackageName();
 	FString GameModeClassPath = WaitingRoomGameModeClass.IsNull()
 		? TEXT("")
 		: WaitingRoomGameModeClass.ToString();

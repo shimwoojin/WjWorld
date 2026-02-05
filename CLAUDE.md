@@ -77,6 +77,8 @@ Source/WjWorld/
 ├── Stats/                             # 플레이어 스탯 시스템
 │   ├── WjWorldStatsSubsystem          # Steam User Stats 래핑 (GameInstanceSubsystem)
 │   └── WjWorldStatTypes               # 스탯 타입 정의 (FMinigameStatEntry, FMinigameStatDescriptor)
+├── Animation/                         # 애니메이션
+│   └── WjWorldAnimInstance            # 커스텀 AnimInstance (LiftBrickBlendWeight 등)
 ├── Setting/                           # 개발자 설정
 │   └── WjWorldDeveloperSettings       # 중앙 설정 (맵, GameMode, 캐릭터, 게임플레이 에셋)
 ├── DataAsset/                         # 데이터 에셋
@@ -153,6 +155,7 @@ GameRule: UWjWorldGameRuleBase → ApproachingWall (미니게임 규칙, Minigam
 GameData: UWjWorldGameDataComponent → ApproachingWall 전용 데이터
 Ability: UWjWorldGameplayAbilityBase → GA_NormalAttack, GA_SpawnBrick, GA_LiftBrick
 Subsystem: UGameInstanceSubsystem → CosmeticSubsystem, PurchaseSubsystem, StatsSubsystem
+AnimInstance: UWjWorldAnimInstance (LiftBrickBlendWeight, GameplayTag 기반 상태)
 ```
 
 ## 핵심 시스템
@@ -170,6 +173,7 @@ Subsystem: UGameInstanceSubsystem → CosmeticSubsystem, PurchaseSubsystem, Stat
 - `GameStatePlay`에 게임 전체 데이터 (예: 웨이브 타이밍)
 - `PlayerStatePlay`에 플레이어별 데이터 (예: 점수, 상태)
 - 리플리케이션 지원
+- **ApproachingWallGameDataComponent**: `CurrentWallName` 리플리케이트 (클라이언트 WallDesc 로드용)
 
 ### 미니게임 카탈로그 시스템
 `UWjWorldMinigameDataAsset` 기반 미니게임 정의 및 동적 조회.
@@ -203,7 +207,7 @@ GAS 기반 어빌리티 시스템. `UWjWorldGameplayAbilityBase`를 상속받아
 - **AbilityBase 공통 기능**: AbilityName, AbilityIcon (UI 메타), GetPromptDescription(), 충전 시스템 인터페이스 (IsChargeBased, GetCurrentCharges, GetMaxCharges, GetChargeRefillTimeRemaining)
 - **GA_NormalAttack**: 4방향 스냅(Yaw 기반) 벽돌 공격, BrickType별 처리 (Standard 파괴 불가, Explosive/Moving/Destructible)
 - **GA_SpawnBrick**: 충전 기반 벽돌 배치, Preview → Confirm/Cancel 패턴, GE 기반 충전 리필, 어트리뷰트 변경 위임
-- **GA_LiftBrick**: 벽돌 재배치 어빌리티, Moving/Destructible 벽돌 들어올리기, Cancel 시 원래 위치 복원
+- **GA_LiftBrick**: 벽돌 재배치 어빌리티, Moving/Destructible 벽돌 들어올리기, Cancel 시 원래 위치 복원, 들고 있는 벽돌 색상 리플리케이션
 - **AttributeSet**: HP, MaxSpawnBrickCharges, SpawnBrickCharges, OnRep 콜백
 - **Effects**: GE_AbilityCooldown (쿨다운), GE_SpawnBrickChargeCost (충전 비용)
 
@@ -326,10 +330,17 @@ Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용). `UWjWorldStatsSub
   - Kills 스탯 추적 (LastAttacker 시스템)
   - 플레이어 이탈 시 캐릭터 제거 처리
   - 엣지 케이스 처리 (솔로 게임, 동시 제거, 전원 이탈)
+- **Steam 2PC 테스트 버그 수정**
+  - ServerTravel 타이머 람다 `this` 캡처 문제 → `TWeakObjectPtr<UWorld>` + URL 값 캡처
+  - SaveLayout() 호스트만 저장하도록 `NetMode` 체크 추가
+  - WaitingRoom 3자 캐릭터 코스메틱 → `TActorIterator`로 PlayerState 검색
+  - 클라이언트 어빌리티 프리뷰 → `CurrentWallName` 리플리케이트 기반 WallDesc 로드
+- **WjWorldAnimInstance** (GameplayTag 기반 LiftBrickBlendWeight)
+- **LiftBrick 벽돌 색상 리플리케이션** (CarriedBrickColor + Dynamic Material)
 
 ## 진행 중 / 미구현
 - 추가 미니게임 구현
-- Steam 실제 환경 테스트 (AppID 발급 후)
+- Steam 정식 출시 준비
 
 ## 코딩 컨벤션
 - 언리얼 엔진 코딩 표준 준수

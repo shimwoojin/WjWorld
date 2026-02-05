@@ -4,6 +4,8 @@
 #include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "Cosmetic/WjWorldCosmeticComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "EngineUtils.h"
+#include "GameFramework/Character.h"
 #include "WjWorldLogCategories.h"
 
 AWjWorldPlayerStateBase::AWjWorldPlayerStateBase()
@@ -76,8 +78,29 @@ void AWjWorldPlayerStateBase::SetCosmeticLoadout(const FCosmeticLoadout& InLoado
 
 void AWjWorldPlayerStateBase::OnCosmeticLoadoutUpdated()
 {
-	// 소유 Pawn의 CosmeticComponent에 로드아웃 적용
-	if (APawn* OwnerPawn = GetPawn())
+	// 소유 Pawn 찾기
+	APawn* OwnerPawn = GetPawn();
+
+	// GetPawn()이 null인 경우 (3자 캐릭터), World에서 이 PlayerState를 사용하는 Character 찾기
+	if (!OwnerPawn)
+	{
+		UWorld* World = GetWorld();
+		if (World)
+		{
+			for (TActorIterator<ACharacter> It(World); It; ++It)
+			{
+				if (It->GetPlayerState() == this)
+				{
+					OwnerPawn = *It;
+					UE_LOG(LogWjWorldCosmetic, Log, TEXT("PlayerStateBase: 3자 캐릭터 발견 (%s)"), *GetPlayerName());
+					break;
+				}
+			}
+		}
+	}
+
+	// CosmeticComponent에 로드아웃 적용
+	if (OwnerPawn)
 	{
 		if (UWjWorldCosmeticComponent* CosmeticComp = OwnerPawn->FindComponentByClass<UWjWorldCosmeticComponent>())
 		{
@@ -96,15 +119,21 @@ void AWjWorldPlayerStateBase::OnCosmeticLoadoutUpdated()
 
 void AWjWorldPlayerStateBase::OnPawnSet(APawn* OldPawn, APawn* NewPawn)
 {
-	// 대기 중인 코스메틱 적용
-	if (bPendingCosmeticApply && NewPawn)
+	// 코스메틱 로드아웃 적용 (로컬 플레이어 + 3자 캐릭터 모두)
+	// 3자 캐릭터는 BeginPlay()에서 초기 로드아웃을 적용하지 않으므로 여기서 적용
+	if (NewPawn)
 	{
 		if (UWjWorldCosmeticComponent* CosmeticComp = NewPawn->FindComponentByClass<UWjWorldCosmeticComponent>())
 		{
-			CosmeticComp->ApplyLoadout(CosmeticLoadout);
-			bPendingCosmeticApply = false;
-			UE_LOG(LogWjWorldCosmetic, Log, TEXT("PlayerStateBase: 대기 중인 코스메틱 적용 완료 (%s)"), *GetPlayerName());
+			// 로드아웃이 있으면 적용
+			if (!CosmeticLoadout.Entries.IsEmpty())
+			{
+				CosmeticComp->ApplyLoadout(CosmeticLoadout);
+				UE_LOG(LogWjWorldCosmetic, Log, TEXT("PlayerStateBase: 코스메틱 적용 완료 (%s, %d entries)"),
+					*GetPlayerName(), CosmeticLoadout.Entries.Num());
+			}
 		}
+		bPendingCosmeticApply = false;
 	}
 }
 

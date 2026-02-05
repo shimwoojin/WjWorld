@@ -25,16 +25,22 @@ void UWjWorldCosmeticComponent::BeginPlay()
 	{
 		if (UWjWorldCosmeticSubsystem* CosmeticSub = GI->GetSubsystem<UWjWorldCosmeticSubsystem>())
 		{
-			// 델리게이트 구독
-			CosmeticSub->OnLoadoutChanged.AddDynamic(this, &ThisClass::OnLoadoutChangedHandler);
-
-			// 카탈로그 설정
+			// 카탈로그 설정 (모든 캐릭터)
 			SetCatalog(CosmeticSub->GetCatalog());
 
-			// 초기 로드아웃 적용
-			ApplyLoadout(CosmeticSub->GetLoadout());
-
-			UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticComponent: 서브시스템 구독 완료"));
+			// 로컬 플레이어만 델리게이트 구독 및 초기 로드아웃 적용
+			// 3자 캐릭터는 OnRep_PlayerState() → OnPawnSet() 경로로 PlayerState의 로드아웃 적용
+			APawn* OwnerPawn = Cast<APawn>(GetOwner());
+			if (OwnerPawn && OwnerPawn->IsLocallyControlled())
+			{
+				CosmeticSub->OnLoadoutChanged.AddDynamic(this, &ThisClass::OnLoadoutChangedHandler);
+				ApplyLoadout(CosmeticSub->GetLoadout());
+				UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticComponent: 로컬 플레이어 초기화 완료"));
+			}
+			else
+			{
+				UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticComponent: 3자 캐릭터 - PlayerState 리플리케이션 대기"));
+			}
 		}
 	}
 }

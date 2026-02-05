@@ -418,6 +418,15 @@ void UWjWorldGameRuleApproachingWall::OnWallSpawnFinished(const TArray<FVector>&
 
 	WallDesc = Desc;
 
+	// GameDataComponent에 현재 Wall 이름 저장 (클라이언트 리플리케이션용)
+	if (AWjWorldGameStatePlay* GameState = GetGameStatePlay())
+	{
+		if (UApproachingWallGameDataComponent* GameData = GameState->GetGameData<UApproachingWallGameDataComponent>())
+		{
+			GameData->SetCurrentWallName(Desc.WallName);
+		}
+	}
+
 	InternalGameReadyProcess();
 
 	if (BrickSpawner)

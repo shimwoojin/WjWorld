@@ -21,7 +21,10 @@
 #include "Engine/OverlapResult.h"
 
 #include "Core/Play/WjWorldCharacterPlay.h"
+#include "Core/Play/WjWorldGameStatePlay.h"
+#include "Core/GameData/ApproachingWallGameDataComponent.h"
 #include "Setting/WjWorldDeveloperSettings.h"
+#include "GamePlay/Wall/WjWorldWallDescriptionDataAsset.h"
 
 UGA_LiftBrick::UGA_LiftBrick()
 {
@@ -61,6 +64,52 @@ void UGA_LiftBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 		if (GameRule)
 		{
 			CachedWallDesc = GameRule->GetWallDesc();
+		}
+	}
+
+	// 클라이언트에서는 GameMode에 접근 불가하므로 GameState의 GameData에서 WallName을 가져와 로드
+	if (CachedWallDesc.BrickSize.IsZero() || CachedWallDesc.ColumnNum == 0)
+	{
+		FString WallNameToLoad;
+
+		// GameState에서 현재 Wall 이름 가져오기
+		if (UWorld* World = GetWorld())
+		{
+			if (AWjWorldGameStatePlay* GameState = World->GetGameState<AWjWorldGameStatePlay>())
+			{
+				if (UApproachingWallGameDataComponent* GameData = GameState->GetGameData<UApproachingWallGameDataComponent>())
+				{
+					WallNameToLoad = GameData->GetCurrentWallName();
+				}
+			}
+		}
+
+		const UWjWorldDeveloperSettings* DevSettings = GetDefault<UWjWorldDeveloperSettings>();
+		if (DevSettings && !DevSettings->WallDescriptionAsset.IsNull())
+		{
+			UWjWorldWallDescriptionDataAsset* WallDescAsset = DevSettings->WallDescriptionAsset.LoadSynchronous();
+			if (WallDescAsset)
+			{
+				// WallName으로 정확한 WallDescription 조회
+				if (!WallNameToLoad.IsEmpty() && WallDescAsset->GetWallDescriptionByName(WallNameToLoad, CachedWallDesc))
+				{
+					if (CachedWallDesc.IsLayoutEmpty())
+					{
+						CachedWallDesc.LoadWallLayoutFromFile();
+					}
+					UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_LiftBrick: Loaded WallDesc '%s' from GameData"), *WallNameToLoad);
+				}
+				// WallName이 없으면 첫 번째 Description 사용 (폴백)
+				else if (WallDescAsset->WallDescriptions.Num() > 0)
+				{
+					CachedWallDesc = WallDescAsset->WallDescriptions[0];
+					if (CachedWallDesc.IsLayoutEmpty())
+					{
+						CachedWallDesc.LoadWallLayoutFromFile();
+					}
+					UE_LOG(LogWjWorldAbilities, Warning, TEXT("GA_LiftBrick: WallName not found, using first WallDesc as fallback"));
+				}
+			}
 		}
 	}
 
@@ -109,7 +158,7 @@ void UGA_LiftBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 						if (DevSettings && DevSettings->BrickMesh.IsValid())
 						{
 							UStaticMesh* BrickMesh = DevSettings->BrickMesh.LoadSynchronous();
-							CharacterPlay->ShowLiftedBrick(BrickMesh, CachedWallDesc.BrickSize / 100.f);
+							CharacterPlay->ShowLiftedBrick(BrickMesh, CachedWallDesc.BrickSize / 100.f, Props.GetColorWithBrickType());
 						}
 					}
 

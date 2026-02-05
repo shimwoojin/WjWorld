@@ -1,5 +1,42 @@
 # WjWorld 개발 로그
 
+## 2026-02-05
+### 작업 내용 - Steam 2PC 테스트 버그 수정
+- **[버그] Approaching Wall 종료 후 WaitingRoom 복귀 실패**
+  - 원인: `OnGameEnd()` 타이머 람다에서 `this` 캡처 후 `GetWorld()` 호출
+  - 수정: `TravelURL` 값 캡처 + `TWeakObjectPtr<UWorld>` 사용
+  - 파일: `WjWorldGameRuleBase.cpp`
+- **[버그] LobbyLayout SaveGame 주체 문제**
+  - 원인: 클라이언트도 `SaveLayout()` 호출하여 호스트 레이아웃 덮어씀
+  - 수정: `NetMode` 체크 추가 (`NM_Standalone` 또는 `NM_ListenServer`만 저장)
+  - 파일: `WjWorldPlacementComponent.cpp`
+- **[버그] WaitingRoom 코스메틱 리플리케이션 실패**
+  - 원인: `GetPawn()` 3자 캐릭터에서 null 반환, 로컬 로드아웃이 모든 캐릭터에 적용
+  - 수정: `TActorIterator`로 PlayerState 기반 캐릭터 검색, 로컬 플레이어만 초기 로드아웃 적용
+  - 파일: `WjWorldCosmeticComponent.cpp`, `WjWorldPlayerStateBase.cpp`
+- **[버그] LiftBrick/SpawnBrick 클라이언트 프리뷰 색상 오류**
+  - 원인: `GetAuthGameMode()` 클라이언트에서 null → `CachedWallDesc` 미설정
+  - 수정: `CurrentWallName` 리플리케이트 추가, `GameState`에서 `WallDesc` 로드
+  - 파일: `ApproachingWallGameDataComponent.h/.cpp`, `WjWorldGameRuleApproachingWall.cpp`, `GA_LiftBrick.cpp`, `GA_SpawnBrick.cpp`
+- **WjWorldAnimInstance 생성**
+  - `LiftBrickBlendWeight` (0~1 float) GameplayTag 기반 블렌딩
+  - `State.LiftBrickCarry` 태그 체크하여 부드러운 전환
+  - 파일: `Animation/WjWorldAnimInstance.h/.cpp`
+- **LiftBrick 벽돌 색상 리플리케이션**
+  - `CarriedBrickColor` 리플리케이트 프로퍼티 추가
+  - `LiftedBrickDynamicMaterial`로 런타임 색상 적용
+  - 파일: `WjWorldCharacterPlay.h/.cpp`
+
+### 학습/메모
+- `GetAuthGameMode()`는 클라이언트에서 null 반환 → GameState의 리플리케이트된 데이터로 폴백
+- ServerTravel URL 포맷: `GetAssetPathString()` (`.MapName` 포함) vs `GetLongPackageName()` (순수 경로)
+- Timer 람다에서 `this` 캡처 주의 → 객체 소멸 후 호출 시 크래시, `TWeakObjectPtr` 사용
+
+### 이슈/해결
+- COMDAT 중복 링크 오류 → Intermediate 폴더 정리 후 재빌드
+
+---
+
 ## 2026-02-04 (저녁)
 ### 작업 내용 - Steam 테스트 환경 구축
 - **Steam 앱 설정 완료**

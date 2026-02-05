@@ -62,6 +62,7 @@ void AWjWorldCharacterPlay::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	DOREPLIFETIME(AWjWorldCharacterPlay, bIsCarryingBrick);
 	DOREPLIFETIME(AWjWorldCharacterPlay, CarriedBrickMesh);
 	DOREPLIFETIME(AWjWorldCharacterPlay, CarriedBrickScale);
+	DOREPLIFETIME(AWjWorldCharacterPlay, CarriedBrickColor);
 }
 
 void AWjWorldCharacterPlay::OnEliminated()
@@ -284,7 +285,7 @@ void AWjWorldCharacterPlay::SetLastAttacker(AWjWorldCharacterPlay* Attacker)
 	}
 }
 
-void AWjWorldCharacterPlay::ShowLiftedBrick(UStaticMesh* BrickMesh, const FVector& BrickScale)
+void AWjWorldCharacterPlay::ShowLiftedBrick(UStaticMesh* BrickMesh, const FVector& BrickScale, const FLinearColor& BrickColor)
 {
 	if (!HasAuthority())
 	{
@@ -293,14 +294,16 @@ void AWjWorldCharacterPlay::ShowLiftedBrick(UStaticMesh* BrickMesh, const FVecto
 
 	CarriedBrickMesh = BrickMesh;
 	CarriedBrickScale = BrickScale;
+	CarriedBrickColor = BrickColor;
 	bIsCarryingBrick = true;
 
 	// 서버에서도 즉시 시각 업데이트
 	UpdateLiftedBrickVisual();
 
-	UE_LOG(LogWjWorld, Log, TEXT("AWjWorldCharacterPlay::ShowLiftedBrick - Mesh: %s, Scale: %s"),
+	UE_LOG(LogWjWorld, Log, TEXT("AWjWorldCharacterPlay::ShowLiftedBrick - Mesh: %s, Scale: %s, Color: %s"),
 		BrickMesh ? *BrickMesh->GetName() : TEXT("None"),
-		*BrickScale.ToString());
+		*BrickScale.ToString(),
+		*BrickColor.ToString());
 }
 
 void AWjWorldCharacterPlay::HideLiftedBrick()
@@ -313,6 +316,7 @@ void AWjWorldCharacterPlay::HideLiftedBrick()
 	bIsCarryingBrick = false;
 	CarriedBrickMesh = nullptr;
 	CarriedBrickScale = FVector::OneVector;
+	CarriedBrickColor = FLinearColor::White;
 
 	// 서버에서도 즉시 시각 업데이트
 	UpdateLiftedBrickVisual();
@@ -337,10 +341,25 @@ void AWjWorldCharacterPlay::UpdateLiftedBrickVisual()
 		LiftedBrickMeshComponent->SetStaticMesh(CarriedBrickMesh);
 		LiftedBrickMeshComponent->SetRelativeScale3D(CarriedBrickScale * 0.3f);
 		LiftedBrickMeshComponent->SetVisibility(true);
+
+		// Dynamic Material Instance 생성 및 색상 적용
+		if (LiftedBrickMeshComponent->GetNumMaterials() > 0)
+		{
+			UMaterialInterface* BaseMaterial = LiftedBrickMeshComponent->GetMaterial(0);
+			if (BaseMaterial)
+			{
+				LiftedBrickDynamicMaterial = LiftedBrickMeshComponent->CreateAndSetMaterialInstanceDynamic(0);
+				if (LiftedBrickDynamicMaterial)
+				{
+					LiftedBrickDynamicMaterial->SetVectorParameterValue(FName("BaseColor"), CarriedBrickColor);
+				}
+			}
+		}
 	}
 	else
 	{
 		LiftedBrickMeshComponent->SetVisibility(false);
 		LiftedBrickMeshComponent->SetStaticMesh(nullptr);
+		LiftedBrickDynamicMaterial = nullptr;
 	}
 }
