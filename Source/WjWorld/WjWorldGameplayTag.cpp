@@ -31,6 +31,11 @@ FGameplayTag WjWorldGameplayTag::Ability_NormalAttack()
 	return FGameplayTag::RequestGameplayTag(TEXT("Ability.NormalAttack"));
 }
 
+FGameplayTag WjWorldGameplayTag::Ability_SpawnBrick()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("Ability.SpawnBrick"));
+}
+
 FGameplayTag WjWorldGameplayTag::Ability_LiftBrick()
 {
 	return FGameplayTag::RequestGameplayTag(TEXT("Ability.LiftBrick"));
@@ -96,7 +101,27 @@ FGameplayTag WjWorldGameplayTag::GameplayCue_Ability_LiftBrick_Place()
 	return FGameplayTag::RequestGameplayTag(TEXT("GameplayCue.Ability.LiftBrick.Place"));
 }
 
+FGameplayTag WjWorldGameplayTag::Buff_SpeedBoost()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("Buff.SpeedBoost"));
+}
+
+FGameplayTag WjWorldGameplayTag::Buff_SuperPush()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("Buff.SuperPush"));
+}
+
+FGameplayTag WjWorldGameplayTag::Buff_Shield()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("Buff.Shield"));
+}
+
 FGameplayTag WjWorldGameplayTag::GameplayCue_Ability_Push()
 {
 	return FGameplayTag::RequestGameplayTag(TEXT("GameplayCue.Ability.Push"));
+}
+
+FGameplayTag WjWorldGameplayTag::GameplayCue_Sumo_PowerUp_Pickup()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("GameplayCue.Sumo.PowerUp.Pickup"));
 }

@@ -21,6 +21,7 @@ public:
 
 	//Ability
 	static FGameplayTag Ability_NormalAttack();
+	static FGameplayTag Ability_SpawnBrick();
 	static FGameplayTag Ability_LiftBrick();
 	static FGameplayTag Ability_Push();
 
@@ -37,10 +38,16 @@ public:
 	//Data (SetByCaller용)
 	static FGameplayTag Data_Cooldown();
 
+	//Buff (파워업)
+	static FGameplayTag Buff_SpeedBoost();
+	static FGameplayTag Buff_SuperPush();
+	static FGameplayTag Buff_Shield();
+
 	//GameplayCue (사운드/VFX)
 	static FGameplayTag GameplayCue_Ability_NormalAttack();
 	static FGameplayTag GameplayCue_Ability_SpawnBrick();
 	static FGameplayTag GameplayCue_Ability_LiftBrick();
 	static FGameplayTag GameplayCue_Ability_LiftBrick_Place();
 	static FGameplayTag GameplayCue_Ability_Push();
+	static FGameplayTag GameplayCue_Sumo_PowerUp_Pickup();
 };

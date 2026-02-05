@@ -14,6 +14,7 @@ void USumoPlayerDataComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProper
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(USumoPlayerDataComponent, bIsAlive);
+	DOREPLIFETIME(USumoPlayerDataComponent, TotalScore);
 }
 
 void USumoPlayerDataComponent::SetAlive(bool bNewAlive)
@@ -28,6 +29,16 @@ void USumoPlayerDataComponent::SetAlive(bool bNewAlive)
 void USumoPlayerDataComponent::OnEliminated()
 {
 	SetAlive(false);
+}
+
+void USumoPlayerDataComponent::ResetForNewRound()
+{
+	SetAlive(true);
+}
+
+void USumoPlayerDataComponent::AddScore(int32 InScore)
+{
+	TotalScore += InScore;
 }
 
 void USumoPlayerDataComponent::OnRep_IsAlive()

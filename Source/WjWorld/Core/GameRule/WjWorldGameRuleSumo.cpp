@@ -8,10 +8,17 @@
 #include "Core/Play/WjWorldGameModePlay.h"
 #include "Core/GameData/SumoGameDataComponent.h"
 #include "Core/GameData/SumoPlayerDataComponent.h"
+#include "GamePlay/Sumo/SumoFloorRingActor.h"
+#include "GamePlay/Sumo/SumoPowerUpActor.h"
 #include "Stats/WjWorldStatsSubsystem.h"
 #include "Stats/WjWorldStatTypes.h"
+#include "WjWorldGameplayTag.h"
+#include "AbilitySystemComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 #include "WjWorldLogCategories.h"
+#include "EngineUtils.h"
+#include "Kismet/GameplayStatics.h"
 
 void UWjWorldGameRuleSumo::Initialize(AWjWorldGameModePlay* InGameMode)
 {
@@ -20,7 +27,24 @@ void UWjWorldGameRuleSumo::Initialize(AWjWorldGameModePlay* InGameMode)
 	GameDataComponentClass = USumoGameDataComponent::StaticClass();
 	PlayerDataComponentClass = USumoPlayerDataComponent::StaticClass();
 
-	UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Initialized"));
+	// MapOption???�른 ?�정 조정
+	if (InGameMode)
+	{
+		const FString& MapOpt = InGameMode->GetMapOption();
+		if (MapOpt.Equals(TEXT("Bridge"), ESearchCase::IgnoreCase))
+		{
+			ShrinkInterval = 15.f;
+			PowerUpSpawnInterval = 6.f;
+		}
+		else if (MapOpt.Equals(TEXT("Obstacle"), ESearchCase::IgnoreCase))
+		{
+			ShrinkInterval = 12.f;
+			PowerUpSpawnInterval = 10.f;
+		}
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Initialized (ShrinkInterval=%.1f, PowerUpInterval=%.1f)"),
+		ShrinkInterval, PowerUpSpawnInterval);
 }
 
 void UWjWorldGameRuleSumo::OnGameReady()
@@ -29,7 +53,22 @@ void UWjWorldGameRuleSumo::OnGameReady()
 
 	Super::OnGameReady();
 
-	UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Game Ready - Players: %d"), TotalPlayerCount);
+	// 바닥 �??�집
+	CollectFloorRings();
+
+	// GameData???�운???�보 ?�정
+	AWjWorldGameStatePlay* GameState = GetGameStatePlay();
+	if (GameState)
+	{
+		USumoGameDataComponent* GameData = GameState->GetGameData<USumoGameDataComponent>();
+		if (GameData)
+		{
+			GameData->SetMaxRounds(MaxRounds);
+		}
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Game Ready - Players: %d, FloorRings: %d"),
+		TotalPlayerCount, FloorRings.Num());
 }
 
 void UWjWorldGameRuleSumo::OnGameStart()
@@ -39,11 +78,24 @@ void UWjWorldGameRuleSumo::OnGameStart()
 	Super::OnGameStart();
 
 	bIsGameStarted = true;
+	CurrentRound = 1;
+	bIsRoundActive = true;
 
-	UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Game Started - Players: %d (Min: %d)"),
-		TotalPlayerCount, MinimumPlayerCount);
+	// GameData ?�운???�데?�트
+	AWjWorldGameStatePlay* GameState = GetGameStatePlay();
+	if (GameState)
+	{
+		USumoGameDataComponent* GameData = GameState->GetGameData<USumoGameDataComponent>();
+		if (GameData)
+		{
+			GameData->SetCurrentRound(CurrentRound);
+		}
+	}
 
-	// 엣지 케이스: 플레이어 없음
+	UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Game Started - Round %d/%d, Players: %d (Min: %d)"),
+		CurrentRound, MaxRounds, TotalPlayerCount, MinimumPlayerCount);
+
+	// ?��? 케?�스: ?�레?�어 ?�음
 	if (TotalPlayerCount <= 0)
 	{
 		UE_LOG(LogWjWorld, Warning, TEXT("GameRuleSumo: No players, ending game"));
@@ -53,7 +105,7 @@ void UWjWorldGameRuleSumo::OnGameStart()
 		return;
 	}
 
-	// 엣지 케이스: 솔로 플레이어
+	// ?��? 케?�스: ?�로 ?�레?�어
 	if (TotalPlayerCount == 1 && AlivePlayerCount == 1)
 	{
 		UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Solo player wins by default"));
@@ -71,13 +123,19 @@ void UWjWorldGameRuleSumo::OnGameEnd()
 {
 	if (!HasAuthority()) return;
 
+	// ?�?�머 ?�리
+	if (UWorld* World = GetWorld())
+	{
+		World->GetTimerManager().ClearTimer(RoundResetTimerHandle);
+	}
+
 	AWjWorldGameStatePlay* GameState = GetGameStatePlay();
 	if (GameState)
 	{
 		if (WinnerPlayer.IsValid())
 		{
 			GameState->SetGameResult(WinnerPlayer->GetPlayerName(), true);
-			UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Winner: %s"), *WinnerPlayer->GetPlayerName());
+			UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Final Winner: %s"), *WinnerPlayer->GetPlayerName());
 		}
 		else
 		{
@@ -85,6 +143,9 @@ void UWjWorldGameRuleSumo::OnGameEnd()
 			UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: No winner (Draw)"));
 		}
 	}
+
+	// ?�워???�리
+	CleanupPowerUps();
 
 	Super::OnGameEnd();
 }
@@ -96,6 +157,7 @@ void UWjWorldGameRuleSumo::OnPlayerJoined(AWjWorldPlayerStatePlay* Player)
 	if (!HasAuthority() || !Player) return;
 
 	AlivePlayers.Add(Player);
+	AllPlayers.Add(Player);
 	AlivePlayerCount++;
 	TotalPlayerCount++;
 
@@ -111,7 +173,7 @@ void UWjWorldGameRuleSumo::OnPlayerLeft(AWjWorldPlayerStatePlay* Player)
 
 	if (!HasAuthority() || !Player) return;
 
-	// 캐릭터 제거 처리
+	// 캐릭???�거 처리
 	APawn* PlayerPawn = Player->GetPawn();
 	AWjWorldCharacterPlay* PlayerCharacter = Cast<AWjWorldCharacterPlay>(PlayerPawn);
 	if (PlayerCharacter && !PlayerCharacter->IsEliminated())
@@ -123,6 +185,7 @@ void UWjWorldGameRuleSumo::OnPlayerLeft(AWjWorldPlayerStatePlay* Player)
 	{
 		AlivePlayerCount--;
 	}
+	AllPlayers.Remove(Player);
 	TotalPlayerCount--;
 
 	UpdateGameData();
@@ -130,7 +193,7 @@ void UWjWorldGameRuleSumo::OnPlayerLeft(AWjWorldPlayerStatePlay* Player)
 	UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Player Left - %s, Alive: %d, Total: %d"),
 		*Player->GetPlayerName(), AlivePlayerCount, TotalPlayerCount);
 
-	// 모든 플레이어 이탈
+	// 모든 ?�레?�어 ?�탈
 	if (TotalPlayerCount <= 0)
 	{
 		bGameOverConditionMet = true;
@@ -139,22 +202,10 @@ void UWjWorldGameRuleSumo::OnPlayerLeft(AWjWorldPlayerStatePlay* Player)
 		return;
 	}
 
-	// 승리 조건 체크
-	if (bIsGameStarted && CheckWinCondition())
+	// ?�운???�리 조건 체크
+	if (bIsGameStarted && bIsRoundActive && AlivePlayerCount <= 1)
 	{
-		if (AlivePlayerCount == 1 && AlivePlayers.Num() > 0)
-		{
-			for (const auto& AlivePlayer : AlivePlayers)
-			{
-				if (AlivePlayer.IsValid())
-				{
-					WinnerPlayer = AlivePlayer;
-					break;
-				}
-			}
-		}
-		bGameOverConditionMet = true;
-		OnGameEnd();
+		OnRoundEnd();
 	}
 }
 
@@ -163,73 +214,298 @@ void UWjWorldGameRuleSumo::OnPlayerEliminated(AWjWorldCharacterPlay* EliminatedC
 	if (!HasAuthority() || !EliminatedCharacter) return;
 	if (EliminatedCharacter->IsEliminated()) return;
 
-	// 킬 스탯 기록
+	AWjWorldPlayerStatePlay* VictimPS = EliminatedCharacter->GetPlayerState<AWjWorldPlayerStatePlay>();
+	FString VictimName = VictimPS ? VictimPS->GetPlayerName() : TEXT("Unknown");
+
+	// ???�탯 기록 + ?�피??
 	AWjWorldCharacterPlay* Attacker = EliminatedCharacter->GetLastAttacker();
+	FString KillerName;
 	if (Attacker && !Attacker->IsEliminated())
 	{
 		AWjWorldPlayerStatePlay* AttackerPS = Attacker->GetPlayerState<AWjWorldPlayerStatePlay>();
 		if (AttackerPS)
 		{
+			KillerName = AttackerPS->GetPlayerName();
 			RecordKillStat(AttackerPS);
-			UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Kill recorded for %s"),
-				*AttackerPS->GetPlayerName());
 		}
 	}
 
-	// 캐릭터 제거
+	// ?�피??브로?�캐?�트
+	BroadcastKillFeed(KillerName, VictimName);
+
+	// 캐릭???�거
 	EliminatedCharacter->OnEliminated();
 
-	AWjWorldPlayerStatePlay* PlayerState = EliminatedCharacter->GetPlayerState<AWjWorldPlayerStatePlay>();
-	if (PlayerState)
+	// PlayerData ?�데?�트
+	if (VictimPS)
 	{
-		if (AlivePlayers.Remove(PlayerState) > 0)
+		if (USumoPlayerDataComponent* PlayerData = VictimPS->GetGameData<USumoPlayerDataComponent>())
+		{
+			PlayerData->OnEliminated();
+		}
+
+		// ?�락 ?�서 기록
+		EliminationOrder.Add(VictimPS);
+
+		if (AlivePlayers.Remove(VictimPS) > 0)
 		{
 			AlivePlayerCount--;
 		}
 
-		UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Player eliminated: %s. Alive: %d"),
-			*PlayerState->GetPlayerName(), AlivePlayerCount);
+		UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Player eliminated: %s. Alive: %d (Round %d)"),
+			*VictimPS->GetPlayerName(), AlivePlayerCount, CurrentRound);
 	}
 
 	UpdateGameData();
 
-	// 동시 전원 탈락
+	// ?�시 ?�원 ?�락
 	if (AlivePlayerCount == 0)
 	{
+		OnRoundEnd();
+		return;
+	}
+
+	// ?�운???�리 조건 (1�??�하 ?�존)
+	if (bIsGameStarted && bIsRoundActive && AlivePlayerCount <= 1)
+	{
+		OnRoundEnd();
+	}
+}
+
+void UWjWorldGameRuleSumo::BroadcastKillFeed(const FString& KillerName, const FString& VictimName)
+{
+	AWjWorldGameStatePlay* GameState = GetGameStatePlay();
+	if (!GameState) return;
+
+	USumoGameDataComponent* GameData = GameState->GetGameData<USumoGameDataComponent>();
+	if (!GameData) return;
+
+	FString FeedText;
+	if (KillerName.IsEmpty())
+	{
+		FeedText = FString::Printf(TEXT("%s fell off!"), *VictimName);
+	}
+	else
+	{
+		FeedText = FString::Printf(TEXT("%s eliminated %s"), *KillerName, *VictimName);
+	}
+
+	GameData->SetKillFeedText(FeedText);
+}
+
+// --- ?�운???�스??---
+
+void UWjWorldGameRuleSumo::OnRoundEnd()
+{
+	if (!bIsRoundActive) return;
+	bIsRoundActive = false;
+
+	UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Round %d ended. Alive: %d"), CurrentRound, AlivePlayerCount);
+
+	// ?�존?�도 ?�락 ?�서??추�? (?�운???�승)
+	if (AlivePlayerCount == 1)
+	{
+		for (const auto& AlivePlayer : AlivePlayers)
+		{
+			if (AlivePlayer.IsValid())
+			{
+				EliminationOrder.Add(AlivePlayer);
+				break;
+			}
+		}
+	}
+
+	// ?�위 ?�수 부??
+	AwardRoundScores();
+	UpdatePlayerScores();
+
+	// 최종 ?�운?�인지 체크
+	if (CurrentRound >= MaxRounds)
+	{
+		// 최종 ?�자 결정 (총점 기�?)
+		WinnerPlayer = GetFinalWinner();
 		bGameOverConditionMet = true;
-		WinnerPlayer = nullptr;
 		OnGameEnd();
 		return;
 	}
 
-	// 승리 조건 체크
-	if (bIsGameStarted && CheckWinCondition())
+	// ?�음 ?�운??준�?
+	bIsResettingRound = true;
+	UWorld* World = GetWorld();
+	if (World)
 	{
-		bGameOverConditionMet = true;
-
-		if (AlivePlayerCount == 1 && AlivePlayers.Num() > 0)
-		{
-			for (const auto& AlivePlayer : AlivePlayers)
-			{
-				if (AlivePlayer.IsValid())
-				{
-					WinnerPlayer = AlivePlayer;
-					break;
-				}
-			}
-		}
-
-		UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Win condition met! Winner: %s"),
-			WinnerPlayer.IsValid() ? *WinnerPlayer->GetPlayerName() : TEXT("None"));
-
-		OnGameEnd();
+		World->GetTimerManager().SetTimer(RoundResetTimerHandle, FTimerDelegate::CreateUObject(this, &UWjWorldGameRuleSumo::ResetRound),
+			RoundResetDelay, false);
 	}
 }
+
+void UWjWorldGameRuleSumo::AwardRoundScores()
+{
+	// ?�락 ?�서 ??��?�로 ?�수 부??
+	// �?번째 ?�락 = 1?? ??번째 = 2?? ... 마�?�??�존 = N??
+	int32 NumPlayers = EliminationOrder.Num();
+	for (int32 i = 0; i < NumPlayers; i++)
+	{
+		if (EliminationOrder[i].IsValid())
+		{
+			int32 Score = i + 1; // �??�락??1?? 마�?�??�존??N??
+			AWjWorldPlayerStatePlay* PS = EliminationOrder[i].Get();
+			if (USumoPlayerDataComponent* PlayerData = PS->GetGameData<USumoPlayerDataComponent>())
+			{
+				PlayerData->AddScore(Score);
+				UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Round score - %s: +%d (Total: %d)"),
+					*PS->GetPlayerName(), Score, PlayerData->GetTotalScore());
+			}
+		}
+	}
+}
+
+void UWjWorldGameRuleSumo::UpdatePlayerScores()
+{
+	AWjWorldGameStatePlay* GameState = GetGameStatePlay();
+	if (!GameState) return;
+
+	USumoGameDataComponent* GameData = GameState->GetGameData<USumoGameDataComponent>();
+	if (!GameData) return;
+
+	TArray<FSumoPlayerScore> Scores;
+	for (const auto& WeakPS : AllPlayers)
+	{
+		if (!WeakPS.IsValid()) continue;
+		AWjWorldPlayerStatePlay* PS = WeakPS.Get();
+		USumoPlayerDataComponent* PlayerData = PS->GetGameData<USumoPlayerDataComponent>();
+
+		FSumoPlayerScore Entry;
+		Entry.PlayerName = PS->GetPlayerName();
+		Entry.Score = PlayerData ? PlayerData->GetTotalScore() : 0;
+		Scores.Add(Entry);
+	}
+
+	// ?�수 ?�림차순 ?�렬
+	Scores.Sort([](const FSumoPlayerScore& A, const FSumoPlayerScore& B) { return A.Score > B.Score; });
+	GameData->SetPlayerScores(Scores);
+}
+
+AWjWorldPlayerStatePlay* UWjWorldGameRuleSumo::GetFinalWinner() const
+{
+	AWjWorldPlayerStatePlay* BestPlayer = nullptr;
+	int32 BestScore = -1;
+
+	for (const auto& WeakPS : AllPlayers)
+	{
+		if (!WeakPS.IsValid()) continue;
+		AWjWorldPlayerStatePlay* PS = WeakPS.Get();
+		USumoPlayerDataComponent* PlayerData = PS->GetGameData<USumoPlayerDataComponent>();
+		int32 Score = PlayerData ? PlayerData->GetTotalScore() : 0;
+
+		if (Score > BestScore)
+		{
+			BestScore = Score;
+			BestPlayer = PS;
+		}
+	}
+
+	return BestPlayer;
+}
+
+void UWjWorldGameRuleSumo::ResetRound()
+{
+	bIsResettingRound = false;
+
+	UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Resetting for round %d"), CurrentRound + 1);
+
+	UWorld* World = GetWorld();
+	if (!World) return;
+
+	// ?�워???�리
+	CleanupPowerUps();
+
+	// 버프 ?�리
+	RemoveAllPlayerBuffs();
+
+	// ?�랫??복원
+	for (ASumoFloorRingActor* Ring : FloorRings)
+	{
+		if (Ring)
+		{
+			Ring->ResetRing();
+		}
+	}
+	CurrentShrinkLevel = 0;
+	TimeSinceLastShrink = 0.f;
+	bIsWarningActive = false;
+	WarningElapsed = 0.f;
+	TimeSinceLastPowerUp = 0.f;
+
+	// ?�락 ?�서 초기??
+	EliminationOrder.Empty();
+
+	// 모든 ?�레?�어 리스??
+	AlivePlayers.Empty();
+	AlivePlayerCount = 0;
+
+	AWjWorldGameModePlay* GM = GetGameModePlay();
+	if (!GM) return;
+
+	for (const auto& WeakPS : AllPlayers)
+	{
+		if (!WeakPS.IsValid()) continue;
+		AWjWorldPlayerStatePlay* PS = WeakPS.Get();
+
+		// PlayerData 리셋
+		if (USumoPlayerDataComponent* PlayerData = PS->GetGameData<USumoPlayerDataComponent>())
+		{
+			PlayerData->ResetForNewRound();
+		}
+
+		AlivePlayers.Add(PS);
+		AlivePlayerCount++;
+
+		// 캐릭??리스??
+		APlayerController* PC = Cast<APlayerController>(PS->GetOwner());
+		if (PC)
+		{
+			// 기존 Pawn ?�괴
+			if (APawn* OldPawn = PC->GetPawn())
+			{
+				OldPawn->Destroy();
+			}
+			GM->RestartPlayer(PC);
+		}
+	}
+
+	// ?�운???�작
+	OnRoundStart();
+}
+
+void UWjWorldGameRuleSumo::OnRoundStart()
+{
+	CurrentRound++;
+	bIsRoundActive = true;
+
+	// GameData ?�데?�트
+	AWjWorldGameStatePlay* GameState = GetGameStatePlay();
+	if (GameState)
+	{
+		USumoGameDataComponent* GameData = GameState->GetGameData<USumoGameDataComponent>();
+		if (GameData)
+		{
+			GameData->SetCurrentRound(CurrentRound);
+		}
+	}
+
+	UpdateGameData();
+
+	UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Round %d/%d started. Players: %d"),
+		CurrentRound, MaxRounds, AlivePlayerCount);
+}
+
+// --- ?�리 조건 ---
 
 bool UWjWorldGameRuleSumo::CheckWinCondition() const
 {
 	if (!bIsGameStarted) return false;
-	return AlivePlayerCount <= 1;
+	return bGameOverConditionMet;
 }
 
 AWjWorldPlayerStatePlay* UWjWorldGameRuleSumo::GetWinner() const
@@ -237,18 +513,23 @@ AWjWorldPlayerStatePlay* UWjWorldGameRuleSumo::GetWinner() const
 	return WinnerPlayer.Get();
 }
 
+// --- ??---
+
 void UWjWorldGameRuleSumo::TickGameRule(float DeltaTime)
 {
 	if (!HasAuthority()) return;
-	if (!bIsGameStarted || bGameOverConditionMet) return;
+	if (!bIsGameStarted || bGameOverConditionMet || bIsResettingRound) return;
 
-	CheckFallenPlayers();
+	if (bIsRoundActive)
+	{
+		CheckFallenPlayers();
+		TickShrinkPlatform(DeltaTime);
+		TickPowerUpSpawn(DeltaTime);
+	}
 }
 
 void UWjWorldGameRuleSumo::CheckFallenPlayers()
 {
-	// 살아있는 플레이어 중 Z 위치가 FallThresholdZ 미만인 플레이어 제거
-	// 순회 중 배열 변경을 방지하기 위해 제거 대상을 먼저 수집
 	TArray<AWjWorldCharacterPlay*> FallenCharacters;
 
 	for (const auto& WeakPS : AlivePlayers)
@@ -302,3 +583,200 @@ void UWjWorldGameRuleSumo::RecordKillStat(AWjWorldPlayerStatePlay* KillerPlayerS
 	UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Recorded kill for %s"),
 		*KillerPlayerState->GetPlayerName());
 }
+
+// --- 축소 ?�랫??---
+
+void UWjWorldGameRuleSumo::CollectFloorRings()
+{
+	FloorRings.Empty();
+
+	UWorld* World = GetWorld();
+	if (!World) return;
+
+	for (TActorIterator<ASumoFloorRingActor> It(World); It; ++It)
+	{
+		FloorRings.Add(*It);
+	}
+
+	// RingOrder ?�림차순 ?�렬 (?�곽부???�괴)
+	FloorRings.Sort([](const ASumoFloorRingActor& A, const ASumoFloorRingActor& B)
+	{
+		return A.RingOrder > B.RingOrder;
+	});
+
+	UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Collected %d floor rings"), FloorRings.Num());
+}
+
+void UWjWorldGameRuleSumo::TickShrinkPlatform(float DeltaTime)
+{
+	if (FloorRings.Num() == 0) return;
+
+	// Warning 중이�?경고 ?�간 체크
+	if (bIsWarningActive)
+	{
+		WarningElapsed += DeltaTime;
+		if (WarningElapsed >= WarningDuration)
+		{
+			// Warning ?�료 ??�??�괴
+			for (ASumoFloorRingActor* Ring : FloorRings)
+			{
+				if (Ring && Ring->GetRingState() == ESumoRingState::Warning)
+				{
+					Ring->DestroyRing();
+				}
+			}
+			bIsWarningActive = false;
+			WarningElapsed = 0.f;
+			CurrentShrinkLevel++;
+		}
+		return;
+	}
+
+	TimeSinceLastShrink += DeltaTime;
+	if (TimeSinceLastShrink >= ShrinkInterval)
+	{
+		TimeSinceLastShrink = 0.f;
+
+		// ?�음 ?�괴 ?�??�?찾기
+		ASumoFloorRingActor* TargetRing = nullptr;
+		for (ASumoFloorRingActor* Ring : FloorRings)
+		{
+			if (Ring && Ring->GetRingState() == ESumoRingState::Active && Ring->RingOrder > 0)
+			{
+				TargetRing = Ring;
+				break; // ?��? ?�림차순?��?�?�?Active가 최외�?
+			}
+		}
+
+		if (TargetRing)
+		{
+			// 같�? RingOrder??모든 링에 Warning ?�작
+			int32 TargetOrder = TargetRing->RingOrder;
+			for (ASumoFloorRingActor* Ring : FloorRings)
+			{
+				if (Ring && Ring->RingOrder == TargetOrder && Ring->GetRingState() == ESumoRingState::Active)
+				{
+					Ring->StartWarning();
+				}
+			}
+
+			bIsWarningActive = true;
+			WarningElapsed = 0.f;
+
+			UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Shrink warning - RingOrder %d"), TargetOrder);
+		}
+	}
+}
+
+// --- ?�워??---
+
+void UWjWorldGameRuleSumo::TickPowerUpSpawn(float DeltaTime)
+{
+	if (!PowerUpActorClass) return;
+
+	TimeSinceLastPowerUp += DeltaTime;
+	if (TimeSinceLastPowerUp >= PowerUpSpawnInterval)
+	{
+		TimeSinceLastPowerUp = 0.f;
+
+		// ?�멸???�워???�리
+		ActivePowerUps.RemoveAll([](const TWeakObjectPtr<ASumoPowerUpActor>& Ptr) { return !Ptr.IsValid(); });
+
+		if (ActivePowerUps.Num() < MaxActivePowerUps)
+		{
+			SpawnPowerUp();
+		}
+	}
+}
+
+void UWjWorldGameRuleSumo::SpawnPowerUp()
+{
+	UWorld* World = GetWorld();
+	if (!World || !PowerUpActorClass) return;
+
+	FVector SpawnLoc = GetRandomSpawnLocationOnActiveRings();
+	SpawnLoc.Z += 100.f; // ?�랫???�에 ?�우�?
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	ASumoPowerUpActor* PowerUp = World->SpawnActor<ASumoPowerUpActor>(PowerUpActorClass, SpawnLoc, FRotator::ZeroRotator, SpawnParams);
+	if (PowerUp)
+	{
+		// ?�덤 ?�???�정
+		int32 RandType = FMath::RandRange(0, 2);
+		PowerUp->PowerUpType = static_cast<ESumoPowerUpType>(RandType);
+
+		ActivePowerUps.Add(PowerUp);
+
+		UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Spawned PowerUp type %d at %s"), RandType, *SpawnLoc.ToString());
+	}
+}
+
+FVector UWjWorldGameRuleSumo::GetRandomSpawnLocationOnActiveRings() const
+{
+	// Active ?�태??�?�??�나�??�덤 ?�택
+	TArray<ASumoFloorRingActor*> ActiveRings;
+	for (ASumoFloorRingActor* Ring : FloorRings)
+	{
+		if (Ring && Ring->GetRingState() == ESumoRingState::Active)
+		{
+			ActiveRings.Add(Ring);
+		}
+	}
+
+	if (ActiveRings.Num() > 0)
+	{
+		ASumoFloorRingActor* ChosenRing = ActiveRings[FMath::RandRange(0, ActiveRings.Num() - 1)];
+		FVector Center = ChosenRing->GetActorLocation();
+		float Radius = ChosenRing->RingRadius;
+
+		// �????�덤 ?�치
+		float Angle = FMath::FRandRange(0.f, 2.f * PI);
+		float Dist = FMath::FRandRange(0.f, Radius);
+		return Center + FVector(FMath::Cos(Angle) * Dist, FMath::Sin(Angle) * Dist, 0.f);
+	}
+
+	return FVector::ZeroVector;
+}
+
+void UWjWorldGameRuleSumo::CleanupPowerUps()
+{
+	for (const auto& WeakPU : ActivePowerUps)
+	{
+		if (WeakPU.IsValid())
+		{
+			WeakPU->Destroy();
+		}
+	}
+	ActivePowerUps.Empty();
+}
+
+void UWjWorldGameRuleSumo::RemoveAllPlayerBuffs()
+{
+	for (const auto& WeakPS : AllPlayers)
+	{
+		if (!WeakPS.IsValid()) continue;
+
+		APawn* Pawn = WeakPS->GetPawn();
+		AWjWorldCharacterPlay* Character = Cast<AWjWorldCharacterPlay>(Pawn);
+		if (!Character) continue;
+
+		UAbilitySystemComponent* ASC = Character->GetAbilitySystemComponent();
+		if (!ASC) continue;
+
+		// 모든 버프 ?�그 ?�거
+		ASC->RemoveLooseGameplayTag(WjWorldGameplayTag::Buff_SpeedBoost());
+		ASC->RemoveLooseGameplayTag(WjWorldGameplayTag::Buff_SuperPush());
+		ASC->RemoveLooseGameplayTag(WjWorldGameplayTag::Buff_Shield());
+
+		// ?�동?�도 복원 (SpeedBoost가 ?�성 중이?�을 ???�음)
+		if (UCharacterMovementComponent* MC = Character->GetCharacterMovement())
+		{
+			// 기본값으�?복원 (CDO?�서)
+			MC->MaxWalkSpeed = Character->GetClass()->GetDefaultObject<ACharacter>()->GetCharacterMovement()->MaxWalkSpeed;
+		}
+	}
+}
+
+

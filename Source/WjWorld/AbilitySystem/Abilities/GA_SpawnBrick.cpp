@@ -35,6 +35,11 @@ UGA_SpawnBrick::UGA_SpawnBrick()
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalPredicted;
 
+	// AssetTag 설정 (AllowedAbilityTags 체크용)
+	FGameplayTagContainer AssetTags;
+	AssetTags.AddTag(WjWorldGameplayTag::Ability_SpawnBrick());
+	SetAssetTags(AssetTags);
+
 	// Preview 중에 이 태그 부여
 	ActivationOwnedTags.AddTag(WjWorldGameplayTag::State_SpawnBrickPreview());
 

@@ -21,7 +21,10 @@ Source/WjWorld/
 │   │   └── WjWorldCharacterAttributeSet  # HP, MaxSpawnBrickCharges, SpawnBrickCharges 등
 │   ├── Effects/                       # GameplayEffect 파일들
 │   │   ├── GE_AbilityCooldown         # 어빌리티 쿨다운
-│   │   └── GE_SpawnBrickChargeCost    # SpawnBrick 충전 비용
+│   │   ├── GE_SpawnBrickChargeCost    # SpawnBrick 충전 비용
+│   │   ├── GE_SumoSpeedBoost         # Sumo 이동속도 버프 (참조용 GE)
+│   │   ├── GE_SumoSuperPush          # Sumo 강화 넉백 버프 (참조용 GE)
+│   │   └── GE_SumoShield             # Sumo 보호막 버프 (참조용 GE)
 │   └── WjWorldAbilitySystemComponent  # ASC 컴포넌트
 ├── Core/                              # 핵심 게임 로직
 │   ├── Base/                          # 베이스 클래스들
@@ -105,6 +108,9 @@ Source/WjWorld/
 │   │   ├── QuestState
 │   │   ├── QuestFactory
 │   │   └── QuestSubsystem
+│   ├── Sumo/                          # Sumo Knockoff 게임플레이
+│   │   ├── SumoFloorRingActor        # 축소 플랫폼 링 (Active/Warning/Destroyed)
+│   │   └── SumoPowerUpActor          # 파워업 픽업 (Speed/SuperPush/Shield)
 │   └── Wall/                          # Approaching Wall 게임플레이
 │       ├── WjWorldBrickActor          # 벽돌 액터
 │       ├── WjWorldBrickComponent      # 벽돌 컴포넌트
@@ -144,7 +150,8 @@ Source/WjWorld/
     │   └── CosmeticPreviewPanel        # 3D 프리뷰 패널
     └── HUD/
         ├── GameplayGlobalHUDWidget     # 게임플레이 글로벌 HUD
-        └── ApproachingWallHUDWidget    # Approaching Wall 전용 HUD
+        ├── ApproachingWallHUDWidget    # Approaching Wall 전용 HUD
+        └── SumoHUDWidget              # Sumo Knockoff 전용 HUD (킬피드, 라운드)
 ```
 
 ## 주요 클래스 계층
@@ -213,12 +220,16 @@ AnimInstance: UWjWorldAnimInstance (LiftBrickBlendWeight, GameplayTag 기반 상
 ### Sumo Knockoff 미니게임
 두 번째 미니게임. 원형 플랫폼 위에서 상대를 밀어 떨어뜨리는 PvP 서바이벌.
 - **WjWorldGameRuleSumo**: TickGameRule에서 매 프레임 Z 위치 체크, FallThresholdZ(-500) 미만 시 Eliminate
-- **GA_Push**: 전방 구형 오버랩 → LaunchCharacter() 넉백, SetLastAttacker() 킬 추적
-- **SumoGameDataComponent**: AlivePlayerCount, TotalPlayerCount (Replicated)
-- **SumoPlayerDataComponent**: bIsAlive (Replicated + OnRep + Delegate)
-- **승리 조건**: AlivePlayerCount <= 1 && bIsGameStarted
+- **GA_Push**: 전방 구형 오버랩 → LaunchCharacter() 넉백, SetLastAttacker() 킬 추적, SuperPush 배율, CameraShake 피격 피드백
+- **SumoGameDataComponent**: AlivePlayerCount, TotalPlayerCount, KillFeed (LastKillFeedText+Counter), Round (CurrentRound/MaxRounds), FSumoPlayerScore 배열 (모두 Replicated)
+- **SumoPlayerDataComponent**: bIsAlive, TotalScore (Replicated + OnRep + Delegate)
+- **SumoFloorRingActor**: 축소 플랫폼 링 (ESumoRingState: Active/Warning/Destroyed), RingOrder 기반 외곽부터 파괴
+- **SumoPowerUpActor**: 파워업 픽업 (ESumoPowerUpType: SpeedBoost/SuperPush/Shield), SphereComponent 오버랩, AddLooseGameplayTag 버프
+- **라운드 시스템**: 3라운드, 탈락 순서 기반 점수 배분, 라운드 간 링/파워업/플레이어 리셋
+- **승리 조건**: 라운드 내 AlivePlayerCount <= 1, 최종 TotalScore 기준 우승자
+- **맵 변형**: MapOption URL 파라미터 (Default/Bridge/Obstacle), 맵별 설정 분기
 - **엣지 케이스**: 솔로 자동 승리, 동시 탈락, 전원 이탈
-- **상태**: 코드 완료, 에디터 세팅 필요 (맵, 카탈로그, 입력 바인딩)
+- **상태**: C++ 코드 완료, 에디터 세팅 필요 (BP 프로퍼티, 링 배치, HUD 위젯, 파워업 BP)
 
 ### Gameplay Ability System
 GAS 기반 어빌리티 시스템. `UWjWorldGameplayAbilityBase`를 상속받아 각 어빌리티 구현.
@@ -227,9 +238,9 @@ GAS 기반 어빌리티 시스템. `UWjWorldGameplayAbilityBase`를 상속받아
 - **GA_NormalAttack**: 4방향 스냅(Yaw 기반) 벽돌 공격, BrickType별 처리 (Standard 파괴 불가, Explosive/Moving/Destructible)
 - **GA_SpawnBrick**: 충전 기반 벽돌 배치, Preview → Confirm/Cancel 패턴, GE 기반 충전 리필, 어트리뷰트 변경 위임
 - **GA_LiftBrick**: 벽돌 재배치 어빌리티, Moving/Destructible 벽돌 들어올리기, Cancel 시 원래 위치 복원, 들고 있는 벽돌 색상 리플리케이션
-- **GA_Push**: Sumo 넉백 어빌리티, 전방 구형 오버랩 → LaunchCharacter(), PushForce=1200, CooldownDuration=1.5s, SetLastAttacker()
+- **GA_Push**: Sumo 넉백 어빌리티, 전방 구형 오버랩 → LaunchCharacter(), PushForce=1200, CooldownDuration=1.5s, SetLastAttacker(), SuperPushMultiplier(2x), PushHitCameraShake
 - **AttributeSet**: HP, MaxSpawnBrickCharges, SpawnBrickCharges, OnRep 콜백
-- **Effects**: GE_AbilityCooldown (쿨다운), GE_SpawnBrickChargeCost (충전 비용)
+- **Effects**: GE_AbilityCooldown (쿨다운), GE_SpawnBrickChargeCost (충전 비용), GE_SumoSpeedBoost/SuperPush/Shield (참조용 GE, 실제 버프는 AddLooseGameplayTag)
 
 ### GameplayTag 정의
 - `State_SpawnBrickPreview` - GA_SpawnBrick 활성 상태
@@ -239,6 +250,10 @@ GAS 기반 어빌리티 시스템. `UWjWorldGameplayAbilityBase`를 상속받아
 - `Ability_Push` - GA_Push 어빌리티 태그
 - `Cooldown_Push` - GA_Push 쿨다운 태그
 - `GameplayCue_Ability_Push` - Push 이펙트/사운드
+- `Buff_SpeedBoost` - Sumo 이동속도 버프
+- `Buff_SuperPush` - Sumo 강화 넉백 버프 (1회 소모)
+- `Buff_Shield` - Sumo 보호막 (제거 1회 무시)
+- `GameplayCue_Sumo_PowerUp_Pickup` - 파워업 획득 이펙트
 
 ### 코스메틱 시스템
 Steam 무료 출시 후 유료 코스메틱 판매를 위한 시스템. ItemId(FName) 기반 플랫폼 독립 식별.
@@ -397,13 +412,15 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
 - **Steam P2P 네트워킹** (SteamNetDriver via SocketSubsystemSteamIP, IpNetDriver 폴백)
 - **세션 관리 고도화** (Steam→NULL OSS 폴백, 검색 큐 패턴, 호스트 마이그레이션)
 - **빌드 자동화** (PackageAndUploadSteam.bat: 패키징→Steam content 복사→업로드)
-- **Sumo Knockoff 코드 구현** (GA_Push, GameRuleSumo, SumoGameData/PlayerDataComponent, 스탯)
+- **Sumo Knockoff 기본 코드 구현** (GA_Push, GameRuleSumo, SumoGameData/PlayerDataComponent, 스탯)
+- **Sumo Knockoff 기본 에디터 세팅 완료** (맵, 카탈로그 등록, BP, 입력 바인딩, 패키징 맵 목록, AllowedAbilityTags)
+- **Sumo Knockoff 6대 기능 코드 구현** (Push 히트 피드백, 킬피드, 축소 플랫폼, 라운드 시스템, 파워업, 맵 변형)
 - **미니게임별 어빌리티 제한 시스템** (AllowedAbilityTags, CanActivateAbility 오버라이드)
 - **스탯 네임스페이스 범용화** (StatNamespace 기반 동적 스탯 키)
 - **LAN SocketSubsystem 충돌 수정** (WjWorldLanNetDriver + ApplyNetDriverForMode 런타임 전환)
 
 ## 진행 중 / 미구현
-- **Sumo Knockoff 에디터 세팅** (맵 생성, 카탈로그 등록, 입력 바인딩, 패키징 맵 목록 추가)
+- Sumo Knockoff 6대 기능 에디터 세팅 (BP 생성/프로퍼티 할당, 링 배치, HUD 위젯, 파워업 비주얼)
 - 추가 미니게임 구현
 - Steam 정식 출시 준비
 

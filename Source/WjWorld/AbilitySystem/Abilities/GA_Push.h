@@ -7,12 +7,15 @@
 #include "GA_Push.generated.h"
 
 class UAnimMontage;
+class UCameraShakeBase;
 
 /**
  * 전방으로 밀치기 어빌리티 (Sumo 미니게임용)
  * - 전방 구형 오버랩으로 히트 캐릭터 감지
  * - LaunchCharacter()로 넉백 적용
  * - SetLastAttacker() 호출하여 킬 추적
+ * - SuperPush 버프 시 넉백 2배
+ * - 피격자 카메라 셰이크
  */
 UCLASS(Abstract)
 class WJWORLD_API UGA_Push : public UWjWorldGameplayAbilityBase
@@ -36,6 +39,14 @@ protected:
 	/** 위쪽으로 추가 힘 (공중에 살짝 띄우기) */
 	UPROPERTY(EditDefaultsOnly, Category = "Push")
 	float PushUpForce = 400.f;
+
+	/** SuperPush 배율 (Buff.SuperPush 태그 보유 시) */
+	UPROPERTY(EditDefaultsOnly, Category = "Push")
+	float SuperPushMultiplier = 2.f;
+
+	/** 피격자에게 적용할 카메라 셰이크 클래스 (BP에서 설정) */
+	UPROPERTY(EditDefaultsOnly, Category = "Push|Feedback")
+	TSubclassOf<UCameraShakeBase> PushHitCameraShake;
 
 	/** 공격 애니메이션 몽타주 (BP에서 설정, 없으면 즉시 실행) */
 	UPROPERTY(EditDefaultsOnly, Category = "Animation")

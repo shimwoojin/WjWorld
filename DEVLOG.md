@@ -74,7 +74,7 @@
   - Development Win64 패키징 → `Steam/content/` 복사 → `upload.bat` 실행
   - 각 단계 실패 시 즉시 중단, `steam_appid.txt` 자동 생성
 
-#### Sumo Knockoff 미니게임 코드 구현 (전체)
+#### Sumo Knockoff 미니게임 코드 구현 (기본)
 - **GA_Push 어빌리티** (`AbilitySystem/Abilities/GA_Push.h/.cpp`)
   - 전방 구형 오버랩 → 히트 캐릭터에 `LaunchCharacter()` 넉백
   - PushForce=1200, PushRange=300, PushUpForce=400, CooldownDuration=1.5s
@@ -88,6 +88,39 @@
 - **GameplayTag 추가**: `Ability.Push`, `Cooldown.Push`, `GameplayCue.Ability.Push`
 - **WjTypes**: `EWjWorldAbilityInputID::Ability6 = 6` 추가
 - **WjWorldStatTypes**: `WjWorldStats::Sumo` 네임스페이스 + Sumo 디스크립터
+
+#### Sumo Knockoff 6대 기능 추가 구현
+- **1. Push 히트 피드백** (`GA_Push.h/.cpp`)
+  - `PushHitCameraShake` (TSubclassOf<UCameraShakeBase>) 프로퍼티 추가
+  - 피격자에게 `ClientStartCameraShake()` 호출
+  - `SuperPushMultiplier` (기본 2.0) - Buff.SuperPush 태그 보유 시 Force 배율 적용 후 태그 소모
+- **2. 킬피드 시스템** (`SumoGameDataComponent`, `SumoHUDWidget`)
+  - `LastKillFeedText` + `KillFeedCounter` (ReplicatedUsing) → 클라이언트 자동 동기화
+  - `FOnSumoKillFeed` 델리게이트 → HUD에서 3초 표시 후 자동 숨김
+  - GameRuleSumo에서 Eliminate 시 "{Killer} knocked out {Victim}" 브로드캐스트
+- **3. 축소 플랫폼** (신규 `SumoFloorRingActor.h/.cpp`)
+  - `ESumoRingState` (Active/Warning/Destroyed), `RingOrder`+`RingRadius` 프로퍼티
+  - WarningMaterial 적용 → 일정 시간 후 Collision/Visibility 비활성화
+  - GameRuleSumo: `TickShrinkPlatform()` - ShrinkInterval마다 외곽 링 경고→파괴
+- **4. 라운드 시스템 (3라운드)** (`SumoGameDataComponent`, `SumoPlayerDataComponent`, `GameRuleSumo`)
+  - `CurrentRound`, `MaxRounds`, `FSumoPlayerScore` 배열 (Replicated)
+  - `TotalScore` (PlayerData), `AwardRoundScores()` 탈락 순서 기반 점수 배분
+  - `OnRoundEnd()` → `ResetRound()` → `RestartPlayer()` → 다음 라운드 시작
+  - 최종 라운드 후 총점 기준 우승자 결정
+- **5. 파워업 시스템** (신규 `SumoPowerUpActor.h/.cpp`, `GE_Sumo*.h/.cpp`)
+  - `ESumoPowerUpType` (SpeedBoost/SuperPush/Shield), SphereComponent 오버랩 감지
+  - AddLooseGameplayTag 기반 버프 적용 (SpeedBoost=MaxWalkSpeed 증가+5초 타이머)
+  - `GE_SumoSpeedBoost/SuperPush/Shield` 참조 GE 클래스 3개 생성
+  - Shield: `OnEliminated()`에서 Shield 태그 소모하여 제거 무시 (CharacterPlay)
+  - GameRuleSumo: `TickPowerUpSpawn()` 일정 간격 랜덤 파워업 스폰
+- **6. 맵 변형 지원** (`GameRuleSumo`)
+  - `MapOption` URL 파라미터 파싱 (Default/Bridge/Obstacle)
+  - 맵별 FallThresholdZ, ShrinkInterval, PowerUpSpawnInterval 설정 분기
+- **코드 리팩토링**
+  - `CharacterPlay::OnEliminated()`: AW 하드코딩 제거, Shield 태그 체크 추가
+  - `GameRuleApproachingWall::OnPlayerEliminated()`: 분리된 AW 전용 PlayerData 업데이트
+  - `FloorRings` TArray 타입: `TObjectPtr<>` → raw pointer (UE 5.7 Sort 호환)
+- **GameplayTag 추가**: `Buff.SpeedBoost`, `Buff.SuperPush`, `Buff.Shield`, `GameplayCue.Sumo.PowerUp.Pickup`
 
 #### 미니게임별 어빌리티 제한 시스템
 - **WjWorldMinigameDataAsset**: `AllowedAbilityTags`, `StatNamespace` 필드 추가
@@ -127,6 +160,10 @@
 - **SocketSubsystemSteamIP 기본 소켓 오버라이드**: 이 플러그인은 `RegisterSocketSubsystem()`으로 Steam 소켓을 기본으로 등록 → `ISocketSubsystem::Get()` 호출 시 Steam 반환 → IpNetDriver 사용 시 프로토콜 불일치. 해결: NetDriver 서브클래스에서 `Get(PLATFORM_SOCKETSUBSYSTEM)` 명시
 - **UE 5.7 GetAssetTags() API**: `const FGameplayTagContainer&` 직접 반환 (출력 파라미터 아님)
 - **새 레벨 추가 시 패키징 목록 필수**: Project Settings > Packaging > List of maps to include in a packaged build에 추가 안 하면 `Failed to load package` 에러
+- **TArray<T*>::Sort() 람다**: UE의 `TDereferenceWrapper`가 포인터를 자동 역참조 → 람다 파라미터는 `const T&` (포인터 아님)
+- **TObjectPtr Sort 호환성**: UE 5.7에서 `TArray<TObjectPtr<T>>::Sort()` 시 deprecation warning 발생 → `TArray<T*>`로 변경하면 해결
+- **InheritableOwnedTagsContainer deprecated** (UE 5.7): GE 생성자에서 태그 직접 추가 불가 → AddLooseGameplayTag()로 런타임에 태그 적용
+- **AddLooseGameplayTag vs GE 태그**: Loose 태그는 GE 없이 직접 ASC에 추가/제거, 일회성 버프에 적합
 
 ### 이슈/해결
 - COMDAT 중복 링크 오류 → Intermediate 폴더 정리 후 재빌드
@@ -172,14 +209,29 @@
 
 ### 할 일
 
-#### Sumo Knockoff 에디터 세팅 (코드 완료, 에디터 작업 필요)
-- [ ] Sumo 레벨 맵 생성 (`Content/Map/03-2_Sumo`) - 원형 플랫폼 + 배경
-- [ ] **패키징 맵 목록에 추가** (Project Settings > Packaging)
-- [ ] MinigameCatalog에 Sumo 엔트리 추가 (GameModeId="Sumo", GameRuleClass=BP_GameRuleSumo)
-- [ ] BP_GameRuleSumo 블루프린트 생성 (WjWorldGameRuleSumo 기반)
-- [ ] CharacterPlaySetupDataAsset: StartInputAbilities에 Ability6→GA_Push 추가
-- [ ] IMC_Default: IA_Ability6 InputAction 생성 + 키 바인딩
-- [ ] MinigameCatalog Sumo 엔트리에 AllowedAbilityTags 설정 (Ability.Push 등)
+#### Sumo Knockoff 에디터 세팅 (완료)
+- [x] Sumo 레벨 맵 생성 (`Content/Map/03-2_Sumo`) - 원형 플랫폼 + 배경
+- [x] **패키징 맵 목록에 추가** (Project Settings > Packaging)
+- [x] MinigameCatalog에 Sumo 엔트리 추가 (GameModeId="Sumo", GameRuleClass=BP_GameRuleSumo)
+- [x] BP_GameRuleSumo 블루프린트 생성 (WjWorldGameRuleSumo 기반)
+- [x] CharacterPlaySetupDataAsset: StartInputAbilities에 Ability6→GA_Push 추가
+- [x] IMC_Default: IA_Ability6 InputAction 생성 + 키 바인딩
+- [x] MinigameCatalog Sumo 엔트리에 AllowedAbilityTags 설정 (Ability.Push 등)
+
+#### Sumo Knockoff 6대 기능 에디터 세팅 (필수)
+- [ ] BP_SumoPowerUpActor 생성 (ASumoPowerUpActor 기반, 메시/콜리전 설정)
+- [ ] BP_GameRuleSumo에 `PowerUpActorClass` → BP_SumoPowerUpActor 할당
+- [ ] BP_SumoFloorRingActor에 `WarningMaterial` 할당 (경고 머티리얼 생성 필요)
+- [ ] 03-2_Sumo 맵에 SumoFloorRingActor 동심원 배치 (RingOrder/RingRadius 개별 설정)
+- [ ] WBP_SumoHUD에 `KillFeedText`, `RoundText` TextBlock 위젯 추가
+- [ ] BP_HUDPlay `GameRuleHUDWidgetClasses`에 BP_GameRuleSumo → WBP_SumoHUD 매핑 확인
+- [ ] DA_MinigameCatalog Sumo 항목에 MapOptions 추가 (Default/Bridge/Obstacle)
+
+#### Sumo Knockoff 6대 기능 에디터 세팅 (권장)
+- [ ] CameraShake BP 생성 → BPGA_Push에 `PushHitCameraShake` 할당
+- [ ] 파워업 타입별 비주얼 구분 (SpeedBoost=파랑, SuperPush=빨강, Shield=노랑)
+- [ ] 링 파괴 VFX/사운드 추가
+- [ ] GameplayCue.Sumo.PowerUp.Pickup 에셋 생성 (파워업 획득 VFX/SFX)
 
 #### 에셋/폴리싱
 - [ ] Lobby 맵 풍성하게 꾸미기
@@ -331,10 +383,12 @@
 - [x] 벽돌과 플레이어 끼임 케이스 추가 처리
 - [x] GameplayCue 사용으로 Ability 발동 시 사운드 효과 추가 (코드 완료, 에셋 필요)
 
+### 완료된 에디터/에셋 작업
+- [x] AnimBP에서 LiftBrickCarry 포즈 설정 (State.LiftBrickCarry 태그 체크)
+- [x] GameplayCue 사운드 에셋 4개 (NormalAttack, SpawnBrick, LiftBrick, LiftBrick.Place)
+
 ### 다음 작업 예정 (에디터/에셋 작업 - 낮은 우선순위)
 - [ ] 공격 AnimMontage 생성 및 BP_GA_NormalAttack에 할당
-- [ ] AnimBP에서 LiftBrickCarry 포즈 설정 (State.LiftBrickCarry 태그 체크)
-- [ ] GameplayCue 사운드 에셋 4개 (NormalAttack, SpawnBrick, LiftBrick, LiftBrick.Place)
 
 ---
 

@@ -11,6 +11,7 @@
 #include "AbilitySystemComponent.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Engine/OverlapResult.h"
+#include "Camera/CameraShakeBase.h"
 
 UGA_Push::UGA_Push()
 {
@@ -95,6 +96,19 @@ void UGA_Push::ExecutePush(const FGameplayAbilityActivationInfo& ActivationInfo)
 	AWjWorldCharacterPlay* OwnerCharacter = Cast<AWjWorldCharacterPlay>(AvatarActor);
 	if (!OwnerCharacter) return;
 
+	// SuperPush 버프 체크 (사용 후 제거)
+	UAbilitySystemComponent* OwnerASC = GetAbilitySystemComponentFromActorInfo();
+	bool bIsSuperPush = false;
+	if (OwnerASC && OwnerASC->HasMatchingGameplayTag(WjWorldGameplayTag::Buff_SuperPush()))
+	{
+		bIsSuperPush = true;
+		OwnerASC->RemoveLooseGameplayTag(WjWorldGameplayTag::Buff_SuperPush());
+		UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_Push: SuperPush consumed!"));
+	}
+
+	float EffectivePushForce = bIsSuperPush ? PushForce * SuperPushMultiplier : PushForce;
+	float EffectiveUpForce = bIsSuperPush ? PushUpForce * SuperPushMultiplier : PushUpForce;
+
 	FVector Origin = AvatarActor->GetActorLocation();
 	FVector ForwardDir = AvatarActor->GetActorForwardVector();
 
@@ -124,14 +138,25 @@ void UGA_Push::ExecutePush(const FGameplayAbilityActivationInfo& ActivationInfo)
 				PushDir = ForwardDir;
 			}
 
-			FVector LaunchVelocity = PushDir * PushForce + FVector(0.f, 0.f, PushUpForce);
+			FVector LaunchVelocity = PushDir * EffectivePushForce + FVector(0.f, 0.f, EffectiveUpForce);
 			HitCharacter->LaunchCharacter(LaunchVelocity, true, true);
 
 			// 킬 추적용 마지막 공격자 설정
 			HitCharacter->SetLastAttacker(OwnerCharacter);
 
-			UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_Push: Pushed %s with force (%s)"),
-				*HitCharacter->GetName(), *LaunchVelocity.ToString());
+			// 피격자 카메라 셰이크
+			if (PushHitCameraShake)
+			{
+				APlayerController* HitPC = Cast<APlayerController>(HitCharacter->GetController());
+				if (HitPC)
+				{
+					HitPC->ClientStartCameraShake(PushHitCameraShake);
+				}
+			}
+
+			UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_Push: Pushed %s with force (%s)%s"),
+				*HitCharacter->GetName(), *LaunchVelocity.ToString(),
+				bIsSuperPush ? TEXT(" [SUPER]") : TEXT(""));
 		}
 	}
 }

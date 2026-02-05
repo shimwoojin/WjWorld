@@ -238,10 +238,15 @@ void UWjWorldGameRuleApproachingWall::OnPlayerEliminated(AWjWorldCharacterPlay* 
 	// 캐릭터 사망 처리
 	EliminatedCharacter->OnEliminated();
 
-	// PlayerState 가져오기
+	// PlayerState 가져오기 + AW PlayerData 업데이트
 	AWjWorldPlayerStatePlay* PlayerState = EliminatedCharacter->GetPlayerState<AWjWorldPlayerStatePlay>();
 	if (PlayerState)
 	{
+		if (UApproachingWallPlayerDataComponent* PlayerData = PlayerState->GetGameData<UApproachingWallPlayerDataComponent>())
+		{
+			PlayerData->OnEliminated();
+		}
+
 		// 생존자 목록에서 제거
 		if (AlivePlayers.Remove(PlayerState) > 0)
 		{

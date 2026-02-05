@@ -30,6 +30,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Sumo")
 	void OnEliminated();
 
+	/** 라운드 리셋 시 생존 상태 복원 */
+	void ResetForNewRound();
+
+	// 점수
+	int32 GetTotalScore() const { return TotalScore; }
+	void AddScore(int32 InScore);
+
 	UPROPERTY(BlueprintAssignable, Category = "Sumo")
 	FOnSumoPlayerAliveChanged OnPlayerAliveChanged;
 
@@ -40,4 +47,7 @@ protected:
 private:
 	UPROPERTY(ReplicatedUsing = OnRep_IsAlive)
 	bool bIsAlive = true;
+
+	UPROPERTY(Replicated)
+	int32 TotalScore = 0;
 };

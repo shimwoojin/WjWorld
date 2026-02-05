@@ -3,7 +3,6 @@
 
 #include "Core/Play/WjWorldCharacterPlay.h"
 #include "Core/Play/WjWorldPlayerStatePlay.h"
-#include "Core/GameData/ApproachingWallPlayerDataComponent.h"
 #include "AbilitySystem/WjWorldAbilitySystemComponent.h"
 #include "Cosmetic/WjWorldCosmeticComponent.h"
 #include "Cosmetic/WjWorldCosmeticSubsystem.h"
@@ -72,6 +71,14 @@ void AWjWorldCharacterPlay::OnEliminated()
 		return; // 이미 사망한 경우 무시
 	}
 
+	// Shield 버프 체크 (있으면 소모하고 제거 무시)
+	if (AbilitySystemComponent.IsValid() && AbilitySystemComponent->HasMatchingGameplayTag(WjWorldGameplayTag::Buff_Shield()))
+	{
+		AbilitySystemComponent->RemoveLooseGameplayTag(WjWorldGameplayTag::Buff_Shield());
+		UE_LOG(LogWjWorld, Log, TEXT("AWjWorldCharacterPlay::OnEliminated - Shield consumed, elimination prevented"));
+		return;
+	}
+
 	bIsEliminated = true;
 
 	// ASC에 State.Eliminated 태그 추가 → 어빌리티 활성화 차단
@@ -81,17 +88,7 @@ void AWjWorldCharacterPlay::OnEliminated()
 		AbilitySystemComponent->CancelAllAbilities();
 	}
 
-	// 서버에서 PlayerState의 데이터 컴포넌트도 업데이트
-	if (HasAuthority())
-	{
-		if (AWjWorldPlayerStatePlay* PS = GetPlayerState<AWjWorldPlayerStatePlay>())
-		{
-			if (UApproachingWallPlayerDataComponent* PlayerData = PS->GetGameData<UApproachingWallPlayerDataComponent>())
-			{
-				PlayerData->OnEliminated();
-			}
-		}
-	}
+	// PlayerState 데이터 컴포넌트 업데이트는 각 GameRule에서 처리
 
 	HandleEliminationEffects();
 }
