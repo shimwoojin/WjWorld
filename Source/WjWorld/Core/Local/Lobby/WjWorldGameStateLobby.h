@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Core/Base/WjWorldGameStateBase.h"
+#include "GamePlay/Placement/IWjWorldPlacementDataProvider.h"
 #include "Save/WjWorldLayoutSaveGame.h"
 #include "WjWorldGameStateLobby.generated.h"
 
@@ -15,9 +16,10 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlacementDataChanged);
 /**
  * 로비 게임 상태
  * 배치 데이터 리플리케이션을 담당
+ * IWjWorldPlacementDataProvider 인터페이스 구현
  */
 UCLASS()
-class WJWORLD_API AWjWorldGameStateLobby : public AWjWorldGameStateBase
+class WJWORLD_API AWjWorldGameStateLobby : public AWjWorldGameStateBase, public IWjWorldPlacementDataProvider
 {
 	GENERATED_BODY()
 
@@ -26,35 +28,29 @@ public:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	//~ 배치 데이터 관리 (서버)
+	//~ IWjWorldPlacementDataProvider 인터페이스 구현
+	virtual void AddPlacedObject(const FPlacedObjectSaveEntry& Entry) override;
+	virtual void RemovePlacedObjectAt(int32 Index) override;
+	virtual const TArray<FPlacedObjectSaveEntry>& GetPlacedObjects() const override { return PlacedObjects; }
+	virtual void SetPlacedObjects(const TArray<FPlacedObjectSaveEntry>& InPlacedObjects) override;
+	virtual void ClearPlacedObjects() override;
+	virtual void SetPlacementCatalog(UWjWorldPlaceableObjectDataAsset* InCatalog) override { Catalog = InCatalog; }
+	virtual UWjWorldPlaceableObjectDataAsset* GetPlacementCatalog() const override { return Catalog; }
 
-	/** 배치 오브젝트 추가 (서버에서 호출) */
-	void AddPlacedObject(const FPlacedObjectSaveEntry& Entry);
+	//~ Getter (하위 호환성 유지)
 
-	/** 배치 오브젝트 제거 (서버에서 호출) */
-	void RemovePlacedObjectAt(int32 Index);
-
-	/** 전체 배치 데이터 설정 (서버에서 호출, 초기 로드 시) */
-	void SetPlacedObjects(const TArray<FPlacedObjectSaveEntry>& InPlacedObjects);
-
-	/** 배치 데이터 전체 클리어 (서버에서 호출) */
-	void ClearPlacedObjects();
-
-	//~ Getter
-
-	const TArray<FPlacedObjectSaveEntry>& GetPlacedObjects() const { return PlacedObjects; }
 	int32 GetPlacedObjectCount() const { return PlacedObjects.Num(); }
+
+	/** @deprecated SetPlacementCatalog 사용 권장 */
+	void SetCatalog(UWjWorldPlaceableObjectDataAsset* InCatalog) { Catalog = InCatalog; }
+	/** @deprecated GetPlacementCatalog 사용 권장 */
+	UWjWorldPlaceableObjectDataAsset* GetCatalog() const { return Catalog; }
 
 	//~ 델리게이트
 
 	/** 배치 데이터 변경 시 (클라이언트에서 오브젝트 재스폰용) */
 	UPROPERTY(BlueprintAssignable, Category = "Lobby|Placement")
 	FOnPlacementDataChanged OnPlacementDataChanged;
-
-	//~ 카탈로그 (오브젝트 스폰에 필요)
-
-	void SetCatalog(UWjWorldPlaceableObjectDataAsset* InCatalog) { Catalog = InCatalog; }
-	UWjWorldPlaceableObjectDataAsset* GetCatalog() const { return Catalog; }
 
 protected:
 	/** 리플리케이트되는 배치 데이터 */

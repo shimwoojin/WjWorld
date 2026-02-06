@@ -4,11 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "UI/WjWorldUserWidgetBase.h"
+#include "GamePlay/Placement/WjWorldPlacementTypes.h"
 #include "LobbyHUDWidget.generated.h"
 
 class UButton;
 class UPlayerProfileWidget;
 class UCosmeticMainWindow;
+class UPlacementContextSelectWidget;
 
 /**
  * 로비 HUD 위젯
@@ -67,6 +69,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Cosmetic")
 	TSubclassOf<UCosmeticMainWindow> CosmeticWindowClass;
 
+	/** 배치 컨텍스트 선택 위젯 클래스 (Blueprint에서 설정) */
+	UPROPERTY(EditDefaultsOnly, Category = "Placement")
+	TSubclassOf<UPlacementContextSelectWidget> PlacementContextSelectClass;
+
 protected:
 	//~ 버튼 클릭 이벤트
 
@@ -91,10 +97,17 @@ protected:
 	UFUNCTION()
 	void OnCosmeticClicked();
 
+	/** 배치 컨텍스트 선택 핸들러 */
+	UFUNCTION()
+	void OnPlacementContextSelected(EPlacementContext SelectedContext);
+
 private:
 	UPROPERTY()
 	TObjectPtr<UPlayerProfileWidget> ProfileWidgetInstance;
 
 	UPROPERTY()
 	TObjectPtr<UCosmeticMainWindow> CosmeticWindowInstance;
+
+	UPROPERTY()
+	TObjectPtr<UPlacementContextSelectWidget> PlacementContextSelectInstance;
 };

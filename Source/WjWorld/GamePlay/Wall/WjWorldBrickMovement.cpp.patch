@@ -1,0 +1,10 @@
+--- a/Source/WjWorld/GamePlay/Wall/WjWorldBrickMovement.cpp
++++ b/Source/WjWorld/GamePlay/Wall/WjWorldBrickMovement.cpp
+@@ -7,6 +7,7 @@
+ #include "GamePlay/Wall/WjWorldWallManager.h"
+ 
+ #include "Core/GameRule/WjWorldGameRuleApproachingWall.h"
++#include "Core/Play/WjWorldCharacterPlay.h"
+ 
+ #include "Kismet/KismetSystemLibrary.h"
+ 

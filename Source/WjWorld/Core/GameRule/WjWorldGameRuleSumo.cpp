@@ -704,7 +704,7 @@ void UWjWorldGameRuleSumo::SpawnPowerUp()
 	{
 		// ?쒕뜡 ????ㅼ젙
 		int32 RandType = FMath::RandRange(0, 2);
-		PowerUp->PowerUpType = static_cast<ESumoPowerUpType>(RandType);
+		PowerUp->SetPowerUpType(static_cast<ESumoPowerUpType>(RandType));
 
 		ActivePowerUps.Add(PowerUp);
 

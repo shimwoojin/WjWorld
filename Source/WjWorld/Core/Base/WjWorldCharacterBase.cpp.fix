@@ -1,0 +1,2 @@
+// Line 289 fix - replace GetEvaluatedCameraRotation() with GetCameraRotation()
+FRotator CameraRotation = PC->PlayerCameraManager->GetCameraRotation();

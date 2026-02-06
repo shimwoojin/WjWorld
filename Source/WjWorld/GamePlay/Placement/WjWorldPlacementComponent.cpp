@@ -3,6 +3,7 @@
 #include "GamePlay/Placement/WjWorldPlacementComponent.h"
 #include "GamePlay/Placement/WjWorldPlacementPreviewActor.h"
 #include "GamePlay/Placement/WjWorldPlacedObjectActor.h"
+#include "GamePlay/Placement/IWjWorldPlacementDataProvider.h"
 #include "Core/Local/Lobby/WjWorldGameStateLobby.h"
 #include "DataAsset/WjWorldPlaceableObjectDataAsset.h"
 #include "Save/WjWorldLayoutSaveGame.h"
@@ -13,9 +14,9 @@
 #include "InputAction.h"
 #include "Engine/OverlapResult.h"
 #include "Kismet/GameplayStatics.h"
+#include "Misc/FileHelper.h"
+#include "HAL/PlatformFileManager.h"
 #include "WjWorldLogCategories.h"
-
-const FString UWjWorldPlacementComponent::SaveSlotName = TEXT("LobbyLayout");
 
 UWjWorldPlacementComponent::UWjWorldPlacementComponent()
 {
@@ -25,12 +26,20 @@ UWjWorldPlacementComponent::UWjWorldPlacementComponent()
 
 void UWjWorldPlacementComponent::EnterPlacementMode()
 {
+	// 기본 컨텍스트: Lobby
+	EnterPlacementModeWithContext(EPlacementContext::Lobby);
+}
+
+void UWjWorldPlacementComponent::EnterPlacementModeWithContext(EPlacementContext Context)
+{
 	if (CurrentMode != EPlacementMode::None)
 	{
 		return;
 	}
 
-	// DeveloperSettings에서 입력 설정 및 Catalog 로드 (폴백)
+	CurrentContext = Context;
+
+	// DeveloperSettings에서 입력 설정 및 Catalog 로드 (컨텍스트별)
 	LoadInputSettings();
 	EnsureCatalogLoaded();
 
@@ -39,7 +48,8 @@ void UWjWorldPlacementComponent::EnterPlacementMode()
 	BindInputActions();
 
 	OnPlacementModeChanged.Broadcast(CurrentMode);
-	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Entered placement mode"));
+	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Entered placement mode (Context: %s)"),
+		*GetPlacementContextName(CurrentContext));
 }
 
 void UWjWorldPlacementComponent::ExitPlacementMode()
@@ -62,6 +72,7 @@ void UWjWorldPlacementComponent::ExitPlacementMode()
 
 	SelectedObjectId = NAME_None;
 	CurrentMode = EPlacementMode::None;
+	// 컨텍스트는 리셋하지 않음 (다음 EnterPlacementMode 시 설정)
 
 	OnPlacementModeChanged.Broadcast(CurrentMode);
 	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Exited placement mode"));
@@ -169,10 +180,10 @@ void UWjWorldPlacementComponent::ConfirmPlacement()
 		return;
 	}
 
-	AWjWorldGameStateLobby* LobbyGameState = GetLobbyGameState();
-	if (!LobbyGameState)
+	IWjWorldPlacementDataProvider* DataProvider = GetPlacementDataProvider();
+	if (!DataProvider)
 	{
-		UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlacementComponent: GameStateLobby not found"));
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlacementComponent: PlacementDataProvider not found"));
 		return;
 	}
 
@@ -184,15 +195,15 @@ void UWjWorldPlacementComponent::ConfirmPlacement()
 	Entry.ObjectId = SelectedObjectId;
 	Entry.Transform = FTransform(SpawnRotation, SpawnLocation, Def->DefaultScale);
 
-	// GameStateLobby에 추가 (서버에서 스폰 + 클라이언트 리플리케이션)
-	LobbyGameState->AddPlacedObject(Entry);
+	// DataProvider에 추가 (서버에서 스폰 + 클라이언트 리플리케이션)
+	DataProvider->AddPlacedObject(Entry);
 
 	// 로컬 SaveGame에도 저장 (호스트 영구 저장용)
 	SaveLayout();
 
 	OnObjectPlaced.Broadcast();
-	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Object placed - ObjectId=%s at %s"),
-		*SelectedObjectId.ToString(), *SpawnLocation.ToString());
+	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Object placed - ObjectId=%s at %s (Context: %s)"),
+		*SelectedObjectId.ToString(), *SpawnLocation.ToString(), *GetPlacementContextName(CurrentContext));
 }
 
 void UWjWorldPlacementComponent::DeleteHoveredObject()
@@ -202,14 +213,14 @@ void UWjWorldPlacementComponent::DeleteHoveredObject()
 		return;
 	}
 
-	AWjWorldGameStateLobby* LobbyGameState = GetLobbyGameState();
-	if (!LobbyGameState)
+	IWjWorldPlacementDataProvider* DataProvider = GetPlacementDataProvider();
+	if (!DataProvider)
 	{
-		UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlacementComponent: GameStateLobby not found"));
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlacementComponent: PlacementDataProvider not found"));
 		return;
 	}
 
-	// GameStateLobby에서 해당 오브젝트 인덱스 찾기
+	// DataProvider에서 해당 오브젝트 인덱스 찾기
 	int32 Index = FindPlacedObjectIndex(HoveredObject);
 	if (Index == INDEX_NONE)
 	{
@@ -219,8 +230,8 @@ void UWjWorldPlacementComponent::DeleteHoveredObject()
 
 	HoveredObject = nullptr;
 
-	// GameStateLobby에서 제거 (서버에서 파괴 + 클라이언트 리플리케이션)
-	LobbyGameState->RemovePlacedObjectAt(Index);
+	// DataProvider에서 제거 (서버에서 파괴 + 클라이언트 리플리케이션)
+	DataProvider->RemovePlacedObjectAt(Index);
 
 	// 로컬 SaveGame에도 저장
 	SaveLayout();
@@ -251,9 +262,9 @@ void UWjWorldPlacementComponent::SaveLayout()
 		return;
 	}
 
-	// GameStateLobby에서 데이터를 가져와 로컬 SaveGame에 저장 (호스트 영구 저장용)
-	AWjWorldGameStateLobby* LobbyGameState = GetLobbyGameState();
-	if (!LobbyGameState)
+	// DataProvider에서 데이터를 가져와 로컬 SaveGame에 저장 (호스트 영구 저장용)
+	IWjWorldPlacementDataProvider* DataProvider = GetPlacementDataProvider();
+	if (!DataProvider)
 	{
 		return;
 	}
@@ -268,16 +279,19 @@ void UWjWorldPlacementComponent::SaveLayout()
 		return;
 	}
 
-	// GameStateLobby의 배치 데이터 복사
-	SaveGame->PlacedObjects = LobbyGameState->GetPlacedObjects();
+	// DataProvider의 배치 데이터 복사
+	SaveGame->PlacedObjects = DataProvider->GetPlacedObjects();
 
-	if (UGameplayStatics::SaveGameToSlot(SaveGame, SaveSlotName, 0))
+	// 컨텍스트별 SaveSlot 이름 사용
+	FString SlotName = GetCurrentSaveSlotName();
+	if (UGameplayStatics::SaveGameToSlot(SaveGame, SlotName, 0))
 	{
-		UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Layout saved (%d objects)"), SaveGame->PlacedObjects.Num());
+		UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Layout saved to '%s' (%d objects)"),
+			*SlotName, SaveGame->PlacedObjects.Num());
 	}
 	else
 	{
-		UE_LOG(LogWjWorldPlacement, Error, TEXT("PlacementComponent: Failed to save layout"));
+		UE_LOG(LogWjWorldPlacement, Error, TEXT("PlacementComponent: Failed to save layout to '%s'"), *SlotName);
 	}
 }
 
@@ -286,6 +300,254 @@ void UWjWorldPlacementComponent::LoadLayout()
 	// 멀티플레이 모드에서는 GameModeLobby가 GameStateLobby로 로드함
 	// 이 함수는 더 이상 직접 호출되지 않음 (하위 호환성 유지용)
 	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: LoadLayout called - handled by GameModeLobby in multiplayer"));
+}
+
+void UWjWorldPlacementComponent::SaveLayoutToSlot(const FString& SlotName)
+{
+	// 호스트(ListenServer 또는 Standalone)인 경우에만 SaveGame 저장
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	ENetMode NetMode = World->GetNetMode();
+	if (NetMode != NM_Standalone && NetMode != NM_ListenServer)
+	{
+		UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: SaveLayoutToSlot skipped (not host)"));
+		return;
+	}
+
+	IWjWorldPlacementDataProvider* DataProvider = GetPlacementDataProvider();
+	if (!DataProvider)
+	{
+		return;
+	}
+
+	UWjWorldLayoutSaveGame* SaveGame = Cast<UWjWorldLayoutSaveGame>(
+		UGameplayStatics::CreateSaveGameObject(UWjWorldLayoutSaveGame::StaticClass())
+	);
+
+	if (!SaveGame)
+	{
+		UE_LOG(LogWjWorldPlacement, Error, TEXT("PlacementComponent: Failed to create save game object"));
+		return;
+	}
+
+	// DataProvider의 배치 데이터 복사
+	SaveGame->PlacedObjects = DataProvider->GetPlacedObjects();
+	SaveGame->SavedContext = CurrentContext;
+
+	if (UGameplayStatics::SaveGameToSlot(SaveGame, SlotName, 0))
+	{
+		LoadedSlotName = SlotName;
+		UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Layout saved to '%s' (%d objects)"),
+			*SlotName, SaveGame->PlacedObjects.Num());
+
+		// AW 컨텍스트인 경우 CSV도 함께 내보내기
+		if (CurrentContext == EPlacementContext::ApproachingWall)
+		{
+			ExportLayoutAsCSV(SlotName);
+		}
+	}
+	else
+	{
+		UE_LOG(LogWjWorldPlacement, Error, TEXT("PlacementComponent: Failed to save layout to '%s'"), *SlotName);
+	}
+}
+
+bool UWjWorldPlacementComponent::LoadLayoutFromSlot(const FString& SlotName)
+{
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return false;
+	}
+
+	// SaveGame 로드
+	UWjWorldLayoutSaveGame* SaveGame = Cast<UWjWorldLayoutSaveGame>(
+		UGameplayStatics::LoadGameFromSlot(SlotName, 0)
+	);
+
+	if (!SaveGame)
+	{
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlacementComponent: Failed to load layout from '%s'"), *SlotName);
+		return false;
+	}
+
+	// 컨텍스트 검증 (다른 컨텍스트의 레이아웃 로드 방지)
+	if (SaveGame->SavedContext != EPlacementContext::None && SaveGame->SavedContext != CurrentContext)
+	{
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlacementComponent: Context mismatch - slot '%s' is for '%s', current context is '%s'"),
+			*SlotName, *GetPlacementContextName(SaveGame->SavedContext), *GetPlacementContextName(CurrentContext));
+		return false;
+	}
+
+	// DataProvider가 있으면 데이터 설정
+	IWjWorldPlacementDataProvider* DataProvider = GetPlacementDataProvider();
+	if (DataProvider)
+	{
+		// 일괄 설정 (RespawnAllPlacedObjects가 한 번만 호출됨)
+		DataProvider->SetPlacedObjects(SaveGame->PlacedObjects);
+	}
+
+	LoadedSlotName = SlotName;
+	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Layout loaded from '%s' (%d objects)"),
+		*SlotName, SaveGame->PlacedObjects.Num());
+	return true;
+}
+
+TArray<FString> UWjWorldPlacementComponent::GetSavedLayoutSlots() const
+{
+	TArray<FString> SlotNames;
+
+	// SaveGame 디렉토리에서 모든 .sav 파일 검색
+	FString SaveDirectory = FPaths::ProjectSavedDir() / TEXT("SaveGames");
+
+	IFileManager& FileManager = IFileManager::Get();
+	TArray<FString> FoundFiles;
+	FileManager.FindFiles(FoundFiles, *SaveDirectory, TEXT("*.sav"));
+
+	for (const FString& FileName : FoundFiles)
+	{
+		// .sav 확장자 제거하여 슬롯 이름 추출
+		FString SlotName = FPaths::GetBaseFilename(FileName);
+
+		// SaveGame을 로드하여 컨텍스트 확인
+		UWjWorldLayoutSaveGame* SaveGame = Cast<UWjWorldLayoutSaveGame>(
+			UGameplayStatics::LoadGameFromSlot(SlotName, 0)
+		);
+
+		if (SaveGame && SaveGame->SavedContext == CurrentContext)
+		{
+			SlotNames.Add(SlotName);
+		}
+	}
+
+	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Found %d saved layout slots for context '%s'"),
+		SlotNames.Num(), *GetPlacementContextName(CurrentContext));
+	return SlotNames;
+}
+
+bool UWjWorldPlacementComponent::ExportLayoutAsCSV(const FString& FileName)
+{
+	// AW 컨텍스트에서만 동작
+	if (CurrentContext != EPlacementContext::ApproachingWall)
+	{
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("ExportLayoutAsCSV: Only available in ApproachingWall context"));
+		return false;
+	}
+
+	IWjWorldPlacementDataProvider* DataProvider = GetPlacementDataProvider();
+	if (!DataProvider)
+	{
+		UE_LOG(LogWjWorldPlacement, Error, TEXT("ExportLayoutAsCSV: No data provider"));
+		return false;
+	}
+
+	const TArray<FPlacedObjectSaveEntry>& PlacedObjects = DataProvider->GetPlacedObjects();
+	if (PlacedObjects.Num() == 0)
+	{
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("ExportLayoutAsCSV: No objects to export"));
+		return false;
+	}
+
+	// 그리드 설정 (기본값 사용, 추후 설정 가능하게 확장 가능)
+	const FApproachingWallGridConfig GridConfig;
+	const FVector& BrickSize = GridConfig.BrickSize;
+
+	// 1. 배치된 오브젝트의 바운딩 박스 계산
+	FVector MinBounds(FLT_MAX, FLT_MAX, FLT_MAX);
+	FVector MaxBounds(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+
+	for (const FPlacedObjectSaveEntry& Entry : PlacedObjects)
+	{
+		const FVector& Location = Entry.Transform.GetLocation();
+		MinBounds.X = FMath::Min(MinBounds.X, Location.X);
+		MinBounds.Y = FMath::Min(MinBounds.Y, Location.Y);
+		MaxBounds.X = FMath::Max(MaxBounds.X, Location.X);
+		MaxBounds.Y = FMath::Max(MaxBounds.Y, Location.Y);
+	}
+
+	// 2. 그리드 크기 계산
+	int32 GridColumns = FMath::CeilToInt((MaxBounds.X - MinBounds.X) / BrickSize.X) + 1;
+	int32 GridRows = FMath::CeilToInt((MaxBounds.Y - MinBounds.Y) / BrickSize.Y) + 1;
+
+	// 최소 크기 보장
+	GridColumns = FMath::Max(GridColumns, 3);
+	GridRows = FMath::Max(GridRows, 3);
+
+	// 그리드 원점 (좌하단)
+	FVector GridOrigin = MinBounds - FVector(BrickSize.X * 0.5f, BrickSize.Y * 0.5f, 0.0f);
+
+	// 3. 그리드 초기화 (-1 = Empty)
+	TArray<TArray<int32>> Grid;
+	Grid.SetNum(GridRows);
+	for (int32 Row = 0; Row < GridRows; ++Row)
+	{
+		Grid[Row].SetNum(GridColumns);
+		for (int32 Col = 0; Col < GridColumns; ++Col)
+		{
+			Grid[Row][Col] = -1;
+		}
+	}
+
+	// 4. 오브젝트를 그리드에 매핑
+	for (const FPlacedObjectSaveEntry& Entry : PlacedObjects)
+	{
+		const FVector& Location = Entry.Transform.GetLocation();
+
+		// 월드 좌표 → 그리드 인덱스
+		int32 Col = FMath::FloorToInt((Location.X - GridOrigin.X) / BrickSize.X);
+		int32 Row = FMath::FloorToInt((Location.Y - GridOrigin.Y) / BrickSize.Y);
+
+		// 범위 체크
+		if (Row >= 0 && Row < GridRows && Col >= 0 && Col < GridColumns)
+		{
+			int32 BrickTypeValue = ObjectIdToBrickTypeValue(Entry.ObjectId);
+			Grid[Row][Col] = BrickTypeValue;
+		}
+	}
+
+	// 5. CSV 문자열 생성
+	FString CSVContent;
+	for (int32 Row = 0; Row < GridRows; ++Row)
+	{
+		for (int32 Col = 0; Col < GridColumns; ++Col)
+		{
+			CSVContent += FString::Printf(TEXT("%d"), Grid[Row][Col]);
+			if (Col < GridColumns - 1)
+			{
+				CSVContent += TEXT(",");
+			}
+		}
+		CSVContent += TEXT("\n");
+	}
+
+	// 6. 파일 저장
+	FString UserLayoutDir = GetUserWallLayoutDirectory();
+
+	// 디렉토리 생성
+	IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
+	if (!PlatformFile.DirectoryExists(*UserLayoutDir))
+	{
+		PlatformFile.CreateDirectoryTree(*UserLayoutDir);
+	}
+
+	FString FilePath = UserLayoutDir / FileName + TEXT(".csv");
+
+	if (FFileHelper::SaveStringToFile(CSVContent, *FilePath))
+	{
+		LastExportedCSVPath = FilePath;
+		UE_LOG(LogWjWorldPlacement, Log, TEXT("ExportLayoutAsCSV: Exported to '%s' (Grid: %dx%d)"),
+			*FilePath, GridColumns, GridRows);
+		return true;
+	}
+	else
+	{
+		UE_LOG(LogWjWorldPlacement, Error, TEXT("ExportLayoutAsCSV: Failed to save file '%s'"), *FilePath);
+		return false;
+	}
 }
 
 void UWjWorldPlacementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -481,22 +743,24 @@ void UWjWorldPlacementComponent::EnsureCatalogLoaded()
 		return;
 	}
 
-	// DeveloperSettings에서 Catalog 로드 (폴백 메커니즘)
+	// DeveloperSettings에서 컨텍스트별 Catalog 로드
 	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
-	if (!Settings || Settings->PlaceableObjectCatalog.IsNull())
+	if (!Settings)
 	{
-		UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlacementComponent: No PlaceableObjectCatalog configured in DeveloperSettings"));
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlacementComponent: DeveloperSettings not found"));
 		return;
 	}
 
-	Catalog = Settings->PlaceableObjectCatalog.LoadSynchronous();
+	Catalog = Settings->GetPlaceableCatalogForContext(CurrentContext);
 	if (Catalog)
 	{
-		UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Catalog loaded from DeveloperSettings (fallback)"));
+		UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Catalog loaded for context '%s'"),
+			*GetPlacementContextName(CurrentContext));
 	}
 	else
 	{
-		UE_LOG(LogWjWorldPlacement, Error, TEXT("PlacementComponent: Failed to load PlaceableObjectCatalog"));
+		UE_LOG(LogWjWorldPlacement, Error, TEXT("PlacementComponent: Failed to load PlaceableObjectCatalog for context '%s'"),
+			*GetPlacementContextName(CurrentContext));
 	}
 }
 
@@ -602,6 +866,24 @@ APlayerController* UWjWorldPlacementComponent::GetPlayerController() const
 	return Cast<APlayerController>(GetOwner());
 }
 
+IWjWorldPlacementDataProvider* UWjWorldPlacementComponent::GetPlacementDataProvider() const
+{
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return nullptr;
+	}
+
+	// GameState에서 인터페이스 구현체 검색
+	AGameStateBase* GameState = World->GetGameState();
+	if (!GameState)
+	{
+		return nullptr;
+	}
+
+	return Cast<IWjWorldPlacementDataProvider>(GameState);
+}
+
 AWjWorldGameStateLobby* UWjWorldPlacementComponent::GetLobbyGameState() const
 {
 	UWorld* World = GetWorld();
@@ -620,13 +902,13 @@ int32 UWjWorldPlacementComponent::FindPlacedObjectIndex(AWjWorldPlacedObjectActo
 		return INDEX_NONE;
 	}
 
-	AWjWorldGameStateLobby* LobbyGameState = GetLobbyGameState();
-	if (!LobbyGameState)
+	IWjWorldPlacementDataProvider* DataProvider = GetPlacementDataProvider();
+	if (!DataProvider)
 	{
 		return INDEX_NONE;
 	}
 
-	const TArray<FPlacedObjectSaveEntry>& PlacedObjects = LobbyGameState->GetPlacedObjects();
+	const TArray<FPlacedObjectSaveEntry>& PlacedObjects = DataProvider->GetPlacedObjects();
 	FName TargetId = Actor->GetObjectId();
 	FVector TargetLocation = Actor->GetActorLocation();
 
@@ -645,4 +927,9 @@ int32 UWjWorldPlacementComponent::FindPlacedObjectIndex(AWjWorldPlacedObjectActo
 	}
 
 	return INDEX_NONE;
+}
+
+FString UWjWorldPlacementComponent::GetCurrentSaveSlotName() const
+{
+	return GetSaveSlotNameForContext(CurrentContext);
 }

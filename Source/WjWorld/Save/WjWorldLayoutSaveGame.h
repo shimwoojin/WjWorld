@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
+#include "GamePlay/Placement/WjWorldPlacementTypes.h"
 #include "WjWorldLayoutSaveGame.generated.h"
 
 /**
@@ -35,6 +36,10 @@ public:
 	/** 배치된 오브젝트 목록 */
 	UPROPERTY()
 	TArray<FPlacedObjectSaveEntry> PlacedObjects;
+
+	/** 저장된 컨텍스트 (어떤 모드에서 저장되었는지) */
+	UPROPERTY()
+	EPlacementContext SavedContext = EPlacementContext::None;
 
 	/** 세이브 버전 */
 	UPROPERTY()

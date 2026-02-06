@@ -212,10 +212,112 @@ bool FWjWorldWallDescription::IsAreaEnclosedByWalls(int32 StartX, int32 StartY)
     }
 
     SafeZones.Empty();
-    SafeZones.Append(Visited.Array());  
+    SafeZones.Append(Visited.Array());
 
     SafeZonesSet = Visited;
 
     // 끝까지 못 나갔으면 완전히 둘러싸임
     return true;
+}
+
+int32 UWjWorldWallDescriptionDataAsset::ScanUserWallLayouts(TArray<FWjWorldWallDescription>& OutUserDescriptions) const
+{
+    OutUserDescriptions.Empty();
+
+    FString UserLayoutDir = GetUserWallLayoutDirectory();
+
+    // 디렉토리 존재 확인
+    IFileManager& FileManager = IFileManager::Get();
+    if (!FileManager.DirectoryExists(*UserLayoutDir))
+    {
+        UE_LOG(LogWjWorld, Log, TEXT("ScanUserWallLayouts: User layout directory does not exist: %s"), *UserLayoutDir);
+        return 0;
+    }
+
+    // CSV 파일 검색
+    TArray<FString> FoundFiles;
+    FileManager.FindFiles(FoundFiles, *UserLayoutDir, TEXT("*.csv"));
+
+    for (const FString& FileName : FoundFiles)
+    {
+        FString FileNameNoExt = FPaths::GetBaseFilename(FileName);
+        FString FullPath = UserLayoutDir / FileName;
+
+        FWjWorldWallDescription UserDesc;
+        UserDesc.WallName = FString::Printf(TEXT("User_%s"), *FileNameNoExt);
+        UserDesc.WallLayoutFilePath.FilePath = FullPath;
+        UserDesc.BrickSize = FVector(100.0, 100.0, 100.0);  // 기본값
+        UserDesc.CenterOffset = FVector::ZeroVector;
+
+        OutUserDescriptions.Add(UserDesc);
+        UE_LOG(LogWjWorld, Log, TEXT("ScanUserWallLayouts: Found user layout '%s'"), *UserDesc.WallName);
+    }
+
+    return OutUserDescriptions.Num();
+}
+
+TArray<FString> UWjWorldWallDescriptionDataAsset::GetAllWallNames() const
+{
+    TArray<FString> AllNames;
+
+    // 내장 레이아웃
+    for (const FWjWorldWallDescription& Desc : WallDescriptions)
+    {
+        AllNames.Add(Desc.WallName);
+    }
+
+    // 유저 레이아웃
+    if (!bUserDescriptionsCached)
+    {
+        ScanUserWallLayouts(CachedUserDescriptions);
+        bUserDescriptionsCached = true;
+    }
+
+    for (const FWjWorldWallDescription& UserDesc : CachedUserDescriptions)
+    {
+        AllNames.Add(UserDesc.WallName);
+    }
+
+    return AllNames;
+}
+
+bool UWjWorldWallDescriptionDataAsset::GetWallDescriptionByNameIncludingUser(const FString& Name, FWjWorldWallDescription& OutDescription) const
+{
+    // 내장 레이아웃 먼저 검색
+    if (GetWallDescriptionByName(Name, OutDescription))
+    {
+        return true;
+    }
+
+    // 유저 레이아웃 검색
+    if (!bUserDescriptionsCached)
+    {
+        ScanUserWallLayouts(CachedUserDescriptions);
+        bUserDescriptionsCached = true;
+    }
+
+    for (const FWjWorldWallDescription& UserDesc : CachedUserDescriptions)
+    {
+        if (UserDesc.WallName == Name)
+        {
+            OutDescription = UserDesc;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+FString UWjWorldWallDescriptionDataAsset::GenerateRandomWallNameIncludingUser() const
+{
+    TArray<FString> AllNames = GetAllWallNames();
+
+    if (AllNames.Num() == 0)
+    {
+        UE_LOG(LogWjWorld, Error, TEXT("No wall descriptions available (built-in or user)"));
+        return FString();
+    }
+
+    int32 RandomIndex = FMath::RandRange(0, AllNames.Num() - 1);
+    return AllNames[RandomIndex];
 }

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "InputAction.h"
+#include "GamePlay/Placement/WjWorldPlacementTypes.h"
 #include "WjWorldPlacementComponent.generated.h"
 
 class AWjWorldPlacementPreviewActor;
@@ -13,6 +14,7 @@ class AWjWorldGameStateLobby;
 class UWjWorldPlaceableObjectDataAsset;
 class UInputMappingContext;
 class UInputAction;
+class IWjWorldPlacementDataProvider;
 struct FPlaceableObjectDefinition;
 struct FInputActionValue;
 
@@ -44,10 +46,17 @@ public:
 	UWjWorldPlacementComponent();
 
 	//~ 모드 전환
+
+	/** 배치 모드 진입 (기본 컨텍스트: Lobby) */
 	void EnterPlacementMode();
+
+	/** 특정 컨텍스트로 배치 모드 진입 */
+	void EnterPlacementModeWithContext(EPlacementContext Context);
+
 	void ExitPlacementMode();
 	void ToggleDeleteMode();
 	EPlacementMode GetCurrentMode() const { return CurrentMode; }
+	EPlacementContext GetCurrentContext() const { return CurrentContext; }
 
 	//~ 오브젝트 조작
 	void SelectObject(FName ObjectId);
@@ -62,6 +71,36 @@ public:
 	//~ 저장/로드
 	void SaveLayout();
 	void LoadLayout();
+
+	/** 슬롯 이름을 지정하여 저장 */
+	void SaveLayoutToSlot(const FString& SlotName);
+
+	/** 슬롯 이름을 지정하여 로드 */
+	bool LoadLayoutFromSlot(const FString& SlotName);
+
+	/** 저장된 슬롯 목록 가져오기 */
+	TArray<FString> GetSavedLayoutSlots() const;
+
+	/** 현재 로드된 슬롯 이름 반환 (없으면 빈 문자열) */
+	FString GetLoadedSlotName() const { return LoadedSlotName; }
+
+	/** 현재 로드된 슬롯 이름 설정 (UI에서 저장 시 기본값으로 사용) */
+	void SetLoadedSlotName(const FString& SlotName) { LoadedSlotName = SlotName; }
+
+	/** 배치 데이터 프로바이더 참조 반환 (UI에서 사용) */
+	IWjWorldPlacementDataProvider* GetPlacementDataProvider() const;
+
+	/**
+	 * AW 컨텍스트: 배치된 오브젝트를 CSV 벽 레이아웃으로 내보내기
+	 * @param FileName 파일 이름 (확장자 제외)
+	 * @return 내보내기 성공 여부
+	 */
+	bool ExportLayoutAsCSV(const FString& FileName);
+
+	/**
+	 * AW 컨텍스트: 마지막으로 내보낸 CSV 파일 경로 반환
+	 */
+	FString GetLastExportedCSVPath() const { return LastExportedCSVPath; }
 
 	//~ 델리게이트
 	UPROPERTY(BlueprintAssignable, Category = "Placement")
@@ -123,11 +162,14 @@ private:
 
 	APlayerController* GetPlayerController() const;
 
-	/** GameStateLobby 참조 (멀티플레이 동기화용) */
+	/** @deprecated GetPlacementDataProvider 사용 권장 */
 	AWjWorldGameStateLobby* GetLobbyGameState() const;
 
 	/** 삭제 대상 오브젝트의 GameState 인덱스 찾기 */
 	int32 FindPlacedObjectIndex(AWjWorldPlacedObjectActor* Actor) const;
+
+	/** 현재 컨텍스트의 SaveSlot 이름 반환 */
+	FString GetCurrentSaveSlotName() const;
 
 	UPROPERTY()
 	TObjectPtr<UWjWorldPlaceableObjectDataAsset> Catalog;
@@ -140,11 +182,16 @@ private:
 
 	FName SelectedObjectId;
 	EPlacementMode CurrentMode = EPlacementMode::None;
+	EPlacementContext CurrentContext = EPlacementContext::Lobby;
 
-	static const FString SaveSlotName;
+	/** 현재 로드된 슬롯 이름 (저장 시 기본값으로 사용) */
+	FString LoadedSlotName;
 
 	/** 현재 프리뷰 유효 상태 캐싱 */
 	bool bCurrentPreviewValid = false;
+
+	/** AW 컨텍스트: 마지막으로 내보낸 CSV 경로 */
+	FString LastExportedCSVPath;
 
 	/** 트레이스 거리 */
 	static constexpr float TraceDistance = 10000.0f;

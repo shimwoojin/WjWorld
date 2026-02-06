@@ -3,8 +3,10 @@
 #include "UI/Lobby/LobbyHUDWidget.h"
 #include "UI/Profile/PlayerProfileWidget.h"
 #include "UI/Cosmetic/CosmeticMainWindow.h"
+#include "UI/Placement/PlacementContextSelectWidget.h"
 #include "Components/Button.h"
 #include "Core/Local/Lobby/WjWorldGameModeLobby.h"
+#include "Setting/WjWorldDeveloperSettings.h"
 #include "Kismet/GameplayStatics.h"
 #include "WjWorldLogCategories.h"
 
@@ -147,14 +149,78 @@ void ULobbyHUDWidget::OnPlacementModeClicked()
 {
 	UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: Placement Mode button clicked"));
 
-	AWjWorldGameModeLobby* GameMode = Cast<AWjWorldGameModeLobby>(GetWorld()->GetAuthGameMode());
-	if (GameMode)
+	// 컨텍스트 선택 팝업 표시
+	if (!PlacementContextSelectClass)
 	{
-		GameMode->EnterPlacementMode();
+		// 클래스가 설정되지 않은 경우 직접 로비 배치 모드로 진입 (하위 호환성)
+		UE_LOG(LogWjWorld, Warning, TEXT("LobbyHUDWidget: PlacementContextSelectClass not set, entering Lobby placement mode directly"));
+		OnPlacementContextSelected(EPlacementContext::Lobby);
+		return;
 	}
-	else
+
+	// 이미 열려있으면 스킵
+	if (PlacementContextSelectInstance && PlacementContextSelectInstance->IsInViewport())
 	{
-		UE_LOG(LogWjWorld, Error, TEXT("LobbyHUDWidget: Failed to get WjWorldGameModeLobby"));
+		return;
+	}
+
+	// 인스턴스 생성
+	PlacementContextSelectInstance = CreateWidget<UPlacementContextSelectWidget>(GetOwningPlayer(), PlacementContextSelectClass);
+	if (PlacementContextSelectInstance)
+	{
+		// 선택 콜백 바인딩
+		PlacementContextSelectInstance->OnContextSelected.AddDynamic(this, &ULobbyHUDWidget::OnPlacementContextSelected);
+		PlacementContextSelectInstance->ShowPopup();
+	}
+}
+
+void ULobbyHUDWidget::OnPlacementContextSelected(EPlacementContext SelectedContext)
+{
+	UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: Placement context selected: %s"), *GetPlacementContextName(SelectedContext));
+
+	switch (SelectedContext)
+	{
+	case EPlacementContext::Lobby:
+		{
+			// 로비 배치 모드 진입 (현재 맵에서)
+			AWjWorldGameModeLobby* GameMode = Cast<AWjWorldGameModeLobby>(GetWorld()->GetAuthGameMode());
+			if (GameMode)
+			{
+				GameMode->EnterPlacementMode();
+			}
+			else
+			{
+				UE_LOG(LogWjWorld, Error, TEXT("LobbyHUDWidget: Failed to get WjWorldGameModeLobby"));
+			}
+		}
+		break;
+
+	case EPlacementContext::ApproachingWall:
+	case EPlacementContext::JumpMap:
+		{
+			// 에디터 맵으로 이동
+			const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+			if (!Settings)
+			{
+				UE_LOG(LogWjWorld, Error, TEXT("LobbyHUDWidget: DeveloperSettings not found"));
+				return;
+			}
+
+			FString EditorMapURL = Settings->GetEditorMapOpenLevelURL(SelectedContext);
+			if (EditorMapURL.IsEmpty())
+			{
+				UE_LOG(LogWjWorld, Error, TEXT("LobbyHUDWidget: Editor map not configured for context %s"), *GetPlacementContextName(SelectedContext));
+				return;
+			}
+
+			UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: Opening editor map: %s"), *EditorMapURL);
+			UGameplayStatics::OpenLevel(this, *EditorMapURL);
+		}
+		break;
+
+	default:
+		UE_LOG(LogWjWorld, Warning, TEXT("LobbyHUDWidget: Unknown placement context"));
+		break;
 	}
 }
 

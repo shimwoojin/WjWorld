@@ -72,7 +72,8 @@ void UWjWorldBrickSpawner::SpawnBricksFromWallNameAsync(const FString& WallName)
 {
 	if (!LoadedWallDescriptionDataAsset) return;
 
-	if (!LoadedWallDescriptionDataAsset->GetWallDescriptionByName(WallName, TargetDesc))
+	// 내장 레이아웃 + 유저 레이아웃 모두 검색
+	if (!LoadedWallDescriptionDataAsset->GetWallDescriptionByNameIncludingUser(WallName, TargetDesc))
 	{
 		UE_LOG(LogWjWorld, Error, TEXT("Invalid Wall Desc Name : %s"), *WallName);
 		return;
@@ -290,5 +291,6 @@ FString UWjWorldBrickSpawner::GenerateRandomWallName()
 		return FString();
 	}
 
-	return LoadedWallDescriptionDataAsset->GenerateRandomWallDescriptionKey();
+	// 내장 레이아웃 + 유저 레이아웃 모두에서 랜덤 선택
+	return LoadedWallDescriptionDataAsset->GenerateRandomWallNameIncludingUser();
 }

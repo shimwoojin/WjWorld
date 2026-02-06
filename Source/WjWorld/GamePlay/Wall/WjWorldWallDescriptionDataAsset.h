@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "WjWorldLogCategories.h"
+#include "GamePlay/Placement/WjWorldPlacementTypes.h"
 #include "WjWorldWallDescriptionDataAsset.generated.h"
 
 USTRUCT(BlueprintType)
@@ -115,4 +116,31 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Wall Description")
 	TArray<FWjWorldWallDescription> WallDescriptions;
+
+	/**
+	 * 유저 벽 레이아웃 디렉토리를 스캔하여 사용 가능한 레이아웃 목록 반환
+	 * @param OutUserDescriptions 발견된 유저 레이아웃 목록
+	 * @return 발견된 레이아웃 수
+	 */
+	int32 ScanUserWallLayouts(TArray<FWjWorldWallDescription>& OutUserDescriptions) const;
+
+	/**
+	 * 내장 레이아웃 + 유저 레이아웃을 모두 포함한 이름 목록 반환
+	 */
+	TArray<FString> GetAllWallNames() const;
+
+	/**
+	 * 내장 또는 유저 레이아웃에서 이름으로 검색 (유저 레이아웃 포함)
+	 */
+	bool GetWallDescriptionByNameIncludingUser(const FString& Name, FWjWorldWallDescription& OutDescription) const;
+
+	/**
+	 * 랜덤 벽 이름 생성 (유저 레이아웃 포함)
+	 */
+	FString GenerateRandomWallNameIncludingUser() const;
+
+private:
+	/** 캐시된 유저 레이아웃 (런타임에 스캔) */
+	mutable TArray<FWjWorldWallDescription> CachedUserDescriptions;
+	mutable bool bUserDescriptionsCached = false;
 };

@@ -113,6 +113,9 @@ void AWjWorldGameStateLobby::RespawnAllPlacedObjects()
 		return;
 	}
 
+	UE_LOG(LogWjWorldPlacement, Log, TEXT("GameStateLobby::RespawnAllPlacedObjects - Starting (Current SpawnedActors: %d, PlacedObjects: %d)"),
+		SpawnedActors.Num(), PlacedObjects.Num());
+
 	// 기존 스폰된 오브젝트 제거
 	for (AWjWorldPlacedObjectActor* Actor : SpawnedActors)
 	{
@@ -144,6 +147,11 @@ void AWjWorldGameStateLobby::RespawnAllPlacedObjects()
 			continue;
 		}
 
+		UE_LOG(LogWjWorldPlacement, Log, TEXT("GameStateLobby: Spawning ObjectId=%s, MeshValid=%d, MeshPath=%s"),
+			*Entry.ObjectId.ToString(),
+			!Def->Mesh.IsNull(),
+			*Def->Mesh.ToString());
+
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
@@ -158,6 +166,10 @@ void AWjWorldGameStateLobby::RespawnAllPlacedObjects()
 		{
 			NewActor->InitializeFromSaveData(Entry.ObjectId, Entry.Transform, *Def);
 			SpawnedActors.Add(NewActor);
+		}
+		else
+		{
+			UE_LOG(LogWjWorldPlacement, Error, TEXT("GameStateLobby: Failed to spawn actor for ObjectId=%s"), *Entry.ObjectId.ToString());
 		}
 	}
 
@@ -174,19 +186,19 @@ void AWjWorldGameStateLobby::EnsureCatalogLoaded()
 
 	// DeveloperSettings에서 Catalog 로드 (폴백 메커니즘)
 	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
-	if (!Settings || Settings->PlaceableObjectCatalog.IsNull())
+	if (!Settings || Settings->LobbyPlaceableCatalog.IsNull())
 	{
-		UE_LOG(LogWjWorldPlacement, Warning, TEXT("GameStateLobby: No PlaceableObjectCatalog configured in DeveloperSettings"));
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("GameStateLobby: No LobbyPlaceableCatalog configured in DeveloperSettings"));
 		return;
 	}
 
-	Catalog = Settings->PlaceableObjectCatalog.LoadSynchronous();
+	Catalog = Settings->LobbyPlaceableCatalog.LoadSynchronous();
 	if (Catalog)
 	{
 		UE_LOG(LogWjWorldPlacement, Log, TEXT("GameStateLobby: Catalog loaded from DeveloperSettings (fallback)"));
 	}
 	else
 	{
-		UE_LOG(LogWjWorldPlacement, Error, TEXT("GameStateLobby: Failed to load PlaceableObjectCatalog"));
+		UE_LOG(LogWjWorldPlacement, Error, TEXT("GameStateLobby: Failed to load LobbyPlaceableCatalog"));
 	}
 }

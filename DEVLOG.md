@@ -1,5 +1,54 @@
 # WjWorld 개발 로그
 
+## 2026-02-06
+### 작업 내용 - 배치 시스템 다중 컨텍스트 확장 & AW Editor CSV 연동
+
+#### 배치 시스템 → AW 게임플레이 연동
+- **PlacementComponent CSV 내보내기** (`WjWorldPlacementComponent.cpp`)
+  - AW 컨텍스트에서 저장 시 CSV 파일도 자동 내보내기
+  - `ExportLayoutAsCSV()` 메서드 추가
+  - 저장 경로: `Content/WallLayouts/User/`
+- **WallDescriptionDataAsset 유저 레이아웃 스캔** (`WjWorldWallDescriptionDataAsset.cpp`)
+  - `ScanUserWallLayouts()`: 유저 CSV 디렉토리 자동 스캔
+  - `GetAllWallNames()`: 내장 + 유저 레이아웃 통합 목록
+  - `GetWallDescriptionByNameIncludingUser()`: 유저 레이아웃 포함 검색
+  - `GenerateRandomWallNameIncludingUser()`: 유저 레이아웃 포함 랜덤 선택
+- **BrickSpawner 유저 레이아웃 지원** (`WjWorldBrickSpawner.cpp`)
+  - `SpawnBricksFromWallNameAsync()`: 유저 레이아웃 검색 연동
+  - `GenerateRandomWallName()`: 유저 레이아웃 포함
+
+#### WallLayoutConverter 버그 수정
+- **[버그] ValidateWallLayout 시작점 오인 문제**
+  - 원인: 첫 번째 -1 셀을 시작점으로 사용 → 외곽 빈 공간이 시작점이 됨
+  - 문제: Padding 추가 시 모든 레이아웃이 "열려있음"으로 오판
+  - 수정: 외부/내부 영역 분리 로직
+    - `MarkExteriorCells()`: 경계에서 Flood Fill로 외부 영역 마킹
+    - `FindInteriorEmptyCell()`: 외부가 아닌 빈 셀 = 내부 영역 찾기
+  - 파일: `WjWorldWallLayoutConverter.cpp/.h`
+
+#### 로그 검토 도구 추가
+- **`/log` 스킬** (`.claude/commands/log.md`)
+  - 빠른 로그 검토: `/log`, `/log error`, `/log placement`, `/log warning`
+- **`ue-log-analyzer` 에이전트** (`.claude/agents/ue-log-analyzer/`)
+  - 심층 로그 분석: 크래시, 패턴 감지, 네트워크 이슈
+
+#### ue-build-runner 에이전트 제약 추가
+- **문제**: 빌드 검증 요청 시 에이전트가 프로젝트 파일을 수정 시도 (UE 5.7 → 5.5 다운그레이드)
+- **수정**: SKILL.md에 명확한 제약 추가
+  - 파일 수정 금지 (분석/보고만)
+  - 프로젝트 파일(.uproject, Target.cs) 수정 금지
+  - 엔진 버전 변경 시도 금지
+
+### 학습/메모
+- **에이전트 제약의 중요성**: tools에 Bash가 있으면 sed/echo로 파일 수정 가능 → 명시적 금지 필요
+- **벽 레이아웃 유효성 검사**: 경계에서 시작하는 Flood Fill로 외부 영역을 먼저 마킹해야 함
+
+### 이슈/해결
+- [해결] ue-build-runner가 수정한 파일 git checkout으로 복원
+- [해결] WallLayoutConverter 외부/내부 영역 구분 로직 구현
+
+---
+
 ## 2026-02-05
 ### 작업 내용 - Steam 출시 Polishing & 네트워크 모드 토글
 

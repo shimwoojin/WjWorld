@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DeveloperSettingsBackedByCVars.h"
+#include "GamePlay/Placement/WjWorldPlacementTypes.h"
 #include "WjWorldDeveloperSettings.generated.h"
 
 class AWjWorldTileActor;
@@ -111,9 +112,39 @@ public:
 
 	// ========== Placement ==========
 
-	/** 배치 가능한 오브젝트 카탈로그 */
-	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement")
+	/** @deprecated 로비 배치 카탈로그 사용 권장 (LobbyPlaceableCatalog) */
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement", meta = (DisplayName = "Placeable Object Catalog (Legacy)"))
 	TSoftObjectPtr<UWjWorldPlaceableObjectDataAsset> PlaceableObjectCatalog;
+
+	// ========== Placement Editor Maps ==========
+
+	/** Approaching Wall 에디터 맵 경로 */
+	UPROPERTY(config, EditAnywhere, Category = "Placement|Editor Maps")
+	FSoftObjectPath AWEditorMapPath;
+
+	/** JumpMap 에디터 맵 경로 */
+	UPROPERTY(config, EditAnywhere, Category = "Placement|Editor Maps")
+	FSoftObjectPath JumpMapEditorMapPath;
+
+	/** AW 에디터 게임모드 클래스 */
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Editor Maps")
+	TSoftClassPtr<AGameModeBase> AWEditorGameModeClass;
+
+	/** JumpMap 에디터 게임모드 클래스 */
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Editor Maps")
+	TSoftClassPtr<AGameModeBase> JumpMapEditorGameModeClass;
+
+	/** 로비 배치 카탈로그 */
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Context")
+	TSoftObjectPtr<UWjWorldPlaceableObjectDataAsset> LobbyPlaceableCatalog;
+
+	/** Approaching Wall 배치 카탈로그 */
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Context")
+	TSoftObjectPtr<UWjWorldPlaceableObjectDataAsset> ApproachingWallPlaceableCatalog;
+
+	/** JumpMap 배치 카탈로그 */
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Context")
+	TSoftObjectPtr<UWjWorldPlaceableObjectDataAsset> JumpMapPlaceableCatalog;
 
 	/** 배치 모드 입력 매핑 컨텍스트 */
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Input")
@@ -132,6 +163,15 @@ public:
 
 	/** 플레이 ServerTravel URL 반환 */
 	FString GetPlayServerTravelURL(const FString& LevelPath, const FString& GameModeId) const;
+
+	/** 컨텍스트별 배치 카탈로그 반환 (폴백: PlaceableObjectCatalog) */
+	UWjWorldPlaceableObjectDataAsset* GetPlaceableCatalogForContext(EPlacementContext Context) const;
+
+	/** 컨텍스트별 에디터 맵 OpenLevel URL 반환 (빈 문자열 = 미설정) */
+	FString GetEditorMapOpenLevelURL(EPlacementContext Context) const;
+
+	/** 컨텍스트별 에디터 맵이 설정되어 있는지 확인 */
+	bool HasEditorMapForContext(EPlacementContext Context) const;
 
 	// 배치 확정 입력 액션 (LMB)
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Input")

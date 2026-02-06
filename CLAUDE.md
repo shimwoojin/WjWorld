@@ -69,6 +69,17 @@ Source/WjWorld/
 │   │   ├── ApproachingWallPlayerDataComponent # AW 플레이어 데이터
 │   │   ├── SumoGameDataComponent      # Sumo 게임 데이터 (AlivePlayerCount)
 │   │   └── SumoPlayerDataComponent    # Sumo 플레이어 데이터 (bIsAlive)
+│   ├── Editor/                        # 에디터 모드 (배치 편집용 싱글플레이 맵)
+│   │   ├── AWEditor/                  # Approaching Wall 에디터
+│   │   │   ├── WjWorldGameModeAWEditor
+│   │   │   ├── WjWorldGameStateAWEditor  # IWjWorldPlacementDataProvider 구현
+│   │   │   ├── WjWorldPlayerControllerAWEditor
+│   │   │   └── WjWorldHUDAWEditor
+│   │   └── JumpMapEditor/             # JumpMap 에디터
+│   │       ├── WjWorldGameModeJumpMapEditor
+│   │       ├── WjWorldGameStateJumpMapEditor
+│   │       ├── WjWorldPlayerControllerJumpMapEditor
+│   │       └── WjWorldHUDJumpMapEditor
 │   ├── Components/                    # 게임플레이 헬퍼 컴포넌트
 │   │   ├── WjWorldGameplaySceneComponent
 │   │   └── WjWorldGameplayActorComponent
@@ -99,10 +110,12 @@ Source/WjWorld/
 │   ├── Camera/                        # 카메라 시스템
 │   ├── Interact/                      # 상호작용
 │   │   └── InteractablePortal
-│   ├── Placement/                     # 로비 배치 시스템
-│   │   ├── WjWorldPlacementComponent  # 배치 핵심 로직 (PC에 부착)
+│   ├── Placement/                     # 다중 컨텍스트 배치 시스템
+│   │   ├── WjWorldPlacementComponent  # 배치 핵심 로직 (컨텍스트 지원, 슬롯 저장/로드)
 │   │   ├── WjWorldPlacementPreviewActor  # 배치 프리뷰 액터
-│   │   └── WjWorldPlacedObjectActor   # 배치된 오브젝트 액터
+│   │   ├── WjWorldPlacedObjectActor   # 배치된 오브젝트 액터
+│   │   ├── WjWorldPlacementTypes      # EPlacementContext, SaveSlot 헬퍼
+│   │   └── IWjWorldPlacementDataProvider  # 배치 데이터 프로바이더 인터페이스
 │   ├── Quest/                         # 퀘스트 시스템
 │   │   ├── Quest
 │   │   ├── QuestInstance
@@ -120,7 +133,8 @@ Source/WjWorld/
 │       ├── WjWorldBrickPreviewActor   # 어빌리티 배치 프리뷰 (유효/무효 색상)
 │       ├── WjWorldTileActor           # 안전 구역 타일 (폭탄 신호, 색상 전환)
 │       ├── WjWorldWallManager         # 벽 이동 관리
-│       └── WjWorldWallDescriptionDataAsset  # 벽 레이아웃 데이터
+│       ├── WjWorldWallDescriptionDataAsset  # 벽 레이아웃 데이터
+│       └── WjWorldWallLayoutConverter  # 배치 오브젝트 → WallLayout CSV 변환
 ├── Network/                           # 네트워크/패킷 관련
 │   ├── PacketData
 │   ├── PacketDataQuest
@@ -132,7 +146,14 @@ Source/WjWorld/
     ├── Login/LoginWindow
     ├── Lobby/
     │   ├── LobbyHUDWidget
-    │   └── PlacementHUDWidget         # 배치 모드 HUD
+    │   └── PlacementHUDWidget         # 로비 배치 모드 HUD (PlacementHUDWidgetBase 상속)
+    ├── Placement/                      # 배치 UI 공통
+    │   ├── PlacementHUDWidgetBase     # 배치 HUD 베이스 (Save/Load/Catalog)
+    │   ├── PlacementSaveDialogWidget  # 저장 다이얼로그 (슬롯 이름, 유효성 표시)
+    │   ├── PlacementLoadDialogWidget  # 불러오기 다이얼로그 (슬롯 목록)
+    │   ├── PlacementContextSelectWidget  # 컨텍스트 선택 팝업 (Lobby/AW/JumpMap)
+    │   ├── PlacementHUDWidgetAWEditor # AW 에디터 전용 HUD (WallLayout 변환)
+    │   └── PlacementHUDWidgetJumpMapEditor  # JumpMap 에디터 전용 HUD
     ├── Session/
     │   ├── CreateRoomWindow
     │   ├── RoomListWindow
@@ -198,19 +219,26 @@ AnimInstance: UWjWorldAnimInstance (LiftBrickBlendWeight, GameplayTag 기반 상
 - **동적 GameRule 조회**: `GameModePlay::InitGame()`에서 URL Options의 `GameModeId`로 카탈로그 조회
 - **DeveloperSettings 참조**: `MinigameCatalog` 소프트 참조
 
-### 로비 배치 시스템
-로비에서 오브젝트를 배치/삭제하고 저장하는 시스템. 멀티플레이어 지원.
-- **PlacementComponent**: `PlayerControllerLobby`에 부착, 배치 핵심 로직, EnhancedInput 바인딩
+### 다중 컨텍스트 배치 시스템
+Lobby / ApproachingWall / JumpMap 3개 컨텍스트를 지원하는 확장된 배치 시스템.
+- **EPlacementContext**: `None`, `Lobby`, `ApproachingWall`, `JumpMap` 열거형
+- **IWjWorldPlacementDataProvider**: GameState 추상화 인터페이스 (AddPlacedObject, RemovePlacedObjectAt, GetPlacedObjects)
+- **PlacementComponent**: 컨텍스트 지원, `SaveLayoutToSlot()`/`LoadLayoutFromSlot()`, `GetSavedLayoutSlots()`, `LoadedSlotName` 추적
 - **PlacementPreviewActor**: 배치 프리뷰 (유효/무효 색상), `FStreamableManager` 비동기 메시 로드
 - **PlacedObjectActor**: 실제 배치된 오브젝트, 삭제 모드 하이라이트
-- **PlaceableObjectDataAsset**: 배치 가능 오브젝트 카탈로그 (`FPlaceableObjectDefinition`)
-- **LayoutSaveGame**: `USaveGame` 기반 레이아웃 저장/로드 (`LobbyLayout` 슬롯)
+- **PlaceableObjectDataAsset**: 컨텍스트별 배치 가능 오브젝트 카탈로그 (`FPlaceableObjectDefinition`)
+- **LayoutSaveGame**: `USaveGame` 기반 레이아웃 저장/로드 (컨텍스트별 SaveSlot: `LobbyLayout`, `ApproachingWallLayout`, `JumpMapLayout`)
 - **GameStateLobby**: 배치 오브젝트 리플리케이션 (`TArray<FPlacedObjectSaveEntry>`)
 - **입력**: LMB(배치), R(회전), DEL(삭제), ESC(종료)
+- **에디터 모드**: AWEditor, JumpMapEditor 전용 GameMode/GameState/HUD
+- **WallLayoutConverter**: AW 컨텍스트용 배치 오브젝트 → WallLayout CSV 변환, 외부/내부 영역 구분 유효성 검사
+- **CSV 내보내기**: `ExportLayoutAsCSV()` - SaveGame 저장 시 CSV 파일도 자동 내보내기 (`Content/WallLayouts/User/`)
+- **유저 레이아웃 자동 스캔**: `WallDescriptionDataAsset`에서 유저 CSV 디렉토리 런타임 스캔, 내장+유저 레이아웃 통합 지원
 
 ### Approaching Wall 미니게임
 첫 번째 미니게임. 벽이 점진적으로 다가오며 플레이어들이 안전 구역으로 이동해야 하는 PvP 게임.
-- **BrickSpawner**: 데이터 에셋 기반 비동기 벽돌 스폰 (8개/틱)
+- **BrickSpawner**: 데이터 에셋 기반 비동기 벽돌 스폰 (8개/틱), 내장+유저 레이아웃 통합 지원
+- **WallDescriptionDataAsset**: 내장 레이아웃 + 유저 레이아웃 자동 스캔 (`ScanUserWallLayouts()`, `GetWallDescriptionByNameIncludingUser()`)
 - **BrickMovement**: 개별 벽돌 이동 로직 (경로 탐색)
 - **WallManager**: 벽 이동 진행 관리 (레벨별 속도 조절)
 - **레벨 시스템**: 12초마다 레벨업, 이동 시간 5초→1초 (10레벨)
@@ -356,12 +384,13 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
 
 ### WjWorldDeveloperSettings (중앙 설정)
 에디터에서 설정 가능한 중앙 집중식 에셋/클래스 참조. Project Settings > Game > WjWorld Developer Settings에서 설정.
-- **맵**: LobbyMapPath
-- **GameMode 클래스**: WaitingRoomGameModeClass, PlayGameModeClass
+- **맵**: LobbyMapPath, AWEditorMapPath, JumpMapEditorMapPath
+- **GameMode 클래스**: WaitingRoomGameModeClass, PlayGameModeClass, AWEditorGameModeClass, JumpMapEditorGameModeClass
 - **캐릭터 기본값**: DefaultCharacterMesh, DefaultAnimBlueprintClass, DefaultInputMappingContext
 - **Approaching Wall**: BrickMesh, TileMesh, WallDescriptionAsset
-- **카탈로그**: MinigameCatalog, CosmeticCatalog, PlaceableObjectCatalog
-- **헬퍼 함수**: GetLobbyMapPath(), GetWaitingRoomOpenLevelURL(), GetPlayServerTravelURL()
+- **배치 카탈로그**: LobbyPlaceableCatalog, ApproachingWallPlaceableCatalog, JumpMapPlaceableCatalog
+- **기타 카탈로그**: MinigameCatalog, CosmeticCatalog
+- **헬퍼 함수**: GetLobbyMapPath(), GetWaitingRoomOpenLevelURL(), GetPlayServerTravelURL(), GetPlaceableCatalogForContext(), GetEditorMapOpenLevelURL(), HasEditorMapForContext()
 
 **설정 우선순위 패턴**: BP 서브클래스 UPROPERTY 값 우선 → DeveloperSettings 폴백
 
@@ -424,10 +453,19 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
 - **LAN SocketSubsystem 충돌 수정** (WjWorldLanNetDriver + ApplyNetDriverForMode 런타임 전환)
 - **GA_Jump 어빌리티 구현** (UE CharacterJump 패턴, LocalPredicted, Ability7 InputID)
 - **PackageAndUploadSteam.bat 버그 수정** (call 키워드, -build 플래그, pause 추가)
+- **다중 컨텍스트 배치 시스템** (EPlacementContext, IWjWorldPlacementDataProvider, 컨텍스트별 카탈로그/SaveSlot)
+- **배치 에디터 모드** (AWEditor, JumpMapEditor - GameMode/GameState/PlayerController/HUD)
+- **배치 UI 위젯 리팩토링** (PlacementHUDWidgetBase 공통 기능, Save/Load 다이얼로그)
+- **WallLayout 변환 시스템** (WjWorldWallLayoutConverter: 배치 오브젝트 → CSV, IsWallClosed 유효성 검사)
+- **DeveloperSettings 확장** (에디터 맵 경로, 컨텍스트별 카탈로그)
+- **AW Editor CSV 내보내기** (SaveGame 저장 시 CSV 자동 내보내기, `Content/WallLayouts/User/`)
+- **유저 벽 레이아웃 지원** (WallDescriptionDataAsset 런타임 스캔, BrickSpawner 유저 레이아웃 검색)
+- **WallLayoutConverter 외부/내부 영역 구분** (MarkExteriorCells + FindInteriorEmptyCell 로직)
 
 ## 진행 중 / 미구현
 - GA_Jump 에디터 세팅 (IA_Ability7, BP_GA_Jump, SetupDA, MinigameCatalog AllowedAbilityTags)
 - Sumo Knockoff 6대 기능 에디터 세팅 (BP 생성/프로퍼티 할당, 링 배치, HUD 위젯, 파워업 비주얼)
+- **배치 에디터 BP 세팅** (에디터 맵 생성, BP_PlacementSaveDialogWidget, BP_PlacementLoadDialogWidget, 컨텍스트별 카탈로그 DataAsset)
 - 추가 미니게임 구현
 - Steam 정식 출시 준비
 
@@ -540,19 +578,43 @@ PlayerProfileWidget (스탯 표시)
 CharacterPreviewActor (3D 프리뷰)
 ```
 
-### 로비 배치 시스템
+### 다중 컨텍스트 배치 시스템
 ```
-[싱글 로비] LobbyHUD "배치 모드" 버튼
+[컨텍스트 선택] LobbyHUD "배치 모드" 버튼 → PlacementContextSelectWidget
     ↓
-PlacementComponent.EnterPlacementMode() → IMC_Placement 활성화
+Lobby 선택 → EnterPlacementModeWithContext(Lobby)
+AW/JumpMap 선택 → OpenLevel(EditorMap) → 전용 에디터 진입
+
+[배치 편집] PlacementHUDWidgetBase
     ↓
 카탈로그에서 오브젝트 선택 → PlacementPreviewActor 생성
     ↓
 TickComponent: 마우스 트레이스 → 프리뷰 위치/유효성 갱신
     ↓
-LMB: ConfirmPlacement() → PlacedObjectActor 스폰 + SaveLayout()
+LMB: ConfirmPlacement() → PlacedObjectActor 스폰
+
+[불러오기] Load 버튼 → PlacementLoadDialogWidget (슬롯 목록)
     ↓
-LayoutSaveGame (LobbyLayout 슬롯) → 로컬 저장
+슬롯 선택 → LoadLayoutFromSlot() → LoadedSlotName 저장
+    ↓
+기존 배치 클리어 → 로드된 오브젝트 스폰
+
+[저장] Save 버튼 → PlacementSaveDialogWidget (기본값: LoadedSlotName)
+    ↓
+슬롯 이름 편집 → SaveLayoutToSlot()
+    ↓
+AW 컨텍스트: ExportLayoutAsCSV() → Content/WallLayouts/User/{SlotName}.csv
+    ↓
+WallLayoutConverter.ValidateWallLayout() → 외부/내부 영역 구분 유효성 검사
+
+[AW Editor → 게임플레이 연동]
+유저 CSV 저장 (Content/WallLayouts/User/)
+    ↓
+WallDescriptionDataAsset.ScanUserWallLayouts() (런타임 스캔)
+    ↓
+GetWallDescriptionByNameIncludingUser() (내장+유저 통합 검색)
+    ↓
+BrickSpawner.SpawnBricksFromWallNameAsync() (유저 레이아웃 로드)
 
 [멀티 대기실] GameModeWaitingRoom.BeginPlay()
     ↓

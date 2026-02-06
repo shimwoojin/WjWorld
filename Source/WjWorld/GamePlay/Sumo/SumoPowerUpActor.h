@@ -35,12 +35,20 @@ class WJWORLD_API ASumoPowerUpActor : public AActor
 public:
 	ASumoPowerUpActor();
 
-	/** 파워업 타입 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sumo|PowerUp")
+	/** 파워업 타입 설정 (메시도 함께 적용) */
+	UFUNCTION(BlueprintCallable, Category = "Sumo|PowerUp")
+	void SetPowerUpType(ESumoPowerUpType NewType);
+
+	/** 현재 파워업 타입 */
+	UPROPERTY(ReplicatedUsing = OnRep_PowerUpType, BlueprintReadOnly, Category = "Sumo|PowerUp")
 	ESumoPowerUpType PowerUpType = ESumoPowerUpType::SpeedBoost;
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	UFUNCTION()
+	void OnRep_PowerUpType();
 
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -66,4 +74,21 @@ protected:
 	/** SpeedBoost 지속 시간 */
 	UPROPERTY(EditDefaultsOnly, Category = "Sumo|PowerUp")
 	float SpeedBoostDuration = 5.f;
+
+	//~ 타입별 메시 (에디터에서 설정)
+	UPROPERTY(EditDefaultsOnly, Category = "Sumo|PowerUp|Mesh")
+	TObjectPtr<UStaticMesh> SpeedBoostMesh;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sumo|PowerUp|Mesh")
+	TObjectPtr<UStaticMesh> SuperPushMesh;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sumo|PowerUp|Mesh")
+	TObjectPtr<UStaticMesh> ShieldMesh;
+
+private:
+	/** 현재 타입에 맞는 메시 적용 */
+	void ApplyMeshForType();
+
+	/** 캐릭터별 SpeedBoost 타이머 핸들 (중복 픽업 시 기존 타이머 취소용) */
+	static TMap<TWeakObjectPtr<AWjWorldCharacterPlay>, FTimerHandle> SpeedBoostTimerHandles;
 };
