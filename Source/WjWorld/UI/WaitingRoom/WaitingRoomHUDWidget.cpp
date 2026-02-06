@@ -5,11 +5,15 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
+#include "Components/ComboBoxString.h"
+#include "Components/CanvasPanel.h"
 #include "Core/Local/WaitingRoom/WjWorldGameModeWaitingRoom.h"
 #include "Core/Base/WjWorldPlayerStateBase.h"
 #include "Core/WjWorldGameInstance.h"
 #include "Core/Session/SessionManager.h"
 #include "Setting/WjWorldDeveloperSettings.h"
+#include "DataAsset/WjWorldMinigameDataAsset.h"
+#include "GamePlay/Wall/WjWorldWallDescriptionDataAsset.h"
 #include "Kismet/GameplayStatics.h"
 #include "WjWorldLogCategories.h"
 
@@ -33,6 +37,16 @@ void UWaitingRoomHUDWidget::NativeConstruct()
 	if (LeaveButton)
 	{
 		LeaveButton->OnClicked.AddDynamic(this, &UWaitingRoomHUDWidget::OnLeaveClicked);
+	}
+
+	if (ApplySettingsButton)
+	{
+		ApplySettingsButton->OnClicked.AddDynamic(this, &UWaitingRoomHUDWidget::OnApplySettingsClicked);
+	}
+
+	if (GameModeComboBox)
+	{
+		GameModeComboBox->OnSelectionChanged.AddDynamic(this, &UWaitingRoomHUDWidget::OnGameModeSelectionChanged);
 	}
 
 	// GameState 가져오기 및 이벤트 바인딩
@@ -63,6 +77,10 @@ void UWaitingRoomHUDWidget::NativeConstruct()
 		UpdatePlayerList();
 		UpdateStartGameButton();
 		UpdateReadyButton();
+
+		// 호스트 설정 패널 초기화
+		InitializeHostSettingsPanel();
+		UpdateHostSettingsPanelVisibility();
 
 		UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: GameState events bound"));
 	}
@@ -97,6 +115,11 @@ void UWaitingRoomHUDWidget::NativeDestruct()
 	{
 		CachedGameState->OnRoomInfoChanged.RemoveDynamic(this, &UWaitingRoomHUDWidget::OnRoomInfoChanged);
 		CachedGameState->OnPlayerListChanged.RemoveDynamic(this, &UWaitingRoomHUDWidget::OnPlayerListChanged);
+	}
+
+	if (GameModeComboBox)
+	{
+		GameModeComboBox->OnSelectionChanged.RemoveDynamic(this, &UWaitingRoomHUDWidget::OnGameModeSelectionChanged);
 	}
 
 	APlayerController* PC = GetOwningPlayer();
@@ -224,6 +247,15 @@ void UWaitingRoomHUDWidget::UpdateRoomInfo()
 	if (GameModeText)
 	{
 		GameModeText->SetText(FText::FromString(Settings.GameMode));
+	}
+
+	// 맵 이름 표시
+	if (MapText)
+	{
+		FString MapDisplayName = Settings.MapName;
+		// User_ 접두사 제거하여 표시
+		MapDisplayName.RemoveFromStart(TEXT("User_"));
+		MapText->SetText(FText::FromString(MapDisplayName));
 	}
 
 	// ⭐ 플레이어 수 표시 (실시간으로 가져오기)
@@ -451,11 +483,6 @@ void UWaitingRoomHUDWidget::UpdateStartGameButton()
 	}
 }
 
-#include "Components/ComboBoxString.h"
-#include "Components/CanvasPanel.h"
-#include "DataAsset/WjWorldMinigameDataAsset.h"
-#include "GamePlay/Wall/WjWorldWallDescriptionDataAsset.h"
-
 void UWaitingRoomHUDWidget::InitializeHostSettingsPanel()
 {
 	if (!GameModeComboBox || !MapComboBox)
@@ -553,6 +580,32 @@ void UWaitingRoomHUDWidget::UpdateMapComboBoxForGameMode(const FString& GameMode
 
 			MapComboBox->AddOption(DisplayName);
 			MapOptionDisplayToValue.Add(DisplayName, OptionValue);
+		}
+	}
+
+	// ApproachingWall인 경우 유저 레이아웃도 추가
+	if (GameModeId == TEXT("ApproachingWall"))
+	{
+		if (!DevSettings->WallDescriptionAsset.IsNull())
+		{
+			UWjWorldWallDescriptionDataAsset* WallAsset = DevSettings->WallDescriptionAsset.LoadSynchronous();
+			if (WallAsset)
+			{
+				TArray<FWjWorldWallDescription> UserLayouts;
+				WallAsset->ScanUserWallLayouts(UserLayouts);
+
+				for (const FWjWorldWallDescription& Layout : UserLayouts)
+				{
+					FString DisplayName = Layout.WallName;
+					DisplayName.RemoveFromStart(TEXT("User_"));
+					FString DisplayStr = FString::Printf(TEXT("[User] %s"), *DisplayName);
+
+					MapComboBox->AddOption(DisplayStr);
+					MapOptionDisplayToValue.Add(DisplayStr, Layout.WallName);
+				}
+
+				UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Added %d user layouts"), UserLayouts.Num());
+			}
 		}
 	}
 

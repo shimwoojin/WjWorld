@@ -2,6 +2,8 @@
 
 
 #include "Core/Intro/WjWorldGameModeIntro.h"
+#include "Core/WjWorldGameInstance.h"
+#include "Setting/WjWorldDeveloperSettings.h"
 #include "UI/Intro/IntroWindow.h"
 #include "Kismet/GameplayStatics.h"
 #include "WjWorldLogCategories.h"
@@ -14,6 +16,22 @@ AWjWorldGameModeIntro::AWjWorldGameModeIntro()
 void AWjWorldGameModeIntro::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// ⭐ 호스트 마이그레이션 중에 Intro로 온 경우 → Lobby로 바로 이동
+	UWjWorldGameInstance* GameInstance = Cast<UWjWorldGameInstance>(GetGameInstance());
+	if (GameInstance && GameInstance->IsMigrating())
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("GameModeIntro: Migration in progress - redirecting to Lobby"));
+
+		// 마이그레이션 컨텍스트 리셋 (실패로 처리)
+		GameInstance->GetMigrationContext().Reset();
+
+		// Lobby로 이동
+		const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+		UGameplayStatics::OpenLevel(GetWorld(), FName(*Settings->GetLobbyMapPath()));
+		return;
+	}
+
 	// UI 생성 및 표시
 	CreateAndShowIntroUI();
 }

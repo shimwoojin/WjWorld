@@ -71,7 +71,7 @@ protected:
 
 	TWeakObjectPtr<UWjWorldGameRuleApproachingWall> GameRule;
 
-	int32 bIsOverlapBricks[EWjWorldDirection::Max];
+	int32 bIsOverlapBricks[EWjWorldDirection::Max] = {0};
 
 	UPROPERTY(ReplicatedUsing = OnRep_IsBombSignalOn)
 	bool bIsBombSignalOn = false;

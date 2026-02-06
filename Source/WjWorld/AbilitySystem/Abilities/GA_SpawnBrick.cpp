@@ -382,24 +382,22 @@ bool UGA_SpawnBrick::CheckPreviewValid() const
 
 void UGA_SpawnBrick::OnConfirmCallback()
 {
-	UE_LOG(LogWjWorldAbilities, Log, TEXT("UGA_SpawnBrick::OnConfirmCallback"));
+	UE_LOG(LogWjWorldAbilities, Log, TEXT("UGA_SpawnBrick::OnConfirmCallback - GridIndex: (%d, %d)"),
+		CachedPreviewGridIndex.X, CachedPreviewGridIndex.Y);
 
-	if (CheckPreviewValid())
+	if (CheckPreviewValid() && CachedPreviewGridIndex.X >= 0 && CachedPreviewGridIndex.Y >= 0)
 	{
-		// 서버에서만 실제 스폰 + 충전 소모
+		// 서버에서 직접 실행되는 경우 (Listen Server 호스트)
 		if (HasAuthority(&CurrentActivationInfo))
 		{
 			ApplyChargeCost();
-			SpawnBrickAtPreviewLocation();
+			ServerSpawnBrickAtGridIndex(CachedPreviewGridIndex.X, CachedPreviewGridIndex.Y);
 			StartChargeRefill();
-
-			// GameplayCue 실행 (사운드/VFX)
-			if (UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo())
-			{
-				FGameplayCueParameters CueParams;
-				CueParams.Location = CalculatePreviewLocation();
-				ASC->ExecuteGameplayCue(WjWorldGameplayTag::GameplayCue_Ability_SpawnBrick(), CueParams);
-			}
+		}
+		// 클라이언트에서 서버로 RPC 호출
+		else if (CurrentActorInfo && CurrentActorInfo->IsLocallyControlled())
+		{
+			ServerSpawnBrickAtGridIndex(CachedPreviewGridIndex.X, CachedPreviewGridIndex.Y);
 		}
 	}
 
@@ -412,8 +410,65 @@ void UGA_SpawnBrick::OnCancelCallback()
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, true);
 }
 
+void UGA_SpawnBrick::ServerSpawnBrickAtGridIndex_Implementation(int32 GridX, int32 GridY)
+{
+	UE_LOG(LogWjWorldAbilities, Log, TEXT("UGA_SpawnBrick::ServerSpawnBrickAtGridIndex - GridIndex: (%d, %d)"), GridX, GridY);
+
+	// 그리드 범위 체크
+	if (GridX < 0 || GridX >= CachedWallDesc.ColumnNum ||
+		GridY < 0 || GridY >= CachedWallDesc.RowNum)
+	{
+		UE_LOG(LogWjWorldAbilities, Warning, TEXT("UGA_SpawnBrick::ServerSpawnBrickAtGridIndex - Invalid GridIndex"));
+		return;
+	}
+
+	// 클라이언트에서 호출된 경우 충전 소모 및 리필 시작
+	if (!HasAuthority(&CurrentActivationInfo))
+	{
+		ApplyChargeCost();
+		StartChargeRefill();
+	}
+
+	FIntPoint SpawnIndexPoint(GridX, GridY);
+	FVector SpawnPosition = UWjWorldBrickSpawner::CalculateBrickPosition(
+		GridX,
+		GridY,
+		CachedWallDesc.ColumnNum,
+		CachedWallDesc.RowNum,
+		CachedWallDesc.CenterOffset,
+		CachedWallDesc.BrickSize
+	);
+
+	FWjWorldBrickProperties BrickProperties;
+	BrickProperties.BrickType = FMath::RandBool() ? EWjWorldBrickType::Moving : EWjWorldBrickType::Destructible;
+	BrickProperties.BrickMoveType = EWjWorldBrickMoveType::Standard;
+	BrickProperties.Size = CachedWallDesc.BrickSize;
+	BrickProperties.Color = BrickProperties.GetColorWithBrickType();
+	BrickProperties.SpawnedGridPosition = SpawnIndexPoint;
+	BrickProperties.CenterOffset = CachedWallDesc.CenterOffset;
+	BrickProperties.ColumnNum = CachedWallDesc.ColumnNum;
+	BrickProperties.RowNum = CachedWallDesc.RowNum;
+
+	// Destructible 벽돌은 DeveloperSettings에서 MaxHP 설정
+	if (BrickProperties.BrickType == EWjWorldBrickType::Destructible)
+	{
+		BrickProperties.MaxHP = GetDefault<UWjWorldDeveloperSettings>()->DestructibleBrickDefaultHP;
+	}
+
+	UWjWorldBrickSpawner::SpawnBrickActor(GetWorld(), BrickProperties, GridX, GridY);
+
+	// GameplayCue 실행 (사운드/VFX)
+	if (UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo())
+	{
+		FGameplayCueParameters CueParams;
+		CueParams.Location = SpawnPosition;
+		ASC->ExecuteGameplayCue(WjWorldGameplayTag::GameplayCue_Ability_SpawnBrick(), CueParams);
+	}
+}
+
 void UGA_SpawnBrick::SpawnBrickAtPreviewLocation()
 {
+	// 더 이상 사용하지 않음 - ServerSpawnBrickAtGridIndex로 대체
 	FVector SpawnPosition = CalculatePreviewLocation();
 	FIntPoint SpawnIndexPoint = UWjWorldBrickSpawner::CalculateBrickGridIndex(
 		SpawnPosition,
@@ -449,6 +504,15 @@ void UGA_SpawnBrick::UpdatePreviewLocation()
 		FVector NewLocation = CalculatePreviewLocation();
 		PreviewActor->UpdatePreviewLocation(NewLocation);
 		PreviewActor->SetPreviewValid(CheckPreviewValid());
+
+		// 클라이언트에서 GridIndex를 캐시 (Confirm 시 서버로 전달)
+		CachedPreviewGridIndex = UWjWorldBrickSpawner::CalculateBrickGridIndex(
+			NewLocation,
+			CachedWallDesc.ColumnNum,
+			CachedWallDesc.RowNum,
+			CachedWallDesc.CenterOffset,
+			CachedWallDesc.BrickSize
+		);
 	}
 }
 

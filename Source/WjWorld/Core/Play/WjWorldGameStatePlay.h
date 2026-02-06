@@ -90,6 +90,10 @@ private:
     UPROPERTY(Replicated)
 	float StartCountDownTime;
 
+    // 서버에서 카운트다운이 시작된 시각 (GetServerWorldTimeSeconds 기준)
+    UPROPERTY(Replicated)
+    double CountdownStartServerTime;
+
     UPROPERTY(ReplicatedUsing = OnRep_IsGameEndCountDownReady)
     bool bIsGameEndCountDownReady;
 

@@ -163,11 +163,21 @@ void AWjWorldGameModeWaitingRoom::StartGame()
 
 	UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameModeWaitingRoom: Session start initiated"));
 
-	// SessionManager에서 RoomSettings 가져오기
+	// ⭐ GameState에서 현재 RoomSettings 가져오기 (UI에서 업데이트된 값)
 	FRoomSettings Settings;
-	if (GameInstance->GetSessionManager())
+	AWjWorldGameStateWaitingRoom* WjGameState = GetGameState<AWjWorldGameStateWaitingRoom>();
+	if (WjGameState)
 	{
+		Settings = WjGameState->GetRoomSettings();
+		UE_LOG(LogWjWorld, Warning, TEXT("WjWorldGameModeWaitingRoom: Using GameState settings - GameMode: '%s', Map: '%s'"),
+			*Settings.GameMode, *Settings.MapName);
+	}
+	else if (GameInstance->GetSessionManager())
+	{
+		// 폴백: SessionManager에서 가져오기
 		Settings = GameInstance->GetSessionManager()->GetLastRoomSettings();
+		UE_LOG(LogWjWorld, Warning, TEXT("WjWorldGameModeWaitingRoom: Fallback to SessionManager settings - GameMode: '%s', Map: '%s'"),
+			*Settings.GameMode, *Settings.MapName);
 	}
 
 	// 카탈로그에서 LevelPath 조회

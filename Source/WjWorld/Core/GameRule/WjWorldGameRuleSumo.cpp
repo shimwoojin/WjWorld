@@ -465,11 +465,28 @@ void UWjWorldGameRuleSumo::ResetRound()
 		if (PC)
 		{
 			// 湲곗〈 Pawn ?뚭눼
+			// 기존 Pawn 제거 (이미 Destroy된 경우 무시)
 			if (APawn* OldPawn = PC->GetPawn())
 			{
-				OldPawn->Destroy();
+				if (::IsValid(OldPawn))
+				{
+					OldPawn->Destroy();
+				}
 			}
+
+			// UnPossess 후 RestartPlayer (Pawn 없이 리스폰 보장)
+			PC->UnPossess();
 			GM->RestartPlayer(PC);
+
+			// 리스폰 성공 확인
+			if (APawn* NewPawn = PC->GetPawn())
+			{
+				UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Player %s respawned successfully"), *PS->GetPlayerName());
+			}
+			else
+			{
+				UE_LOG(LogWjWorld, Warning, TEXT("GameRuleSumo: Player %s respawn FAILED"), *PS->GetPlayerName());
+			}
 		}
 	}
 
@@ -756,12 +773,10 @@ void UWjWorldGameRuleSumo::RemoveAllPlayerBuffs()
 	for (const auto& WeakPS : AllPlayers)
 	{
 		if (!WeakPS.IsValid()) continue;
+		AWjWorldPlayerStatePlay* PS = WeakPS.Get();
 
-		APawn* Pawn = WeakPS->GetPawn();
-		AWjWorldCharacterPlay* Character = Cast<AWjWorldCharacterPlay>(Pawn);
-		if (!Character) continue;
-
-		UAbilitySystemComponent* ASC = Character->GetAbilitySystemComponent();
+		// PlayerState에서 ASC 가져오기 (ASC는 PlayerState에 있음)
+		UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
 		if (!ASC) continue;
 
 		// 紐⑤뱺 踰꾪봽 ?쒓렇 ?쒓굅
@@ -769,13 +784,22 @@ void UWjWorldGameRuleSumo::RemoveAllPlayerBuffs()
 		ASC->RemoveLooseGameplayTag(WjWorldGameplayTag::Buff_SuperPush());
 		ASC->RemoveLooseGameplayTag(WjWorldGameplayTag::Buff_Shield());
 
-		// ?대룞?띾룄 蹂듭썝 (SpeedBoost媛 ?쒖꽦 以묒씠?덉쓣 ???덉쓬)
-		if (UCharacterMovementComponent* MC = Character->GetCharacterMovement())
+		// State_Eliminated 태그 제거 (다음 라운드 어빌리티 활성화를 위해)
+		ASC->RemoveLooseGameplayTag(WjWorldGameplayTag::State_Eliminated());
+
+		// 이동속도 복원 (기존 캐릭터가 존재하는 경우에만)
+		APawn* Pawn = PS->GetPawn();
+		AWjWorldCharacterPlay* Character = Cast<AWjWorldCharacterPlay>(Pawn);
+		if (Character)
 		{
-			// 湲곕낯媛믪쑝濡?蹂듭썝 (CDO?먯꽌)
-			MC->MaxWalkSpeed = Character->GetClass()->GetDefaultObject<ACharacter>()->GetCharacterMovement()->MaxWalkSpeed;
+			if (UCharacterMovementComponent* MC = Character->GetCharacterMovement())
+			{
+				// 기본값으로 복원 (CDO에서)
+				MC->MaxWalkSpeed = Character->GetClass()->GetDefaultObject<ACharacter>()->GetCharacterMovement()->MaxWalkSpeed;
+			}
 		}
 	}
 }
+
 
 

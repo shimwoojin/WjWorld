@@ -142,6 +142,24 @@ void AWjWorldGameModePlay::PostLogin(APlayerController* NewPlayer)
 	UE_LOG(LogWjWorld, Log, TEXT("GameModePlay: PostLogin completed for %s"), *NewPlayer->GetName());
 }
 
+void AWjWorldGameModePlay::Logout(AController* Exiting)
+{
+	// GameRule에 플레이어 이탈 알림 (Super::Logout 전에 호출해야 PlayerState가 유효함)
+	if (CurrentGameRule && Exiting)
+	{
+		AWjWorldPlayerStatePlay* ExitingPlayerState = Cast<AWjWorldPlayerStatePlay>(Exiting->PlayerState);
+		if (ExitingPlayerState)
+		{
+			UE_LOG(LogWjWorld, Log, TEXT("GameModePlay: Logout - Notifying GameRule for player %s"), *ExitingPlayerState->GetPlayerName());
+			CurrentGameRule->OnPlayerLeft(ExitingPlayerState);
+		}
+	}
+
+	Super::Logout(Exiting);
+
+	UE_LOG(LogWjWorld, Log, TEXT("GameModePlay: Logout completed for %s"), Exiting ? *Exiting->GetName() : TEXT("Unknown"));
+}
+
 void AWjWorldGameModePlay::StartGame(float SecondsForStartCount)
 {
 	GetGameState<AWjWorldGameStatePlay>()->GameStartWithCountdown(SecondsForStartCount);

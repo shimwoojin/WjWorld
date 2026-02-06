@@ -26,6 +26,7 @@ void AWjWorldGameStatePlay::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	DOREPLIFETIME(AWjWorldGameStatePlay, CurrentPhase);
 	DOREPLIFETIME(AWjWorldGameStatePlay, bIsGameStartCountDownReady);
 	DOREPLIFETIME(AWjWorldGameStatePlay, StartCountDownTime);
+	DOREPLIFETIME(AWjWorldGameStatePlay, CountdownStartServerTime);
 	DOREPLIFETIME(AWjWorldGameStatePlay, bIsGameEndCountDownReady);
 	DOREPLIFETIME(AWjWorldGameStatePlay, EndCountDownTime);
 	DOREPLIFETIME(AWjWorldGameStatePlay, WinnerPlayerName);
@@ -50,6 +51,12 @@ void AWjWorldGameStatePlay::GameStartWithCountdown(float CountdownTime)
 {
 	bIsGameStartCountDownReady = true;
 	StartCountDownTime = CountdownTime;
+
+	// 서버 시간 기록 (늦게 참여하는 클라이언트가 남은 시간 계산 가능)
+	if (HasAuthority())
+	{
+		CountdownStartServerTime = GetServerWorldTimeSeconds();
+	}
 
 	if(HasAuthority())
 	{
@@ -124,9 +131,18 @@ void AWjWorldGameStatePlay::OnRep_IsGameStartCountDownReady()
 		AWjWorldHUDPlay* HUD = PC->GetHUD<AWjWorldHUDPlay>();
 		if (!HUD) return;
 
-		HUD->StartGameStartCountDown(StartCountDownTime);
+		// 늦게 참여한 클라이언트를 위해 남은 시간 계산
+		float RemainingTime = StartCountDownTime;
+		if (CountdownStartServerTime > 0.0)
+		{
+			double CurrentServerTime = GetServerWorldTimeSeconds();
+			double Elapsed = CurrentServerTime - CountdownStartServerTime;
+			RemainingTime = FMath::Max(0.0f, StartCountDownTime - static_cast<float>(Elapsed));
+		}
 
-		UE_LOG(LogWjWorld, Log, TEXT("GameState: Game Start Countdown Ready - %f seconds"), StartCountDownTime);
+		HUD->StartGameStartCountDown(RemainingTime);
+
+		UE_LOG(LogWjWorld, Log, TEXT("GameState: Game Start Countdown Ready - %f seconds (original: %f)"), RemainingTime, StartCountDownTime);
 	}
 }
 

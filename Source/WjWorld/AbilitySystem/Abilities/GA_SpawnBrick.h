@@ -56,6 +56,10 @@ private:
 	// 실제 벽돌 스폰 (서버에서만)
 	void SpawnBrickAtPreviewLocation();
 
+	// 클라이언트가 Confirm할 때 GridIndex를 서버로 전달
+	UFUNCTION(Server, Reliable)
+	void ServerSpawnBrickAtGridIndex(int32 GridX, int32 GridY);
+
 	// ---- 충전 시스템 ----
 
 	/** 충전 소모 GE 적용 (-1) */
@@ -79,6 +83,9 @@ private:
 
 	// 캐시된 WallDesc (Preview 업데이트용)
 	FWjWorldWallDescription CachedWallDesc;
+
+	// 캐시된 프리뷰 GridIndex (클라이언트에서 Confirm 시 서버로 전달)
+	FIntPoint CachedPreviewGridIndex = FIntPoint(-1, -1);
 
 	// Tick으로 Preview 위치 업데이트용 타이머
 	FTimerHandle PreviewUpdateTimerHandle;

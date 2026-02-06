@@ -157,6 +157,9 @@ void UWjWorldGameInstance::CacheRoomSettings(const FRoomSettings& Settings)
 void UWjWorldGameInstance::HandleNetworkFailure(UWorld* World, UNetDriver* NetDriver,
 	ENetworkFailure::Type FailureType, const FString& ErrorString)
 {
+	UE_LOG(LogWjWorld, Warning, TEXT("WjWorldGameInstance: HandleNetworkFailure called - Type: %d, Error: %s"),
+		static_cast<int32>(FailureType), *ErrorString);
+
 	// 이미 마이그레이션 중이면 무시
 	if (MigrationContext.bIsMigrating)
 	{
