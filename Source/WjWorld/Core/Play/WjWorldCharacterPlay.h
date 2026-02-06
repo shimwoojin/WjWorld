@@ -68,6 +68,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "LiftBrick")
 	bool IsCarryingBrick() const { return bIsCarryingBrick; }
 
+	// GA_SpawnBrick에서 호출 - 서버에서 벽돌 스폰
+	UFUNCTION(Server, Reliable)
+	void ServerSpawnBrickAtGridIndex(int32 GridX, int32 GridY);
+
 protected:
 	virtual void OnRep_PlayerState() override;
 	virtual void PossessedBy(AController* NewController) override;

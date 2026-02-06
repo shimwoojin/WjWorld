@@ -387,17 +387,23 @@ void UGA_SpawnBrick::OnConfirmCallback()
 
 	if (CheckPreviewValid() && CachedPreviewGridIndex.X >= 0 && CachedPreviewGridIndex.Y >= 0)
 	{
-		// 서버에서 직접 실행되는 경우 (Listen Server 호스트)
-		if (HasAuthority(&CurrentActivationInfo))
+		// Character를 통해 Server RPC 호출 (UObject에서는 Server RPC 동작 안 함)
+		AWjWorldCharacterPlay* CharacterPlay = Cast<AWjWorldCharacterPlay>(GetAvatarActorFromActorInfo());
+		if (CharacterPlay)
 		{
-			ApplyChargeCost();
-			ServerSpawnBrickAtGridIndex(CachedPreviewGridIndex.X, CachedPreviewGridIndex.Y);
-			StartChargeRefill();
-		}
-		// 클라이언트에서 서버로 RPC 호출
-		else if (CurrentActorInfo && CurrentActorInfo->IsLocallyControlled())
-		{
-			ServerSpawnBrickAtGridIndex(CachedPreviewGridIndex.X, CachedPreviewGridIndex.Y);
+			// 서버에서 직접 실행되는 경우 (Listen Server 호스트)
+			if (HasAuthority(&CurrentActivationInfo))
+			{
+				ApplyChargeCost();
+				CharacterPlay->ServerSpawnBrickAtGridIndex(CachedPreviewGridIndex.X, CachedPreviewGridIndex.Y);
+				StartChargeRefill();
+			}
+			// 클라이언트에서 서버로 RPC 호출
+			else if (CurrentActorInfo && CurrentActorInfo->IsLocallyControlled())
+			{
+				// 클라이언트에서는 충전 소모/리필이 서버에서 처리됨
+				CharacterPlay->ServerSpawnBrickAtGridIndex(CachedPreviewGridIndex.X, CachedPreviewGridIndex.Y);
+			}
 		}
 	}
 
@@ -408,62 +414,6 @@ void UGA_SpawnBrick::OnCancelCallback()
 {
 	UE_LOG(LogWjWorldAbilities, Log, TEXT("UGA_SpawnBrick::OnCancelCallback"));
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, true);
-}
-
-void UGA_SpawnBrick::ServerSpawnBrickAtGridIndex_Implementation(int32 GridX, int32 GridY)
-{
-	UE_LOG(LogWjWorldAbilities, Log, TEXT("UGA_SpawnBrick::ServerSpawnBrickAtGridIndex - GridIndex: (%d, %d)"), GridX, GridY);
-
-	// 그리드 범위 체크
-	if (GridX < 0 || GridX >= CachedWallDesc.ColumnNum ||
-		GridY < 0 || GridY >= CachedWallDesc.RowNum)
-	{
-		UE_LOG(LogWjWorldAbilities, Warning, TEXT("UGA_SpawnBrick::ServerSpawnBrickAtGridIndex - Invalid GridIndex"));
-		return;
-	}
-
-	// 클라이언트에서 호출된 경우 충전 소모 및 리필 시작
-	if (!HasAuthority(&CurrentActivationInfo))
-	{
-		ApplyChargeCost();
-		StartChargeRefill();
-	}
-
-	FIntPoint SpawnIndexPoint(GridX, GridY);
-	FVector SpawnPosition = UWjWorldBrickSpawner::CalculateBrickPosition(
-		GridX,
-		GridY,
-		CachedWallDesc.ColumnNum,
-		CachedWallDesc.RowNum,
-		CachedWallDesc.CenterOffset,
-		CachedWallDesc.BrickSize
-	);
-
-	FWjWorldBrickProperties BrickProperties;
-	BrickProperties.BrickType = FMath::RandBool() ? EWjWorldBrickType::Moving : EWjWorldBrickType::Destructible;
-	BrickProperties.BrickMoveType = EWjWorldBrickMoveType::Standard;
-	BrickProperties.Size = CachedWallDesc.BrickSize;
-	BrickProperties.Color = BrickProperties.GetColorWithBrickType();
-	BrickProperties.SpawnedGridPosition = SpawnIndexPoint;
-	BrickProperties.CenterOffset = CachedWallDesc.CenterOffset;
-	BrickProperties.ColumnNum = CachedWallDesc.ColumnNum;
-	BrickProperties.RowNum = CachedWallDesc.RowNum;
-
-	// Destructible 벽돌은 DeveloperSettings에서 MaxHP 설정
-	if (BrickProperties.BrickType == EWjWorldBrickType::Destructible)
-	{
-		BrickProperties.MaxHP = GetDefault<UWjWorldDeveloperSettings>()->DestructibleBrickDefaultHP;
-	}
-
-	UWjWorldBrickSpawner::SpawnBrickActor(GetWorld(), BrickProperties, GridX, GridY);
-
-	// GameplayCue 실행 (사운드/VFX)
-	if (UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo())
-	{
-		FGameplayCueParameters CueParams;
-		CueParams.Location = SpawnPosition;
-		ASC->ExecuteGameplayCue(WjWorldGameplayTag::GameplayCue_Ability_SpawnBrick(), CueParams);
-	}
 }
 
 void UGA_SpawnBrick::SpawnBrickAtPreviewLocation()

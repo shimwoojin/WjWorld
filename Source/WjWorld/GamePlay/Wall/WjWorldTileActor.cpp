@@ -71,35 +71,39 @@ void AWjWorldTileActor::InitializeTile(const FVector& InSize, const FVector& InC
 
 	float Offset = HitBoxSize + 2.0f;
 
+	// ⭐ InSize는 타일 전체 크기, HalfExtent는 절반
+	const FVector HalfExtent = InSize * 0.5f;
+
 	for (int32 DirectionIndex = 0; DirectionIndex < EWjWorldDirection::Max; ++DirectionIndex)
 	{
 		if (HitBoxComponents[DirectionIndex] == nullptr) continue;
 
 		FVector BoxLocation = FVector::ZeroVector;
 
+		// 방향별 HitBox는 타일 경계 끝에 배치 (half extent 기준)
 		switch (DirectionIndex)
 		{
 		case EWjWorldDirection::Up:
 		{
-			BoxLocation = FVector(0.0f, InSize.Y, 0.0f);
+			BoxLocation = FVector(0.0f, HalfExtent.Y, 0.0f);
 			break;
 		}
 
 		case EWjWorldDirection::Right:
 		{
-			BoxLocation = FVector(InSize.X, 0.0f, 0.0f);
+			BoxLocation = FVector(HalfExtent.X, 0.0f, 0.0f);
 			break;
 		}
 
 		case EWjWorldDirection::Down:
 		{
-			BoxLocation = FVector(0.0f, -InSize.Y, 0.0f);
+			BoxLocation = FVector(0.0f, -HalfExtent.Y, 0.0f);
 			break;
 		}
 
 		case EWjWorldDirection::Left:
 		{
-			BoxLocation = FVector(-InSize.X, 0, 0.0f);
+			BoxLocation = FVector(-HalfExtent.X, 0, 0.0f);
 			break;
 		}
 		}
@@ -109,7 +113,8 @@ void AWjWorldTileActor::InitializeTile(const FVector& InSize, const FVector& InC
 		HitBoxComponents[DirectionIndex]->OnComponentEndOverlap.AddDynamic(this, &AWjWorldTileActor::OnBrickOverlapEnd);
 	}
 
-	CenterHitBoxComponent->SetBoxExtent(InSize);
+	// ⭐ SetBoxExtent는 half extent를 받으므로 InSize * 0.5f 전달
+	CenterHitBoxComponent->SetBoxExtent(HalfExtent);
 	CenterHitBoxComponent->OnComponentBeginOverlap.AddDynamic(this, &AWjWorldTileActor::OnBrickOverlapBegin);
 	CenterHitBoxComponent->OnComponentEndOverlap.AddDynamic(this, &AWjWorldTileActor::OnBrickOverlapEnd);
 
@@ -298,10 +303,26 @@ void AWjWorldTileActor::Bomb()
 	TArray<AActor*> BombedActors;
 	CenterHitBoxComponent->GetOverlappingActors(BombedActors, AWjWorldCharacterPlay::StaticClass());
 
+	// 타일의 실제 경계 계산 (옆 칸에 있는 캐릭터 제외)
+	const FVector TileCenter = GetActorLocation();
+	const FVector TileExtent = CenterHitBoxComponent->GetScaledBoxExtent();
+	// 경계를 약간 줄여서 타일 경계에 선 캐릭터가 양쪽에서 처리되지 않도록 함
+	const float BoundaryMargin = 5.0f; // 5cm 마진
+	const FBox TileBounds(TileCenter - TileExtent + FVector(BoundaryMargin), TileCenter + TileExtent - FVector(BoundaryMargin));
+
 	for (AActor* BombedActor : BombedActors)
 	{
 		AWjWorldCharacterPlay* Character = Cast<AWjWorldCharacterPlay>(BombedActor);
 		if (Character == nullptr) continue;
+
+		// 캐릭터의 중심점이 이 타일 경계 내에 있는지 확인
+		const FVector CharacterLocation = Character->GetActorLocation();
+		if (!TileBounds.IsInsideXY(CharacterLocation))
+		{
+			UE_LOG(LogWjWorld, Verbose, TEXT("AWjWorldTileActor::Bomb - Character at %s is outside tile bounds, skipping"),
+				*CharacterLocation.ToString());
+			continue;
+		}
 
 		if (GameRule.IsValid())
 		{

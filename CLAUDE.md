@@ -471,6 +471,14 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
   - Sumo 코스메틱 전이 버그 → 로드아웃 존재 여부 + 로컬 컨트롤러 체크
   - 호스트 설정 패널 클라이언트 표시 → GetNetMode() 이중 체크
   - 3자 프로필 스탯 조회 → Steam OSS IdentityInterface로 FUniqueNetIdRepl 생성
+- **Steam 2PC 버그 수정 3차 - 전체 해결**
+  - [Critical] 클라이언트 벽돌 스폰 → UObject에서 Server RPC 불가, Character RPC로 이동
+  - [Critical] #14 호스트 설정 값 반영 → OnStartGameClicked에서 ApplyCurrentUISettings 자동 호출
+  - #2 호스트 설정 패널 → 전체 표시 + 클라이언트 입력 비활성화 (읽기 전용)
+  - #11 3자 프로필 조회 → TMap<UButton*, PlayerID> 매핑 + HasMouseCapture() 체크
+  - #1 WaitingRoom UI 미갱신 → UpdateRoomInfo에 옵셔널 FRoomSettings 직접 전달
+  - #4 유저 커스텀 맵 offset → CSV에 `#META:CenterOffset:x,y,z` 메타데이터 헤더 추가/파싱
+  - #8 TileActor collision → SetBoxExtent(InSize * 0.5f), 방향별 HitBox 위치도 half extent
 
 ## 진행 중 / 미구현
 - GA_Jump 에디터 세팅 (IA_Ability7, BP_GA_Jump, SetupDA, MinigameCatalog AllowedAbilityTags)

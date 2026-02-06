@@ -347,6 +347,34 @@ int32 UWjWorldWallDescriptionDataAsset::ScanUserWallLayouts(TArray<FWjWorldWallD
         UserDesc.BrickSize = FVector(100.0, 100.0, 100.0);  // 기본값
         UserDesc.CenterOffset = FVector::ZeroVector;
 
+        // ⭐ CSV 파일에서 메타데이터 읽기 (CenterOffset)
+        FString FileContent;
+        if (FFileHelper::LoadFileToString(FileContent, *FullPath))
+        {
+            TArray<FString> Lines;
+            FileContent.ParseIntoArrayLines(Lines);
+
+            for (const FString& Line : Lines)
+            {
+                if (Line.StartsWith(TEXT("#META:CenterOffset:")))
+                {
+                    FString OffsetStr = Line.RightChop(19); // "#META:CenterOffset:" 제거
+                    TArray<FString> Components;
+                    OffsetStr.ParseIntoArray(Components, TEXT(","));
+
+                    if (Components.Num() == 3)
+                    {
+                        UserDesc.CenterOffset.X = FCString::Atof(*Components[0]);
+                        UserDesc.CenterOffset.Y = FCString::Atof(*Components[1]);
+                        UserDesc.CenterOffset.Z = FCString::Atof(*Components[2]);
+                        UE_LOG(LogWjWorld, Log, TEXT("ScanUserWallLayouts: Parsed CenterOffset (%.1f, %.1f, %.1f) for '%s'"),
+                            UserDesc.CenterOffset.X, UserDesc.CenterOffset.Y, UserDesc.CenterOffset.Z, *UserDesc.WallName);
+                    }
+                    break;
+                }
+            }
+        }
+
         OutUserDescriptions.Add(UserDesc);
         UE_LOG(LogWjWorld, Log, TEXT("ScanUserWallLayouts: Found user layout '%s'"), *UserDesc.WallName);
     }

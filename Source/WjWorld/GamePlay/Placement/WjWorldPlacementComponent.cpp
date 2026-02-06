@@ -509,8 +509,13 @@ bool UWjWorldPlacementComponent::ExportLayoutAsCSV(const FString& FileName)
 		}
 	}
 
-	// 5. CSV 문자열 생성
+	// 5. CSV 문자열 생성 (첫 줄에 메타데이터 포함)
 	FString CSVContent;
+
+	// ⭐ 메타데이터 헤더: CenterOffset 저장 (클라이언트 프리뷰 위치 동기화용)
+	CSVContent += FString::Printf(TEXT("#META:CenterOffset:%f,%f,%f\n"),
+		GridOrigin.X, GridOrigin.Y, GridOrigin.Z);
+
 	for (int32 Row = 0; Row < GridRows; ++Row)
 	{
 		for (int32 Col = 0; Col < GridColumns; ++Col)

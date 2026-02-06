@@ -1,6 +1,81 @@
 # WjWorld 개발 로그
 
 ## 2026-02-06
+### 작업 내용 - Steam 2PC 버그 수정 (3차 - 전체 해결)
+
+#### 버그 수정 완료
+
+##### [해결] [Critical] 클라이언트 벽돌 스폰 안 됨
+- **증상**: 클라이언트에서 GA_SpawnBrick 사용 시 벽돌이 서버에 스폰되지 않음
+- **원인**: UObject(UGameplayAbility)에서 Server RPC 호출 불가 - AActor에서만 가능
+- **수정**: `AWjWorldCharacterPlay::ServerSpawnBrick_Implementation()` 추가, GA에서 Character RPC 호출
+- **파일**: `WjWorldCharacterPlay.h/cpp`, `GA_SpawnBrick.cpp`
+
+##### [해결] [Critical] #14 호스트 설정 패널 값 반영 안 됨
+- **증상**: 게임모드/맵 ComboBox 선택해도 게임 시작 시 반영 안 됨
+- **원인**: ComboBox 선택 후 "Apply Settings" 버튼을 눌러야만 저장됨 → 사용자가 누르지 않고 바로 게임 시작
+- **수정**: `OnStartGameClicked()`에서 `ApplyCurrentUISettings()` 자동 호출
+- **파일**: `WaitingRoomHUDWidget.cpp`
+
+##### [해결] #2 호스트 설정 패널 클라이언트 표시
+- **증상**: 패널이 호스트만 보이도록 숨겨짐 (클라이언트 설정 확인 불가)
+- **수정**: 패널은 전체 표시, 클라이언트는 ComboBox disabled + Apply 버튼 숨김
+- **파일**: `WaitingRoomHUDWidget.cpp` (UpdateHostSettingsPanelVisibility)
+
+##### [해결] #11 3자 프로필 조회 안 됨
+- **증상**: 플레이어 버튼 클릭 시 프로필이 안 열림
+- **원인**: `IsHovered()` 버튼 클릭 후 unreliable
+- **수정**: `PlayerButtonToIDMap` (TMap<UButton*, int32>) 추가, `IsHovered() || HasMouseCapture()` 체크
+- **파일**: `WaitingRoomHUDWidget.h/cpp`
+
+##### [해결] #1 WaitingRoom UI 미갱신
+- **증상**: 호스트 설정 변경 시 UI 텍스트가 업데이트 안 됨
+- **원인**: GameState 참조 타이밍 이슈
+- **수정**: `UpdateRoomInfo(const FRoomSettings* InSettings = nullptr)` 옵셔널 직접 전달
+- **파일**: `WaitingRoomHUDWidget.h/cpp`
+
+##### [해결] #4 유저 커스텀 맵 preview offset
+- **증상**: 유저 레이아웃에서 클라이언트 벽돌 preview 위치가 50,50만큼 어긋남
+- **원인**: CSV 내보내기 시 GridOrigin 계산했으나 로드 시 CenterOffset=ZeroVector
+- **수정**: CSV에 `#META:CenterOffset:x,y,z` 메타데이터 헤더 추가 및 파싱
+- **파일**: `WjWorldPlacementComponent.cpp`, `WjWorldWallDescriptionDataAsset.cpp`
+
+##### [해결] #8 TileActor collision 옆 칸 영향
+- **증상**: 4방향 벽돌로 갇힌 타일의 Bomb()이 옆 타일 캐릭터에게도 영향
+- **원인**: `SetBoxExtent(InSize)` → Half extent에 전체 크기 전달 (박스가 2배 커짐)
+- **수정**: `SetBoxExtent(InSize * 0.5f)` + 방향별 HitBox 위치도 `InSize * 0.5f`로 수정
+- **파일**: `WjWorldTileActor.cpp` (InitializeTile)
+```cpp
+const FVector HalfExtent = InSize * 0.5f;
+CenterHitBoxComponent->SetBoxExtent(HalfExtent);
+BoxLocation = FVector(HalfExtent.X, 0.0f, 0.0f);  // 방향별 HitBox 위치
+```
+
+### 학습/메모
+- **Server RPC**: UObject에서 호출 불가, AActor에서만 가능 → Character로 이동
+- **UBoxComponent::SetBoxExtent()**: Half extent를 받음 (전체 크기의 절반)
+- **위젯 버튼 클릭 판별**: `IsHovered()` 대신 `TMap<UButton*, ID>` 매핑 + `HasMouseCapture()` 사용
+- **CSV 메타데이터**: `#`으로 시작하는 주석 줄을 메타데이터 저장용으로 활용
+
+### 남은 TODO (테스트 레코드 기반)
+- #3 대각선 맵 movement가 wall closed하게 안 움직임
+- Lobby HUD 로컬 방 찾기 버튼 제거
+- 그래픽 설정 (상/중/하) 추가
+- 게임 시작 전 어빌리티 사용 금지 (GameState::GamePhase)
+
+### 다음 작업 - Steam 빌드 테스트
+**스팀 빌드로 아래 버그 수정 사항 검증 필요:**
+- [ ] [Critical] 클라이언트 벽돌 스폰 작동 확인
+- [ ] [Critical] #14 호스트 설정 값 반영 확인 (게임모드/맵 변경)
+- [ ] #2 호스트 설정 패널 - 클라이언트에서 읽기 전용으로 표시 확인
+- [ ] #11 3자 프로필 조회 작동 확인
+- [ ] #1 WaitingRoom UI 갱신 확인
+- [ ] #4 유저 커스텀 맵 preview offset 정렬 확인
+- [ ] #8 TileActor collision 옆 칸 영향 없음 확인
+
+---
+
+## 2026-02-06 (이전 기록)
 ### 작업 내용 - Steam 2PC 버그 수정 (2차)
 
 #### 버그 수정 (High → Medium 해결)
@@ -53,6 +128,25 @@ OnUserStatsReceived.Broadcast(UserIdRepl);
 ##### [디버깅] #10 AW 코스메틱 3자에게 잠시 보임
 - **상태**: 디버깅용 로그 추가, 테스트 필요
 - **파일**: `WjWorldCosmeticComponent.cpp` (ApplyLoadout)
+
+### Steam 2PC 테스트 결과 (2차 수정 후)
+
+#### 미해결 버그
+- **#1** WaitingRoom 호스트 방 설정 변경 시 UI 미갱신
+- **#2** 호스트 방 설정 패널이 클라이언트에도 표시됨 (수정했으나 여전히 발생)
+- **#3** 대각선 맵에서 movement가 wall closed하게 안 움직임
+- **#4** 유저 커스텀 맵에서 클라이언트 벽돌 preview offset 어긋남
+- **#8** TileActor collision이 옆 칸에도 영향
+- **#11** 3자 프로필 조회 안 됨 (수정했으나 여전히 발생)
+- **#14** 호스트 설정 패널 값이 실제로 반영 안 됨 (게임모드 변경 적용 안 됨) **[Critical]**
+
+#### 새 버그 [Critical]
+- **클라이언트에서 벽돌 스폰이 안 됨** - 게임 진행 불가
+
+#### TODO
+- Lobby HUD 로컬 방 찾기 버튼 제거
+- 그래픽 설정 (상/중/하) 추가
+- 게임 시작 전 어빌리티 사용 금지 (GameState::GamePhase)
 
 ### 학습/메모
 - **서버 측 로드아웃 관리 주의**: `CosmeticSubsystem->GetLoadout()`은 항상 로컬(서버) 로드아웃 반환 → 리스폰 시 다른 플레이어에게 적용 위험

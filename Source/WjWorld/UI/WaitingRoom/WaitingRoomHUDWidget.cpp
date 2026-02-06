@@ -159,6 +159,9 @@ void UWaitingRoomHUDWidget::OnStartGameClicked()
 {
 	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Start Game button clicked"));
 
+	// ⭐ 게임 시작 전에 현재 UI 설정을 자동으로 적용 (Apply Settings 버튼을 안 눌러도 반영되도록)
+	ApplyCurrentUISettings();
+
 	// GameMode의 StartGame 호출
 	AWjWorldGameModeWaitingRoom* GameMode = Cast<AWjWorldGameModeWaitingRoom>(GetWorld()->GetAuthGameMode());
 	if (GameMode)
@@ -203,7 +206,9 @@ void UWaitingRoomHUDWidget::OnRoomInfoChanged(const FRoomSettings& RoomSettings)
 {
 	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Room info changed event received - GameMode: %s, Map: %s"),
 		*RoomSettings.GameMode, *RoomSettings.MapName);
-	UpdateRoomInfo();
+
+	// ⭐ 직접 전달받은 설정으로 UI 업데이트 (타이밍 이슈 방지)
+	UpdateRoomInfo(&RoomSettings);
 
 	// 호스트 설정 패널의 ComboBox 선택도 업데이트 (초기화 타이밍 이슈 해결)
 	if (GameModeComboBox && !RoomSettings.GameMode.IsEmpty())
@@ -248,15 +253,23 @@ void UWaitingRoomHUDWidget::OnPlayerReadyStateChanged(int32 PlayerID, bool bIsRe
 	UpdateStartGameButton();
 }
 
-void UWaitingRoomHUDWidget::UpdateRoomInfo()
+void UWaitingRoomHUDWidget::UpdateRoomInfo(const FRoomSettings* InSettings)
 {
-	if (!CachedGameState)
+	// 설정이 직접 전달되면 사용, 아니면 GameState에서 읽음
+	FRoomSettings Settings;
+	if (InSettings)
+	{
+		Settings = *InSettings;
+	}
+	else if (CachedGameState)
+	{
+		Settings = CachedGameState->GetRoomSettings();
+	}
+	else
 	{
 		UE_LOG(LogWjWorld, Warning, TEXT("WaitingRoomHUDWidget::UpdateRoomInfo - CachedGameState is NULL"));
 		return;
 	}
-
-	const FRoomSettings& Settings = CachedGameState->GetRoomSettings();
 
 	UE_LOG(LogWjWorld, Warning, TEXT("WaitingRoomHUDWidget::UpdateRoomInfo - Updating with: RoomName='%s', GameMode='%s', MapName='%s'"),
 		*Settings.RoomName, *Settings.GameMode, *Settings.MapName);
@@ -309,6 +322,7 @@ void UWaitingRoomHUDWidget::UpdatePlayerList()
 
 	// 기존 목록 제거
 	PlayerListContainer->ClearChildren();
+	PlayerButtonToIDMap.Empty();
 
 	// 플레이어 목록 가져오기 & 캐시
 	CachedPlayerDisplayList = CachedGameState->GetPlayerList();
@@ -344,7 +358,10 @@ void UWaitingRoomHUDWidget::UpdatePlayerList()
 			PlayerButton->AddChild(PlayerText);
 		}
 
-		// 모든 버튼에 공통 핸들러 바인딩 (IsHovered로 어떤 버튼인지 판별)
+		// 버튼 → PlayerID 매핑 저장
+		PlayerButtonToIDMap.Add(PlayerButton, Info.PlayerID);
+
+		// 모든 버튼에 공통 핸들러 바인딩
 		PlayerButton->OnClicked.AddDynamic(this, &UWaitingRoomHUDWidget::OnAnyPlayerButtonClicked);
 
 		PlayerListContainer->AddChild(PlayerButton);
@@ -360,16 +377,19 @@ void UWaitingRoomHUDWidget::OnAnyPlayerButtonClicked()
 		return;
 	}
 
-	// 어떤 버튼이 클릭되었는지 IsHovered()로 판별
-	for (int32 i = 0; i < PlayerListContainer->GetChildrenCount(); ++i)
+	// 클릭된 버튼 찾기 (IsHovered + HasMouseCapture 조합으로 더 안정적으로 판별)
+	for (const auto& Pair : PlayerButtonToIDMap)
 	{
-		UButton* Btn = Cast<UButton>(PlayerListContainer->GetChildAt(i));
-		if (Btn && Btn->IsHovered() && CachedPlayerDisplayList.IsValidIndex(i))
+		UButton* Btn = Pair.Key;
+		if (Btn && (Btn->IsHovered() || Btn->HasMouseCapture()))
 		{
-			ShowPlayerProfile(CachedPlayerDisplayList[i].PlayerID);
+			UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Player button clicked - PlayerID: %d"), Pair.Value);
+			ShowPlayerProfile(Pair.Value);
 			return;
 		}
 	}
+
+	UE_LOG(LogWjWorld, Warning, TEXT("WaitingRoomHUDWidget: OnAnyPlayerButtonClicked - Could not find clicked button"));
 }
 
 void UWaitingRoomHUDWidget::ShowPlayerProfile(int32 PlayerID)
@@ -593,10 +613,25 @@ void UWaitingRoomHUDWidget::UpdateHostSettingsPanelVisibility()
 		}
 	}
 
-	HostSettingsPanel->SetVisibility(bIsHost ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+	// ⭐ 패널은 모든 플레이어에게 표시 (설정 확인용)
+	// 호스트가 아니면 입력 비활성화 (읽기 전용)
+	HostSettingsPanel->SetVisibility(ESlateVisibility::Visible);
 
-	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: HostSettingsPanel visibility = %s (bIsHost=%d, NetMode=%d)"),
-		bIsHost ? TEXT("Visible") : TEXT("Collapsed"), bIsHost, World ? (int32)World->GetNetMode() : -1);
+	if (GameModeComboBox)
+	{
+		GameModeComboBox->SetIsEnabled(bIsHost);
+	}
+	if (MapComboBox)
+	{
+		MapComboBox->SetIsEnabled(bIsHost);
+	}
+	if (ApplySettingsButton)
+	{
+		ApplySettingsButton->SetVisibility(bIsHost ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: HostSettingsPanel visible for all, editable=%s (bIsHost=%d, NetMode=%d)"),
+		bIsHost ? TEXT("Yes") : TEXT("No"), bIsHost, World ? (int32)World->GetNetMode() : -1);
 }
 
 void UWaitingRoomHUDWidget::UpdateMapComboBoxForGameMode(const FString& GameModeId)
@@ -731,4 +766,45 @@ void UWaitingRoomHUDWidget::OnApplySettingsClicked()
 	CachedGameState->UpdateRoomSettings(NewSettings);
 
 	UE_LOG(LogWjWorld, Warning, TEXT("=== WaitingRoomHUDWidget::OnApplySettingsClicked END ==="));
+}
+
+void UWaitingRoomHUDWidget::ApplyCurrentUISettings()
+{
+	// 호스트가 아니면 무시
+	UWjWorldGameInstance* GameInstance = Cast<UWjWorldGameInstance>(GetGameInstance());
+	if (!GameInstance || !GameInstance->GetSessionManager() || !GameInstance->GetSessionManager()->IsHost())
+	{
+		return;
+	}
+
+	// 필요한 컴포넌트가 없으면 무시
+	if (!CachedGameState || !GameModeComboBox || !MapComboBox)
+	{
+		return;
+	}
+
+	FRoomSettings NewSettings = CachedGameState->GetRoomSettings();
+
+	// 현재 UI에서 선택된 게임 모드
+	FString SelectedGameMode = GameModeComboBox->GetSelectedOption();
+	if (!SelectedGameMode.IsEmpty())
+	{
+		NewSettings.GameMode = SelectedGameMode;
+	}
+
+	// 현재 UI에서 선택된 맵
+	FString SelectedMapDisplay = MapComboBox->GetSelectedOption();
+	if (const FString* MapValue = MapOptionDisplayToValue.Find(SelectedMapDisplay))
+	{
+		NewSettings.MapName = *MapValue;
+	}
+	else if (!SelectedMapDisplay.IsEmpty())
+	{
+		NewSettings.MapName = SelectedMapDisplay;
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Auto-applying UI settings before game start - GameMode: '%s', Map: '%s'"),
+		*NewSettings.GameMode, *NewSettings.MapName);
+
+	CachedGameState->UpdateRoomSettings(NewSettings);
 }

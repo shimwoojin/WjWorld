@@ -53,12 +53,8 @@ private:
 	UFUNCTION()
 	void OnCancelCallback();
 
-	// 실제 벽돌 스폰 (서버에서만)
+	// 실제 벽돌 스폰 (서버에서만) - 더 이상 사용하지 않음
 	void SpawnBrickAtPreviewLocation();
-
-	// 클라이언트가 Confirm할 때 GridIndex를 서버로 전달
-	UFUNCTION(Server, Reliable)
-	void ServerSpawnBrickAtGridIndex(int32 GridX, int32 GridY);
 
 	// ---- 충전 시스템 ----
 

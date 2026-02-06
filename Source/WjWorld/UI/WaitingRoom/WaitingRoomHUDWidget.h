@@ -124,8 +124,8 @@ protected:
 	void OnPlayerReadyStateChanged(int32 PlayerID, bool bIsReady);
 
 private:
-	/** 방 정보 업데이트 */
-	void UpdateRoomInfo();
+	/** 방 정보 업데이트 (설정 값을 직접 전달하거나 GameState에서 읽음) */
+	void UpdateRoomInfo(const FRoomSettings* InSettings = nullptr);
 
 	/** 플레이어 목록 업데이트 */
 	void UpdatePlayerList();
@@ -145,6 +145,9 @@ private:
 	/** 맵 ComboBox 업데이트 (선택된 게임모드에 따라) */
 	void UpdateMapComboBoxForGameMode(const FString& GameModeId);
 
+	/** 현재 UI 설정을 GameState에 적용 (게임 시작 전 자동 호출) */
+	void ApplyCurrentUISettings();
+
 	/** 플레이어 버튼 클릭 공통 핸들러 (IsHovered로 어떤 버튼인지 판별) */
 	UFUNCTION()
 	void OnAnyPlayerButtonClicked();
@@ -162,6 +165,10 @@ private:
 
 	/** 캐시된 플레이어 목록 (버튼 인덱스 매핑용) */
 	TArray<FPlayerDisplayInfo> CachedPlayerDisplayList;
+
+	/** 버튼 → PlayerID 매핑 (안정적인 클릭 판별용) */
+	UPROPERTY()
+	TMap<UButton*, int32> PlayerButtonToIDMap;
 
 	/** 맵 옵션 표시명 → 실제 값 매핑 (호스트 설정용) */
 	TMap<FString, FString> MapOptionDisplayToValue;

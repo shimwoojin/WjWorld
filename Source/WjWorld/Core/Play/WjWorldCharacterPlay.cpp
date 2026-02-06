@@ -19,6 +19,18 @@
 #include "WjWorldGameplayTag.h"
 #include "WjTypes.h"
 
+// SpawnBrick Server RPC용
+#include "Core/Play/WjWorldGameModePlay.h"
+#include "Core/GameRule/WjWorldGameRuleApproachingWall.h"
+#include "GamePlay/Wall/WjWorldBrickSpawner.h"
+#include "GamePlay/Wall/WjWorldBrickComponent.h"
+#include "GamePlay/Wall/WjWorldWallDescriptionDataAsset.h"
+#include "Setting/WjWorldDeveloperSettings.h"
+#include "AbilitySystem/AttributeSets/WjWorldCharacterAttributeSet.h"
+#include "AbilitySystem/Effects/GE_SpawnBrickChargeCost.h"
+#include "GameplayEffect.h"
+#include "GameplayCueManager.h"
+
 AWjWorldCharacterPlay::AWjWorldCharacterPlay()
 {
 	// 어빌리티 프롬프트 WidgetComponent (캐릭터 머리 위에 Screen 공간으로 표시)
@@ -371,5 +383,92 @@ void AWjWorldCharacterPlay::UpdateLiftedBrickVisual()
 		LiftedBrickMeshComponent->SetVisibility(false);
 		LiftedBrickMeshComponent->SetStaticMesh(nullptr);
 		LiftedBrickDynamicMaterial = nullptr;
+	}
+}
+
+void AWjWorldCharacterPlay::ServerSpawnBrickAtGridIndex_Implementation(int32 GridX, int32 GridY)
+{
+	UE_LOG(LogWjWorld, Log, TEXT("AWjWorldCharacterPlay::ServerSpawnBrickAtGridIndex - GridIndex: (%d, %d)"), GridX, GridY);
+
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	// 서버에서 WallDesc 가져오기
+	FWjWorldWallDescription ServerWallDesc;
+	AWjWorldGameModePlay* GameModePlay = World->GetAuthGameMode<AWjWorldGameModePlay>();
+	if (GameModePlay)
+	{
+		UWjWorldGameRuleApproachingWall* GameRule = GameModePlay->GetCurrentGameRule<UWjWorldGameRuleApproachingWall>();
+		if (GameRule)
+		{
+			ServerWallDesc = GameRule->GetWallDesc();
+		}
+	}
+
+	// WallDesc가 유효하지 않으면 실패
+	if (ServerWallDesc.BrickSize.IsZero() || ServerWallDesc.ColumnNum == 0)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("AWjWorldCharacterPlay::ServerSpawnBrickAtGridIndex - Invalid WallDesc"));
+		return;
+	}
+
+	// 그리드 범위 체크
+	if (GridX < 0 || GridX >= ServerWallDesc.ColumnNum ||
+		GridY < 0 || GridY >= ServerWallDesc.RowNum)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("AWjWorldCharacterPlay::ServerSpawnBrickAtGridIndex - Invalid GridIndex (%d, %d) for grid %dx%d"),
+			GridX, GridY, ServerWallDesc.ColumnNum, ServerWallDesc.RowNum);
+		return;
+	}
+
+	// 충전 소모 (ASC에서)
+	if (AbilitySystemComponent.IsValid())
+	{
+		const UGameplayEffect* CostGE = UGE_SpawnBrickChargeCost::StaticClass()->GetDefaultObject<UGameplayEffect>();
+		if (CostGE)
+		{
+			FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
+			FGameplayEffectSpec Spec(CostGE, ContextHandle, 1.f);
+			AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(Spec);
+		}
+	}
+
+	FIntPoint SpawnIndexPoint(GridX, GridY);
+	FVector SpawnPosition = UWjWorldBrickSpawner::CalculateBrickPosition(
+		GridX,
+		GridY,
+		ServerWallDesc.ColumnNum,
+		ServerWallDesc.RowNum,
+		ServerWallDesc.CenterOffset,
+		ServerWallDesc.BrickSize
+	);
+
+	FWjWorldBrickProperties BrickProperties;
+	BrickProperties.BrickType = FMath::RandBool() ? EWjWorldBrickType::Moving : EWjWorldBrickType::Destructible;
+	BrickProperties.BrickMoveType = EWjWorldBrickMoveType::Standard;
+	BrickProperties.Size = ServerWallDesc.BrickSize;
+	BrickProperties.Color = BrickProperties.GetColorWithBrickType();
+	BrickProperties.SpawnedGridPosition = SpawnIndexPoint;
+	BrickProperties.CenterOffset = ServerWallDesc.CenterOffset;
+	BrickProperties.ColumnNum = ServerWallDesc.ColumnNum;
+	BrickProperties.RowNum = ServerWallDesc.RowNum;
+
+	// Destructible 벽돌은 DeveloperSettings에서 MaxHP 설정
+	if (BrickProperties.BrickType == EWjWorldBrickType::Destructible)
+	{
+		BrickProperties.MaxHP = GetDefault<UWjWorldDeveloperSettings>()->DestructibleBrickDefaultHP;
+	}
+
+	UWjWorldBrickSpawner::SpawnBrickActor(World, BrickProperties, GridX, GridY);
+
+	// GameplayCue 실행 (사운드/VFX)
+	if (AbilitySystemComponent.IsValid())
+	{
+		FGameplayCueParameters CueParams;
+		CueParams.Location = SpawnPosition;
+		AbilitySystemComponent->ExecuteGameplayCue(WjWorldGameplayTag::GameplayCue_Ability_SpawnBrick(), CueParams);
 	}
 }
