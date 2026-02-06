@@ -158,7 +158,7 @@ Source/WjWorld/
     │   ├── CreateRoomWindow
     │   ├── RoomListWindow
     │   └── RoomListEntryWidget
-    ├── WaitingRoom/WaitingRoomHUDWidget
+    ├── WaitingRoom/WaitingRoomHUDWidget  # 대기실 HUD (플레이어 목록, 호스트 설정 패널)
     ├── Interact/InteractionWidget
     ├── Ability/                        # 어빌리티 UI
     │   ├── AbilitySlotWidget           # 어빌리티 슬롯 (아이콘, 키바인딩, 쿨다운, 충전)
@@ -461,6 +461,16 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
 - **AW Editor CSV 내보내기** (SaveGame 저장 시 CSV 자동 내보내기, `Content/WallLayouts/User/`)
 - **유저 벽 레이아웃 지원** (WallDescriptionDataAsset 런타임 스캔, BrickSpawner 유저 레이아웃 검색)
 - **WallLayoutConverter 외부/내부 영역 구분** (MarkExteriorCells + FindInteriorEmptyCell 로직)
+- **대기실 호스트 설정 UI** (WaitingRoomHUDWidget: 게임모드/맵 변경, 유저 레이아웃 선택)
+- **Steam 빌드 테스트 버그 수정 (#4, #5, #8, #12)**
+  - TileActor collision 배열 초기화
+  - Sumo 라운드 리셋 시 State_Eliminated 태그 제거
+  - 클라이언트 벽돌 preview GridIndex Server RPC
+  - 늦은 클라이언트 카운트다운 서버 시간 동기화
+- **Steam 2PC 버그 수정 2차 (#2, #11, #16)**
+  - Sumo 코스메틱 전이 버그 → 로드아웃 존재 여부 + 로컬 컨트롤러 체크
+  - 호스트 설정 패널 클라이언트 표시 → GetNetMode() 이중 체크
+  - 3자 프로필 스탯 조회 → Steam OSS IdentityInterface로 FUniqueNetIdRepl 생성
 
 ## 진행 중 / 미구현
 - GA_Jump 에디터 세팅 (IA_Ability7, BP_GA_Jump, SetupDA, MinigameCatalog AllowedAbilityTags)

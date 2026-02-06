@@ -194,8 +194,18 @@ void AWjWorldCharacterPlay::PossessedBy(AController* NewController)
 
 			if (AWjWorldPlayerStatePlay* PS = GetPlayerState<AWjWorldPlayerStatePlay>())
 			{
-				PS->SetCosmeticLoadout(CosmeticSub->GetLoadout());
-				// 서버에서도 Pawn 설정 알림
+				// 리스폰 시 PlayerState에 이미 로드아웃이 있으면 덮어쓰지 않음
+				// (호스트의 로드아웃으로 다른 플레이어 로드아웃을 덮어쓰는 버그 방지)
+				if (PS->GetCosmeticLoadout().Entries.IsEmpty())
+				{
+					// 최초 스폰: 로컬 서브시스템에서 로드아웃 가져옴 (서버 자신의 캐릭터만 해당)
+					APlayerController* PC = Cast<APlayerController>(NewController);
+					if (PC && PC->IsLocalController())
+					{
+						PS->SetCosmeticLoadout(CosmeticSub->GetLoadout());
+					}
+				}
+				// 서버에서도 Pawn 설정 알림 (기존 로드아웃 적용)
 				PS->OnPawnSet(nullptr, this);
 			}
 		}

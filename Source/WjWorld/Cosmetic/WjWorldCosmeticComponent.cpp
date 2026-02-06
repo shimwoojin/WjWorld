@@ -76,12 +76,21 @@ void UWjWorldCosmeticComponent::SetCatalog(UWjWorldCosmeticCatalogDataAsset* InC
 
 void UWjWorldCosmeticComponent::ApplyLoadout(const FCosmeticLoadout& InLoadout)
 {
+	APawn* OwnerPawn = Cast<APawn>(GetOwner());
+	FString OwnerName = OwnerPawn ? OwnerPawn->GetName() : TEXT("Unknown");
+	bool bIsLocal = OwnerPawn ? OwnerPawn->IsLocallyControlled() : false;
+
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticComponent::ApplyLoadout - Owner: %s, IsLocal: %d, Entries: %d"),
+		*OwnerName, bIsLocal, InLoadout.Entries.Num());
+
 	// 기존 코스메틱 제거
 	ClearAll();
 
 	// 새 로드아웃 적용
 	for (const FCosmeticSlotEntry& Entry : InLoadout.Entries)
 	{
+		UE_LOG(LogWjWorldCosmetic, Log, TEXT("  - Applying Slot %d: %s"),
+			static_cast<int32>(Entry.Slot), *Entry.ItemId.ToString());
 		ApplySlot(Entry.Slot, Entry.ItemId);
 	}
 }

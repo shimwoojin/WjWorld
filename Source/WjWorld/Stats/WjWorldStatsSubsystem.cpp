@@ -6,6 +6,9 @@
 
 #if WITH_STEAM
 #include "steam/steam_api.h"
+#include "OnlineSubsystem.h"
+#include "OnlineSubsystemNames.h"
+#include "Interfaces/OnlineIdentityInterface.h"
 #endif
 
 const FString UWjWorldStatsSubsystem::StatsConfigSection = TEXT("WjWorldStats");
@@ -263,10 +266,22 @@ void UWjWorldStatsSubsystem::OnSteamUserStatsReceived(uint64 SteamId, bool bSucc
 		FString UserIdStr = FString::Printf(TEXT("%llu"), SteamId);
 		ReadyUserIds.Add(UserIdStr);
 
-		FUniqueNetIdRepl UserId;
+		// Steam OSS를 통해 FUniqueNetIdRepl 생성 (올바른 형식 보장)
+		FUniqueNetIdRepl UserIdRepl;
+		IOnlineSubsystem* OSS = IOnlineSubsystem::Get(STEAM_SUBSYSTEM);
+		if (OSS)
+		{
+			IOnlineIdentityPtr IdentityInterface = OSS->GetIdentityInterface();
+			if (IdentityInterface.IsValid())
+			{
+				UserIdRepl = FUniqueNetIdRepl(IdentityInterface->CreateUniquePlayerId(UserIdStr));
+			}
+		}
+
 		// 타 유저의 OnUserStatsReceived 브로드캐스트
-		OnUserStatsReceived.Broadcast(UserId);
-		UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: User stats received for %s (success=%d)"), *UserIdStr, bSuccess);
+		OnUserStatsReceived.Broadcast(UserIdRepl);
+		UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: User stats received for %s (success=%d), UniqueId valid=%d"),
+			*UserIdStr, bSuccess, UserIdRepl.IsValid());
 	}
 }
 

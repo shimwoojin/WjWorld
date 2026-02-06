@@ -1,7 +1,73 @@
 # WjWorld 개발 로그
 
 ## 2026-02-06
-### 작업 내용 - 배치 시스템 다중 컨텍스트 확장 & AW Editor CSV 연동
+### 작업 내용 - Steam 2PC 버그 수정 (2차)
+
+#### 버그 수정 (High → Medium 해결)
+
+##### [해결] #16 Sumo 코스메틱 전이 버그
+- **증상**: 호스트가 Sumo에서 죽고 리스폰되면 호스트 코스메틱이 다른 플레이어에게 적용됨
+- **원인**: `PossessedBy()`에서 `CosmeticSub->GetLoadout()`이 항상 서버의 로드아웃 반환
+- **수정**: 로드아웃이 이미 있으면 덮어쓰지 않음 + 로컬 컨트롤러만 초기 로드아웃 설정
+- **파일**: `WjWorldCharacterPlay.cpp` (lines 186-213)
+```cpp
+// 리스폰 시 PlayerState에 이미 로드아웃이 있으면 덮어쓰지 않음
+if (PS->GetCosmeticLoadout().Entries.IsEmpty())
+{
+    APlayerController* PC = Cast<APlayerController>(NewController);
+    if (PC && PC->IsLocalController())
+    {
+        PS->SetCosmeticLoadout(CosmeticSub->GetLoadout());
+    }
+}
+```
+
+##### [해결] #2 호스트 설정 패널 클라이언트 표시 버그
+- **증상**: 호스트 설정 패널이 클라이언트 UI에도 표시됨
+- **원인**: `SessionManager->IsHost()` 값이 클라이언트에서 잘못 반환되는 경우 있음
+- **수정**: `GetNetMode()` 추가 체크 - NM_Client이면 무조건 bIsHost = false
+- **파일**: `WaitingRoomHUDWidget.cpp` (UpdateHostSettingsPanelVisibility)
+
+##### [해결] #11 3자 프로필 스탯 조회 안됨
+- **증상**: 다른 플레이어 프로필 열어도 스탯이 로드되지 않음
+- **원인**: `OnSteamUserStatsReceived()`에서 빈 `FUniqueNetIdRepl` 브로드캐스트
+- **수정**: Steam OSS `IdentityInterface`로 유효한 FUniqueNetIdRepl 생성
+- **파일**: `WjWorldStatsSubsystem.cpp` (OnSteamUserStatsReceived)
+```cpp
+IOnlineSubsystem* OSS = IOnlineSubsystem::Get(STEAM_SUBSYSTEM);
+if (OSS)
+{
+    IOnlineIdentityPtr IdentityInterface = OSS->GetIdentityInterface();
+    if (IdentityInterface.IsValid())
+    {
+        UserIdRepl = FUniqueNetIdRepl(IdentityInterface->CreateUniquePlayerId(UserIdStr));
+    }
+}
+OnUserStatsReceived.Broadcast(UserIdRepl);
+```
+
+##### [디버깅] #1 WaitingRoom 설정 변경 시 UI 미갱신
+- **상태**: 디버깅용 로그 추가, 테스트 필요
+- **파일**: `WaitingRoomHUDWidget.cpp` (UpdateRoomInfo)
+
+##### [디버깅] #10 AW 코스메틱 3자에게 잠시 보임
+- **상태**: 디버깅용 로그 추가, 테스트 필요
+- **파일**: `WjWorldCosmeticComponent.cpp` (ApplyLoadout)
+
+### 학습/메모
+- **서버 측 로드아웃 관리 주의**: `CosmeticSubsystem->GetLoadout()`은 항상 로컬(서버) 로드아웃 반환 → 리스폰 시 다른 플레이어에게 적용 위험
+- **IsHost() 신뢰성**: SessionManager의 IsHost() 외에도 GetNetMode() 이중 체크 권장
+- **FUniqueNetIdRepl 생성**: Steam SteamId → FUniqueNetIdRepl 변환 시 OSS IdentityInterface 사용
+
+### 이슈/해결
+- [해결] #16 Sumo 코스메틱 전이 → 로드아웃 존재 여부 + 로컬 컨트롤러 체크
+- [해결] #2 호스트 설정 패널 클라이언트 표시 → NetMode 이중 체크
+- [해결] #11 3자 프로필 스탯 → FUniqueNetIdRepl 올바른 생성
+- [테스트 필요] #1 UI 미갱신, #10 코스메틱 잠시 보임
+
+---
+
+### 작업 내용 - 배치 시스템 다중 컨텍스트 확장 & AW Editor CSV 연동 & 대기실 호스트 설정 UI
 
 #### 배치 시스템 → AW 게임플레이 연동
 - **PlacementComponent CSV 내보내기** (`WjWorldPlacementComponent.cpp`)
@@ -50,11 +116,93 @@
 - [해결] CreateRoomWindow 유저 맵 표시 시 URL 콜론(:) 문제 → User_ 접두사로 변경
 - [해결] AW 그리드 스냅 인접 배치 불가 → GridOverlapCheckRadius(5) 분리
 
-### 알려진 이슈 (미해결)
-- **Approaching Wall 멀티플레이어 플레이어 이탈 처리**
-  - 호스트 강제 종료 시: 클라이언트 남은 인원 처리 안됨, Host Migration 안됨
-  - 클라이언트 접속 종료 시: 남은 인원 수 미업데이트, 1명 남아도 승리 조건 미적용
-  - 관련 코드: `OnPlayerLeft()`, `CheckWinCondition()`, Host Migration 시스템
+#### WaitingRoomHUDWidget 호스트 설정 패널 버그 수정
+- **[버그] 호스트 설정 패널 기능 동작 안 함**
+  - 원인: 코드는 있지만 실제 바인딩/초기화 누락
+  - 수정 내용:
+    1. `ApplySettingsButton->OnClicked.AddDynamic()` 추가
+    2. `GameModeComboBox->OnSelectionChanged.AddDynamic()` 추가
+    3. `NativeConstruct()`에서 `InitializeHostSettingsPanel()`, `UpdateHostSettingsPanelVisibility()` 호출 추가
+    4. `NativeDestruct()`에서 ComboBox 델리게이트 언바인딩 추가
+    5. `UpdateRoomInfo()`에서 `MapText` 업데이트 로직 추가
+    6. `UpdateMapComboBoxForGameMode()`에 유저 레이아웃 스캔 추가
+    7. include 문을 파일 상단으로 이동 (중간에 있던 것 제거)
+  - 파일: `WaitingRoomHUDWidget.cpp`
+
+#### 플레이어 이탈 처리 버그 수정
+- **GameModePlay::Logout() 추가** (`WjWorldGameModePlay.cpp`)
+  - 플레이어 나갈 때 `GameRule->OnPlayerLeft()` 호출되지 않던 문제 수정
+  - `Super::Logout()` 전에 호출하여 PlayerState 유효한 상태에서 처리
+
+#### 비디오 플레이어 Steam 환경 이슈 해결
+- **원인**: 비디오 파일(.mp4)이 프로젝트에 없었음
+- **수정**: `Content/Movie/Intro.mp4` 추가, FileMediaSource 경로 설정
+
+#### ue-build-runner 에이전트 제거
+- 빌드 검증 시간이 오래 걸려 에이전트 삭제
+- 직접 배치 파일로 빌드 검증하는 방식으로 변경
+
+### Steam 빌드 테스트 버그 수정 (High)
+
+#### [해결] #8 TileActor collision 문제
+- **증상**: 벽돌이 옆 칸에도 collision 영향 → 의도하지 않은 즉사
+- **원인**: `bIsOverlapBricks[EWjWorldDirection::Max]` 배열 초기화 안 됨 → 가비지 값
+- **수정**: `= {0}` 초기화 추가
+- **파일**: `WjWorldTileActor.h`
+
+#### [해결] #12 Sumo 라운드 리셋 후 ability 발동 안 됨
+- **증상**: 죽은 후 다음 라운드에서 ability 발동 불가
+- **원인**: `State_Eliminated` 태그가 PlayerState의 ASC에 남아있음 (캐릭터 리스폰해도 유지)
+- **수정**: `RemoveAllPlayerBuffs()`에서 `State_Eliminated` 태그도 제거, ASC를 PlayerState에서 가져오도록 변경
+- **파일**: `WjWorldGameRuleSumo.cpp`
+
+#### [해결] #4 클라이언트 벽돌 preview offset 어긋남
+- **증상**: 클라이언트가 벽돌 설치 시 preview 위치와 실제 설치 위치 불일치 (50,50 차이)
+- **원인**: 서버가 클라이언트의 캐릭터 위치로 독자 계산 → 네트워크 지연으로 위치 차이
+- **수정**: 클라이언트가 GridIndex를 캐시하고 Server RPC로 전달
+  - `CachedPreviewGridIndex` 추가
+  - `ServerSpawnBrickAtGridIndex()` Server RPC 추가
+- **파일**: `GA_SpawnBrick.h/.cpp`
+
+#### [해결] #5 늦게 참여한 클라이언트 카운트다운 3초 고정
+- **증상**: 게임 시작 후 늦게 접속한 클라이언트가 항상 3초 카운트다운
+- **원인**: `StartCountDownTime`이 고정값(3초)이고 경과 시간 미고려
+- **수정**: `CountdownStartServerTime` 서버 시간 기록 + 남은 시간 계산
+  - `GetServerWorldTimeSeconds()` 기반 경과 시간 계산
+  - 클라이언트에서 `RemainingTime = StartCountDownTime - Elapsed` 계산
+- **파일**: `WjWorldGameStatePlay.h/.cpp`
+
+### Steam 빌드 테스트 결과 (2026-02-06)
+
+#### 버그 - Critical (게임 진행 불가) - 모두 해결
+- ~~**#14** WaitingRoom 호스트 설정 패널 값 반영 안 됨~~ ✅
+- ~~**#7, #9** 호스트 접속 종료 시 클라이언트가 intro부터 시작~~ ✅
+- ~~**#15** Sumo 낙하 die 후 캐릭터 빙의/스폰 안 됨~~ ✅
+
+#### 버그 - High (게임플레이 영향) - 대부분 해결
+- ~~**#8** TileActor collision이 옆 칸에도 영향~~ ✅
+- ~~**#12** Sumo die 후 다음 라운드에서 일부 ability 발동 안 됨~~ ✅
+- **#3** 대각선 맵에서 movement가 wall closed하게 안 움직임 (미해결)
+- ~~**#4** 클라이언트 벽돌 설치 시 preview offset 어긋남~~ ✅
+- ~~**#5** 클라이언트 진입 늦을 경우 게임 시작해도 카운트 3초 셈~~ ✅
+
+#### 버그 - Medium (UX 문제)
+- **#1** WaitingRoom host 방 설정 변경 시 UI 변경 없음
+- **#2** Host 방 설정 기능이 클라이언트 UI에도 표기됨
+- **#13** WaitingRoom host 설정 패널 최초 값 비어있음
+- **#10** Cosmetic 장비 시 AW 진입 초반 3자에게도 내 cosmetic 보임
+- **#11** 3자 profile 조회 안 됨
+
+#### 확인됨 (수정 작동)
+- **#6** 클라이언트 접속 종료 시 host 쪽 카운트/win 정상 작동 ✅
+
+#### TODO
+- Lobby HUD 로컬 방 찾기 버튼 제거
+- Lobby HUD 그래픽 설정 (상/중/하) 추가 - GPU 사용량 높음
+
+#### 확인 필요 (향후)
+- Room 목록 1000개+ 스케일링/부하 문제
+- Sumo 개별 타일 랜덤 제거 방식 시 리플리케이션 비용
 
 ---
 

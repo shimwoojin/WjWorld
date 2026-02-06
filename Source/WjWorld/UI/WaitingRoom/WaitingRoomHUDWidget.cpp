@@ -201,8 +201,29 @@ void UWaitingRoomHUDWidget::OnLeaveClicked()
 
 void UWaitingRoomHUDWidget::OnRoomInfoChanged(const FRoomSettings& RoomSettings)
 {
-	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Room info changed event received"));
+	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Room info changed event received - GameMode: %s, Map: %s"),
+		*RoomSettings.GameMode, *RoomSettings.MapName);
 	UpdateRoomInfo();
+
+	// 호스트 설정 패널의 ComboBox 선택도 업데이트 (초기화 타이밍 이슈 해결)
+	if (GameModeComboBox && !RoomSettings.GameMode.IsEmpty())
+	{
+		GameModeComboBox->SetSelectedOption(RoomSettings.GameMode);
+		UpdateMapComboBoxForGameMode(RoomSettings.GameMode);
+
+		// 맵 선택도 업데이트
+		if (MapComboBox && !RoomSettings.MapName.IsEmpty())
+		{
+			for (const auto& Pair : MapOptionDisplayToValue)
+			{
+				if (Pair.Value == RoomSettings.MapName)
+				{
+					MapComboBox->SetSelectedOption(Pair.Key);
+					break;
+				}
+			}
+		}
+	}
 }
 
 void UWaitingRoomHUDWidget::OnPlayerListChanged(const TArray<FPlayerDisplayInfo>& PlayerList)
@@ -237,6 +258,9 @@ void UWaitingRoomHUDWidget::UpdateRoomInfo()
 
 	const FRoomSettings& Settings = CachedGameState->GetRoomSettings();
 
+	UE_LOG(LogWjWorld, Warning, TEXT("WaitingRoomHUDWidget::UpdateRoomInfo - Updating with: RoomName='%s', GameMode='%s', MapName='%s'"),
+		*Settings.RoomName, *Settings.GameMode, *Settings.MapName);
+
 	// 방 이름 표시
 	if (RoomNameText)
 	{
@@ -247,6 +271,7 @@ void UWaitingRoomHUDWidget::UpdateRoomInfo()
 	if (GameModeText)
 	{
 		GameModeText->SetText(FText::FromString(Settings.GameMode));
+		UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: GameModeText set to '%s'"), *Settings.GameMode);
 	}
 
 	// 맵 이름 표시
@@ -256,6 +281,7 @@ void UWaitingRoomHUDWidget::UpdateRoomInfo()
 		// User_ 접두사 제거하여 표시
 		MapDisplayName.RemoveFromStart(TEXT("User_"));
 		MapText->SetText(FText::FromString(MapDisplayName));
+		UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: MapText set to '%s'"), *MapDisplayName);
 	}
 
 	// ⭐ 플레이어 수 표시 (실시간으로 가져오기)
@@ -263,15 +289,14 @@ void UWaitingRoomHUDWidget::UpdateRoomInfo()
 	{
 		int32 CurrentPlayers = CachedGameState->GetPlayerCount();
 		int32 MaxPlayers = Settings.MaxPlayers;
-		
+
 		FString PlayerCountStr = FString::Printf(TEXT("%d / %d"), CurrentPlayers, MaxPlayers);
 		PlayerCountText->SetText(FText::FromString(PlayerCountStr));
-		
-		UE_LOG(LogWjWorld, Warning, TEXT("WaitingRoomHUDWidget::UpdateRoomInfo - PlayerCount: %s (Current=%d, Max=%d)"), 
-			*PlayerCountStr, CurrentPlayers, MaxPlayers);
+
+		UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: PlayerCountText set to '%s'"), *PlayerCountStr);
 	}
 
-	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Room info updated"));
+	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Room info updated successfully"));
 }
 
 void UWaitingRoomHUDWidget::UpdatePlayerList()
@@ -537,15 +562,41 @@ void UWaitingRoomHUDWidget::UpdateHostSettingsPanelVisibility()
 		return;
 	}
 
+	bool bIsHost = false;
+
+	// 1. SessionManager에서 호스트 여부 확인
 	UWjWorldGameInstance* GameInstance = Cast<UWjWorldGameInstance>(GetGameInstance());
-	if (!GameInstance || !GameInstance->GetSessionManager())
+	if (GameInstance && GameInstance->GetSessionManager())
 	{
-		HostSettingsPanel->SetVisibility(ESlateVisibility::Collapsed);
-		return;
+		bIsHost = GameInstance->GetSessionManager()->IsHost();
 	}
 
-	bool bIsHost = GameInstance->GetSessionManager()->IsHost();
+	// 2. 추가 검증: Listen Server인지 확인 (클라이언트에서 잘못된 bIsHost 값 방지)
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		ENetMode NetMode = World->GetNetMode();
+		// 클라이언트(NM_Client)는 절대 호스트가 아님
+		if (NetMode == NM_Client)
+		{
+			bIsHost = false;
+		}
+		// Listen Server(NM_ListenServer)만 호스트임
+		else if (NetMode == NM_ListenServer || NetMode == NM_DedicatedServer)
+		{
+			// SessionManager 값 유지
+		}
+		else if (NetMode == NM_Standalone)
+		{
+			// 싱글플레이는 호스트 설정 불필요
+			bIsHost = false;
+		}
+	}
+
 	HostSettingsPanel->SetVisibility(bIsHost ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+
+	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: HostSettingsPanel visibility = %s (bIsHost=%d, NetMode=%d)"),
+		bIsHost ? TEXT("Visible") : TEXT("Collapsed"), bIsHost, World ? (int32)World->GetNetMode() : -1);
 }
 
 void UWaitingRoomHUDWidget::UpdateMapComboBoxForGameMode(const FString& GameModeId)
@@ -631,21 +682,37 @@ void UWaitingRoomHUDWidget::OnGameModeSelectionChanged(FString SelectedItem, ESe
 
 void UWaitingRoomHUDWidget::OnApplySettingsClicked()
 {
-	if (!CachedGameState || !GameModeComboBox || !MapComboBox)
+	UE_LOG(LogWjWorld, Warning, TEXT("=== WaitingRoomHUDWidget::OnApplySettingsClicked START ==="));
+
+	if (!CachedGameState)
 	{
-		UE_LOG(LogWjWorld, Warning, TEXT("WaitingRoomHUDWidget: Cannot apply settings - missing widgets or GameState"));
+		UE_LOG(LogWjWorld, Error, TEXT("WaitingRoomHUDWidget: CachedGameState is NULL!"));
+		return;
+	}
+	if (!GameModeComboBox)
+	{
+		UE_LOG(LogWjWorld, Error, TEXT("WaitingRoomHUDWidget: GameModeComboBox is NULL!"));
+		return;
+	}
+	if (!MapComboBox)
+	{
+		UE_LOG(LogWjWorld, Error, TEXT("WaitingRoomHUDWidget: MapComboBox is NULL!"));
 		return;
 	}
 
 	UWjWorldGameInstance* GameInstance = Cast<UWjWorldGameInstance>(GetGameInstance());
 	if (!GameInstance || !GameInstance->GetSessionManager() || !GameInstance->GetSessionManager()->IsHost())
 	{
-		UE_LOG(LogWjWorld, Warning, TEXT("WaitingRoomHUDWidget: Only host can change settings"));
+		UE_LOG(LogWjWorld, Warning, TEXT("WaitingRoomHUDWidget: Only host can change settings (IsHost=%d)"),
+			GameInstance && GameInstance->GetSessionManager() ? GameInstance->GetSessionManager()->IsHost() : false);
 		return;
 	}
 
-	FRoomSettings NewSettings = CachedGameState->GetRoomSettings();
-	NewSettings.GameMode = GameModeComboBox->GetSelectedOption();
+	FRoomSettings OldSettings = CachedGameState->GetRoomSettings();
+	FRoomSettings NewSettings = OldSettings;
+
+	FString SelectedGameMode = GameModeComboBox->GetSelectedOption();
+	NewSettings.GameMode = SelectedGameMode;
 
 	FString SelectedMapDisplay = MapComboBox->GetSelectedOption();
 	if (const FString* MapValue = MapOptionDisplayToValue.Find(SelectedMapDisplay))
@@ -657,8 +724,11 @@ void UWaitingRoomHUDWidget::OnApplySettingsClicked()
 		NewSettings.MapName = SelectedMapDisplay;
 	}
 
-	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Applying new settings - GameMode: %s, Map: %s"),
-		*NewSettings.GameMode, *NewSettings.MapName);
+	UE_LOG(LogWjWorld, Warning, TEXT("WaitingRoomHUDWidget: Applying settings change:"));
+	UE_LOG(LogWjWorld, Warning, TEXT("  GameMode: '%s' -> '%s'"), *OldSettings.GameMode, *NewSettings.GameMode);
+	UE_LOG(LogWjWorld, Warning, TEXT("  MapName: '%s' -> '%s'"), *OldSettings.MapName, *NewSettings.MapName);
 
 	CachedGameState->UpdateRoomSettings(NewSettings);
+
+	UE_LOG(LogWjWorld, Warning, TEXT("=== WaitingRoomHUDWidget::OnApplySettingsClicked END ==="));
 }
