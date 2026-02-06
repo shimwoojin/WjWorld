@@ -138,6 +138,9 @@ private:
 	/** 배치 위치 유효성 검사 (겹침 체크) */
 	bool IsPlacementLocationValid(const FVector& Location) const;
 
+	/** AW 컨텍스트: 그리드 스냅 적용 */
+	FVector SnapToGrid(const FVector& Location) const;
+
 	/** 삭제 타겟 탐색 (마우스 아래 PlacedObjectActor) */
 	AWjWorldPlacedObjectActor* TraceForPlacedObject() const;
 
@@ -196,6 +199,9 @@ private:
 	/** 트레이스 거리 */
 	static constexpr float TraceDistance = 10000.0f;
 
-	/** 겹침 체크 반경 */
+	/** 겹침 체크 반경 (일반 컨텍스트) */
 	static constexpr float OverlapCheckRadius = 50.0f;
+
+	/** 겹침 체크 반경 (AW 그리드 스냅 컨텍스트) - 정확히 같은 위치만 체크 */
+	static constexpr float GridOverlapCheckRadius = 5.0f;
 };

@@ -564,6 +564,13 @@ void UWjWorldPlacementComponent::TickComponent(float DeltaTime, ELevelTick TickT
 			float GroundOffset = Def ? Def->GroundOffset : 0.0f;
 
 			FVector PlaceLocation = HitResult.ImpactPoint + FVector(0.0f, 0.0f, GroundOffset);
+
+			// AW 컨텍스트: 그리드 스냅 적용
+			if (CurrentContext == EPlacementContext::ApproachingWall)
+			{
+				PlaceLocation = SnapToGrid(PlaceLocation);
+			}
+
 			FRotator PlaceRotation = FRotator(0.0f, PreviewActor->GetCurrentYaw(), 0.0f);
 			PreviewActor->UpdatePreviewTransform(PlaceLocation, PlaceRotation);
 
@@ -632,6 +639,12 @@ bool UWjWorldPlacementComponent::IsPlacementLocationValid(const FVector& Locatio
 		return false;
 	}
 
+	// AW 컨텍스트: 그리드 스냅 사용 시 더 작은 반경으로 정확히 같은 위치만 체크
+	// 일반 컨텍스트: 기존 겹침 반경 사용
+	float CheckRadius = (CurrentContext == EPlacementContext::ApproachingWall)
+		? GridOverlapCheckRadius
+		: OverlapCheckRadius;
+
 	// 겹침 체크: 기존 배치된 오브젝트와 겹치는지
 	TArray<FOverlapResult> Overlaps;
 	FCollisionQueryParams QueryParams;
@@ -641,7 +654,7 @@ bool UWjWorldPlacementComponent::IsPlacementLocationValid(const FVector& Locatio
 		QueryParams.AddIgnoredActor(PreviewActor);
 	}
 
-	FCollisionShape SphereShape = FCollisionShape::MakeSphere(OverlapCheckRadius);
+	FCollisionShape SphereShape = FCollisionShape::MakeSphere(CheckRadius);
 	World->OverlapMultiByChannel(Overlaps, Location, FQuat::Identity, ECC_Visibility, SphereShape, QueryParams);
 
 	for (const FOverlapResult& Overlap : Overlaps)
@@ -653,6 +666,21 @@ bool UWjWorldPlacementComponent::IsPlacementLocationValid(const FVector& Locatio
 	}
 
 	return true;
+}
+
+FVector UWjWorldPlacementComponent::SnapToGrid(const FVector& Location) const
+{
+	// AW 그리드 설정 사용
+	const FApproachingWallGridConfig GridConfig;
+	const FVector& BrickSize = GridConfig.BrickSize;
+
+	// 그리드 스냅: 각 축을 BrickSize 단위로 반올림
+	FVector SnappedLocation;
+	SnappedLocation.X = FMath::RoundToFloat(Location.X / BrickSize.X) * BrickSize.X;
+	SnappedLocation.Y = FMath::RoundToFloat(Location.Y / BrickSize.Y) * BrickSize.Y;
+	SnappedLocation.Z = Location.Z; // Z축은 스냅하지 않음 (바닥 높이 유지)
+
+	return SnappedLocation;
 }
 
 AWjWorldPlacedObjectActor* UWjWorldPlacementComponent::TraceForPlacedObject() const

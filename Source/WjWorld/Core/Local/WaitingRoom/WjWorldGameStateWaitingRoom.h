@@ -49,6 +49,13 @@ public:
 	UFUNCTION(BlueprintPure, Category = "GameState|WaitingRoom")
 	const FRoomSettings& GetRoomSettings() const { return RoomSettings; }
 
+	/**
+	 * 방 설정 정보 업데이트 (Server Only)
+	 * 호스트가 대기실에서 설정을 변경할 때 사용
+	 */
+	UFUNCTION(BlueprintCallable, Category = "GameState|WaitingRoom")
+	void UpdateRoomSettings(const FRoomSettings& NewSettings);
+
 	//~ Player Management
 	/**
 	 * 플레이어 목록 가져오기

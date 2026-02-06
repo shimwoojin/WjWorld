@@ -46,6 +46,15 @@
 ### 이슈/해결
 - [해결] ue-build-runner가 수정한 파일 git checkout으로 복원
 - [해결] WallLayoutConverter 외부/내부 영역 구분 로직 구현
+- [해결] FWjWorldWallDescription::FindStartingEmptyCell 동일 버그 수정 (벽돌 스폰 안됨)
+- [해결] CreateRoomWindow 유저 맵 표시 시 URL 콜론(:) 문제 → User_ 접두사로 변경
+- [해결] AW 그리드 스냅 인접 배치 불가 → GridOverlapCheckRadius(5) 분리
+
+### 알려진 이슈 (미해결)
+- **Approaching Wall 멀티플레이어 플레이어 이탈 처리**
+  - 호스트 강제 종료 시: 클라이언트 남은 인원 처리 안됨, Host Migration 안됨
+  - 클라이언트 접속 종료 시: 남은 인원 수 미업데이트, 1명 남아도 승리 조건 미적용
+  - 관련 코드: `OnPlayerLeft()`, `CheckWinCondition()`, Host Migration 시스템
 
 ---
 

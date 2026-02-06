@@ -136,6 +136,9 @@ private:
 	/** 맵 옵션 초기화 */
 	void InitializeMapOptions();
 
+	/** 유저 커스텀 맵 옵션 추가 (게임모드별) */
+	void AddUserMapOptions(FName GameModeId);
+
 private:
 	/** 현재 설정된 최대 인원 */
 	UPROPERTY()

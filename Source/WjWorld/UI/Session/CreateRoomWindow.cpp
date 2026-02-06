@@ -9,6 +9,7 @@
 #include "Core/WjWorldGameInstance.h"
 #include "Core/Session/SessionManager.h"
 #include "DataAsset/WjWorldMinigameDataAsset.h"
+#include "GamePlay/Wall/WjWorldWallDescriptionDataAsset.h"
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "Kismet/GameplayStatics.h"
 #include "WjWorldLogCategories.h"
@@ -415,13 +416,18 @@ void UCreateRoomWindow::InitializeMapOptions()
 	MapComboBox->ClearOptions();
 	MapOptionDisplayToValue.Empty();
 
+	FName CurrentGameModeId = NAME_None;
+
 	if (MinigameCatalog && GameModeComboBox)
 	{
 		FString SelectedGameMode = GameModeComboBox->GetSelectedOption();
 		if (const FName* GameModeId = GameModeDisplayToId.Find(SelectedGameMode))
 		{
+			CurrentGameModeId = *GameModeId;
+
 			if (const FWjWorldMinigameDefinition* Def = MinigameCatalog->FindByGameModeId(*GameModeId))
 			{
+				// 1. 기본 맵 옵션 추가
 				for (const FWjWorldMinigameMapOption& MapOption : Def->MapOptions)
 				{
 					FString DisplayStr = MapOption.DisplayName.ToString();
@@ -438,7 +444,62 @@ void UCreateRoomWindow::InitializeMapOptions()
 		}
 	}
 
+	// 2. 유저 커스텀 맵 옵션 추가
+	if (!CurrentGameModeId.IsNone())
+	{
+		AddUserMapOptions(CurrentGameModeId);
+	}
+
 	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Map options initialized (%d items)"), MapOptionDisplayToValue.Num());
+}
+
+void UCreateRoomWindow::AddUserMapOptions(FName GameModeId)
+{
+	if (!MapComboBox)
+	{
+		return;
+	}
+
+	const UWjWorldDeveloperSettings* DevSettings = GetDefault<UWjWorldDeveloperSettings>();
+	if (!DevSettings)
+	{
+		return;
+	}
+
+	// ApproachingWall: WallDescriptionDataAsset에서 유저 레이아웃 스캔
+	if (GameModeId == FName("ApproachingWall"))
+	{
+		if (!DevSettings->WallDescriptionAsset.IsNull())
+		{
+			UWjWorldWallDescriptionDataAsset* WallAsset = DevSettings->WallDescriptionAsset.LoadSynchronous();
+			if (WallAsset)
+			{
+				TArray<FWjWorldWallDescription> UserLayouts;
+				int32 Count = WallAsset->ScanUserWallLayouts(UserLayouts);
+
+				for (const FWjWorldWallDescription& Layout : UserLayouts)
+				{
+					// "[User] 레이아웃명" 형식으로 표시 (WallName에서 User_ 접두사 제거)
+					FString DisplayName = Layout.WallName;
+					DisplayName.RemoveFromStart(TEXT("User_"));
+					FString DisplayStr = FString::Printf(TEXT("[User] %s"), *DisplayName);
+					MapComboBox->AddOption(DisplayStr);
+					// OptionValue는 WallName 그대로 (이미 User_ 접두사 포함)
+					MapOptionDisplayToValue.Add(DisplayStr, Layout.WallName);
+				}
+
+				if (Count > 0)
+				{
+					UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Added %d user layouts for ApproachingWall"), Count);
+				}
+			}
+		}
+	}
+	// JumpMap: 추후 구현 시 여기에 추가
+	// else if (GameModeId == FName("JumpMap"))
+	// {
+	//     // JumpMap 유저 레이아웃 스캔 로직
+	// }
 }
 
 void UCreateRoomWindow::InitializeNetworkModeOptions()

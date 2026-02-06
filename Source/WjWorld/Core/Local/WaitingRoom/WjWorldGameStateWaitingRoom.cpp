@@ -3,6 +3,7 @@
 #include "Core/Local/WaitingRoom/WjWorldGameStateWaitingRoom.h"
 #include "Core/Base/WjWorldPlayerStateBase.h"
 #include "Core/WjWorldGameInstance.h"
+#include "Core/Session/SessionManager.h"
 #include "Net/UnrealNetwork.h"
 #include "WjWorldLogCategories.h"
 
@@ -39,6 +40,39 @@ void AWjWorldGameStateWaitingRoom::InitializeRoomSettings(const FRoomSettings& S
 	}
 
 	UE_LOG(LogWjWorld, Log, TEXT("GameStateWaitingRoom: Room settings initialized - %s"), *Settings.RoomName);
+}
+
+void AWjWorldGameStateWaitingRoom::UpdateRoomSettings(const FRoomSettings& NewSettings)
+{
+	// Server Only
+	if (!HasAuthority())
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("GameStateWaitingRoom: UpdateRoomSettings called on non-authority"));
+		return;
+	}
+
+	// 변경된 내용 로그
+	UE_LOG(LogWjWorld, Log, TEXT("GameStateWaitingRoom: Updating room settings - GameMode: %s -> %s, Map: %s -> %s"),
+		*RoomSettings.GameMode, *NewSettings.GameMode,
+		*RoomSettings.MapName, *NewSettings.MapName);
+
+	RoomSettings = NewSettings;
+	OnRep_RoomSettings(); // 로컬에서도 이벤트 발생
+
+	// GameInstance에도 캐시 업데이트 (호스트 마이그레이션용)
+	if (UWjWorldGameInstance* GI = Cast<UWjWorldGameInstance>(GetGameInstance()))
+	{
+		GI->CacheRoomSettings(NewSettings);
+	}
+
+	// SessionManager에도 반영 (StartGame에서 사용)
+	if (UWjWorldGameInstance* GI = Cast<UWjWorldGameInstance>(GetGameInstance()))
+	{
+		if (GI->GetSessionManager())
+		{
+			GI->GetSessionManager()->UpdateLastRoomSettings(NewSettings);
+		}
+	}
 }
 
 TArray<FPlayerDisplayInfo> AWjWorldGameStateWaitingRoom::GetPlayerList() const

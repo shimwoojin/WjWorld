@@ -77,6 +77,9 @@ private:
 	bool ParseWallLayout(const FString& FileContent);
 	bool FindStartingEmptyCell(int32& OutX, int32& OutY);
 	bool IsAreaEnclosedByWalls(int32 StartX, int32 StartY);
+
+	/** 경계에서 Flood Fill로 외부 영역(경계에 연결된 빈 셀) 마킹 */
+	void MarkExteriorCells(TSet<FIntPoint>& OutExteriorCells);
 };
 
 /**

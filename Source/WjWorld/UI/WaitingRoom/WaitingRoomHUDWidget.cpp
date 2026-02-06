@@ -450,3 +450,162 @@ void UWaitingRoomHUDWidget::UpdateStartGameButton()
 		StartGameButton->SetIsEnabled(false);
 	}
 }
+
+#include "Components/ComboBoxString.h"
+#include "Components/CanvasPanel.h"
+#include "DataAsset/WjWorldMinigameDataAsset.h"
+#include "GamePlay/Wall/WjWorldWallDescriptionDataAsset.h"
+
+void UWaitingRoomHUDWidget::InitializeHostSettingsPanel()
+{
+	if (!GameModeComboBox || !MapComboBox)
+	{
+		return;
+	}
+
+	const UWjWorldDeveloperSettings* DevSettings = GetDefault<UWjWorldDeveloperSettings>();
+	if (!DevSettings || DevSettings->MinigameCatalog.IsNull())
+	{
+		return;
+	}
+
+	UWjWorldMinigameDataAsset* Catalog = DevSettings->MinigameCatalog.LoadSynchronous();
+	if (!Catalog)
+	{
+		return;
+	}
+
+	GameModeComboBox->ClearOptions();
+	for (const FWjWorldMinigameDefinition& Def : Catalog->Minigames)
+	{
+		GameModeComboBox->AddOption(Def.GameModeId.ToString());
+	}
+
+	if (CachedGameState)
+	{
+		const FRoomSettings& Settings = CachedGameState->GetRoomSettings();
+		GameModeComboBox->SetSelectedOption(Settings.GameMode);
+		UpdateMapComboBoxForGameMode(Settings.GameMode);
+
+		if (!Settings.MapName.IsEmpty())
+		{
+			for (const auto& Pair : MapOptionDisplayToValue)
+			{
+				if (Pair.Value == Settings.MapName)
+				{
+					MapComboBox->SetSelectedOption(Pair.Key);
+					break;
+				}
+			}
+		}
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Host settings panel initialized"));
+}
+
+void UWaitingRoomHUDWidget::UpdateHostSettingsPanelVisibility()
+{
+	if (!HostSettingsPanel)
+	{
+		return;
+	}
+
+	UWjWorldGameInstance* GameInstance = Cast<UWjWorldGameInstance>(GetGameInstance());
+	if (!GameInstance || !GameInstance->GetSessionManager())
+	{
+		HostSettingsPanel->SetVisibility(ESlateVisibility::Collapsed);
+		return;
+	}
+
+	bool bIsHost = GameInstance->GetSessionManager()->IsHost();
+	HostSettingsPanel->SetVisibility(bIsHost ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+}
+
+void UWaitingRoomHUDWidget::UpdateMapComboBoxForGameMode(const FString& GameModeId)
+{
+	if (!MapComboBox)
+	{
+		return;
+	}
+
+	MapComboBox->ClearOptions();
+	MapOptionDisplayToValue.Empty();
+
+	const UWjWorldDeveloperSettings* DevSettings = GetDefault<UWjWorldDeveloperSettings>();
+	if (!DevSettings || DevSettings->MinigameCatalog.IsNull())
+	{
+		return;
+	}
+
+	UWjWorldMinigameDataAsset* Catalog = DevSettings->MinigameCatalog.LoadSynchronous();
+	if (!Catalog)
+	{
+		return;
+	}
+
+	const FWjWorldMinigameDefinition* Def = Catalog->FindByGameModeId(FName(*GameModeId));
+	if (Def)
+	{
+		for (const FWjWorldMinigameMapOption& Option : Def->MapOptions)
+		{
+			FString DisplayName = Option.DisplayName.ToString();
+			FString OptionValue = Option.OptionValue;
+
+			MapComboBox->AddOption(DisplayName);
+			MapOptionDisplayToValue.Add(DisplayName, OptionValue);
+		}
+	}
+
+	if (MapComboBox->GetOptionCount() > 0)
+	{
+		MapComboBox->SetSelectedIndex(0);
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Map options updated for GameMode '%s' - %d options"),
+		*GameModeId, MapComboBox->GetOptionCount());
+}
+
+void UWaitingRoomHUDWidget::OnGameModeSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
+{
+	if (SelectionType == ESelectInfo::Direct)
+	{
+		return;
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Game mode selection changed to '%s'"), *SelectedItem);
+	UpdateMapComboBoxForGameMode(SelectedItem);
+}
+
+void UWaitingRoomHUDWidget::OnApplySettingsClicked()
+{
+	if (!CachedGameState || !GameModeComboBox || !MapComboBox)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("WaitingRoomHUDWidget: Cannot apply settings - missing widgets or GameState"));
+		return;
+	}
+
+	UWjWorldGameInstance* GameInstance = Cast<UWjWorldGameInstance>(GetGameInstance());
+	if (!GameInstance || !GameInstance->GetSessionManager() || !GameInstance->GetSessionManager()->IsHost())
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("WaitingRoomHUDWidget: Only host can change settings"));
+		return;
+	}
+
+	FRoomSettings NewSettings = CachedGameState->GetRoomSettings();
+	NewSettings.GameMode = GameModeComboBox->GetSelectedOption();
+
+	FString SelectedMapDisplay = MapComboBox->GetSelectedOption();
+	if (const FString* MapValue = MapOptionDisplayToValue.Find(SelectedMapDisplay))
+	{
+		NewSettings.MapName = *MapValue;
+	}
+	else
+	{
+		NewSettings.MapName = SelectedMapDisplay;
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Applying new settings - GameMode: %s, Map: %s"),
+		*NewSettings.GameMode, *NewSettings.MapName);
+
+	CachedGameState->UpdateRoomSettings(NewSettings);
+}

@@ -142,20 +142,118 @@ bool FWjWorldWallDescription::ParseWallLayout(const FString& FileContent)
 
 bool FWjWorldWallDescription::FindStartingEmptyCell(int32& OutX, int32& OutY)
 {
-    for(int32 Y = 0; Y < WallLayout.Num(); ++Y)
+    // 1. 먼저 경계에서 Flood Fill로 외부 영역 마킹
+    TSet<FIntPoint> ExteriorCells;
+    MarkExteriorCells(ExteriorCells);
+
+    // 2. 외부 영역이 아닌 내부 빈 셀 찾기
+    for (int32 Y = 0; Y < WallLayout.Num(); ++Y)
     {
-        for(int32 X = 0; X < WallLayout[Y].Num(); ++X)
+        for (int32 X = 0; X < WallLayout[Y].Num(); ++X)
         {
-            if(WallLayout[Y][X] == WallCell_Empty)
+            // 빈 셀이면서 외부 영역이 아닌 경우 = 내부 영역
+            if (WallLayout[Y][X] == WallCell_Empty && !ExteriorCells.Contains(FIntPoint(X, Y)))
             {
                 OutX = X;
                 OutY = Y;
                 return true;
             }
         }
-	}
+    }
 
     return false;
+}
+
+void FWjWorldWallDescription::MarkExteriorCells(TSet<FIntPoint>& OutExteriorCells)
+{
+    OutExteriorCells.Empty();
+
+    const int32 Rows = WallLayout.Num();
+    if (Rows == 0) return;
+
+    const int32 Cols = WallLayout[0].Num();
+    if (Cols == 0) return;
+
+    const TArray<FIntPoint> Directions = {
+        { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }
+    };
+
+    TQueue<FIntPoint> Queue;
+
+    // 경계(가장자리)에 있는 모든 빈 셀을 시작점으로 추가
+    // 상단/하단 행
+    for (int32 X = 0; X < Cols; ++X)
+    {
+        if (WallLayout[0][X] == WallCell_Empty)
+        {
+            FIntPoint Pt(X, 0);
+            if (!OutExteriorCells.Contains(Pt))
+            {
+                OutExteriorCells.Add(Pt);
+                Queue.Enqueue(Pt);
+            }
+        }
+        if (WallLayout[Rows - 1][X] == WallCell_Empty)
+        {
+            FIntPoint Pt(X, Rows - 1);
+            if (!OutExteriorCells.Contains(Pt))
+            {
+                OutExteriorCells.Add(Pt);
+                Queue.Enqueue(Pt);
+            }
+        }
+    }
+
+    // 좌측/우측 열
+    for (int32 Y = 0; Y < Rows; ++Y)
+    {
+        if (WallLayout[Y][0] == WallCell_Empty)
+        {
+            FIntPoint Pt(0, Y);
+            if (!OutExteriorCells.Contains(Pt))
+            {
+                OutExteriorCells.Add(Pt);
+                Queue.Enqueue(Pt);
+            }
+        }
+        if (WallLayout[Y][Cols - 1] == WallCell_Empty)
+        {
+            FIntPoint Pt(Cols - 1, Y);
+            if (!OutExteriorCells.Contains(Pt))
+            {
+                OutExteriorCells.Add(Pt);
+                Queue.Enqueue(Pt);
+            }
+        }
+    }
+
+    // Flood Fill: 경계에서 연결된 모든 빈 셀을 외부로 마킹
+    while (!Queue.IsEmpty())
+    {
+        FIntPoint Current;
+        Queue.Dequeue(Current);
+
+        for (const FIntPoint& Dir : Directions)
+        {
+            const int32 NX = Current.X + Dir.X;
+            const int32 NY = Current.Y + Dir.Y;
+
+            // 범위 체크
+            if (NX < 0 || NX >= Cols || NY < 0 || NY >= Rows)
+                continue;
+
+            // 벽이면 통과 불가
+            if (WallLayout[NY][NX] >= 1)
+                continue;
+
+            FIntPoint Next(NX, NY);
+            if (!OutExteriorCells.Contains(Next))
+            {
+                OutExteriorCells.Add(Next);
+                Queue.Enqueue(Next);
+            }
+        }
+    }
 }
 
 bool FWjWorldWallDescription::IsAreaEnclosedByWalls(int32 StartX, int32 StartY)

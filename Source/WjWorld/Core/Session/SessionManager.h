@@ -102,6 +102,12 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Session")
 	const FRoomSettings& GetLastRoomSettings() const { return LastRoomSettings; }
 
+	/**
+	 * 마지막 방 설정 업데이트 (대기실에서 호스트가 설정 변경 시)
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Session")
+	void UpdateLastRoomSettings(const FRoomSettings& NewSettings) { LastRoomSettings = NewSettings; }
+
 public:
 	//~ 델리게이트 (UI에서 바인딩)
 	UPROPERTY(BlueprintAssignable, Category = "Session|Events")
