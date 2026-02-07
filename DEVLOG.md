@@ -1,5 +1,77 @@
 # WjWorld 개발 로그
 
+## 2026-02-07
+### 작업 내용 - Steam 4차 버그 수정 + 코드 검증 + Agent Teams 테스트
+
+#### 버그 수정 (커밋 263031b)
+
+##### [해결] GamePhase 어빌리티 제한
+- **증상**: 게임 시작 전/종료 후에도 어빌리티 사용 가능
+- **수정**: `CanActivateAbility()`에서 `GamePhase != Playing` 체크 추가
+- **파일**: `WjWorldGameplayAbilityBase.cpp`
+
+##### [해결] 유저 맵 클라이언트 벽돌 스폰 위치 오류
+- **증상**: 유저 커스텀 맵에서 클라이언트 벽돌이 엉뚱한 위치에 스폰
+- **수정**: `GetWallDescriptionByName` → `GetWallDescriptionByNameIncludingUser`로 변경
+- **파일**: `GA_SpawnBrick.cpp`, `GA_LiftBrick.cpp`
+
+##### [해결] BrickComponent collision 분리
+- **증상**: TileActor overlap 감지 실패 (나이아가라 근거없이 출력)
+- **수정**: BrickMeshComponent를 QueryOnly+Overlap으로, BlockingCollisionComponent(95%)는 BlockAll로 분리
+- **파일**: `WjWorldBrickComponent.cpp`
+
+##### [해결] WaitingRoom 호스트 설정 UI
+- **증상**: 호스트 설정 패널이 클라이언트에도 표시 + Apply 후 Display 미갱신
+- **수정**: 패널 호스트 전용 표시 + Apply 후 `UpdateRoomInfo()` 명시적 호출
+- **파일**: `WaitingRoomHUDWidget.cpp`
+
+##### [해결] 3자 프로필 스탯 조회 실패
+- **증상**: 타 플레이어 프로필 스탯이 "Loading..." 상태로 멈춤
+- **원인**: `RequestUserStats()` 반환값 무시, CCallResult 미등록
+- **수정**: `CCallResult<UWjWorldStatsSubsystem, UserStatsReceived_t>` 패턴 적용
+- **파일**: `WjWorldStatsSubsystem.h/cpp`
+
+##### [해결] ParseWallLayout 메타데이터 파싱 누락
+- **증상**: 유저 커스텀 맵 preview offset 어긋남
+- **수정**: `#META:CenterOffset:` 주석 라인 파싱 로직 추가
+- **파일**: `WjWorldWallDescriptionDataAsset.cpp`
+
+##### [해결] 제거 시 관전 전환 없음
+- **증상**: 제거 후 화면 멈춤 (관전 시스템 미구현)
+- **수정**: `HandleEliminationEffects()`에서 살아있는 플레이어로 `SetViewTargetWithBlend()` 전환
+- **파일**: `WjWorldCharacterPlay.cpp`
+
+##### [해결] Lobby HUD 정리
+- **수정**: FindRoomButton 숨김 처리 (BindWidgetOptional), 그래픽 품질 사이클 설정 구현
+- **파일**: `LobbyHUDWidget.h/cpp`
+
+#### GAS 버그 수정 (커밋 0d323ff)
+
+##### [해결] GA_Jump Super::ActivateAbility() 누락
+- **증상**: LocalPredicted 정책에서 Prediction Key 생성 실패 가능
+- **수정**: `Super::ActivateAbility()` 호출 추가
+- **파일**: `GA_Jump.cpp`
+
+#### 코드 검증 (4개 병렬 subagent)
+- **네트워크 리플리케이션**: 문제 없음 (20+ 파일 검증)
+- **GAS 어빌리티**: GA_Jump Super 누락 발견 → 즉시 수정
+- **GameRule 라이프사이클**: 문제 없음 (프로덕션 레벨)
+- **null 포인터/메모리 안전성**: BrickComponent GetGameModePlay() null 체크 권장 (실제 크래시 확률 낮음)
+
+### 학습/메모
+- **Claude Code Agent Teams**: Opus 4.6에서 실험적 기능으로 추가. `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` + `teammateMode` 설정 필요
+  - `"tmux"`: split-pane 모드 (Windows 미지원)
+  - `"in-process"`: 메인 터미널에서 실행 (Windows 권장)
+  - Subagent vs Teams: 독립 작업은 subagent가 효율적, 상호 소통 필요한 대규모 작업은 teams
+  - 자동 팀 구성은 불가 - 명시적 요청 필요
+- **Steam CCallResult 패턴**: `SteamAPICall_t` 반환값을 `CCallResult<>.Set()`에 등록해야 콜백이 호출됨. 단순 함수 호출만으로는 비동기 콜백 미동작
+
+### 이슈/해결
+- settings.local.json `teammatemode` → `teammateMode` (camelCase) 오타 수정
+- Background agent 출력 파일이 빈 파일로 생성되는 현상 → resume로 결과 확인 가능
+
+---
+
 ## 2026-02-06
 ### 작업 내용 - Steam 2PC 버그 수정 (3차 - 전체 해결)
 

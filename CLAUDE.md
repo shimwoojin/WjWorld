@@ -479,9 +479,18 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
   - #1 WaitingRoom UI 미갱신 → UpdateRoomInfo에 옵셔널 FRoomSettings 직접 전달
   - #4 유저 커스텀 맵 offset → CSV에 `#META:CenterOffset:x,y,z` 메타데이터 헤더 추가/파싱
   - #8 TileActor collision → SetBoxExtent(InSize * 0.5f), 방향별 HitBox 위치도 half extent
+- **Steam 4차 버그 수정 및 코드 검증**
+  - GamePhase 기반 어빌리티 제한 (Playing 상태에서만 허용)
+  - 유저 맵 클라이언트 벽돌 스폰 수정 (GetWallDescriptionByNameIncludingUser)
+  - BrickComponent collision 분리 (QueryOnly+Overlap / BlockAll 95%)
+  - WaitingRoom 호스트 설정 패널 호스트 전용 표시 + Apply 후 Display 갱신
+  - Steam CCallResult 패턴으로 타 유저 스탯 콜백 수정
+  - ParseWallLayout #META:CenterOffset 메타데이터 파싱 추가
+  - 제거 시 살아있는 플레이어로 관전 전환 (SetViewTargetWithBlend)
+  - FindRoomButton 숨김 + 그래픽 품질 사이클 설정 (Low/Medium/High/Epic)
+  - GA_Jump Super::ActivateAbility() 누락 수정
 
 ## 진행 중 / 미구현
-- GA_Jump 에디터 세팅 (IA_Ability7, BP_GA_Jump, SetupDA, MinigameCatalog AllowedAbilityTags)
 - Sumo Knockoff 6대 기능 에디터 세팅 (BP 생성/프로퍼티 할당, 링 배치, HUD 위젯, 파워업 비주얼)
 - **배치 에디터 BP 세팅** (에디터 맵 생성, BP_PlacementSaveDialogWidget, BP_PlacementLoadDialogWidget, 컨텍스트별 카탈로그 DataAsset)
 - 추가 미니게임 구현
