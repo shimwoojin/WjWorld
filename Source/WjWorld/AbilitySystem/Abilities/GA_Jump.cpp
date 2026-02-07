@@ -43,6 +43,8 @@ bool UGA_Jump::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const
 
 void UGA_Jump::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
 	if (HasAuthorityOrPredictionKey(ActorInfo, &ActivationInfo))
 	{
 		if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
