@@ -81,6 +81,9 @@ private:
 	void HandleNetworkFailure(UWorld* World, UNetDriver* NetDriver,
 		ENetworkFailure::Type FailureType, const FString& ErrorString);
 
+	//~ TravelFailure 핸들러
+	void HandleTravelFailure(UWorld* World, ETravelFailure::Type FailureType, const FString& ErrorString);
+
 	//~ 호스트 마이그레이션 내부 함수
 	/** 마이그레이션 시작 */
 	void BeginHostMigration();
@@ -124,6 +127,9 @@ private:
 
 	/** NetworkFailure 델리게이트 핸들 */
 	FDelegateHandle NetworkFailureHandle;
+
+	/** TravelFailure 델리게이트 핸들 */
+	FDelegateHandle TravelFailureHandle;
 
 	/** 호스트 마이그레이션 컨텍스트 */
 	FHostMigrationContext MigrationContext;

@@ -137,6 +137,10 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UBoxComponent> CenterHitBoxComponent;
 
+	/** 캐릭터 blocking collision용 BoxComponent (대각선 이동을 위해 약간 축소) */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UBoxComponent> BlockingCollisionComponent;
+
 	UPROPERTY()
 	TObjectPtr<UStaticMeshComponent> BrickMeshComponent;
 

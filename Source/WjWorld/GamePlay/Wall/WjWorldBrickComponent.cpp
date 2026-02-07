@@ -81,6 +81,10 @@ void UWjWorldBrickComponent::BeginPlay()
 		FVector Scale = BrickProperties.Size / 100.0f; // Assuming the default mesh size is 100 units
 		BrickMeshComponent->SetWorldScale3D(Scale);
 
+		// 대각선 이동을 위해 collision을 약간 축소 (시각적 크기 유지, collision만 95%)
+		// StaticMesh collision 비활성화 후 별도 BoxComponent로 처리
+		BrickMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 		UStaticMesh* BrickMesh = GetBrickMesh();
 		if (BrickMesh)
 		{
@@ -93,6 +97,14 @@ void UWjWorldBrickComponent::BeginPlay()
 			DynamicMaterial->SetVectorParameterValue(FName("BaseColor"), FLinearColor(BrickProperties.GetColorWithBrickType()));
 			DynamicMaterial->SetScalarParameterValue(FName("CrackIntensity"), 0.0f);
 		}
+	}
+
+	// BlockingCollisionComponent 크기 설정 (실제 크기의 95%로 대각선 통과 가능하게)
+	if (BlockingCollisionComponent)
+	{
+		// BoxExtent는 half-size이므로 Size의 절반을 사용
+		const FVector CollisionHalfSize = BrickProperties.Size * 0.475f; // 95% / 2 = 0.475
+		BlockingCollisionComponent->SetBoxExtent(CollisionHalfSize);
 	}
 }
 
@@ -115,6 +127,12 @@ void UWjWorldBrickComponent::OnRegister()
 	CenterHitBoxComponent->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 	CenterHitBoxComponent->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 	CenterHitBoxComponent->SetBoxExtent(FVector(HitBoxSize, HitBoxSize, HitBoxSize));
+
+	// 캐릭터 blocking collision용 BoxComponent (대각선 이동을 위해 크기 축소)
+	BlockingCollisionComponent = NewObject<UBoxComponent>(this, UBoxComponent::StaticClass(), TEXT("BlockingCollisionComponent"));
+	BlockingCollisionComponent->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
+	BlockingCollisionComponent->SetCollisionProfileName(TEXT("BlockAll"));
+	BlockingCollisionComponent->SetBoxExtent(FVector(HitBoxSize, HitBoxSize, HitBoxSize)); // BeginPlay에서 실제 크기 설정
 
 	BrickMeshComponent = NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass(), TEXT("BrickMeshComponent"));
 	BrickMeshComponent->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);

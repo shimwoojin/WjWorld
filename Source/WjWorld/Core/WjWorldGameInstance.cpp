@@ -29,7 +29,9 @@ void UWjWorldGameInstance::Init()
 	{
 		NetworkFailureHandle = GEngine->OnNetworkFailure().AddUObject(
 			this, &UWjWorldGameInstance::HandleNetworkFailure);
-		UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameInstance: NetworkFailure handler registered"));
+		TravelFailureHandle = GEngine->OnTravelFailure().AddUObject(
+			this, &UWjWorldGameInstance::HandleTravelFailure);
+		UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameInstance: NetworkFailure and TravelFailure handlers registered"));
 	}
 }
 
@@ -43,10 +45,11 @@ void UWjWorldGameInstance::Shutdown()
 		World->GetTimerManager().ClearTimer(MigrationRetryHandle);
 	}
 
-	// NetworkFailure 핸들러 해제
+	// NetworkFailure / TravelFailure 핸들러 해제
 	if (GEngine)
 	{
 		GEngine->OnNetworkFailure().Remove(NetworkFailureHandle);
+		GEngine->OnTravelFailure().Remove(TravelFailureHandle);
 	}
 
 	// SessionManager 정리
@@ -175,18 +178,57 @@ void UWjWorldGameInstance::HandleNetworkFailure(UWorld* World, UNetDriver* NetDr
 		return;
 	}
 
-	// 관련 Failure 타입만 처리
+	// 연결 관련 Failure 타입은 모두 마이그레이션 시도
+	// (Steam P2P에서는 다양한 에러 타입이 발생할 수 있음)
 	switch (FailureType)
 	{
 	case ENetworkFailure::ConnectionLost:
 	case ENetworkFailure::FailureReceived:
 	case ENetworkFailure::ConnectionTimeout:
+	case ENetworkFailure::PendingConnectionFailure:
 		UE_LOG(LogWjWorld, Warning, TEXT("WjWorldGameInstance: NetworkFailure detected - Type: %d, Error: %s. Beginning host migration."),
 			static_cast<int32>(FailureType), *ErrorString);
 		BeginHostMigration();
 		break;
 	default:
 		UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameInstance: NetworkFailure type %d not handled for migration"),
+			static_cast<int32>(FailureType));
+		break;
+	}
+}
+
+void UWjWorldGameInstance::HandleTravelFailure(UWorld* World, ETravelFailure::Type FailureType, const FString& ErrorString)
+{
+	UE_LOG(LogWjWorld, Warning, TEXT("WjWorldGameInstance: HandleTravelFailure called - Type: %d, Error: %s"),
+		static_cast<int32>(FailureType), *ErrorString);
+
+	// 이미 마이그레이션 중이면 무시
+	if (MigrationContext.bIsMigrating)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("WjWorldGameInstance: TravelFailure ignored - already migrating"));
+		return;
+	}
+
+	// 자신이 호스트(서버)면 마이그레이션 불필요
+	if (World && World->GetAuthGameMode() != nullptr)
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameInstance: TravelFailure on server - ignoring"));
+		return;
+	}
+
+	// ServerTravel 실패 시 호스트 마이그레이션 시도
+	switch (FailureType)
+	{
+	case ETravelFailure::ServerTravelFailure:
+	case ETravelFailure::ClientTravelFailure:
+	case ETravelFailure::TravelFailure:
+	case ETravelFailure::PackageMissing:
+		UE_LOG(LogWjWorld, Warning, TEXT("WjWorldGameInstance: TravelFailure detected - Type: %d. Beginning host migration."),
+			static_cast<int32>(FailureType));
+		BeginHostMigration();
+		break;
+	default:
+		UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameInstance: TravelFailure type %d not handled for migration"),
 			static_cast<int32>(FailureType));
 		break;
 	}
