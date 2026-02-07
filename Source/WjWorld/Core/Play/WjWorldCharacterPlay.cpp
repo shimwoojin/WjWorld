@@ -122,22 +122,43 @@ void AWjWorldCharacterPlay::HandleEliminationEffects()
 		MovementComp->StopMovementImmediately();
 	}
 
-	// 입력 비활성화
-	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	// 입력 비활성화 + 관전 대상 전환 (로컬 컨트롤러에서만)
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (PC)
 	{
 		DisableInput(PC);
+
+		if (PC->IsLocalController())
+		{
+			// 살아있는 다른 플레이어 찾아서 관전
+			AGameStateBase* GS = GetWorld()->GetGameState<AGameStateBase>();
+			if (GS)
+			{
+				for (APlayerState* PS : GS->PlayerArray)
+				{
+					if (!PS || PS == PC->PlayerState) continue;
+					APawn* OtherPawn = PS->GetPawn();
+					AWjWorldCharacterPlay* OtherChar = Cast<AWjWorldCharacterPlay>(OtherPawn);
+					if (OtherChar && !OtherChar->IsEliminated())
+					{
+						PC->SetViewTargetWithBlend(OtherChar, 0.5f);
+						UE_LOG(LogWjWorld, Log, TEXT("HandleEliminationEffects: Spectating %s"), *PS->GetPlayerName());
+						break;
+					}
+				}
+			}
+		}
 	}
 
-	// Temp
+	// 1초 후 캐릭터 파괴
 	if (GetWorld())
 	{
-		FTimerHandle DestoryHandle;
-		GetWorld()->GetTimerManager().SetTimer(DestoryHandle, [this]()
+		FTimerHandle DestroyHandle;
+		GetWorld()->GetTimerManager().SetTimer(DestroyHandle, [this]()
 		{
 			Destroy();
 		}, 1.0f, false);
 	}
-	// TODO: 사망 이펙트, 애니메이션 등 추가 가능
 }
 
 void AWjWorldCharacterPlay::OnRep_PlayerState()

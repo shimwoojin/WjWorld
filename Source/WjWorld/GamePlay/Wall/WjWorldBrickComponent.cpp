@@ -81,9 +81,11 @@ void UWjWorldBrickComponent::BeginPlay()
 		FVector Scale = BrickProperties.Size / 100.0f; // Assuming the default mesh size is 100 units
 		BrickMeshComponent->SetWorldScale3D(Scale);
 
-		// 대각선 이동을 위해 collision을 약간 축소 (시각적 크기 유지, collision만 95%)
-		// StaticMesh collision 비활성화 후 별도 BoxComponent로 처리
-		BrickMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		// 대각선 이동을 위해 물리 차단은 별도 BoxComponent(95%)로 처리
+		// BrickMeshComponent는 TileActor overlap 감지용으로 QueryOnly + Overlap 유지
+		BrickMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+		BrickMeshComponent->SetCollisionResponseToAllChannels(ECR_Overlap);
+		BrickMeshComponent->SetGenerateOverlapEvents(true);
 
 		UStaticMesh* BrickMesh = GetBrickMesh();
 		if (BrickMesh)
@@ -132,6 +134,7 @@ void UWjWorldBrickComponent::OnRegister()
 	BlockingCollisionComponent = NewObject<UBoxComponent>(this, UBoxComponent::StaticClass(), TEXT("BlockingCollisionComponent"));
 	BlockingCollisionComponent->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 	BlockingCollisionComponent->SetCollisionProfileName(TEXT("BlockAll"));
+	BlockingCollisionComponent->SetGenerateOverlapEvents(false); // TileActor overlap 감지에 간섭 방지
 	BlockingCollisionComponent->SetBoxExtent(FVector(HitBoxSize, HitBoxSize, HitBoxSize)); // BeginPlay에서 실제 크기 설정
 
 	BrickMeshComponent = NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass(), TEXT("BrickMeshComponent"));

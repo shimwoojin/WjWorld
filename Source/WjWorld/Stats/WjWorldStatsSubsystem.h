@@ -5,6 +5,11 @@
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "GameFramework/OnlineReplStructs.h"
+
+#if WITH_STEAM
+#include "steam/steam_api.h"
+#endif
+
 #include "WjWorldStatsSubsystem.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLocalStatsReady);
@@ -73,11 +78,13 @@ private:
 	void LoadLocalStatsFromConfig();
 
 #if WITH_STEAM
-	/** Steam 콜백 처리 */
-	void OnSteamUserStatsReceived(uint64 SteamId, bool bSuccess);
-	void OnSteamUserStatsStored(uint64 SteamId, bool bSuccess);
+	/** Steam CCallResult 콜백 (RequestUserStats 결과) */
+	void OnSteamUserStatsReceivedCallback(UserStatsReceived_t* pCallback, bool bIOFailure);
 
 	bool bLocalStatsLoaded = false;
+
+	/** 타 유저 스탯 요청 CCallResult 추적 */
+	CCallResult<UWjWorldStatsSubsystem, UserStatsReceived_t> UserStatsCallResult;
 #endif
 
 	/** 로컬 스탯 캐시 (Steam이든 폴백이든 동일하게 사용) */

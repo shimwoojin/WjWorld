@@ -156,8 +156,8 @@ void UGA_SpawnBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 			UWjWorldWallDescriptionDataAsset* WallDescAsset = DevSettings->WallDescriptionAsset.LoadSynchronous();
 			if (WallDescAsset)
 			{
-				// WallName으로 정확한 WallDescription 조회
-				if (!WallNameToLoad.IsEmpty() && WallDescAsset->GetWallDescriptionByName(WallNameToLoad, CachedWallDesc))
+				// WallName으로 정확한 WallDescription 조회 (유저 레이아웃 포함)
+				if (!WallNameToLoad.IsEmpty() && WallDescAsset->GetWallDescriptionByNameIncludingUser(WallNameToLoad, CachedWallDesc))
 				{
 					if (CachedWallDesc.IsLayoutEmpty())
 					{

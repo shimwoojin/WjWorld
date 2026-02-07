@@ -37,8 +37,8 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> CreateRoomButton;
 
-	/** 방 찾기 버튼 */
-	UPROPERTY(meta = (BindWidget))
+	/** 방 찾기 버튼 (Steam 배포 후 미사용 - 숨김 처리) */
+	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UButton> FindRoomButton;
 
 	/** 직접 입장 버튼 (NULL Subsystem용 임시) */

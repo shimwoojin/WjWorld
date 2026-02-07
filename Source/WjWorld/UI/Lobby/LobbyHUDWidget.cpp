@@ -8,6 +8,7 @@
 #include "Core/Local/Lobby/WjWorldGameModeLobby.h"
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/GameUserSettings.h"
 #include "WjWorldLogCategories.h"
 
 void ULobbyHUDWidget::NativeConstruct()
@@ -20,9 +21,10 @@ void ULobbyHUDWidget::NativeConstruct()
 		CreateRoomButton->OnClicked.AddDynamic(this, &ULobbyHUDWidget::OnCreateRoomClicked);
 	}
 
+	// 방 찾기 버튼 - Steam 배포 후 미사용, 숨김 처리
 	if (FindRoomButton)
 	{
-		FindRoomButton->OnClicked.AddDynamic(this, &ULobbyHUDWidget::OnFindRoomClicked);
+		FindRoomButton->SetVisibility(ESlateVisibility::Collapsed);
 	}
 
 	if (SettingsButton)
@@ -109,7 +111,24 @@ void ULobbyHUDWidget::OnDirectConnectClicked()
 void ULobbyHUDWidget::OnSettingsClicked()
 {
 	UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: Settings button clicked"));
-	// TODO: 설정 UI 표시
+
+	UGameUserSettings* UserSettings = GEngine->GetGameUserSettings();
+	if (!UserSettings)
+	{
+		return;
+	}
+
+	// 그래픽 품질 사이클: Low(0) → Medium(1) → High(2) → Epic(3) → Low(0)
+	int32 CurrentLevel = UserSettings->GetOverallScalabilityLevel();
+	// -1은 커스텀 설정 → Epic으로 취급
+	if (CurrentLevel < 0) CurrentLevel = 3;
+	int32 NextLevel = (CurrentLevel + 1) % 4;
+
+	UserSettings->SetOverallScalabilityLevel(NextLevel);
+	UserSettings->ApplySettings(false);
+
+	static const TCHAR* QualityNames[] = { TEXT("Low"), TEXT("Medium"), TEXT("High"), TEXT("Epic") };
+	UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: Graphics quality changed to %s (%d)"), QualityNames[NextLevel], NextLevel);
 }
 
 void ULobbyHUDWidget::OnProfileClicked()

@@ -20,7 +20,7 @@ bool UWjWorldGameplayAbilityBase::CanActivateAbility(const FGameplayAbilitySpecH
 		return false;
 	}
 
-	// AllowedAbilityTags 체크 (빈 컨테이너 = 전부 허용, 하위 호환)
+	// GameStatePlay 기반 체크 (GamePhase + AllowedAbilityTags)
 	if (ActorInfo && ActorInfo->AvatarActor.IsValid())
 	{
 		UWorld* World = ActorInfo->AvatarActor->GetWorld();
@@ -29,6 +29,13 @@ bool UWjWorldGameplayAbilityBase::CanActivateAbility(const FGameplayAbilitySpecH
 			AWjWorldGameStatePlay* GameState = World->GetGameState<AWjWorldGameStatePlay>();
 			if (GameState)
 			{
+				// 게임 시작 전/후에는 어빌리티 사용 금지 (Playing 상태에서만 허용)
+				if (GameState->GetGamePhase() != EGamePhase::Playing)
+				{
+					return false;
+				}
+
+				// AllowedAbilityTags 체크 (빈 컨테이너 = 전부 허용, 하위 호환)
 				const FGameplayTagContainer& AllowedTags = GameState->GetAllowedAbilityTags();
 				if (AllowedTags.Num() > 0)
 				{

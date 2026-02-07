@@ -91,8 +91,8 @@ void UGA_LiftBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 			UWjWorldWallDescriptionDataAsset* WallDescAsset = DevSettings->WallDescriptionAsset.LoadSynchronous();
 			if (WallDescAsset)
 			{
-				// WallName으로 정확한 WallDescription 조회
-				if (!WallNameToLoad.IsEmpty() && WallDescAsset->GetWallDescriptionByName(WallNameToLoad, CachedWallDesc))
+				// WallName으로 정확한 WallDescription 조회 (유저 레이아웃 포함)
+				if (!WallNameToLoad.IsEmpty() && WallDescAsset->GetWallDescriptionByNameIncludingUser(WallNameToLoad, CachedWallDesc))
 				{
 					if (CachedWallDesc.IsLayoutEmpty())
 					{

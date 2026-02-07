@@ -109,6 +109,26 @@ bool FWjWorldWallDescription::ParseWallLayout(const FString& FileContent)
         if (Line.IsEmpty())
             continue;
 
+        // 메타데이터 라인 파싱 (#META:Key:Value)
+        if (Line.StartsWith(TEXT("#")))
+        {
+            if (Line.StartsWith(TEXT("#META:CenterOffset:")))
+            {
+                FString OffsetStr = Line.RightChop(20); // "#META:CenterOffset:" 길이
+                TArray<FString> Components;
+                OffsetStr.ParseIntoArray(Components, TEXT(","));
+                if (Components.Num() == 3)
+                {
+                    CenterOffset.X = FCString::Atof(*Components[0]);
+                    CenterOffset.Y = FCString::Atof(*Components[1]);
+                    CenterOffset.Z = FCString::Atof(*Components[2]);
+                    UE_LOG(LogWjWorld, Log, TEXT("Wall layout CenterOffset parsed: (%f, %f, %f)"),
+                        CenterOffset.X, CenterOffset.Y, CenterOffset.Z);
+                }
+            }
+            continue;
+        }
+
         TArray<FString> Values;
         Line.ParseIntoArray(Values, TEXT(","), true);
 

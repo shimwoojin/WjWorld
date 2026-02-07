@@ -298,7 +298,7 @@ void UWaitingRoomHUDWidget::UpdateRoomInfo(const FRoomSettings* InSettings)
 	}
 
 	// ⭐ 플레이어 수 표시 (실시간으로 가져오기)
-	if (PlayerCountText)
+	if (PlayerCountText && CachedGameState)
 	{
 		int32 CurrentPlayers = CachedGameState->GetPlayerCount();
 		int32 MaxPlayers = Settings.MaxPlayers;
@@ -613,24 +613,10 @@ void UWaitingRoomHUDWidget::UpdateHostSettingsPanelVisibility()
 		}
 	}
 
-	// ⭐ 패널은 모든 플레이어에게 표시 (설정 확인용)
-	// 호스트가 아니면 입력 비활성화 (읽기 전용)
-	HostSettingsPanel->SetVisibility(ESlateVisibility::Visible);
+	// 호스트만 설정 패널 표시 (클라이언트는 Display Text로 확인)
+	HostSettingsPanel->SetVisibility(bIsHost ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 
-	if (GameModeComboBox)
-	{
-		GameModeComboBox->SetIsEnabled(bIsHost);
-	}
-	if (MapComboBox)
-	{
-		MapComboBox->SetIsEnabled(bIsHost);
-	}
-	if (ApplySettingsButton)
-	{
-		ApplySettingsButton->SetVisibility(bIsHost ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
-	}
-
-	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: HostSettingsPanel visible for all, editable=%s (bIsHost=%d, NetMode=%d)"),
+	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: HostSettingsPanel visible=%s (bIsHost=%d, NetMode=%d)"),
 		bIsHost ? TEXT("Yes") : TEXT("No"), bIsHost, World ? (int32)World->GetNetMode() : -1);
 }
 
@@ -764,6 +750,9 @@ void UWaitingRoomHUDWidget::OnApplySettingsClicked()
 	UE_LOG(LogWjWorld, Warning, TEXT("  MapName: '%s' -> '%s'"), *OldSettings.MapName, *NewSettings.MapName);
 
 	CachedGameState->UpdateRoomSettings(NewSettings);
+
+	// ⭐ 호스트 로컬에서 Display Text 직접 업데이트 (델리게이트 타이밍 안전장치)
+	UpdateRoomInfo(&NewSettings);
 
 	UE_LOG(LogWjWorld, Warning, TEXT("=== WaitingRoomHUDWidget::OnApplySettingsClicked END ==="));
 }

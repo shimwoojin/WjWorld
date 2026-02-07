@@ -137,8 +137,9 @@ void UWjWorldStatsSubsystem::RequestUserStats(const FUniqueNetIdRepl& UserId)
 		// FUniqueNetIdRepl에서 CSteamID 추출
 		uint64 SteamId64 = FCString::Atoi64(*UserIdStr);
 		CSteamID SteamId(SteamId64);
-		SteamStats->RequestUserStats(SteamId);
-		UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: Requested user stats for %s"), *UserIdStr);
+		SteamAPICall_t hCall = SteamStats->RequestUserStats(SteamId);
+		UserStatsCallResult.Set(hCall, this, &UWjWorldStatsSubsystem::OnSteamUserStatsReceivedCallback);
+		UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: Requested user stats for %s (SteamAPICall=%llu)"), *UserIdStr, hCall);
 		return;
 	}
 #endif
@@ -225,68 +226,38 @@ void UWjWorldStatsSubsystem::LoadLocalStatsFromConfig()
 }
 
 #if WITH_STEAM
-void UWjWorldStatsSubsystem::OnSteamUserStatsReceived(uint64 SteamId, bool bSuccess)
+void UWjWorldStatsSubsystem::OnSteamUserStatsReceivedCallback(UserStatsReceived_t* pCallback, bool bIOFailure)
 {
-	ISteamUser* SteamUserAPI = ::SteamUser();
-	if (!SteamUserAPI)
+	if (bIOFailure || !pCallback)
 	{
+		UE_LOG(LogWjWorldStats, Warning, TEXT("StatsSubsystem: User stats request IO failure"));
 		return;
 	}
 
-	CSteamID LocalSteamId = SteamUserAPI->GetSteamID();
-
-	if (SteamId == LocalSteamId.ConvertToUint64())
+	if (pCallback->m_eResult != k_EResultOK)
 	{
-		// 로컬 유저 스탯 수신
-		bLocalStatsLoaded = bSuccess;
-		if (bSuccess)
-		{
-			// 로컬 캐시도 업데이트
-			ISteamUserStats* SteamStats = ::SteamUserStats();
-			if (SteamStats)
-			{
-				const TArray<FMinigameStatDescriptor>& Descriptors = GetAllMinigameDescriptors();
-				for (const FMinigameStatDescriptor& Desc : Descriptors)
-				{
-					for (const FMinigameStatEntry& Entry : Desc.Stats)
-					{
-						int32 Value = 0;
-						SteamStats->GetStat(TCHAR_TO_UTF8(*Entry.StatName.ToString()), &Value);
-						LocalStats.Add(Entry.StatName, Value);
-					}
-				}
-			}
-		}
-		OnLocalStatsReady.Broadcast();
-		UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: Local stats received (success=%d)"), bSuccess);
+		UE_LOG(LogWjWorldStats, Warning, TEXT("StatsSubsystem: User stats request failed (Result=%d)"), pCallback->m_eResult);
+		return;
 	}
-	else
+
+	uint64 SteamId = pCallback->m_steamIDUser.ConvertToUint64();
+	FString UserIdStr = FString::Printf(TEXT("%llu"), SteamId);
+	ReadyUserIds.Add(UserIdStr);
+
+	// Steam OSS를 통해 FUniqueNetIdRepl 생성 (올바른 형식 보장)
+	FUniqueNetIdRepl UserIdRepl;
+	IOnlineSubsystem* OSS = IOnlineSubsystem::Get(STEAM_SUBSYSTEM);
+	if (OSS)
 	{
-		// 타 유저 스탯 수신
-		FString UserIdStr = FString::Printf(TEXT("%llu"), SteamId);
-		ReadyUserIds.Add(UserIdStr);
-
-		// Steam OSS를 통해 FUniqueNetIdRepl 생성 (올바른 형식 보장)
-		FUniqueNetIdRepl UserIdRepl;
-		IOnlineSubsystem* OSS = IOnlineSubsystem::Get(STEAM_SUBSYSTEM);
-		if (OSS)
+		IOnlineIdentityPtr IdentityInterface = OSS->GetIdentityInterface();
+		if (IdentityInterface.IsValid())
 		{
-			IOnlineIdentityPtr IdentityInterface = OSS->GetIdentityInterface();
-			if (IdentityInterface.IsValid())
-			{
-				UserIdRepl = FUniqueNetIdRepl(IdentityInterface->CreateUniquePlayerId(UserIdStr));
-			}
+			UserIdRepl = FUniqueNetIdRepl(IdentityInterface->CreateUniquePlayerId(UserIdStr));
 		}
-
-		// 타 유저의 OnUserStatsReceived 브로드캐스트
-		OnUserStatsReceived.Broadcast(UserIdRepl);
-		UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: User stats received for %s (success=%d), UniqueId valid=%d"),
-			*UserIdStr, bSuccess, UserIdRepl.IsValid());
 	}
-}
 
-void UWjWorldStatsSubsystem::OnSteamUserStatsStored(uint64 SteamId, bool bSuccess)
-{
-	UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: Stats stored (success=%d)"), bSuccess);
+	OnUserStatsReceived.Broadcast(UserIdRepl);
+	UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: User stats received for %s, UniqueId valid=%d"),
+		*UserIdStr, UserIdRepl.IsValid());
 }
 #endif
