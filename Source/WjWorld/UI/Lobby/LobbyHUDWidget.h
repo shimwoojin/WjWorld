@@ -37,13 +37,9 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> CreateRoomButton;
 
-	/** 방 찾기 버튼 (Steam 배포 후 미사용 - 숨김 처리) */
+	/** 방 찾기 버튼 */
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UButton> FindRoomButton;
-
-	/** 직접 입장 버튼 (NULL Subsystem용 임시) */
-	UPROPERTY(meta = (BindWidgetOptional))
-	TObjectPtr<UButton> DirectConnectButton;
 
 	/** 설정 버튼 (추후) */
 	UPROPERTY(meta = (BindWidgetOptional))
@@ -81,9 +77,6 @@ protected:
 
 	UFUNCTION()
 	void OnFindRoomClicked();
-
-	UFUNCTION()
-	void OnDirectConnectClicked();
 
 	UFUNCTION()
 	void OnSettingsClicked();

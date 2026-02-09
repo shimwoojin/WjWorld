@@ -85,25 +85,25 @@ void AWjWorldTileActor::InitializeTile(const FVector& InSize, const FVector& InC
 		{
 		case EWjWorldDirection::Up:
 		{
-			BoxLocation = FVector(0.0f, HalfExtent.Y, 0.0f);
+			BoxLocation = FVector(0.0f, HalfExtent.Y + Offset, 0.0f);
 			break;
 		}
 
 		case EWjWorldDirection::Right:
 		{
-			BoxLocation = FVector(HalfExtent.X, 0.0f, 0.0f);
+			BoxLocation = FVector(HalfExtent.X + Offset, 0.0f, 0.0f);
 			break;
 		}
 
 		case EWjWorldDirection::Down:
 		{
-			BoxLocation = FVector(0.0f, -HalfExtent.Y, 0.0f);
+			BoxLocation = FVector(0.0f, -HalfExtent.Y - Offset, 0.0f);
 			break;
 		}
 
 		case EWjWorldDirection::Left:
 		{
-			BoxLocation = FVector(-HalfExtent.X, 0, 0.0f);
+			BoxLocation = FVector(-HalfExtent.X - Offset, 0, 0.0f);
 			break;
 		}
 		}

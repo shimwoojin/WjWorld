@@ -21,21 +21,14 @@ void ULobbyHUDWidget::NativeConstruct()
 		CreateRoomButton->OnClicked.AddDynamic(this, &ULobbyHUDWidget::OnCreateRoomClicked);
 	}
 
-	// 방 찾기 버튼 - Steam 배포 후 미사용, 숨김 처리
 	if (FindRoomButton)
 	{
-		FindRoomButton->SetVisibility(ESlateVisibility::Collapsed);
+		FindRoomButton->OnClicked.AddDynamic(this, &ULobbyHUDWidget::OnFindRoomClicked);
 	}
 
 	if (SettingsButton)
 	{
 		SettingsButton->OnClicked.AddDynamic(this, &ULobbyHUDWidget::OnSettingsClicked);
-	}
-
-	// Direct Connect 버튼
-	if (DirectConnectButton)
-	{
-		DirectConnectButton->OnClicked.AddDynamic(this, &ULobbyHUDWidget::OnDirectConnectClicked);
 	}
 
 	// 프로필 버튼
@@ -87,25 +80,6 @@ void ULobbyHUDWidget::OnFindRoomClicked()
 	{
 		UE_LOG(LogWjWorld, Error, TEXT("LobbyHUDWidget: Failed to get WjWorldGameModeLobby"));
 	}
-}
-
-void ULobbyHUDWidget::OnDirectConnectClicked()
-{
-	UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: Direct Connect button clicked"));
-
-	APlayerController* PC = GetWorld()->GetFirstPlayerController();
-	if (!PC)
-	{
-		UE_LOG(LogWjWorld, Error, TEXT("LobbyHUDWidget: PlayerController is null"));
-		return;
-	}
-
-	// ⭐ 중요: ConsoleCommand "open"을 사용
-	// ClientTravel은 자동으로 기본 맵을 붙이므로 대신 open 명령어 사용
-	FString ConnectCommand = TEXT("open 127.0.0.1");
-	
-	UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: Executing console command: %s"), *ConnectCommand);
-	PC->ConsoleCommand(ConnectCommand);
 }
 
 void ULobbyHUDWidget::OnSettingsClicked()

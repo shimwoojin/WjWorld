@@ -1,5 +1,33 @@
 # WjWorld 개발 로그
 
+## 2026-02-09
+### 작업 내용 - 배치 에디터 BP 세팅 완료 + Steam 2PC 잔존 버그 확인
+
+#### 배치 에디터 BP 세팅 완료
+- 에디터 맵 생성
+- BP_PlacementSaveDialogWidget, BP_PlacementLoadDialogWidget 생성
+- 컨텍스트별 카탈로그 DataAsset 설정
+
+#### LobbyHUDWidget 정리
+- DirectConnectButton / OnDirectConnectClicked 제거
+- FindRoomButton null 접근 버그 수정 (CreateRoomButton if 블록 안에서 null 체크 없이 접근)
+
+#### Steam 2PC 테스트 — 잔존 버그 확인
+- **#3 대각선 맵 movement** — 대각선 연결 맵에서 movement가 wall closed하게 움직이지 않음 (미해결)
+- **#4 클라이언트 벽돌 preview offset** — 유저 커스텀 맵에서 50,50 어긋남 (미해결)
+- **#11 3자 프로필 조회** — 타 플레이어 프로필 조회 실패 (미해결)
+- **#3(Sumo) Host 관전 Yaw 미적용** — Host가 클라이언트 관찰 시 Yaw 미적용 (미해결)
+- **#4(Sumo) 유저 맵 벽돌 스폰 위치** — 유저 AW 맵에서 클라이언트 벽돌 엉뚱한 위치 (미해결)
+
+#### TODO
+- Lobby HUD 설정 버튼에 그래픽 상/중/하 추가 (GPU 사용량 대비 간단한 설정 필요)
+
+#### 확인 필요
+- Room 목록 스케일링 (Steam 배포 시 다수 방 표시 및 부하)
+- Sumo FloorRing 레벨 디자인 변경 (원형 축소 → 개별 타일 랜덤 파괴) 시 리플리케이션 비용
+
+---
+
 ## 2026-02-07
 ### 작업 내용 - Steam 4차 버그 수정 + 코드 검증 + Agent Teams 테스트
 

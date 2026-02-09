@@ -489,12 +489,24 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
   - 제거 시 살아있는 플레이어로 관전 전환 (SetViewTargetWithBlend)
   - FindRoomButton 숨김 + 그래픽 품질 사이클 설정 (Low/Medium/High/Epic)
   - GA_Jump Super::ActivateAbility() 누락 수정
+- **배치 에디터 BP 세팅 완료** (에디터 맵 생성, BP_PlacementSaveDialogWidget, BP_PlacementLoadDialogWidget, 컨텍스트별 카탈로그 DataAsset)
+- **LobbyHUDWidget 정리** (DirectConnectButton 제거, FindRoomButton null 접근 버그 수정)
 
 ## 진행 중 / 미구현
 - Sumo Knockoff 6대 기능 에디터 세팅 (BP 생성/프로퍼티 할당, 링 배치, HUD 위젯, 파워업 비주얼)
-- **배치 에디터 BP 세팅** (에디터 맵 생성, BP_PlacementSaveDialogWidget, BP_PlacementLoadDialogWidget, 컨텍스트별 카탈로그 DataAsset)
 - 추가 미니게임 구현
 - Steam 정식 출시 준비
+
+## 잔존 버그 (Steam 2PC 테스트 2026-02-09)
+- **#3 대각선 맵 movement** — 상하좌우 연결 맵은 정상이나, 대각선 연결 맵에서 movement가 wall closed하게 움직이지 않음
+- **#4 클라이언트 벽돌 preview offset** — 유저 커스텀 맵에서 클라이언트 벽돌 설치 시 preview가 50,50 어긋남 (Default 모드 정상)
+- **#11 3자 프로필 조회 안 됨** — 타 플레이어 프로필 조회 실패
+- **#3(Sumo) Host 관전 Yaw 미적용** — Host가 클라이언트를 관찰할 때 Yaw가 적용되지 않음 (클라→Host 관측은 정상)
+- **#4(Sumo) 유저 맵 클라이언트 벽돌 스폰 위치** — 유저 만든 AW 맵에서 클라이언트가 설치한 벽돌이 엉뚱한 위치에 스폰
+
+## 확인 필요 사항
+- Room 목록 스케일링 — Steam 배포 시 다수 방(1000+) 표시 및 부하 체크
+- Sumo FloorRing 레벨 디자인 변경 검토 — 원형 축소 대신 개별 타일 랜덤 파괴 방식 전환 시 리플리케이션 비용 확인
 
 ## 코딩 컨벤션
 - 언리얼 엔진 코딩 표준 준수
