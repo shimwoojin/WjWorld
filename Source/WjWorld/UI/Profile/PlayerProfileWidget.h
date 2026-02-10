@@ -57,11 +57,11 @@ private:
 	void OnCloseClicked();
 
 	UFUNCTION()
-	void OnUserStatsReceived(const FUniqueNetIdRepl& UserId);
+	void OnUserStatsReceived(const FString& UserIdString);
 
 	/** 스탯 섹션 UI 생성 */
 	void PopulateLocalStats();
-	void PopulateUserStats(const FUniqueNetIdRepl& UserId);
+	void PopulateUserStats(const FString& UserIdString);
 
 	/** 프리뷰 액터 생성/파괴 */
 	void CreatePreviewActor(const FCosmeticLoadout& Loadout);
@@ -73,6 +73,6 @@ private:
 	UPROPERTY()
 	TObjectPtr<ACharacterPreviewActor> PreviewActor;
 
-	/** 조회 중인 타 플레이어 ID */
-	FUniqueNetIdRepl PendingUserId;
+	/** 조회 중인 타 플레이어 ID (raw Steam ID 문자열) */
+	FString PendingUserIdString;
 };

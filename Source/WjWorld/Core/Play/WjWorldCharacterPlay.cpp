@@ -13,6 +13,7 @@
 #include "Components/WidgetComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/GameStateBase.h"
 #include "Net/UnrealNetwork.h"
 
 #include "WjWorldLogCategories.h"
@@ -122,29 +123,27 @@ void AWjWorldCharacterPlay::HandleEliminationEffects()
 		MovementComp->StopMovementImmediately();
 	}
 
-	// 입력 비활성화 + 관전 대상 전환 (로컬 컨트롤러에서만)
+	// 관전 대상 전환 (로컬 컨트롤러에서만)
+	// DisableInput은 사용하지 않음 — 카메라 Yaw 입력까지 차단되어 관전 시 회전 불가
+	// 이동은 이미 위에서 DisableMovement()로 차단, 어빌리티는 State_Eliminated 태그 + CancelAllAbilities로 차단
 	APlayerController* PC = Cast<APlayerController>(GetController());
-	if (PC)
+	if (PC && PC->IsLocalController())
 	{
-		DisableInput(PC);
-
-		if (PC->IsLocalController())
+		// 살아있는 다른 플레이어 찾아서 관전
+		AGameStateBase* GS = GetWorld()->GetGameState<AGameStateBase>();
+		if (GS)
 		{
-			// 살아있는 다른 플레이어 찾아서 관전
-			AGameStateBase* GS = GetWorld()->GetGameState<AGameStateBase>();
-			if (GS)
+			for (APlayerState* PS : GS->PlayerArray)
 			{
-				for (APlayerState* PS : GS->PlayerArray)
+				if (!PS || PS == PC->PlayerState) continue;
+				APawn* OtherPawn = PS->GetPawn();
+				AWjWorldCharacterPlay* OtherChar = Cast<AWjWorldCharacterPlay>(OtherPawn);
+				if (OtherChar && !OtherChar->IsEliminated())
 				{
-					if (!PS || PS == PC->PlayerState) continue;
-					APawn* OtherPawn = PS->GetPawn();
-					AWjWorldCharacterPlay* OtherChar = Cast<AWjWorldCharacterPlay>(OtherPawn);
-					if (OtherChar && !OtherChar->IsEliminated())
-					{
-						PC->SetViewTargetWithBlend(OtherChar, 0.5f);
-						UE_LOG(LogWjWorld, Log, TEXT("HandleEliminationEffects: Spectating %s"), *PS->GetPlayerName());
-						break;
-					}
+					PC->SetViewTargetWithBlend(OtherChar, 0.5f);
+					PC->SetControlRotation(OtherChar->GetActorRotation());
+					UE_LOG(LogWjWorld, Log, TEXT("HandleEliminationEffects: Spectating %s"), *PS->GetPlayerName());
+					break;
 				}
 			}
 		}

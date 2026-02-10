@@ -180,7 +180,8 @@ void FWjWorldWallLayoutConverter::MarkExteriorCells(
 	if (Cols == 0) return;
 
 	const TArray<FIntPoint> Directions = {
-		{ 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }
+		{ 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 },
+		{ 1, 1 }, { -1, 1 }, { 1, -1 }, { -1, -1 }
 	};
 
 	TQueue<FIntPoint> Queue;

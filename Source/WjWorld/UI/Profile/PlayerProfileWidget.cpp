@@ -95,13 +95,14 @@ void UPlayerProfileWidget::ShowPlayerProfile(const FUniqueNetIdRepl& PlayerId,
 		return;
 	}
 
-	if (StatsSub->IsUserStatsReady(PlayerId))
+	FString PlayerIdStr = PlayerId.ToString();
+	if (StatsSub->IsUserStatsReadyByString(PlayerIdStr))
 	{
-		PopulateUserStats(PlayerId);
+		PopulateUserStats(PlayerIdStr);
 	}
 	else
 	{
-		PendingUserId = PlayerId;
+		PendingUserIdString = PlayerIdStr;
 		StatsSub->OnUserStatsReceived.AddDynamic(this, &UPlayerProfileWidget::OnUserStatsReceived);
 		StatsSub->RequestUserStats(PlayerId);
 
@@ -126,12 +127,12 @@ void UPlayerProfileWidget::OnCloseClicked()
 	DestroyPreviewActor();
 }
 
-void UPlayerProfileWidget::OnUserStatsReceived(const FUniqueNetIdRepl& UserId)
+void UPlayerProfileWidget::OnUserStatsReceived(const FString& UserIdString)
 {
-	if (PendingUserId.IsValid() && UserId.ToString() == PendingUserId.ToString())
+	if (!PendingUserIdString.IsEmpty() && UserIdString == PendingUserIdString)
 	{
-		PopulateUserStats(PendingUserId);
-		PendingUserId = FUniqueNetIdRepl();
+		PopulateUserStats(PendingUserIdString);
+		PendingUserIdString.Empty();
 
 		// 델리게이트 제거
 		if (UGameInstance* GI = GetGameInstance())
@@ -198,7 +199,7 @@ void UPlayerProfileWidget::PopulateLocalStats()
 	}
 }
 
-void UPlayerProfileWidget::PopulateUserStats(const FUniqueNetIdRepl& UserId)
+void UPlayerProfileWidget::PopulateUserStats(const FString& UserIdString)
 {
 	if (!StatsContainer)
 	{
@@ -237,7 +238,7 @@ void UPlayerProfileWidget::PopulateUserStats(const FUniqueNetIdRepl& UserId)
 		for (int32 i = 0; i < Desc.Stats.Num(); ++i)
 		{
 			const FMinigameStatEntry& Entry = Desc.Stats[i];
-			int32 Value = StatsSub->GetUserStat(UserId, Entry.StatName);
+			int32 Value = StatsSub->GetUserStatByString(UserIdString, Entry.StatName);
 
 			if (i > 0)
 			{

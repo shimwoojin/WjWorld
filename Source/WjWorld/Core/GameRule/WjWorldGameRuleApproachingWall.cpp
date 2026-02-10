@@ -469,7 +469,11 @@ void UWjWorldGameRuleApproachingWall::ShrinkSafeZones(bool& bAnySafeZoneExist)
 			FIntPoint(SafeZonePoint.X + 1, SafeZonePoint.Y),
 			FIntPoint(SafeZonePoint.X - 1, SafeZonePoint.Y),
 			FIntPoint(SafeZonePoint.X, SafeZonePoint.Y + 1),
-			FIntPoint(SafeZonePoint.X, SafeZonePoint.Y - 1)
+			FIntPoint(SafeZonePoint.X, SafeZonePoint.Y - 1),
+			FIntPoint(SafeZonePoint.X + 1, SafeZonePoint.Y + 1),
+			FIntPoint(SafeZonePoint.X - 1, SafeZonePoint.Y + 1),
+			FIntPoint(SafeZonePoint.X + 1, SafeZonePoint.Y - 1),
+			FIntPoint(SafeZonePoint.X - 1, SafeZonePoint.Y - 1)
 		};
 
 		for (const FIntPoint& AdjacentPoint : AdjacentPoints)
@@ -502,7 +506,11 @@ bool UWjWorldGameRuleApproachingWall::PredictNextLevelIsLast()
 			FIntPoint(SafeZonePoint.X + 1, SafeZonePoint.Y),
 			FIntPoint(SafeZonePoint.X - 1, SafeZonePoint.Y),
 			FIntPoint(SafeZonePoint.X, SafeZonePoint.Y + 1),
-			FIntPoint(SafeZonePoint.X, SafeZonePoint.Y - 1)
+			FIntPoint(SafeZonePoint.X, SafeZonePoint.Y - 1),
+			FIntPoint(SafeZonePoint.X + 1, SafeZonePoint.Y + 1),
+			FIntPoint(SafeZonePoint.X - 1, SafeZonePoint.Y + 1),
+			FIntPoint(SafeZonePoint.X + 1, SafeZonePoint.Y - 1),
+			FIntPoint(SafeZonePoint.X - 1, SafeZonePoint.Y - 1)
 		};
 
 		for (const FIntPoint& AdjacentPoint : AdjacentPoints)

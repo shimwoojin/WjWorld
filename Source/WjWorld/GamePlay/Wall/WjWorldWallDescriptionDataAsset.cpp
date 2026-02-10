@@ -114,7 +114,7 @@ bool FWjWorldWallDescription::ParseWallLayout(const FString& FileContent)
         {
             if (Line.StartsWith(TEXT("#META:CenterOffset:")))
             {
-                FString OffsetStr = Line.RightChop(20); // "#META:CenterOffset:" 길이
+                FString OffsetStr = Line.RightChop(19); // "#META:CenterOffset:" 길이 = 19
                 TArray<FString> Components;
                 OffsetStr.ParseIntoArray(Components, TEXT(","));
                 if (Components.Num() == 3)
@@ -195,7 +195,8 @@ void FWjWorldWallDescription::MarkExteriorCells(TSet<FIntPoint>& OutExteriorCell
     if (Cols == 0) return;
 
     const TArray<FIntPoint> Directions = {
-        { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }
+        { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 },
+        { 1, 1 }, { -1, 1 }, { 1, -1 }, { -1, -1 }
     };
 
     TQueue<FIntPoint> Queue;
@@ -298,7 +299,8 @@ bool FWjWorldWallDescription::IsAreaEnclosedByWalls(int32 StartX, int32 StartY)
     Visited.Add(FIntPoint(StartX, StartY));
 
     const TArray<FIntPoint> Directions = {
-        { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }
+        { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 },
+        { 1, 1 }, { -1, 1 }, { 1, -1 }, { -1, -1 }
     };
 
     while (!Queue.IsEmpty())

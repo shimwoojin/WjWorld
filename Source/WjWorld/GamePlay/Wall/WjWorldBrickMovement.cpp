@@ -206,6 +206,22 @@ FVector UWjWorldBrickMovement::GetMovementVector(bool bIsNew)
 		case EWjWorldBrickMovementDirection::Left:
 			--CurrentGridPosition.X;
 			break;
+		case EWjWorldBrickMovementDirection::UpRight:
+			++CurrentGridPosition.X;
+			++CurrentGridPosition.Y;
+			break;
+		case EWjWorldBrickMovementDirection::UpLeft:
+			--CurrentGridPosition.X;
+			++CurrentGridPosition.Y;
+			break;
+		case EWjWorldBrickMovementDirection::DownRight:
+			++CurrentGridPosition.X;
+			--CurrentGridPosition.Y;
+			break;
+		case EWjWorldBrickMovementDirection::DownLeft:
+			--CurrentGridPosition.X;
+			--CurrentGridPosition.Y;
+			break;
 		}
 	}
 
@@ -242,7 +258,11 @@ TArray<EWjWorldBrickMovementDirection> UWjWorldBrickMovement::GetNextDirections(
 		{ FIntPoint(CurrentGridPosition.X + 1, CurrentGridPosition.Y), EWjWorldBrickMovementDirection::Right },
 		{ FIntPoint(CurrentGridPosition.X - 1, CurrentGridPosition.Y), EWjWorldBrickMovementDirection::Left },
 		{ FIntPoint(CurrentGridPosition.X, CurrentGridPosition.Y + 1), EWjWorldBrickMovementDirection::Up },
-		{ FIntPoint(CurrentGridPosition.X, CurrentGridPosition.Y - 1), EWjWorldBrickMovementDirection::Down }
+		{ FIntPoint(CurrentGridPosition.X, CurrentGridPosition.Y - 1), EWjWorldBrickMovementDirection::Down },
+		{ FIntPoint(CurrentGridPosition.X + 1, CurrentGridPosition.Y + 1), EWjWorldBrickMovementDirection::UpRight },
+		{ FIntPoint(CurrentGridPosition.X - 1, CurrentGridPosition.Y + 1), EWjWorldBrickMovementDirection::UpLeft },
+		{ FIntPoint(CurrentGridPosition.X + 1, CurrentGridPosition.Y - 1), EWjWorldBrickMovementDirection::DownRight },
+		{ FIntPoint(CurrentGridPosition.X - 1, CurrentGridPosition.Y - 1), EWjWorldBrickMovementDirection::DownLeft }
 	};
 
 	for (const auto& CheckPoint : CheckPoints)

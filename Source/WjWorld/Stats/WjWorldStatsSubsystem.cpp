@@ -6,9 +6,6 @@
 
 #if WITH_STEAM
 #include "steam/steam_api.h"
-#include "OnlineSubsystem.h"
-#include "OnlineSubsystemNames.h"
-#include "Interfaces/OnlineIdentityInterface.h"
 #endif
 
 const FString UWjWorldStatsSubsystem::StatsConfigSection = TEXT("WjWorldStats");
@@ -148,8 +145,7 @@ void UWjWorldStatsSubsystem::RequestUserStats(const FUniqueNetIdRepl& UserId)
 	UserStatsCache.FindOrAdd(UserIdStr);
 	ReadyUserIds.Add(UserIdStr);
 
-	FUniqueNetIdRepl UserIdCopy = UserId;
-	OnUserStatsReceived.Broadcast(UserIdCopy);
+	OnUserStatsReceived.Broadcast(UserIdStr);
 }
 
 int32 UWjWorldStatsSubsystem::GetUserStat(const FUniqueNetIdRepl& UserId, FName StatName) const
@@ -184,6 +180,31 @@ int32 UWjWorldStatsSubsystem::GetUserStat(const FUniqueNetIdRepl& UserId, FName 
 	return 0;
 }
 
+int32 UWjWorldStatsSubsystem::GetUserStatByString(const FString& UserIdString, FName StatName) const
+{
+#if WITH_STEAM
+	ISteamUserStats* SteamStats = ::SteamUserStats();
+	if (SteamStats && ReadyUserIds.Contains(UserIdString))
+	{
+		uint64 SteamId64 = FCString::Atoi64(*UserIdString);
+		CSteamID SteamId(SteamId64);
+		int32 Value = 0;
+		if (SteamStats->GetUserStat(SteamId, TCHAR_TO_UTF8(*StatName.ToString()), &Value))
+		{
+			return Value;
+		}
+	}
+#endif
+
+	const TMap<FName, int32>* UserStats = UserStatsCache.Find(UserIdString);
+	if (UserStats)
+	{
+		const int32* Found = UserStats->Find(StatName);
+		return Found ? *Found : 0;
+	}
+	return 0;
+}
+
 bool UWjWorldStatsSubsystem::IsUserStatsReady(const FUniqueNetIdRepl& UserId) const
 {
 	if (!UserId.IsValid())
@@ -191,6 +212,11 @@ bool UWjWorldStatsSubsystem::IsUserStatsReady(const FUniqueNetIdRepl& UserId) co
 		return false;
 	}
 	return ReadyUserIds.Contains(UserId.ToString());
+}
+
+bool UWjWorldStatsSubsystem::IsUserStatsReadyByString(const FString& UserIdString) const
+{
+	return ReadyUserIds.Contains(UserIdString);
 }
 
 void UWjWorldStatsSubsystem::SaveLocalStatsToConfig()
@@ -244,20 +270,7 @@ void UWjWorldStatsSubsystem::OnSteamUserStatsReceivedCallback(UserStatsReceived_
 	FString UserIdStr = FString::Printf(TEXT("%llu"), SteamId);
 	ReadyUserIds.Add(UserIdStr);
 
-	// Steam OSS를 통해 FUniqueNetIdRepl 생성 (올바른 형식 보장)
-	FUniqueNetIdRepl UserIdRepl;
-	IOnlineSubsystem* OSS = IOnlineSubsystem::Get(STEAM_SUBSYSTEM);
-	if (OSS)
-	{
-		IOnlineIdentityPtr IdentityInterface = OSS->GetIdentityInterface();
-		if (IdentityInterface.IsValid())
-		{
-			UserIdRepl = FUniqueNetIdRepl(IdentityInterface->CreateUniquePlayerId(UserIdStr));
-		}
-	}
-
-	OnUserStatsReceived.Broadcast(UserIdRepl);
-	UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: User stats received for %s, UniqueId valid=%d"),
-		*UserIdStr, UserIdRepl.IsValid());
+	OnUserStatsReceived.Broadcast(UserIdStr);
+	UE_LOG(LogWjWorldStats, Log, TEXT("StatsSubsystem: User stats received for %s"), *UserIdStr);
 }
 #endif

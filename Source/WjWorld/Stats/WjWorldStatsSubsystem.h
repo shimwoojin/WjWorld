@@ -13,7 +13,7 @@
 #include "WjWorldStatsSubsystem.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLocalStatsReady);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnUserStatsReceived, const FUniqueNetIdRepl&, UserId);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnUserStatsReceived, const FString&, UserIdString);
 
 /**
  * Steam User Stats 래핑 서브시스템
@@ -54,13 +54,19 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Stats")
 	void RequestUserStats(const FUniqueNetIdRepl& UserId);
 
-	/** 타 플레이어 스탯 값 반환 */
+	/** 타 플레이어 스탯 값 반환 (FUniqueNetIdRepl) */
 	UFUNCTION(BlueprintCallable, Category = "Stats")
 	int32 GetUserStat(const FUniqueNetIdRepl& UserId, FName StatName) const;
 
-	/** 타 플레이어 스탯이 준비되었는지 */
+	/** 타 플레이어 스탯 값 반환 (raw Steam ID 문자열) */
+	int32 GetUserStatByString(const FString& UserIdString, FName StatName) const;
+
+	/** 타 플레이어 스탯이 준비되었는지 (FUniqueNetIdRepl) */
 	UFUNCTION(BlueprintCallable, Category = "Stats")
 	bool IsUserStatsReady(const FUniqueNetIdRepl& UserId) const;
+
+	/** 타 플레이어 스탯이 준비되었는지 (raw Steam ID 문자열) */
+	bool IsUserStatsReadyByString(const FString& UserIdString) const;
 
 	// ---- 델리게이트 ----
 
