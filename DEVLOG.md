@@ -1,5 +1,40 @@
 # WjWorld 개발 로그
 
+## 2026-02-10
+### 작업 내용 - JumpMap 미니게임 전체 구현
+
+#### JumpMap C++ 코드 구현 (Agent Teams 4병렬)
+- GameRule: `WjWorldGameRuleJumpMap` — 시간 제한, 체크포인트 리스폰, 완주 추적, Z 낙하 감지
+- GameData: `JumpMapGameDataComponent` (ElapsedTime, PlayerFinishOrder), `JumpMapPlayerDataComponent` (Checkpoint, DeathCount)
+- 장애물 액터 7종: KillZone, MovingPlatform, RotatingObstacle, PushWind, Checkpoint, End, GrapplePoint
+- 레이아웃: `JumpMapLayoutDataAsset` — 내장+유저 CSV 파싱 (`#META:MapName:` 지원)
+- 어빌리티 3종: GA_Dash (전방 대시), GA_Grapple (라인트레이스→당김), GA_DoubleJump (공중 점프)
+- HUD: `JumpMapHUDWidget` — 타이머, 체크포인트, 사망 횟수, 순위표
+- 통합: WjTypes(Ability8/9/10), GameplayTags(5개), Stats(JumpMap 네임스페이스), DeveloperSettings, PlacementTypes
+
+#### 코드 리뷰 중 버그 수정 (4건)
+- KillZoneActor: `Character->OnEliminated()` → `GameRule->OnPlayerDied()` (영구 제거→체크포인트 리스폰)
+- EndActor: GameRule 호출 누락 → `GameRule->OnPlayerFinished()` 추가
+- RotatingObstacleActor: 킬 모드에서 동일 수정
+- CheckpointActor: PlayerData 갱신 누락 → `SetCurrentCheckpointIndex()` + 역주행 방지 로직
+
+#### 에디터 세팅 완료
+- DA_MinigameCatalog에 JumpMap 등록
+- DA_CharacterPlaySetup에 Dash/Grapple/DoubleJump 바인딩
+- IMC_Default에 Shift(Dash)/E(Grapple) 입력 매핑
+- BP_HUDPlay에 JumpMapHUDWidget 매핑
+
+#### 태그/InputID 정리
+- DefaultGameplayTags.ini에 5개 태그 등록 (Ability.Dash/Grapple/DoubleJump, Cooldown.Dash/Grapple)
+- WjTypes.h에 Ability10(DoubleJump) 추가
+- GA_Dash/Grapple/DoubleJump → `WjWorldGameplayTag::` 헬퍼 사용으로 통일
+
+### 학습/메모
+- Agent Teams 병렬 구현은 빠르지만, 기존 패턴(GameRule->OnPlayerDied vs Character->OnEliminated) 착오가 다수 발생 → 반드시 코드 리뷰 필요
+- GA_DoubleJump의 CanActivateAbility: 부모(GA_Jump)의 CanJump() 우회를 위해 조부모(UWjWorldGameplayAbilityBase) 직접 호출 패턴 사용
+
+---
+
 ## 2026-02-09
 ### 작업 내용 - 배치 에디터 BP 세팅 완료 + Steam 2PC 잔존 버그 확인
 

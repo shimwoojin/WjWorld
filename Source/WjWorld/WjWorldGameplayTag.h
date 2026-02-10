@@ -26,6 +26,11 @@ public:
 	static FGameplayTag Ability_Push();
 	static FGameplayTag Ability_Jump();
 
+	// JumpMap Abilities
+	static FGameplayTag Ability_Dash();
+	static FGameplayTag Ability_Grapple();
+	static FGameplayTag Ability_DoubleJump();
+
 	//State
 	static FGameplayTag State_SpawnBrickPreview();
 	static FGameplayTag State_LiftBrickCarry();
@@ -36,6 +41,10 @@ public:
 	static FGameplayTag Cooldown_LiftBrick();
 	static FGameplayTag Cooldown_Push();
 	static FGameplayTag Cooldown_Jump();
+
+	// JumpMap Cooldowns
+	static FGameplayTag Cooldown_Dash();
+	static FGameplayTag Cooldown_Grapple();
 
 	//Data (SetByCaller용)
 	static FGameplayTag Data_Cooldown();

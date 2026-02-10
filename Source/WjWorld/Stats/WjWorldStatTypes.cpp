@@ -36,6 +36,20 @@ const TArray<FMinigameStatDescriptor>& GetAllMinigameDescriptors()
 			Descriptors.Add(MoveTemp(Desc));
 		}
 
+		// JumpMap
+		{
+			FMinigameStatDescriptor Desc;
+			Desc.MinigameName = NSLOCTEXT("WjWorldStats", "JumpMap_Name", "Jump Map");
+			Desc.GameModeId = TEXT("JumpMap");
+			Desc.Stats = {
+				{ WjWorldStats::JumpMap::GamesPlayed, NSLOCTEXT("WjWorldStats", "JumpMap_GamesPlayed", "Games Played") },
+				{ WjWorldStats::JumpMap::Wins,        NSLOCTEXT("WjWorldStats", "JumpMap_Wins", "Wins") },
+				{ WjWorldStats::JumpMap::Losses,      NSLOCTEXT("WjWorldStats", "JumpMap_Losses", "Losses") },
+				{ WjWorldStats::JumpMap::BestTime,    NSLOCTEXT("WjWorldStats", "JumpMap_BestTime", "Best Time") },
+			};
+			Descriptors.Add(MoveTemp(Desc));
+		}
+
 		// 향후 미니게임 추가 시 여기에 디스크립터 추가
 	}
 

@@ -349,6 +349,11 @@ void UWjWorldPlacementComponent::SaveLayoutToSlot(const FString& SlotName)
 		{
 			ExportLayoutAsCSV(SlotName);
 		}
+		// JumpMap 컨텍스트인 경우 CSV도 함께 내보내기
+		else if (CurrentContext == EPlacementContext::JumpMap)
+		{
+			ExportJumpMapLayoutAsCSV(SlotName);
+		}
 	}
 	else
 	{
@@ -492,14 +497,14 @@ bool UWjWorldPlacementComponent::ExportLayoutAsCSV(const FString& FileName)
 		}
 	}
 
-	// 4. 오브젝트를 그리드에 매핑
+	// 4. 오브젝트를 그리드에 매핑 (RoundToInt로 CalculateBrickGridIndex와 일치)
 	for (const FPlacedObjectSaveEntry& Entry : PlacedObjects)
 	{
 		const FVector& Location = Entry.Transform.GetLocation();
 
 		// 월드 좌표 → 그리드 인덱스
-		int32 Col = FMath::FloorToInt((Location.X - GridOrigin.X) / BrickSize.X);
-		int32 Row = FMath::FloorToInt((Location.Y - GridOrigin.Y) / BrickSize.Y);
+		int32 Col = FMath::RoundToInt((Location.X - GridOrigin.X) / BrickSize.X);
+		int32 Row = FMath::RoundToInt((Location.Y - GridOrigin.Y) / BrickSize.Y);
 
 		// 범위 체크
 		if (Row >= 0 && Row < GridRows && Col >= 0 && Col < GridColumns)
@@ -513,8 +518,13 @@ bool UWjWorldPlacementComponent::ExportLayoutAsCSV(const FString& FileName)
 	FString CSVContent;
 
 	// ⭐ 메타데이터 헤더: CenterOffset 저장 (클라이언트 프리뷰 위치 동기화용)
+	// CalculateBrickPosition은 CenterOffset을 그리드 중심으로 사용하므로, 그리드 중심 좌표를 저장
+	FVector CenterOffset;
+	CenterOffset.X = GridOrigin.X + (GridColumns - 1) * 0.5f * BrickSize.X;
+	CenterOffset.Y = GridOrigin.Y + (GridRows - 1) * 0.5f * BrickSize.Y;
+	CenterOffset.Z = 0.0f;
 	CSVContent += FString::Printf(TEXT("#META:CenterOffset:%f,%f,%f\n"),
-		GridOrigin.X, GridOrigin.Y, GridOrigin.Z);
+		CenterOffset.X, CenterOffset.Y, CenterOffset.Z);
 
 	for (int32 Row = 0; Row < GridRows; ++Row)
 	{
@@ -553,6 +563,67 @@ bool UWjWorldPlacementComponent::ExportLayoutAsCSV(const FString& FileName)
 		UE_LOG(LogWjWorldPlacement, Error, TEXT("ExportLayoutAsCSV: Failed to save file '%s'"), *FilePath);
 		return false;
 	}
+}
+
+bool UWjWorldPlacementComponent::ExportJumpMapLayoutAsCSV(const FString& FileName)
+{
+	if (CurrentContext != EPlacementContext::JumpMap)
+	{
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("ExportJumpMapLayoutAsCSV: Only available in JumpMap context"));
+		return false;
+	}
+
+	IWjWorldPlacementDataProvider* DataProvider = GetPlacementDataProvider();
+	if (!DataProvider)
+	{
+		UE_LOG(LogWjWorldPlacement, Error, TEXT("ExportJumpMapLayoutAsCSV: No data provider"));
+		return false;
+	}
+
+	const TArray<FPlacedObjectSaveEntry>& PlacedObjects = DataProvider->GetPlacedObjects();
+	if (PlacedObjects.Num() == 0)
+	{
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("ExportJumpMapLayoutAsCSV: No objects to export"));
+		return false;
+	}
+
+	// CSV 생성: 헤더 + 오브젝트 행
+	FString CSVContent;
+	CSVContent += FString::Printf(TEXT("#META:MapName:%s\n"), *FileName);
+	CSVContent += TEXT("ObjectId,PosX,PosY,PosZ,RotPitch,RotYaw,RotRoll,ScaleX,ScaleY,ScaleZ\n");
+
+	for (const FPlacedObjectSaveEntry& Entry : PlacedObjects)
+	{
+		const FVector& Loc = Entry.Transform.GetLocation();
+		const FRotator Rot = Entry.Transform.GetRotation().Rotator();
+		const FVector& Scale = Entry.Transform.GetScale3D();
+
+		CSVContent += FString::Printf(TEXT("%s,%f,%f,%f,%f,%f,%f,%f,%f,%f\n"),
+			*Entry.ObjectId.ToString(),
+			Loc.X, Loc.Y, Loc.Z,
+			Rot.Pitch, Rot.Yaw, Rot.Roll,
+			Scale.X, Scale.Y, Scale.Z);
+	}
+
+	// 파일 저장
+	FString UserLayoutDir = GetUserJumpMapLayoutDirectory();
+	IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
+	if (!PlatformFile.DirectoryExists(*UserLayoutDir))
+	{
+		PlatformFile.CreateDirectoryTree(*UserLayoutDir);
+	}
+
+	FString FilePath = UserLayoutDir / FileName + TEXT(".csv");
+	if (FFileHelper::SaveStringToFile(CSVContent, *FilePath))
+	{
+		LastExportedCSVPath = FilePath;
+		UE_LOG(LogWjWorldPlacement, Log, TEXT("ExportJumpMapLayoutAsCSV: Exported to '%s' (%d objects)"),
+			*FilePath, PlacedObjects.Num());
+		return true;
+	}
+
+	UE_LOG(LogWjWorldPlacement, Error, TEXT("ExportJumpMapLayoutAsCSV: Failed to save '%s'"), *FilePath);
+	return false;
 }
 
 void UWjWorldPlacementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

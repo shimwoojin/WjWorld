@@ -98,6 +98,13 @@ public:
 	bool ExportLayoutAsCSV(const FString& FileName);
 
 	/**
+	 * JumpMap 컨텍스트: 배치된 오브젝트를 CSV로 내보내기
+	 * @param FileName 파일 이름 (확장자 제외)
+	 * @return 내보내기 성공 여부
+	 */
+	bool ExportJumpMapLayoutAsCSV(const FString& FileName);
+
+	/**
 	 * AW 컨텍스트: 마지막으로 내보낸 CSV 파일 경로 반환
 	 */
 	FString GetLastExportedCSVPath() const { return LastExportedCSVPath; }

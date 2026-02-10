@@ -107,3 +107,11 @@ inline FString GetUserWallLayoutDirectory()
 {
 	return FPaths::ProjectContentDir() / TEXT("WallLayouts") / TEXT("User");
 }
+
+/**
+ * 유저 JumpMap 레이아웃 디렉토리 경로 반환
+ */
+inline FString GetUserJumpMapLayoutDirectory()
+{
+	return FPaths::ProjectContentDir() / TEXT("JumpMapLayouts") / TEXT("User");
+}

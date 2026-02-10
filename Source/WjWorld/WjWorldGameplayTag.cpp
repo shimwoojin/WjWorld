@@ -135,3 +135,28 @@ FGameplayTag WjWorldGameplayTag::GameplayCue_Sumo_PowerUp_Pickup()
 {
 	return FGameplayTag::RequestGameplayTag(TEXT("GameplayCue.Sumo.PowerUp.Pickup"));
 }
+
+FGameplayTag WjWorldGameplayTag::Ability_Dash()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("Ability.Dash"));
+}
+
+FGameplayTag WjWorldGameplayTag::Ability_Grapple()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("Ability.Grapple"));
+}
+
+FGameplayTag WjWorldGameplayTag::Ability_DoubleJump()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("Ability.DoubleJump"));
+}
+
+FGameplayTag WjWorldGameplayTag::Cooldown_Dash()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("Cooldown.Dash"));
+}
+
+FGameplayTag WjWorldGameplayTag::Cooldown_Grapple()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("Cooldown.Grapple"));
+}

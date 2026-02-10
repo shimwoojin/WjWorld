@@ -25,6 +25,13 @@ namespace WjWorldStats
 		inline const FName Kills("Sumo_Kills");
 		inline const FName GamesPlayed("Sumo_GamesPlayed");
 	}
+	namespace JumpMap
+	{
+		inline const FName Wins("JumpMap_Wins");
+		inline const FName Losses("JumpMap_Losses");
+		inline const FName GamesPlayed("JumpMap_GamesPlayed");
+		inline const FName BestTime("JumpMap_BestTime");
+	}
 	// 향후 미니게임 추가 시 새 namespace 추가
 }
 

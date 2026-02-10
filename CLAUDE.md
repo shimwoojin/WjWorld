@@ -17,7 +17,10 @@ Source/WjWorld/
 │   │   ├── GA_SpawnBrick              # 충전 기반 벽돌 배치 (Preview + Confirm/Cancel)
 │   │   ├── GA_LiftBrick              # 벽돌 이동/재배치 (Preview + Confirm/Cancel)
 │   │   ├── GA_Push                   # Sumo 넉백 (구형 오버랩 + LaunchCharacter)
-│   │   └── GA_Jump                   # Sumo 점프 (UE CharacterJump 패턴, LocalPredicted)
+│   │   ├── GA_Jump                   # Sumo 점프 (UE CharacterJump 패턴, LocalPredicted)
+│   │   ├── GA_Dash                   # JumpMap 대시 (LaunchCharacter, 쿨다운 2초)
+│   │   ├── GA_Grapple                # JumpMap 그래플 (라인트레이스→당김, 미스시 쿨다운 없음)
+│   │   └── GA_DoubleJump             # JumpMap 이중 점프 (GA_Jump 확장, 공중 1회 추가)
 │   ├── AttributeSets/                 # 어트리뷰트 셋
 │   │   └── WjWorldCharacterAttributeSet  # HP, MaxSpawnBrickCharges, SpawnBrickCharges 등
 │   ├── Effects/                       # GameplayEffect 파일들
@@ -62,13 +65,16 @@ Source/WjWorld/
 │   ├── GameRule/                      # 미니게임 규칙 시스템
 │   │   ├── WjWorldGameRuleBase        # 게임 규칙 베이스 클래스
 │   │   ├── WjWorldGameRuleApproachingWall  # Approaching Wall 규칙
-│   │   └── WjWorldGameRuleSumo       # Sumo Knockoff 규칙 (Z 낙하 감지)
+│   │   ├── WjWorldGameRuleSumo       # Sumo Knockoff 규칙 (Z 낙하 감지)
+│   │   └── WjWorldGameRuleJumpMap    # JumpMap 규칙 (체크포인트 리스폰, 완주 추적)
 │   ├── GameData/                      # 게임 데이터 컴포넌트
 │   │   ├── WjWorldGameDataComponent   # 데이터 컴포넌트 베이스
 │   │   ├── ApproachingWallGameDataComponent   # AW 게임 데이터
 │   │   ├── ApproachingWallPlayerDataComponent # AW 플레이어 데이터
 │   │   ├── SumoGameDataComponent      # Sumo 게임 데이터 (AlivePlayerCount)
-│   │   └── SumoPlayerDataComponent    # Sumo 플레이어 데이터 (bIsAlive)
+│   │   ├── SumoPlayerDataComponent    # Sumo 플레이어 데이터 (bIsAlive)
+│   │   ├── JumpMapGameDataComponent   # JumpMap 게임 데이터 (ElapsedTime, PlayerFinishOrder)
+│   │   └── JumpMapPlayerDataComponent # JumpMap 플레이어 데이터 (Checkpoint, DeathCount)
 │   ├── Editor/                        # 에디터 모드 (배치 편집용 싱글플레이 맵)
 │   │   ├── AWEditor/                  # Approaching Wall 에디터
 │   │   │   ├── WjWorldGameModeAWEditor
@@ -125,6 +131,16 @@ Source/WjWorld/
 │   ├── Sumo/                          # Sumo Knockoff 게임플레이
 │   │   ├── SumoFloorRingActor        # 축소 플랫폼 링 (Active/Warning/Destroyed)
 │   │   └── SumoPowerUpActor          # 파워업 픽업 (Speed/SuperPush/Shield)
+│   ├── JumpMap/                       # JumpMap 게임플레이 (장애물 레이스)
+│   │   ├── JumpMapActorBase          # 액터 베이스 (Scene+Mesh, bReplicates)
+│   │   ├── JumpMapKillZoneActor      # 킬 존 (사망→체크포인트 리스폰)
+│   │   ├── JumpMapMovingPlatformActor # 무빙 플랫폼 (왕복 이동)
+│   │   ├── JumpMapRotatingObstacleActor # 회전 장애물 (킬/넉백)
+│   │   ├── JumpMapPushWindActor      # 바람 구역 (방향성 힘)
+│   │   ├── JumpMapCheckpointActor    # 체크포인트 (리스폰 위치 갱신)
+│   │   ├── JumpMapEndActor           # 도착 트리거 (완주 처리)
+│   │   ├── JumpMapGrapplePointActor  # 그래플 대상 포인트
+│   │   └── JumpMapLayoutDataAsset    # 레이아웃 CSV 로더 (내장+유저)
 │   └── Wall/                          # Approaching Wall 게임플레이
 │       ├── WjWorldBrickActor          # 벽돌 액터
 │       ├── WjWorldBrickComponent      # 벽돌 컴포넌트
@@ -173,7 +189,8 @@ Source/WjWorld/
     └── HUD/
         ├── GameplayGlobalHUDWidget     # 게임플레이 글로벌 HUD
         ├── ApproachingWallHUDWidget    # Approaching Wall 전용 HUD
-        └── SumoHUDWidget              # Sumo Knockoff 전용 HUD (킬피드, 라운드)
+        ├── SumoHUDWidget              # Sumo Knockoff 전용 HUD (킬피드, 라운드)
+        └── JumpMapHUDWidget           # JumpMap 전용 HUD (타이머, 체크포인트, 순위)
 ```
 
 ## 주요 클래스 계층
@@ -185,9 +202,10 @@ GameState: AWjWorldGameStateBase → GameStateLobby → GameStateWaitingRoom, Ga
 PlayerState: AWjWorldPlayerStateBase (+ FCosmeticLoadout) → Play (+ IAbilitySystemInterface)
 HUD: AWjWorldHUDBase → Lobby, WaitingRoom, Play
 UI Widget: UWjWorldUserWidgetBase → 각종 HUD 및 윈도우 위젯
-GameRule: UWjWorldGameRuleBase → ApproachingWall, Sumo (미니게임 규칙, MinigameCatalog에서 조회)
-GameData: UWjWorldGameDataComponent → ApproachingWall, Sumo 전용 데이터
-Ability: UWjWorldGameplayAbilityBase → GA_NormalAttack, GA_SpawnBrick, GA_LiftBrick, GA_Push, GA_Jump
+GameRule: UWjWorldGameRuleBase → ApproachingWall, Sumo, JumpMap (미니게임 규칙, MinigameCatalog에서 조회)
+GameData: UWjWorldGameDataComponent → ApproachingWall, Sumo, JumpMap 전용 데이터
+Ability: UWjWorldGameplayAbilityBase → GA_NormalAttack, GA_SpawnBrick, GA_LiftBrick, GA_Push, GA_Jump, GA_Dash, GA_Grapple
+         GA_Jump → GA_DoubleJump (이중 점프 확장)
 NetDriver: UIpNetDriver → UWjWorldLanNetDriver (LAN 전용, PLATFORM_SOCKETSUBSYSTEM)
 Subsystem: UGameInstanceSubsystem → CosmeticSubsystem, PurchaseSubsystem, StatsSubsystem
 AnimInstance: UWjWorldAnimInstance (LiftBrickBlendWeight, GameplayTag 기반 상태)
@@ -260,6 +278,20 @@ Lobby / ApproachingWall / JumpMap 3개 컨텍스트를 지원하는 확장된 �
 - **엣지 케이스**: 솔로 자동 승리, 동시 탈락, 전원 이탈
 - **상태**: C++ 코드 완료, 에디터 세팅 필요 (BP 프로퍼티, 링 배치, HUD 위젯, 파워업 BP)
 
+### JumpMap 미니게임
+세 번째 미니게임. 장애물 코스를 통과하여 결승점에 도달하는 타임어택 레이스.
+- **WjWorldGameRuleJumpMap**: 시간 제한(120초), Z 낙하 감지, 체크포인트 리스폰, 완주 순서 추적
+- **체크포인트 시스템**: CheckpointOrder 기반 진행 관리, 역주행 방지, 사망 시 마지막 체크포인트에서 리스폰
+- **장애물 액터**: KillZone (즉사), MovingPlatform (왕복 이동), RotatingObstacle (회전+킬/넉백), PushWind (방향성 바람)
+- **맵 구조 액터**: Checkpoint, End (도착 트리거), GrapplePoint (그래플 대상)
+- **어빌리티**: GA_Dash (Ability8/Shift), GA_Grapple (Ability9/E), GA_DoubleJump (Ability10)
+- **JumpMapGameDataComponent**: ElapsedTime, TimeLimit, PlayerFinishOrder (모두 Replicated)
+- **JumpMapPlayerDataComponent**: CurrentCheckpointIndex, DeathCount, bHasFinished, FinishTime (모두 Replicated)
+- **JumpMapLayoutDataAsset**: 내장+유저 CSV 레이아웃 로드, `#META:MapName:` 헤더 지원
+- **승리 조건**: 전원 완주 or 시간 초과, 최단 시간 플레이어 우승
+- **엣지 케이스**: 솔로 자동, 전원 이탈, 플레이어 없음
+- **상태**: C++ 코드 완료 + 에디터 세팅 완료 (MinigameCatalog, InputMapping, CharacterPlaySetup, HUDPlay)
+
 ### Gameplay Ability System
 GAS 기반 어빌리티 시스템. `UWjWorldGameplayAbilityBase`를 상속받아 각 어빌리티 구현.
 - **AbilityBase 공통 기능**: AbilityName, AbilityIcon (UI 메타), GetPromptDescription(), 충전 시스템 인터페이스 (IsChargeBased, GetCurrentCharges, GetMaxCharges, GetChargeRefillTimeRemaining)
@@ -269,6 +301,9 @@ GAS 기반 어빌리티 시스템. `UWjWorldGameplayAbilityBase`를 상속받아
 - **GA_LiftBrick**: 벽돌 재배치 어빌리티, Moving/Destructible 벽돌 들어올리기, Cancel 시 원래 위치 복원, 들고 있는 벽돌 색상 리플리케이션
 - **GA_Push**: Sumo 넉백 어빌리티, 전방 구형 오버랩 → LaunchCharacter(), PushForce=1200, CooldownDuration=1.5s, SetLastAttacker(), SuperPushMultiplier(2x), PushHitCameraShake
 - **GA_Jump**: Sumo 점프 어빌리티, UE CharacterJump 패턴 기반, LocalPredicted, CommitAbility(), Character->Jump()/StopJumping(), 가변 높이 점프, InputReleased로 종료
+- **GA_Dash**: JumpMap 대시 어빌리티, LaunchCharacter 전방 발사, DashDistance=600, DashDuration=0.2s, CooldownDuration=2s, 타이머 기반 EndAbility
+- **GA_Grapple**: JumpMap 그래플 어빌리티, 카메라 라인트레이스→JumpMapGrapplePointActor 감지, 히트 시 LaunchCharacter 당김 + 도착 체크, 미스 시 쿨다운 없이 종료 (CommitAbility 미호출)
+- **GA_DoubleJump**: GA_Jump 확장, 공중에서 1회 추가 점프, CanActivateAbility에서 GA_Jump의 CanJump() 우회 → UWjWorldGameplayAbilityBase 직접 호출, CurrentJumpCount 기반 허용
 - **AttributeSet**: HP, MaxSpawnBrickCharges, SpawnBrickCharges, OnRep 콜백
 - **Effects**: GE_AbilityCooldown (쿨다운), GE_SpawnBrickChargeCost (충전 비용), GE_SumoSpeedBoost/SuperPush/Shield (참조용 GE, 실제 버프는 AddLooseGameplayTag)
 
@@ -286,6 +321,11 @@ GAS 기반 어빌리티 시스템. `UWjWorldGameplayAbilityBase`를 상속받아
 - `GameplayCue_Sumo_PowerUp_Pickup` - 파워업 획득 이펙트
 - `Ability_Jump` - GA_Jump 어빌리티 태그
 - `Cooldown_Jump` - GA_Jump 쿨다운 태그
+- `Ability_Dash` - GA_Dash 어빌리티 태그
+- `Ability_Grapple` - GA_Grapple 어빌리티 태그
+- `Ability_DoubleJump` - GA_DoubleJump 어빌리티 태그
+- `Cooldown_Dash` - GA_Dash 쿨다운 태그
+- `Cooldown_Grapple` - GA_Grapple 쿨다운 태그
 
 ### 코스메틱 시스템
 Steam 무료 출시 후 유료 코스메틱 판매를 위한 시스템. ItemId(FName) 기반 플랫폼 독립 식별.
@@ -325,7 +365,7 @@ CosmeticComponent.ApplyLoadout() (비동기 메시 로드)
 Steam User Stats 래핑 + GConfig 폴백 (비Steam 빌드용). `UWjWorldStatsSubsystem` (GameInstanceSubsystem).
 - **로컬 스탯**: ReadLocalStat, IncrementLocalStat, StoreStats (GConfig 또는 Steam API)
 - **원격 스탯**: RequestUserStats() + OnUserStatsReceived 비동기 델리게이트
-- **미니게임 스탯**: 네임스페이스 기반 (`WjWorldStats::ApproachingWall`, `WjWorldStats::Sumo`)
+- **미니게임 스탯**: 네임스페이스 기반 (`WjWorldStats::ApproachingWall`, `WjWorldStats::Sumo`, `WjWorldStats::JumpMap`)
 - **FMinigameStatEntry**: 개별 스탯 항목
 - **FMinigameStatDescriptor**: UI 표시용 스탯 설명자
 - **자동 기록**: GameStatePlay에서 게임 종료 시 `StatNamespace` 기반 동적 스탯 키로 승/패/킬 자동 증가
@@ -388,6 +428,7 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
 - **GameMode 클래스**: WaitingRoomGameModeClass, PlayGameModeClass, AWEditorGameModeClass, JumpMapEditorGameModeClass
 - **캐릭터 기본값**: DefaultCharacterMesh, DefaultAnimBlueprintClass, DefaultInputMappingContext
 - **Approaching Wall**: BrickMesh, TileMesh, WallDescriptionAsset
+- **JumpMap**: JumpMapLayoutDataAsset
 - **배치 카탈로그**: LobbyPlaceableCatalog, ApproachingWallPlaceableCatalog, JumpMapPlaceableCatalog
 - **기타 카탈로그**: MinigameCatalog, CosmeticCatalog
 - **헬퍼 함수**: GetLobbyMapPath(), GetWaitingRoomOpenLevelURL(), GetPlayServerTravelURL(), GetPlaceableCatalogForContext(), GetEditorMapOpenLevelURL(), HasEditorMapForContext()
@@ -491,10 +532,18 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
   - GA_Jump Super::ActivateAbility() 누락 수정
 - **배치 에디터 BP 세팅 완료** (에디터 맵 생성, BP_PlacementSaveDialogWidget, BP_PlacementLoadDialogWidget, 컨텍스트별 카탈로그 DataAsset)
 - **LobbyHUDWidget 정리** (DirectConnectButton 제거, FindRoomButton null 접근 버그 수정)
+- **JumpMap 미니게임 C++ 코드 전체 구현** (GameRule, GameData, 장애물 액터 7종, 레이아웃 DataAsset, GA_Dash/Grapple/DoubleJump, HUD)
+  - 32개 신규 파일, 7개 수정 파일 (Agent Teams 4병렬 구현)
+  - 코드 리뷰 중 4건 버그 수정 (KillZone/EndActor/RotatingObstacle의 OnEliminated→OnPlayerDied, Checkpoint PlayerData 갱신 누락)
+- **JumpMap 에디터 세팅 완료** (MinigameCatalog 등록, InputMapping Shift/E, CharacterPlaySetup DA_Dash/Grapple/DoubleJump, BP_HUDPlay 매핑)
+- **DefaultGameplayTags.ini 태그 등록** (Ability.Dash/Grapple/DoubleJump, Cooldown.Dash/Grapple)
+- **Ability Tag 헬퍼 통일** (GA_Dash/Grapple/DoubleJump → WjWorldGameplayTag:: 헬퍼 사용으로 통일)
 
 ## 진행 중 / 미구현
 - Sumo Knockoff 6대 기능 에디터 세팅 (BP 생성/프로퍼티 할당, 링 배치, HUD 위젯, 파워업 비주얼)
-- 추가 미니게임 구현
+- JumpMap 맵 레벨 생성 + 패키징 맵 목록 추가
+- JumpMap BP_GameRuleJumpMap 생성 (ObjectIdToActorClassMap 프로퍼티 설정)
+- JumpMap PlaceableCatalog DataAsset 생성
 - Steam 정식 출시 준비
 
 ## 잔존 버그 (Steam 2PC 테스트 2026-02-09)
@@ -507,6 +556,7 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
 ## 확인 필요 사항
 - Room 목록 스케일링 — Steam 배포 시 다수 방(1000+) 표시 및 부하 체크
 - Sumo FloorRing 레벨 디자인 변경 검토 — 원형 축소 대신 개별 타일 랜덤 파괴 방식 전환 시 리플리케이션 비용 확인
+- **에셋 커밋 전략 수립 필요** — .uasset 등 바이너리 에셋 파일의 커밋/관리 전략 재정비 (LFS 정책, 브랜치 전략, 에셋 전용 커밋 분리 등)
 
 ## 코딩 컨벤션
 - 언리얼 엔진 코딩 표준 준수

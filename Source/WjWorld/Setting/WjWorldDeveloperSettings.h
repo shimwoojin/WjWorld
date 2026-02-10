@@ -16,6 +16,7 @@ class UWjWorldCosmeticCatalogDataAsset;
 class UWjWorldWallDescriptionDataAsset;
 class UInputMappingContext;
 class UInputAction;
+class UJumpMapLayoutDataAsset;
 class USkeletalMesh;
 class UStaticMesh;
 class UAnimInstance;
@@ -109,6 +110,12 @@ public:
 	/** 코스메틱 카탈로그 데이터 에셋 */
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "Cosmetic")
 	TSoftObjectPtr<UWjWorldCosmeticCatalogDataAsset> CosmeticCatalog;
+
+	// ========== JumpMap ==========
+
+	/** JumpMap 레이아웃 데이터 에셋 */
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "JumpMap")
+	TSoftObjectPtr<UJumpMapLayoutDataAsset> JumpMapLayoutDataAsset;
 
 	// ========== Placement ==========
 
