@@ -72,6 +72,10 @@ public:
 	UFUNCTION(Server, Reliable)
 	void ServerSpawnBrickAtGridIndex(int32 GridX, int32 GridY);
 
+	// GA_LiftBrick에서 호출 - 서버에서 벽돌 집기 (클라이언트가 계산한 그리드 인덱스 사용)
+	UFUNCTION(Server, Reliable)
+	void ServerLiftBrickAtGridIndex(int32 GridX, int32 GridY);
+
 protected:
 	virtual void OnRep_PlayerState() override;
 	virtual void PossessedBy(AController* NewController) override;

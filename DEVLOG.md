@@ -1,5 +1,41 @@
 # WjWorld 개발 로그
 
+## 2026-02-11
+### 작업 내용 - 레이아웃 삭제 기능 + AW 버그 3건 수정
+
+#### 레이아웃 삭제 기능 구현
+- `WjWorldPlacementComponent::DeleteLayoutSlot()` 추가 — SaveGame + 컨텍스트별 CSV 파일 삭제
+- `PlacementLoadDialogWidget` X 삭제 버튼 추가 — HorizontalBox 레이아웃 [슬롯이름(Fill) | X(Auto)]
+- `PlacementHUDWidgetBase::OnSlotDeleteRequested()` 핸들러 — 삭제 후 다이얼로그 내 슬롯 목록 인플레이스 갱신
+- `PlacementSaveDialogWidget` 슬롯 유효성 표시 개선
+
+#### Bug 1: BrickMovement 대각선 이동 3-4칸 → 1칸 수정
+- **원인**: `GetMovementVector()`에서 `GetNextDirections()`가 반환한 모든 방향을 for 루프로 전부 적용
+- **수정**: 하나의 방향만 선택, 이전 이동 방향과 일치하는 방향 우선 (관성 유지)
+
+#### Bug 2: 클라이언트 프리뷰 offset 50,50 수정
+- **원인**: 클라이언트에서 유저 CSV 파일 부재 → 잘못된 WallDesc(CenterOffset)로 폴백
+- **수정**: `ApproachingWallGameDataComponent`에 `WallBrickSize/WallCenterOffset/WallColumnNum/WallRowNum` 리플리케이트 추가
+- `OnWallSpawnFinished()`에서 설정, GA_SpawnBrick/GA_LiftBrick에서 리플리케이트된 값으로 보정
+
+#### Bug 3: 클라이언트 GA_LiftBrick 1프레임 취소 수정
+- **원인**: 서버가 독립적으로 `CalculatePickupLocation()` 실행 시 네트워크 지연으로 다른 위치 계산 → 벽돌 미발견 → `EndAbility(replicate)` 취소
+- **수정**: `ServerLiftBrickAtGridIndex` Server RPC 패턴 적용 (GA_SpawnBrick의 `ServerSpawnBrickAtGridIndex`와 동일)
+  - 클라이언트: 그리드 인덱스 계산 → RPC 전송
+  - 서버: 클라이언트 지정 인덱스로 벽돌 탐색/파괴 (`ServerHandleBrickPickup`)
+  - `HasAuthority()` 블록 제거 → RPC 핸들러로 이전
+
+### 학습/메모
+- `LocalPredicted` 어빌리티에서 서버가 avatar 위치/회전을 기반으로 독립 판단하면 네트워크 지연으로 클라이언트와 불일치 발생 → 클라이언트가 계산한 결과를 Server RPC로 전달하는 패턴이 안정적
+- `FIntPoint`에는 `IsZero()` 메서드가 없음 → `(X != 0 || Y != 0)` 으로 체크
+- `BrickMovement::GetNextDirections()`는 FloodFill 경계점의 8방향 인접 셀을 모두 반환 — 이동 시 반드시 하나만 선택해야 함
+
+### 이슈/해결
+- 잔존 버그: #3(Sumo) Host 관전 Yaw, #4(Sumo) 유저 맵 클라이언트 벽돌 스폰 위치 — 미해결
+- JumpMap 맵 레벨 생성 + 패키징 맵 목록 추가 필요
+
+---
+
 ## 2026-02-10
 ### 작업 내용 - JumpMap 미니게임 전체 구현
 

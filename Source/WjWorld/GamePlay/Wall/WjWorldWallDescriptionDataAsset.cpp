@@ -35,8 +35,8 @@ bool FWjWorldWallDescription::LoadWallLayoutFromFile()
         ContentRelativePath = ContentRelativePath.Replace(TEXT("\\"), TEXT("/"));
     }
 
-    // 1차 시도: Content 디렉토리 기준 경로
-    FString ResolvedPath = FPaths::ProjectContentDir() / ContentRelativePath;
+    // 1차 시도: Content 디렉토리 기준 경로 (절대 경로로 변환하여 작업 디렉토리 무관하게 동작)
+    FString ResolvedPath = FPaths::ConvertRelativePathToFull(FPaths::ProjectContentDir() / ContentRelativePath);
 
     if (!FFileHelper::LoadFileToString(FileContent, *ResolvedPath))
     {
@@ -194,9 +194,9 @@ void FWjWorldWallDescription::MarkExteriorCells(TSet<FIntPoint>& OutExteriorCell
     const int32 Cols = WallLayout[0].Num();
     if (Cols == 0) return;
 
+    // 벽 밀폐 검증용: 4방향만 사용 (벽은 직교 방향만 막음, 대각선 틈새는 밀폐로 인정)
     const TArray<FIntPoint> Directions = {
-        { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 },
-        { 1, 1 }, { -1, 1 }, { 1, -1 }, { -1, -1 }
+        { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }
     };
 
     TQueue<FIntPoint> Queue;
@@ -298,9 +298,9 @@ bool FWjWorldWallDescription::IsAreaEnclosedByWalls(int32 StartX, int32 StartY)
     Queue.Enqueue(FIntPoint(StartX, StartY));
     Visited.Add(FIntPoint(StartX, StartY));
 
+    // 벽 밀폐 검증용: 4방향만 사용 (대각선 틈새는 밀폐로 인정)
     const TArray<FIntPoint> Directions = {
-        { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 },
-        { 1, 1 }, { -1, 1 }, { 1, -1 }, { -1, -1 }
+        { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }
     };
 
     while (!Queue.IsEmpty())

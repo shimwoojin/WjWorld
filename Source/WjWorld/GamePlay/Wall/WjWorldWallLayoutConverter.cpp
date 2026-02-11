@@ -179,9 +179,9 @@ void FWjWorldWallLayoutConverter::MarkExteriorCells(
 	const int32 Cols = WallLayout[0].Num();
 	if (Cols == 0) return;
 
+	// 벽 밀폐 검증용: 4방향만 사용 (벽은 직교 방향만 막음, 대각선 틈새는 밀폐로 인정)
 	const TArray<FIntPoint> Directions = {
-		{ 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 },
-		{ 1, 1 }, { -1, 1 }, { 1, -1 }, { -1, -1 }
+		{ 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }
 	};
 
 	TQueue<FIntPoint> Queue;

@@ -166,7 +166,7 @@ Source/WjWorld/
     ├── Placement/                      # 배치 UI 공통
     │   ├── PlacementHUDWidgetBase     # 배치 HUD 베이스 (Save/Load/Catalog)
     │   ├── PlacementSaveDialogWidget  # 저장 다이얼로그 (슬롯 이름, 유효성 표시)
-    │   ├── PlacementLoadDialogWidget  # 불러오기 다이얼로그 (슬롯 목록)
+    │   ├── PlacementLoadDialogWidget  # 불러오기 다이얼로그 (슬롯 목록, X 삭제 버튼)
     │   ├── PlacementContextSelectWidget  # 컨텍스트 선택 팝업 (Lobby/AW/JumpMap)
     │   ├── PlacementHUDWidgetAWEditor # AW 에디터 전용 HUD (WallLayout 변환)
     │   └── PlacementHUDWidgetJumpMapEditor  # JumpMap 에디터 전용 HUD
@@ -226,7 +226,7 @@ AnimInstance: UWjWorldAnimInstance (LiftBrickBlendWeight, GameplayTag 기반 상
 - `GameStatePlay`에 게임 전체 데이터 (예: 웨이브 타이밍)
 - `PlayerStatePlay`에 플레이어별 데이터 (예: 점수, 상태)
 - 리플리케이션 지원
-- **ApproachingWallGameDataComponent**: `CurrentWallName` 리플리케이트 (클라이언트 WallDesc 로드용)
+- **ApproachingWallGameDataComponent**: `CurrentWallName`, `WallBrickSize`, `WallCenterOffset`, `WallColumnNum`, `WallRowNum` 리플리케이트 (클라이언트 WallDesc 로드용 + CSV 미보유 대응)
 
 ### 미니게임 카탈로그 시스템
 `UWjWorldMinigameDataAsset` 기반 미니게임 정의 및 동적 조회.
@@ -241,7 +241,7 @@ AnimInstance: UWjWorldAnimInstance (LiftBrickBlendWeight, GameplayTag 기반 상
 Lobby / ApproachingWall / JumpMap 3개 컨텍스트를 지원하는 확장된 배치 시스템.
 - **EPlacementContext**: `None`, `Lobby`, `ApproachingWall`, `JumpMap` 열거형
 - **IWjWorldPlacementDataProvider**: GameState 추상화 인터페이스 (AddPlacedObject, RemovePlacedObjectAt, GetPlacedObjects)
-- **PlacementComponent**: 컨텍스트 지원, `SaveLayoutToSlot()`/`LoadLayoutFromSlot()`, `GetSavedLayoutSlots()`, `LoadedSlotName` 추적
+- **PlacementComponent**: 컨텍스트 지원, `SaveLayoutToSlot()`/`LoadLayoutFromSlot()`/`DeleteLayoutSlot()`, `GetSavedLayoutSlots()`, `LoadedSlotName` 추적
 - **PlacementPreviewActor**: 배치 프리뷰 (유효/무효 색상), `FStreamableManager` 비동기 메시 로드
 - **PlacedObjectActor**: 실제 배치된 오브젝트, 삭제 모드 하이라이트
 - **PlaceableObjectDataAsset**: 컨텍스트별 배치 가능 오브젝트 카탈로그 (`FPlaceableObjectDefinition`)
@@ -298,7 +298,7 @@ GAS 기반 어빌리티 시스템. `UWjWorldGameplayAbilityBase`를 상속받아
 - **AbilityBase 어빌리티 제한**: `CanActivateAbility()` 오버라이드 - GameState의 `AllowedAbilityTags` 체크 (빈 = 전부 허용)
 - **GA_NormalAttack**: 4방향 스냅(Yaw 기반) 벽돌 공격, BrickType별 처리 (Standard 파괴 불가, Explosive/Moving/Destructible)
 - **GA_SpawnBrick**: 충전 기반 벽돌 배치, Preview → Confirm/Cancel 패턴, GE 기반 충전 리필, 어트리뷰트 변경 위임
-- **GA_LiftBrick**: 벽돌 재배치 어빌리티, Moving/Destructible 벽돌 들어올리기, Cancel 시 원래 위치 복원, 들고 있는 벽돌 색상 리플리케이션
+- **GA_LiftBrick**: 벽돌 재배치 어빌리티, Moving/Destructible 벽돌 들어올리기, Cancel 시 원래 위치 복원, 들고 있는 벽돌 색상 리플리케이션, ServerLiftBrickAtGridIndex RPC (클라이언트 그리드 좌표 전송)
 - **GA_Push**: Sumo 넉백 어빌리티, 전방 구형 오버랩 → LaunchCharacter(), PushForce=1200, CooldownDuration=1.5s, SetLastAttacker(), SuperPushMultiplier(2x), PushHitCameraShake
 - **GA_Jump**: Sumo 점프 어빌리티, UE CharacterJump 패턴 기반, LocalPredicted, CommitAbility(), Character->Jump()/StopJumping(), 가변 높이 점프, InputReleased로 종료
 - **GA_Dash**: JumpMap 대시 어빌리티, LaunchCharacter 전방 발사, DashDistance=600, DashDuration=0.2s, CooldownDuration=2s, 타이머 기반 EndAbility
@@ -538,6 +538,10 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
 - **JumpMap 에디터 세팅 완료** (MinigameCatalog 등록, InputMapping Shift/E, CharacterPlaySetup DA_Dash/Grapple/DoubleJump, BP_HUDPlay 매핑)
 - **DefaultGameplayTags.ini 태그 등록** (Ability.Dash/Grapple/DoubleJump, Cooldown.Dash/Grapple)
 - **Ability Tag 헬퍼 통일** (GA_Dash/Grapple/DoubleJump → WjWorldGameplayTag:: 헬퍼 사용으로 통일)
+- **배치 레이아웃 삭제 기능** (PlacementComponent.DeleteLayoutSlot, PlacementLoadDialogWidget X 버튼, SaveGame+CSV 동시 삭제)
+- **BrickMovement 단일 방향 이동 수정** (GetMovementVector에서 전체 방향 합산→단일 방향 선택, 모멘텀 우선 로직)
+- **WallDesc 그리드 속성 리플리케이션** (ApproachingWallGameDataComponent에 BrickSize/CenterOffset/ColumnNum/RowNum 리플리케이트, 클라이언트 CSV 미보유 대응)
+- **GA_LiftBrick 클라이언트 Server RPC 패턴** (ServerLiftBrickAtGridIndex: 클라이언트 그리드 좌표 → Character RPC → 서버 벽돌 탐색, LocalPredicted 위치 불일치 해결)
 
 ## 진행 중 / 미구현
 - Sumo Knockoff 6대 기능 에디터 세팅 (BP 생성/프로퍼티 할당, 링 배치, HUD 위젯, 파워업 비주얼)
@@ -547,9 +551,6 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
 - Steam 정식 출시 준비
 
 ## 잔존 버그 (Steam 2PC 테스트 2026-02-09)
-- **#3 대각선 맵 movement** — 상하좌우 연결 맵은 정상이나, 대각선 연결 맵에서 movement가 wall closed하게 움직이지 않음
-- **#4 클라이언트 벽돌 preview offset** — 유저 커스텀 맵에서 클라이언트 벽돌 설치 시 preview가 50,50 어긋남 (Default 모드 정상)
-- **#11 3자 프로필 조회 안 됨** — 타 플레이어 프로필 조회 실패
 - **#3(Sumo) Host 관전 Yaw 미적용** — Host가 클라이언트를 관찰할 때 Yaw가 적용되지 않음 (클라→Host 관측은 정상)
 - **#4(Sumo) 유저 맵 클라이언트 벽돌 스폰 위치** — 유저 만든 AW 맵에서 클라이언트가 설치한 벽돌이 엉뚱한 위치에 스폰
 

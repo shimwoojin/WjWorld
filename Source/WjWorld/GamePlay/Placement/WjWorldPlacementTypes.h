@@ -105,7 +105,8 @@ inline int32 ObjectIdToBrickTypeValue(FName ObjectId)
  */
 inline FString GetUserWallLayoutDirectory()
 {
-	return FPaths::ProjectContentDir() / TEXT("WallLayouts") / TEXT("User");
+	// 상대 경로를 절대 경로로 변환 (독립 실행 빌드에서 작업 디렉토리에 무관하게 동일 경로 보장)
+	return FPaths::ConvertRelativePathToFull(FPaths::ProjectContentDir() / TEXT("WallLayouts") / TEXT("User"));
 }
 
 /**
@@ -113,5 +114,5 @@ inline FString GetUserWallLayoutDirectory()
  */
 inline FString GetUserJumpMapLayoutDirectory()
 {
-	return FPaths::ProjectContentDir() / TEXT("JumpMapLayouts") / TEXT("User");
+	return FPaths::ConvertRelativePathToFull(FPaths::ProjectContentDir() / TEXT("JumpMapLayouts") / TEXT("User"));
 }

@@ -177,6 +177,25 @@ void UGA_SpawnBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 				}
 			}
 		}
+
+		// 리플리케이트된 WallDesc 속성으로 보정 (클라이언트에서 CSV 로드 실패 시에도 정확한 그리드 사용)
+		if (World)
+		{
+			if (AWjWorldGameStatePlay* GameStateForWall = World->GetGameState<AWjWorldGameStatePlay>())
+			{
+				if (UApproachingWallGameDataComponent* GameDataForWall = GameStateForWall->GetGameData<UApproachingWallGameDataComponent>())
+				{
+					if (GameDataForWall->GetWallColumnNum() > 0 && !GameDataForWall->GetWallBrickSize().IsZero())
+					{
+						CachedWallDesc.BrickSize = GameDataForWall->GetWallBrickSize();
+						CachedWallDesc.CenterOffset = GameDataForWall->GetWallCenterOffset();
+						CachedWallDesc.ColumnNum = GameDataForWall->GetWallColumnNum();
+						CachedWallDesc.RowNum = GameDataForWall->GetWallRowNum();
+						UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_SpawnBrick: Applied replicated WallDesc grid properties (Col=%d, Row=%d)"), CachedWallDesc.ColumnNum, CachedWallDesc.RowNum);
+					}
+				}
+			}
+		}
 	}
 
 	// Preview는 로컬 클라이언트에서만 표시

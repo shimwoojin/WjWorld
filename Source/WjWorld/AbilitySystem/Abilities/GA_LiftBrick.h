@@ -32,6 +32,9 @@ public:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
+	/** 서버에서 클라이언트가 지정한 그리드 위치의 벽돌을 집기 처리 (Server RPC 콜백) */
+	void ServerHandleBrickPickup(int32 GridX, int32 GridY);
+
 private:
 	FVector CalculatePickupLocation() const;
 	FVector CalculatePreviewLocation() const;

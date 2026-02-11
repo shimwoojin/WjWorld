@@ -181,7 +181,7 @@ void UWjWorldBrickMovement::MoveBrick(float InMoveAllowTime)
 FVector UWjWorldBrickMovement::GetMovementVector(bool bIsNew)
 {
 	if (!BrickComponent.IsValid()) return FVector();
-	
+
 	if (bIsNew)
 	{
 		LastMovementVector = MovementVector;
@@ -190,40 +190,55 @@ FVector UWjWorldBrickMovement::GetMovementVector(bool bIsNew)
 	TArray<EWjWorldBrickMovementDirection> MovementDirs = GetNextDirections();
 	const FWjWorldBrickProperties& BrickProperties = BrickComponent->GetBrickProperties();
 
-	for(EWjWorldBrickMovementDirection Direction : MovementDirs)
+	if (MovementDirs.Num() == 0)
 	{
-		switch (Direction)
+		MovementVector = FVector::ZeroVector;
+		return MovementVector;
+	}
+
+	// 방향 enum → 그리드 델타 변환 헬퍼
+	auto GetDelta = [](EWjWorldBrickMovementDirection Dir) -> FIntPoint
+	{
+		switch (Dir)
 		{
-		case EWjWorldBrickMovementDirection::Up:
-			++CurrentGridPosition.Y;
-			break;
-		case EWjWorldBrickMovementDirection::Right:
-			++CurrentGridPosition.X;
-			break;
-		case EWjWorldBrickMovementDirection::Down:
-			--CurrentGridPosition.Y;
-			break;
-		case EWjWorldBrickMovementDirection::Left:
-			--CurrentGridPosition.X;
-			break;
-		case EWjWorldBrickMovementDirection::UpRight:
-			++CurrentGridPosition.X;
-			++CurrentGridPosition.Y;
-			break;
-		case EWjWorldBrickMovementDirection::UpLeft:
-			--CurrentGridPosition.X;
-			++CurrentGridPosition.Y;
-			break;
-		case EWjWorldBrickMovementDirection::DownRight:
-			++CurrentGridPosition.X;
-			--CurrentGridPosition.Y;
-			break;
-		case EWjWorldBrickMovementDirection::DownLeft:
-			--CurrentGridPosition.X;
-			--CurrentGridPosition.Y;
-			break;
+		case EWjWorldBrickMovementDirection::Up: return FIntPoint(0, 1);
+		case EWjWorldBrickMovementDirection::Right: return FIntPoint(1, 0);
+		case EWjWorldBrickMovementDirection::Down: return FIntPoint(0, -1);
+		case EWjWorldBrickMovementDirection::Left: return FIntPoint(-1, 0);
+		case EWjWorldBrickMovementDirection::UpRight: return FIntPoint(1, 1);
+		case EWjWorldBrickMovementDirection::UpLeft: return FIntPoint(-1, 1);
+		case EWjWorldBrickMovementDirection::DownRight: return FIntPoint(1, -1);
+		case EWjWorldBrickMovementDirection::DownLeft: return FIntPoint(-1, -1);
+		default: return FIntPoint(0, 0);
+		}
+	};
+
+	// 이전 이동 방향에서 선호 델타 계산
+	FIntPoint LastDelta(0, 0);
+	if (!LastMovementVector.IsNearlyZero())
+	{
+		LastDelta.X = FMath::RoundToInt32(LastMovementVector.X / BrickProperties.Size.X);
+		LastDelta.Y = FMath::RoundToInt32(LastMovementVector.Y / BrickProperties.Size.Y);
+	}
+
+	// 하나의 방향만 선택 (이전 이동 방향 우선)
+	EWjWorldBrickMovementDirection ChosenDirection = MovementDirs[0];
+	if (MovementDirs.Num() > 1 && (LastDelta.X != 0 || LastDelta.Y != 0))
+	{
+		for (EWjWorldBrickMovementDirection Dir : MovementDirs)
+		{
+			if (GetDelta(Dir) == LastDelta)
+			{
+				ChosenDirection = Dir;
+				break;
+			}
 		}
 	}
+
+	// 선택된 방향 하나만 적용
+	FIntPoint Delta = GetDelta(ChosenDirection);
+	CurrentGridPosition.X += Delta.X;
+	CurrentGridPosition.Y += Delta.Y;
 
 	EndLocation = UWjWorldBrickSpawner::CalculateBrickPosition
 	(

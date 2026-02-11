@@ -13,8 +13,6 @@ void UPlacementSaveDialogWidget::NativeConstruct()
 	if (ConfirmButton)
 	{
 		ConfirmButton->OnClicked.AddDynamic(this, &UPlacementSaveDialogWidget::OnConfirmClicked);
-		// 기본적으로 활성화 (SetValidationResult에서 필요시 비활성화)
-		ConfirmButton->SetIsEnabled(true);
 	}
 
 	if (CancelButton)
@@ -27,23 +25,48 @@ void UPlacementSaveDialogWidget::NativeConstruct()
 		SlotNameTextBox->OnTextChanged.AddDynamic(this, &UPlacementSaveDialogWidget::OnSlotNameChanged);
 	}
 
-	if (TitleText)
+	// CreateWidget → SetContext → SetValidationResult → ShowPopup → NativeConstruct 순서 대응
+	// NativeConstruct 이전에 호출된 설정을 위젯 바인딩 완료 후 재적용
+	if (bContextSet)
 	{
-		TitleText->SetText(FText::FromString(TEXT("레이아웃 저장")));
-	}
+		SetContext(CurrentContext);
 
-	// 기본적으로 유효성 텍스트 숨기기
-	if (ValidationText)
-	{
-		ValidationText->SetVisibility(ESlateVisibility::Collapsed);
+		// SetValidationResult도 이미 호출되었으면 재적용
+		if (bValidationResultSet)
+		{
+			SetValidationResult(bIsCurrentlyValid, CachedValidationMessage);
+		}
+		else
+		{
+			// validation 미설정 시 기본 활성화
+			if (ConfirmButton)
+			{
+				ConfirmButton->SetIsEnabled(true);
+			}
+		}
 	}
-	if (ValidationStatusText)
+	else
 	{
-		ValidationStatusText->SetVisibility(ESlateVisibility::Collapsed);
-	}
+		if (TitleText)
+		{
+			TitleText->SetText(FText::FromString(TEXT("레이아웃 저장")));
+		}
 
-	// 초기 유효성 상태 true로 설정
-	bIsCurrentlyValid = true;
+		if (ValidationText)
+		{
+			ValidationText->SetVisibility(ESlateVisibility::Collapsed);
+		}
+		if (ValidationStatusText)
+		{
+			ValidationStatusText->SetVisibility(ESlateVisibility::Collapsed);
+		}
+
+		bIsCurrentlyValid = true;
+		if (ConfirmButton)
+		{
+			ConfirmButton->SetIsEnabled(true);
+		}
+	}
 }
 
 void UPlacementSaveDialogWidget::ShowPopup()
@@ -69,6 +92,7 @@ void UPlacementSaveDialogWidget::SetDefaultSlotName(const FString& SlotName)
 void UPlacementSaveDialogWidget::SetContext(EPlacementContext InContext)
 {
 	CurrentContext = InContext;
+	bContextSet = true;
 
 	// AW 컨텍스트의 경우 유효성 검사 UI 표시
 	bool bShowValidation = (CurrentContext == EPlacementContext::ApproachingWall);
@@ -108,6 +132,8 @@ void UPlacementSaveDialogWidget::SetContext(EPlacementContext InContext)
 void UPlacementSaveDialogWidget::SetValidationResult(bool bIsValid, const FText& Message)
 {
 	bIsCurrentlyValid = bIsValid;
+	bValidationResultSet = true;
+	CachedValidationMessage = Message;
 
 	if (ValidationText)
 	{

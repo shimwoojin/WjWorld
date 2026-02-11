@@ -4,6 +4,8 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Components/ScrollBox.h"
+#include "Components/HorizontalBox.h"
+#include "Components/HorizontalBoxSlot.h"
 #include "WjWorldLogCategories.h"
 
 void UPlacementLoadDialogWidget::NativeConstruct()
@@ -48,6 +50,7 @@ void UPlacementLoadDialogWidget::SetSlotList(const TArray<FString>& SlotNames)
 
 	SlotListScrollBox->ClearChildren();
 	ButtonToSlotNameMap.Empty();
+	DeleteButtonToSlotNameMap.Empty();
 
 	if (SlotNames.Num() == 0)
 	{
@@ -67,23 +70,41 @@ void UPlacementLoadDialogWidget::SetSlotList(const TArray<FString>& SlotNames)
 
 	for (const FString& SlotName : SlotNames)
 	{
+		// 수평 박스: [슬롯 이름 버튼 (Fill) | X 삭제 버튼 (Auto)]
+		UHorizontalBox* Row = NewObject<UHorizontalBox>(this);
+
+		// 슬롯 이름 버튼
 		UButton* SlotButton = NewObject<UButton>(this);
 		UTextBlock* SlotText = NewObject<UTextBlock>(this);
-
 		SlotText->SetText(FText::FromString(SlotName));
-
-		// 버튼 스타일링
 		FSlateFontInfo FontInfo = SlotText->GetFont();
 		FontInfo.Size = 14;
 		SlotText->SetFont(FontInfo);
-
 		SlotButton->AddChild(SlotText);
 
-		// 버튼 → 슬롯 이름 매핑 등록 + 핸들러 바인딩
 		ButtonToSlotNameMap.Add(SlotButton, SlotName);
 		SlotButton->OnClicked.AddDynamic(this, &UPlacementLoadDialogWidget::OnSlotButtonClicked);
 
-		SlotListScrollBox->AddChild(SlotButton);
+		UHorizontalBoxSlot* SlotButtonSlot = Row->AddChildToHorizontalBox(SlotButton);
+		SlotButtonSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+
+		// X 삭제 버튼
+		UButton* DeleteButton = NewObject<UButton>(this);
+		UTextBlock* DeleteText = NewObject<UTextBlock>(this);
+		DeleteText->SetText(FText::FromString(TEXT("X")));
+		DeleteText->SetColorAndOpacity(FSlateColor(FLinearColor::Red));
+		FSlateFontInfo DeleteFontInfo = DeleteText->GetFont();
+		DeleteFontInfo.Size = 14;
+		DeleteText->SetFont(DeleteFontInfo);
+		DeleteButton->AddChild(DeleteText);
+
+		DeleteButtonToSlotNameMap.Add(DeleteButton, SlotName);
+		DeleteButton->OnClicked.AddDynamic(this, &UPlacementLoadDialogWidget::OnDeleteButtonClicked);
+
+		UHorizontalBoxSlot* DeleteButtonSlot = Row->AddChildToHorizontalBox(DeleteButton);
+		DeleteButtonSlot->SetSize(FSlateChildSize(ESlateSizeRule::Automatic));
+
+		SlotListScrollBox->AddChild(Row);
 	}
 
 	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementLoadDialogWidget: Slot list populated with %d items"), SlotNames.Num());
@@ -132,6 +153,21 @@ void UPlacementLoadDialogWidget::OnSlotButtonClicked()
 			UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementLoadDialogWidget: Slot selected: %s"), *SlotName);
 			OnLoadConfirmed.Broadcast(SlotName);
 			ClosePopup();
+			return;
+		}
+	}
+}
+
+void UPlacementLoadDialogWidget::OnDeleteButtonClicked()
+{
+	// 호버 상태인 삭제 버튼을 찾아 슬롯 이름 조회
+	for (const auto& Pair : DeleteButtonToSlotNameMap)
+	{
+		if (Pair.Key && Pair.Key->IsHovered())
+		{
+			FString SlotName = Pair.Value;
+			UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementLoadDialogWidget: Delete requested for slot: %s"), *SlotName);
+			OnSlotDeleteRequested.Broadcast(SlotName);
 			return;
 		}
 	}

@@ -434,6 +434,48 @@ TArray<FString> UWjWorldPlacementComponent::GetSavedLayoutSlots() const
 	return SlotNames;
 }
 
+bool UWjWorldPlacementComponent::DeleteLayoutSlot(const FString& SlotName)
+{
+	// SaveGame 삭제
+	if (!UGameplayStatics::DeleteGameInSlot(SlotName, 0))
+	{
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlacementComponent: Failed to delete save slot '%s'"), *SlotName);
+		return false;
+	}
+
+	// AW 컨텍스트: CSV 파일도 삭제
+	if (CurrentContext == EPlacementContext::ApproachingWall)
+	{
+		FString CSVPath = GetUserWallLayoutDirectory() / SlotName + TEXT(".csv");
+		IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
+		if (PlatformFile.FileExists(*CSVPath))
+		{
+			PlatformFile.DeleteFile(*CSVPath);
+			UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Deleted CSV '%s'"), *CSVPath);
+		}
+	}
+	// JumpMap 컨텍스트: CSV 파일도 삭제
+	else if (CurrentContext == EPlacementContext::JumpMap)
+	{
+		FString CSVPath = GetUserJumpMapLayoutDirectory() / SlotName + TEXT(".csv");
+		IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
+		if (PlatformFile.FileExists(*CSVPath))
+		{
+			PlatformFile.DeleteFile(*CSVPath);
+			UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Deleted CSV '%s'"), *CSVPath);
+		}
+	}
+
+	// 현재 로드된 슬롯이면 초기화
+	if (LoadedSlotName == SlotName)
+	{
+		LoadedSlotName.Empty();
+	}
+
+	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Deleted layout slot '%s'"), *SlotName);
+	return true;
+}
+
 bool UWjWorldPlacementComponent::ExportLayoutAsCSV(const FString& FileName)
 {
 	// AW 컨텍스트에서만 동작
@@ -474,16 +516,16 @@ bool UWjWorldPlacementComponent::ExportLayoutAsCSV(const FString& FileName)
 		MaxBounds.Y = FMath::Max(MaxBounds.Y, Location.Y);
 	}
 
-	// 2. 그리드 크기 계산
-	int32 GridColumns = FMath::CeilToInt((MaxBounds.X - MinBounds.X) / BrickSize.X) + 1;
-	int32 GridRows = FMath::CeilToInt((MaxBounds.Y - MinBounds.Y) / BrickSize.Y) + 1;
+	// 2. 그리드 크기 계산 (+1 = 위치 개수, +2 = 양쪽 1셀 패딩)
+	int32 GridColumns = FMath::CeilToInt((MaxBounds.X - MinBounds.X) / BrickSize.X) + 1 + 2;
+	int32 GridRows = FMath::CeilToInt((MaxBounds.Y - MinBounds.Y) / BrickSize.Y) + 1 + 2;
 
 	// 최소 크기 보장
 	GridColumns = FMath::Max(GridColumns, 3);
 	GridRows = FMath::Max(GridRows, 3);
 
-	// 그리드 원점 (좌하단)
-	FVector GridOrigin = MinBounds - FVector(BrickSize.X * 0.5f, BrickSize.Y * 0.5f, 0.0f);
+	// 그리드 원점: MinBounds에서 1칸 앞 (패딩용, 오브젝트가 인덱스 1부터 매핑)
+	FVector GridOrigin = MinBounds - FVector(BrickSize.X, BrickSize.Y, 0.0f);
 
 	// 3. 그리드 초기화 (-1 = Empty)
 	TArray<TArray<int32>> Grid;

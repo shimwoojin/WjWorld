@@ -10,8 +10,10 @@
 class UButton;
 class UTextBlock;
 class UScrollBox;
+class UHorizontalBox;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlacementLoadConfirmed, const FString&, SlotName);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlacementSlotDeleteRequested, const FString&, SlotName);
 
 /**
  * 배치 레이아웃 불러오기 다이얼로그 위젯
@@ -41,6 +43,10 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Placement")
 	FOnPlacementLoadConfirmed OnLoadConfirmed;
 
+	/** 슬롯 삭제 요청 델리게이트 */
+	UPROPERTY(BlueprintAssignable, Category = "Placement")
+	FOnPlacementSlotDeleteRequested OnSlotDeleteRequested;
+
 protected:
 	/** 슬롯 목록 스크롤박스 */
 	UPROPERTY(meta = (BindWidget))
@@ -65,10 +71,17 @@ private:
 	UFUNCTION()
 	void OnSlotButtonClicked();
 
+	UFUNCTION()
+	void OnDeleteButtonClicked();
+
 	/** 현재 컨텍스트 */
 	EPlacementContext CurrentContext = EPlacementContext::Lobby;
 
-	/** 버튼 → 슬롯 이름 매핑 */
+	/** 슬롯 버튼 → 슬롯 이름 매핑 */
 	UPROPERTY()
 	TMap<TObjectPtr<UButton>, FString> ButtonToSlotNameMap;
+
+	/** 삭제 버튼 → 슬롯 이름 매핑 */
+	UPROPERTY()
+	TMap<TObjectPtr<UButton>, FString> DeleteButtonToSlotNameMap;
 };

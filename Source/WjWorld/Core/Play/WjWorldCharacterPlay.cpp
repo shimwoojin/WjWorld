@@ -29,8 +29,11 @@
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "AbilitySystem/AttributeSets/WjWorldCharacterAttributeSet.h"
 #include "AbilitySystem/Effects/GE_SpawnBrickChargeCost.h"
+#include "AbilitySystem/Abilities/GA_LiftBrick.h"
+#include "GamePlay/Wall/WjWorldBrickActor.h"
 #include "GameplayEffect.h"
 #include "GameplayCueManager.h"
+#include "Engine/OverlapResult.h"
 
 AWjWorldCharacterPlay::AWjWorldCharacterPlay()
 {
@@ -491,4 +494,25 @@ void AWjWorldCharacterPlay::ServerSpawnBrickAtGridIndex_Implementation(int32 Gri
 		CueParams.Location = SpawnPosition;
 		AbilitySystemComponent->ExecuteGameplayCue(WjWorldGameplayTag::GameplayCue_Ability_SpawnBrick(), CueParams);
 	}
+}
+
+void AWjWorldCharacterPlay::ServerLiftBrickAtGridIndex_Implementation(int32 GridX, int32 GridY)
+{
+	UE_LOG(LogWjWorld, Log, TEXT("AWjWorldCharacterPlay::ServerLiftBrickAtGridIndex - GridIndex: (%d, %d)"), GridX, GridY);
+
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
+	if (!ASC) return;
+
+	// 활성 GA_LiftBrick 어빌리티 인스턴스 찾기
+	for (FGameplayAbilitySpec& Spec : ASC->GetActivatableAbilities())
+	{
+		UGA_LiftBrick* LiftBrickAbility = Cast<UGA_LiftBrick>(Spec.GetPrimaryInstance());
+		if (LiftBrickAbility && LiftBrickAbility->IsActive())
+		{
+			LiftBrickAbility->ServerHandleBrickPickup(GridX, GridY);
+			return;
+		}
+	}
+
+	UE_LOG(LogWjWorld, Warning, TEXT("AWjWorldCharacterPlay::ServerLiftBrickAtGridIndex - No active GA_LiftBrick found"));
 }

@@ -232,6 +232,7 @@ void UPlacementHUDWidgetBase::OnLoadClicked()
 
 		// 콜백 바인딩
 		LoadDialogInstance->OnLoadConfirmed.AddDynamic(this, &UPlacementHUDWidgetBase::OnLoadConfirmed);
+		LoadDialogInstance->OnSlotDeleteRequested.AddDynamic(this, &UPlacementHUDWidgetBase::OnSlotDeleteRequested);
 		LoadDialogInstance->ShowPopup();
 	}
 }
@@ -254,6 +255,23 @@ void UPlacementHUDWidgetBase::ExecuteLoad(const FString& SlotName)
 		else
 		{
 			UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlacementHUDWidgetBase: Failed to load layout from slot '%s'"), *SlotName);
+		}
+	}
+}
+
+void UPlacementHUDWidgetBase::OnSlotDeleteRequested(const FString& SlotName)
+{
+	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementHUDWidgetBase: Slot delete requested: %s"), *SlotName);
+
+	if (PlacementComponent)
+	{
+		PlacementComponent->DeleteLayoutSlot(SlotName);
+
+		// 다이얼로그 내 슬롯 목록 갱신 (닫지 않음)
+		if (LoadDialogInstance)
+		{
+			TArray<FString> UpdatedSlots = PlacementComponent->GetSavedLayoutSlots();
+			LoadDialogInstance->SetSlotList(UpdatedSlots);
 		}
 	}
 }

@@ -29,6 +29,19 @@ public:
 	const FString& GetCurrentWallName() const { return CurrentWallName; }
 	void SetCurrentWallName(const FString& InWallName) { CurrentWallName = InWallName; }
 
+	/** 리플리케이트된 WallDesc 그리드 속성 (클라이언트에서 CSV 없이 사용) */
+	const FVector& GetWallBrickSize() const { return WallBrickSize; }
+	void SetWallBrickSize(const FVector& InSize) { WallBrickSize = InSize; }
+
+	const FVector& GetWallCenterOffset() const { return WallCenterOffset; }
+	void SetWallCenterOffset(const FVector& InOffset) { WallCenterOffset = InOffset; }
+
+	int32 GetWallColumnNum() const { return WallColumnNum; }
+	void SetWallColumnNum(int32 InNum) { WallColumnNum = InNum; }
+
+	int32 GetWallRowNum() const { return WallRowNum; }
+	void SetWallRowNum(int32 InNum) { WallRowNum = InNum; }
+
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -47,4 +60,16 @@ public:
 
 	UPROPERTY(Replicated)
 	FString CurrentWallName;
+
+	UPROPERTY(Replicated)
+	FVector WallBrickSize = FVector::ZeroVector;
+
+	UPROPERTY(Replicated)
+	FVector WallCenterOffset = FVector::ZeroVector;
+
+	UPROPERTY(Replicated)
+	int32 WallColumnNum = 0;
+
+	UPROPERTY(Replicated)
+	int32 WallRowNum = 0;
 };

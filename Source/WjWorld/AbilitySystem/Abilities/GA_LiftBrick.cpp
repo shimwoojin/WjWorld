@@ -112,84 +112,48 @@ void UGA_LiftBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 				}
 			}
 		}
-	}
 
-	// 서버에서 바라보는 방향의 벽돌 탐색 및 제거
-	if (HasAuthority(&ActivationInfo))
-	{
-		FVector PickupLocation = CalculatePickupLocation();
-		FVector HalfSize = CachedWallDesc.BrickSize * 0.3f;
-
-		TArray<FOverlapResult> Overlaps;
-		FCollisionShape CollisionShape = FCollisionShape::MakeBox(HalfSize);
-
-		if (GetWorld()->OverlapMultiByObjectType(
-			Overlaps,
-			PickupLocation,
-			FQuat::Identity,
-			FCollisionObjectQueryParams::AllObjects,
-			CollisionShape))
+		// 리플리케이트된 WallDesc 속성으로 보정 (클라이언트에서 CSV 로드 실패 시에도 정확한 그리드 사용)
+		if (World)
 		{
-			for (const FOverlapResult& Overlap : Overlaps)
+			if (AWjWorldGameStatePlay* GameStateForWall = World->GetGameState<AWjWorldGameStatePlay>())
 			{
-				AWjWorldBrickActor* BrickActor = Cast<AWjWorldBrickActor>(Overlap.GetActor());
-				if (!BrickActor) continue;
-
-				UWjWorldBrickComponent* BrickComp = BrickActor->GetBrickComponent();
-				if (!BrickComp) continue;
-
-				const FWjWorldBrickProperties& Props = BrickComp->GetBrickProperties();
-
-				// Moving 또는 Destructible 벽돌만 집을 수 있음
-				if (Props.BrickType == EWjWorldBrickType::Moving || Props.BrickType == EWjWorldBrickType::Destructible)
+				if (UApproachingWallGameDataComponent* GameDataForWall = GameStateForWall->GetGameData<UApproachingWallGameDataComponent>())
 				{
-					// 원래 벽돌 정보 저장
-					LiftedBrickProperties = Props;
-					OriginalBrickLocation = BrickActor->GetActorLocation();
-					OriginalGridIndex = Props.SpawnedGridPosition;
-					bHasLiftedBrick = true;
-
-					// 원래 벽돌 파괴
-					BrickActor->Destroy();
-
-					// 캐릭터에 들고 있는 벽돌 시각화 (3자에게도 보임)
-					if (AWjWorldCharacterPlay* CharacterPlay = Cast<AWjWorldCharacterPlay>(GetAvatarActorFromActorInfo()))
+					if (GameDataForWall->GetWallColumnNum() > 0 && !GameDataForWall->GetWallBrickSize().IsZero())
 					{
-						const UWjWorldDeveloperSettings* DevSettings = GetDefault<UWjWorldDeveloperSettings>();
-						if (DevSettings && DevSettings->BrickMesh.IsValid())
-						{
-							UStaticMesh* BrickMesh = DevSettings->BrickMesh.LoadSynchronous();
-							CharacterPlay->ShowLiftedBrick(BrickMesh, CachedWallDesc.BrickSize / 100.f, Props.GetColorWithBrickType());
-						}
+						CachedWallDesc.BrickSize = GameDataForWall->GetWallBrickSize();
+						CachedWallDesc.CenterOffset = GameDataForWall->GetWallCenterOffset();
+						CachedWallDesc.ColumnNum = GameDataForWall->GetWallColumnNum();
+						CachedWallDesc.RowNum = GameDataForWall->GetWallRowNum();
+						UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_LiftBrick: Applied replicated WallDesc grid properties (Col=%d, Row=%d)"), CachedWallDesc.ColumnNum, CachedWallDesc.RowNum);
 					}
-
-					// GameplayCue 실행 (벽돌 집는 사운드)
-					if (UAbilitySystemComponent* ASC = ActorInfo->AbilitySystemComponent.Get())
-					{
-						FGameplayCueParameters CueParams;
-						CueParams.Location = OriginalBrickLocation;
-						ASC->ExecuteGameplayCue(WjWorldGameplayTag::GameplayCue_Ability_LiftBrick(), CueParams);
-					}
-
-					UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_LiftBrick: Picked up %s brick at %s"),
-						Props.BrickType == EWjWorldBrickType::Moving ? TEXT("Moving") : TEXT("Destructible"),
-						*OriginalBrickLocation.ToString());
-					break;
 				}
 			}
 		}
-
-		if (!bHasLiftedBrick)
-		{
-			UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_LiftBrick: No liftable brick found"));
-			EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
-			return;
-		}
 	}
 
-	// Preview는 로컬 클라이언트에서만 표시
+	// 로컬 클라이언트: 집을 벽돌 그리드 인덱스 계산 → 서버 RPC + 프리뷰 표시
 	if (ActorInfo->IsLocallyControlled())
 	{
+		// 집을 벽돌의 그리드 인덱스 계산 → 서버로 RPC 전송
+		FVector PickupLocation = CalculatePickupLocation();
+		FIntPoint PickupGridIndex = UWjWorldBrickSpawner::CalculateBrickGridIndex(
+			PickupLocation,
+			CachedWallDesc.ColumnNum,
+			CachedWallDesc.RowNum,
+			CachedWallDesc.CenterOffset,
+			CachedWallDesc.BrickSize
+		);
+
+		AWjWorldCharacterPlay* CharacterPlay = Cast<AWjWorldCharacterPlay>(GetAvatarActorFromActorInfo());
+		if (CharacterPlay)
+		{
+			// 서버로 RPC 전송 (호스트는 즉시 실행됨)
+			CharacterPlay->ServerLiftBrickAtGridIndex(PickupGridIndex.X, PickupGridIndex.Y);
+		}
+
+		// 프리뷰 액터 스폰
 		SpawnPreviewActor();
 
 		if (World)
@@ -204,7 +168,7 @@ void UGA_LiftBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 		}
 
 		// 프롬프트 UI 표시
-		if (AWjWorldCharacterPlay* CharacterPlay = Cast<AWjWorldCharacterPlay>(GetAvatarActorFromActorInfo()))
+		if (CharacterPlay)
 		{
 			CharacterPlay->ShowAbilityPrompt(
 				NSLOCTEXT("AbilityPrompt", "ConfirmKey", "좌클릭"),
@@ -503,4 +467,82 @@ void UGA_LiftBrick::SpawnBrickAtLocation(const FVector& Location)
 	SpawnProps.SpawnedGridPosition = SpawnGridIndex;
 
 	UWjWorldBrickSpawner::SpawnBrickActor(GetWorld(), SpawnProps, SpawnGridIndex.X, SpawnGridIndex.Y);
+}
+
+void UGA_LiftBrick::ServerHandleBrickPickup(int32 GridX, int32 GridY)
+{
+	UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_LiftBrick::ServerHandleBrickPickup - GridIndex: (%d, %d)"), GridX, GridY);
+
+	// 클라이언트가 지정한 그리드 위치를 월드 좌표로 변환
+	FVector PickupLocation = UWjWorldBrickSpawner::CalculateBrickPosition(
+		GridX, GridY,
+		CachedWallDesc.ColumnNum,
+		CachedWallDesc.RowNum,
+		CachedWallDesc.CenterOffset,
+		CachedWallDesc.BrickSize
+	);
+
+	FVector HalfSize = CachedWallDesc.BrickSize * 0.3f;
+	TArray<FOverlapResult> Overlaps;
+	FCollisionShape CollisionShape = FCollisionShape::MakeBox(HalfSize);
+
+	if (GetWorld()->OverlapMultiByObjectType(
+		Overlaps,
+		PickupLocation,
+		FQuat::Identity,
+		FCollisionObjectQueryParams::AllObjects,
+		CollisionShape))
+	{
+		for (const FOverlapResult& Overlap : Overlaps)
+		{
+			AWjWorldBrickActor* BrickActor = Cast<AWjWorldBrickActor>(Overlap.GetActor());
+			if (!BrickActor) continue;
+
+			UWjWorldBrickComponent* BrickComp = BrickActor->GetBrickComponent();
+			if (!BrickComp) continue;
+
+			const FWjWorldBrickProperties& Props = BrickComp->GetBrickProperties();
+
+			// Moving 또는 Destructible 벽돌만 집을 수 있음
+			if (Props.BrickType == EWjWorldBrickType::Moving || Props.BrickType == EWjWorldBrickType::Destructible)
+			{
+				LiftedBrickProperties = Props;
+				OriginalBrickLocation = BrickActor->GetActorLocation();
+				OriginalGridIndex = Props.SpawnedGridPosition;
+				bHasLiftedBrick = true;
+
+				BrickActor->Destroy();
+
+				// 캐릭터에 들고 있는 벽돌 시각화
+				if (AWjWorldCharacterPlay* CharacterPlay = Cast<AWjWorldCharacterPlay>(GetAvatarActorFromActorInfo()))
+				{
+					const UWjWorldDeveloperSettings* DevSettings = GetDefault<UWjWorldDeveloperSettings>();
+					if (DevSettings && DevSettings->BrickMesh.IsValid())
+					{
+						UStaticMesh* BrickMesh = DevSettings->BrickMesh.LoadSynchronous();
+						CharacterPlay->ShowLiftedBrick(BrickMesh, CachedWallDesc.BrickSize / 100.f, Props.GetColorWithBrickType());
+					}
+				}
+
+				// GameplayCue 실행
+				if (UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo())
+				{
+					FGameplayCueParameters CueParams;
+					CueParams.Location = OriginalBrickLocation;
+					ASC->ExecuteGameplayCue(WjWorldGameplayTag::GameplayCue_Ability_LiftBrick(), CueParams);
+				}
+
+				UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_LiftBrick: Picked up %s brick at %s"),
+					Props.BrickType == EWjWorldBrickType::Moving ? TEXT("Moving") : TEXT("Destructible"),
+					*OriginalBrickLocation.ToString());
+				break;
+			}
+		}
+	}
+
+	if (!bHasLiftedBrick)
+	{
+		UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_LiftBrick: No liftable brick found at grid (%d, %d)"), GridX, GridY);
+		EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, true);
+	}
 }

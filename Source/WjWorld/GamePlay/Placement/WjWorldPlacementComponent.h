@@ -81,6 +81,9 @@ public:
 	/** 저장된 슬롯 목록 가져오기 */
 	TArray<FString> GetSavedLayoutSlots() const;
 
+	/** 저장된 레이아웃 슬롯 삭제 */
+	bool DeleteLayoutSlot(const FString& SlotName);
+
 	/** 현재 로드된 슬롯 이름 반환 (없으면 빈 문자열) */
 	FString GetLoadedSlotName() const { return LoadedSlotName; }
 

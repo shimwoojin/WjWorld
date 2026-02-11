@@ -82,6 +82,15 @@ private:
 	/** 현재 컨텍스트 */
 	EPlacementContext CurrentContext = EPlacementContext::Lobby;
 
+	/** SetContext가 호출되었는지 */
+	bool bContextSet = false;
+
+	/** SetValidationResult가 호출되었는지 */
+	bool bValidationResultSet = false;
+
 	/** 현재 유효성 상태 */
 	bool bIsCurrentlyValid = true;
+
+	/** 캐시된 유효성 메시지 (NativeConstruct 이전 호출 대응) */
+	FText CachedValidationMessage;
 };

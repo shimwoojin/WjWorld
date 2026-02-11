@@ -99,6 +99,10 @@ protected:
 	UFUNCTION()
 	virtual void OnLoadConfirmed(const FString& SlotName);
 
+	/** 불러오기 다이얼로그에서 슬롯 삭제 요청 시 호출 */
+	UFUNCTION()
+	void OnSlotDeleteRequested(const FString& SlotName);
+
 	/** 실제 저장 로직 - 서브클래스에서 오버라이드 가능 */
 	virtual void ExecuteSave(const FString& SlotName);
 

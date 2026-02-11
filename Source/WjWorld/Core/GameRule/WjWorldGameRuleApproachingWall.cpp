@@ -432,6 +432,10 @@ void UWjWorldGameRuleApproachingWall::OnWallSpawnFinished(const TArray<FVector>&
 		if (UApproachingWallGameDataComponent* GameData = GameState->GetGameData<UApproachingWallGameDataComponent>())
 		{
 			GameData->SetCurrentWallName(Desc.WallName);
+			GameData->SetWallBrickSize(Desc.BrickSize);
+			GameData->SetWallCenterOffset(Desc.CenterOffset);
+			GameData->SetWallColumnNum(Desc.ColumnNum);
+			GameData->SetWallRowNum(Desc.RowNum);
 		}
 	}
 
