@@ -4,6 +4,7 @@
 #include "Core/Base/WjWorldCharacterBase.h"
 #include "GamePlay/Placement/WjWorldPlacementComponent.h"
 #include "GamePlay/Placement/WjWorldPlacementCameraPawn.h"
+#include "GameFramework/GameplayCameraComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "InputMappingContext.h"
@@ -70,6 +71,15 @@ void AWjWorldPlayerControllerLobby::SwitchToPlacementCamera()
 	}
 
 	OriginalPawn = GetPawn();
+
+	// 캐릭터의 GamePlayCamera 비활성화 (Possess 전 해제해야 재 Possess 시 Activate()가 정상 동작)
+	if (AWjWorldCharacterBase* CharBase = Cast<AWjWorldCharacterBase>(GetPawn()))
+	{
+		if (UGameplayCameraComponent* GamePlayCamera = CharBase->GetGamePlayCamera())
+		{
+			GamePlayCamera->Deactivate();
+		}
+	}
 
 	// 현재 카메라 위치/회전을 스폰 기준으로 사용
 	FVector CameraSpawnLoc = FVector::ZeroVector;
