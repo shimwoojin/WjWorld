@@ -22,6 +22,10 @@ struct FPlacedObjectSaveEntry
 	/** 월드 트랜스폼 */
 	UPROPERTY()
 	FTransform Transform;
+
+	/** 액터별 커스텀 프로퍼티 (JumpMap: CheckpointOrder 등) */
+	UPROPERTY()
+	TMap<FString, FString> CustomProperties;
 };
 
 /**

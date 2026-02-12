@@ -9,6 +9,7 @@
 #include "Core/GameData/JumpMapGameDataComponent.h"
 #include "Core/GameData/JumpMapPlayerDataComponent.h"
 #include "GamePlay/JumpMap/JumpMapLayoutDataAsset.h"
+#include "GamePlay/JumpMap/JumpMapActorBase.h"
 #include "GamePlay/JumpMap/JumpMapCheckpointActor.h"
 #include "GamePlay/JumpMap/JumpMapEndActor.h"
 #include "Setting/WjWorldDeveloperSettings.h"
@@ -49,15 +50,53 @@ void UWjWorldGameRuleJumpMap::LoadLayoutAndSpawnActors()
 	const UWjWorldDeveloperSettings* DevSettings = GetDefault<UWjWorldDeveloperSettings>();
 	if (!DevSettings) return;
 
-	// JumpMap 배치 카탈로그에서 레이아웃 로드
-	// 맵에 이미 배치된 체크포인트/엔드 액터를 수집
+	// MapOption에서 레이아웃 이름 가져오기
+	FString MapOpt;
+	AWjWorldGameModePlay* GameModePlay = GetGameModePlay();
+	if (GameModePlay)
+	{
+		MapOpt = GameModePlay->GetMapOption();
+	}
+
+	// MapOption이 있고 Default/Random이 아니면 CSV 레이아웃 로드 시도
+	bool bLoadedFromCSV = false;
+	if (!MapOpt.IsEmpty() && !MapOpt.Equals(TEXT("Default"), ESearchCase::IgnoreCase)
+		&& !MapOpt.Equals(TEXT("Random"), ESearchCase::IgnoreCase))
+	{
+		if (!DevSettings->JumpMapLayoutDataAsset.IsNull())
+		{
+			UJumpMapLayoutDataAsset* LayoutAsset = DevSettings->JumpMapLayoutDataAsset.LoadSynchronous();
+			if (LayoutAsset)
+			{
+				const FJumpMapLayout* Layout = LayoutAsset->GetLayoutByNameIncludingUser(MapOpt);
+				if (Layout)
+				{
+					SpawnActorsFromLayout(*Layout);
+					bLoadedFromCSV = true;
+					UE_LOG(LogWjWorld, Log, TEXT("GameRuleJumpMap: Loaded layout '%s' from CSV (%d objects)"),
+						*MapOpt, Layout->Objects.Num());
+				}
+				else
+				{
+					UE_LOG(LogWjWorld, Warning, TEXT("GameRuleJumpMap: Layout '%s' not found"), *MapOpt);
+				}
+			}
+		}
+	}
+
+	if (!bLoadedFromCSV)
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("GameRuleJumpMap: Using map-placed actors (no CSV layout)"));
+	}
+
+	// 체크포인트/엔드 액터 수집 (CSV 로딩 후에도 실행하여 CheckpointLocations 갱신)
+	CheckpointLocations.Empty();
 	for (TActorIterator<AJumpMapCheckpointActor> It(World); It; ++It)
 	{
 		AJumpMapCheckpointActor* Checkpoint = *It;
 		if (Checkpoint)
 		{
 			int32 Order = Checkpoint->CheckpointOrder;
-			// 배열 크기 확보
 			if (CheckpointLocations.Num() <= Order)
 			{
 				CheckpointLocations.SetNum(Order + 1);
@@ -69,7 +108,6 @@ void UWjWorldGameRuleJumpMap::LoadLayoutAndSpawnActors()
 		}
 	}
 
-	// 엔드 액터에서 스타트 위치 확인
 	for (TActorIterator<AJumpMapEndActor> It(World); It; ++It)
 	{
 		AJumpMapEndActor* EndActor = *It;
@@ -89,6 +127,58 @@ void UWjWorldGameRuleJumpMap::LoadLayoutAndSpawnActors()
 
 	UE_LOG(LogWjWorld, Log, TEXT("GameRuleJumpMap: Layout loaded - Start: %s, Checkpoints: %d"),
 		*StartLocation.ToString(), CheckpointLocations.Num());
+}
+
+void UWjWorldGameRuleJumpMap::SpawnActorsFromLayout(const FJumpMapLayout& Layout)
+{
+	UWorld* World = GetWorld();
+	if (!World) return;
+
+	const UWjWorldDeveloperSettings* DevSettings = GetDefault<UWjWorldDeveloperSettings>();
+
+	for (const FJumpMapLayoutEntry& Entry : Layout.Objects)
+	{
+		// BP 프로퍼티에서 먼저 조회
+		TSubclassOf<AActor> ActorClass = nullptr;
+		if (const TSubclassOf<AActor>* Found = ObjectIdToActorClassMap.Find(Entry.ObjectId))
+		{
+			ActorClass = *Found;
+		}
+		else if (DevSettings)
+		{
+			// DeveloperSettings 폴백
+			if (const TSoftClassPtr<AJumpMapActorBase>* SoftFound =
+				DevSettings->JumpMapObjectIdToClassMap.Find(Entry.ObjectId))
+			{
+				ActorClass = SoftFound->LoadSynchronous();
+			}
+		}
+
+		if (!ActorClass)
+		{
+			UE_LOG(LogWjWorld, Warning, TEXT("GameRuleJumpMap: No class for ObjectId '%s'"), *Entry.ObjectId.ToString());
+			continue;
+		}
+
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		AActor* NewActor = World->SpawnActor<AActor>(ActorClass, Entry.Transform, SpawnParams);
+		if (NewActor)
+		{
+			// JumpMapActorBase인 경우 CustomProperties 적용
+			AJumpMapActorBase* JumpMapActor = Cast<AJumpMapActorBase>(NewActor);
+			if (JumpMapActor)
+			{
+				JumpMapActor->InitializeFromLayoutEntry(Entry.Transform);
+				JumpMapActor->ApplySerializedProperties(Entry.CustomProperties);
+			}
+
+			SpawnedGameplayActors.Add(NewActor);
+		}
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("GameRuleJumpMap: Spawned %d actors from layout"), SpawnedGameplayActors.Num());
 }
 
 void UWjWorldGameRuleJumpMap::OnGameReady()

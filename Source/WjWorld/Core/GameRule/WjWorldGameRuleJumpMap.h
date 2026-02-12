@@ -11,7 +11,9 @@ class AWjWorldPlayerStatePlay;
 class AJumpMapCheckpointActor;
 class AJumpMapEndActor;
 struct FPlacedObjectSaveEntry;
+class AJumpMapActorBase;
 class UJumpMapLayoutDataAsset;
+struct FJumpMapLayout;
 
 /**
  * JumpMap 미니게임 규칙
@@ -47,6 +49,7 @@ protected:
 
 private:
 	void LoadLayoutAndSpawnActors();
+	void SpawnActorsFromLayout(const FJumpMapLayout& Layout);
 	void RespawnPlayerAtCheckpoint(AWjWorldCharacterPlay* Character, int32 CheckpointIndex);
 	void UpdateGameData();
 

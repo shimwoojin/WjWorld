@@ -21,4 +21,7 @@ public:
 protected:
 	/** 나가기 버튼 클릭 - 로비로 복귀 */
 	virtual void OnExitClicked() override;
+
+	/** 저장 시 JumpMap 레이아웃 검증 후 저장 */
+	virtual void ExecuteSave(const FString& SlotName) override;
 };

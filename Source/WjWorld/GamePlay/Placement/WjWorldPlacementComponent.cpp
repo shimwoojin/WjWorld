@@ -16,6 +16,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Misc/FileHelper.h"
 #include "HAL/PlatformFileManager.h"
+#include "DrawDebugHelpers.h"
+#include "EngineUtils.h"
 #include "WjWorldLogCategories.h"
 
 UWjWorldPlacementComponent::UWjWorldPlacementComponent()
@@ -46,6 +48,7 @@ void UWjWorldPlacementComponent::EnterPlacementModeWithContext(EPlacementContext
 	CurrentMode = EPlacementMode::Placing;
 	SetComponentTickEnabled(true);
 	BindInputActions();
+	RefreshPlacementModeVisuals();
 
 	OnPlacementModeChanged.Broadcast(CurrentMode);
 	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Entered placement mode (Context: %s)"),
@@ -75,6 +78,8 @@ void UWjWorldPlacementComponent::ExitPlacementMode()
 	bAirPlacementMode = false;
 	AirPlaneHeight = 0.f;
 	// 컨텍스트는 리셋하지 않음 (다음 EnterPlacementMode 시 설정)
+
+	RefreshPlacementModeVisuals();
 
 	OnPlacementModeChanged.Broadcast(CurrentMode);
 	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Exited placement mode"));
@@ -158,10 +163,28 @@ void UWjWorldPlacementComponent::RotatePreview()
 {
 	if (PreviewActor && CurrentMode == EPlacementMode::Placing)
 	{
-		const FPlaceableObjectDefinition* Def = Catalog ? Catalog->FindByObjectId(SelectedObjectId) : nullptr;
-		float SnapDegrees = Def ? Def->RotationSnapDegrees : 90.0f;
-		PreviewActor->RotatePreview(SnapDegrees);
+		PreviewActor->RotatePreview(GetEffectiveSnapDegrees());
 	}
+}
+
+void UWjWorldPlacementComponent::CycleRotationAxis()
+{
+	if (PreviewActor && CurrentMode == EPlacementMode::Placing)
+	{
+		PreviewActor->CycleRotationAxis();
+	}
+}
+
+void UWjWorldPlacementComponent::CycleSnapDegrees()
+{
+	CurrentSnapPresetIndex = (CurrentSnapPresetIndex + 1) % NumSnapPresets;
+	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Snap degrees changed to %.0f"),
+		SnapDegreePresets[CurrentSnapPresetIndex]);
+}
+
+float UWjWorldPlacementComponent::GetEffectiveSnapDegrees() const
+{
+	return SnapDegreePresets[CurrentSnapPresetIndex];
 }
 
 void UWjWorldPlacementComponent::ConfirmPlacement()
@@ -191,14 +214,40 @@ void UWjWorldPlacementComponent::ConfirmPlacement()
 
 	// 배치 데이터 생성
 	FVector SpawnLocation = PreviewActor->GetActorLocation();
-	FRotator SpawnRotation = FRotator(0.0f, PreviewActor->GetCurrentYaw(), 0.0f);
+	FRotator SpawnRotation = PreviewActor->GetCurrentRotation();
 
 	FPlacedObjectSaveEntry Entry;
 	Entry.ObjectId = SelectedObjectId;
 	Entry.Transform = FTransform(SpawnRotation, SpawnLocation, Def->DefaultScale);
 
+	// JumpMap 컨텍스트: Checkpoint 오브젝트에 자동 CheckpointOrder 할당
+	if (CurrentContext == EPlacementContext::JumpMap)
+	{
+		FString ObjectIdStr = SelectedObjectId.ToString();
+		if (ObjectIdStr.Contains(TEXT("Checkpoint")))
+		{
+			int32 MaxOrder = -1;
+			const TArray<FPlacedObjectSaveEntry>& Existing = DataProvider->GetPlacedObjects();
+			for (const FPlacedObjectSaveEntry& Obj : Existing)
+			{
+				if (Obj.ObjectId.ToString().Contains(TEXT("Checkpoint")))
+				{
+					const FString* OrderStr = Obj.CustomProperties.Find(TEXT("CheckpointOrder"));
+					if (OrderStr)
+					{
+						MaxOrder = FMath::Max(MaxOrder, FCString::Atoi(**OrderStr));
+					}
+				}
+			}
+			Entry.CustomProperties.Add(TEXT("CheckpointOrder"), FString::FromInt(MaxOrder + 1));
+		}
+	}
+
 	// DataProvider에 추가 (서버에서 스폰 + 클라이언트 리플리케이션)
 	DataProvider->AddPlacedObject(Entry);
+
+	// 새로 생성된 액터에도 배치 모드 비주얼 적용
+	RefreshPlacementModeVisuals();
 
 	// 로컬 SaveGame에도 저장 (호스트 영구 저장용)
 	SaveLayout();
@@ -399,6 +448,10 @@ bool UWjWorldPlacementComponent::LoadLayoutFromSlot(const FString& SlotName)
 	}
 
 	LoadedSlotName = SlotName;
+
+	// 로드된 오브젝트에 배치 모드 비주얼 적용
+	RefreshPlacementModeVisuals();
+
 	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Layout loaded from '%s' (%d objects)"),
 		*SlotName, SaveGame->PlacedObjects.Num());
 	return true;
@@ -631,10 +684,10 @@ bool UWjWorldPlacementComponent::ExportJumpMapLayoutAsCSV(const FString& FileNam
 		return false;
 	}
 
-	// CSV 생성: 헤더 + 오브젝트 행
+	// CSV 생성: 헤더 + 오브젝트 행 (11번째 Properties 컬럼 포함)
 	FString CSVContent;
 	CSVContent += FString::Printf(TEXT("#META:MapName:%s\n"), *FileName);
-	CSVContent += TEXT("ObjectId,PosX,PosY,PosZ,RotPitch,RotYaw,RotRoll,ScaleX,ScaleY,ScaleZ\n");
+	CSVContent += TEXT("ObjectId,PosX,PosY,PosZ,RotPitch,RotYaw,RotRoll,ScaleX,ScaleY,ScaleZ,Properties\n");
 
 	for (const FPlacedObjectSaveEntry& Entry : PlacedObjects)
 	{
@@ -642,11 +695,20 @@ bool UWjWorldPlacementComponent::ExportJumpMapLayoutAsCSV(const FString& FileNam
 		const FRotator Rot = Entry.Transform.GetRotation().Rotator();
 		const FVector& Scale = Entry.Transform.GetScale3D();
 
-		CSVContent += FString::Printf(TEXT("%s,%f,%f,%f,%f,%f,%f,%f,%f,%f\n"),
+		// CustomProperties를 Key=Value|Key=Value 형식으로 직렬화
+		FString PropsStr;
+		for (const auto& Pair : Entry.CustomProperties)
+		{
+			if (!PropsStr.IsEmpty()) PropsStr += TEXT("|");
+			PropsStr += FString::Printf(TEXT("%s=%s"), *Pair.Key, *Pair.Value);
+		}
+
+		CSVContent += FString::Printf(TEXT("%s,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s\n"),
 			*Entry.ObjectId.ToString(),
 			Loc.X, Loc.Y, Loc.Z,
 			Rot.Pitch, Rot.Yaw, Rot.Roll,
-			Scale.X, Scale.Y, Scale.Z);
+			Scale.X, Scale.Y, Scale.Z,
+			*PropsStr);
 	}
 
 	// 파일 저장
@@ -710,7 +772,7 @@ void UWjWorldPlacementComponent::TickComponent(float DeltaTime, ELevelTick TickT
 				PlaceLocation = SnapToGrid(PlaceLocation);
 			}
 
-			FRotator PlaceRotation = FRotator(0.0f, PreviewActor->GetCurrentYaw(), 0.0f);
+			FRotator PlaceRotation = PreviewActor->GetCurrentRotation();
 			PreviewActor->UpdatePreviewTransform(PlaceLocation, PlaceRotation);
 
 			// 유효성 검사
@@ -722,8 +784,35 @@ void UWjWorldPlacementComponent::TickComponent(float DeltaTime, ELevelTick TickT
 			bCurrentPreviewValid = false;
 			PreviewActor->SetPreviewValid(false);
 		}
+
+		// 3D 회전 축 기즈모 표시
+		DrawRotationAxisGizmo();
 	}
-	else if (CurrentMode == EPlacementMode::Deleting)
+
+	// JumpMap 컨텍스트: 체크포인트 위에 CheckpointOrder 번호 3D 표시
+	if (CurrentContext == EPlacementContext::JumpMap && CurrentMode != EPlacementMode::None)
+	{
+		IWjWorldPlacementDataProvider* DP = GetPlacementDataProvider();
+		if (DP)
+		{
+			for (const FPlacedObjectSaveEntry& Obj : DP->GetPlacedObjects())
+			{
+				if (Obj.ObjectId.ToString().Contains(TEXT("Checkpoint")))
+				{
+					const FString* OrderStr = Obj.CustomProperties.Find(TEXT("CheckpointOrder"));
+					if (OrderStr)
+					{
+						FVector TextLoc = Obj.Transform.GetLocation() + FVector(0, 0, 200.f);
+						DrawDebugString(GetWorld(), TextLoc,
+							FString::Printf(TEXT("CP #%s"), **OrderStr),
+							nullptr, FColor::Yellow, 0.f, true, 1.5f);
+					}
+				}
+			}
+		}
+	}
+
+	if (CurrentMode == EPlacementMode::Deleting)
 	{
 		// 삭제 모드: 호버 대상 갱신
 		AWjWorldPlacedObjectActor* NewHovered = TraceForPlacedObject();
@@ -882,6 +971,66 @@ AWjWorldPlacedObjectActor* UWjWorldPlacementComponent::TraceForPlacedObject() co
 	return nullptr;
 }
 
+void UWjWorldPlacementComponent::RefreshPlacementModeVisuals()
+{
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	bool bEnable = (CurrentMode != EPlacementMode::None);
+
+	for (TActorIterator<AWjWorldPlacedObjectActor> It(World); It; ++It)
+	{
+		It->SetPlacementModeVisual(bEnable);
+	}
+}
+
+void UWjWorldPlacementComponent::DrawRotationAxisGizmo() const
+{
+	UWorld* World = GetWorld();
+	if (!World || !PreviewActor)
+	{
+		return;
+	}
+
+	FVector Origin = PreviewActor->GetActorLocation();
+	FVector AxisDir;
+	FColor AxisColor;
+	FString AxisName;
+
+	switch (PreviewActor->GetCurrentRotationAxis())
+	{
+	case EPlacementRotationAxis::Yaw:
+		AxisDir = FVector::UpVector;
+		AxisColor = FColor::Blue;
+		AxisName = TEXT("Yaw (Z)");
+		break;
+	case EPlacementRotationAxis::Pitch:
+		AxisDir = FVector::RightVector;
+		AxisColor = FColor::Green;
+		AxisName = TEXT("Pitch (Y)");
+		break;
+	case EPlacementRotationAxis::Roll:
+		AxisDir = FVector::ForwardVector;
+		AxisColor = FColor::Red;
+		AxisName = TEXT("Roll (X)");
+		break;
+	}
+
+	FVector ArrowEnd = Origin + AxisDir * GizmoArrowLength;
+	DrawDebugDirectionalArrow(World, Origin, ArrowEnd, GizmoArrowSize, AxisColor, false, -1.f, 0, GizmoArrowThickness);
+
+	// 반대 방향 짧은 선분 (양방향 축 표현)
+	FVector OppositeEnd = Origin - AxisDir * (GizmoArrowLength * 0.3f);
+	DrawDebugLine(World, Origin, OppositeEnd, AxisColor, false, -1.f, 0, GizmoArrowThickness * 0.5f);
+
+	// 축 이름 + 스냅 각도 텍스트 표시
+	FString InfoText = FString::Printf(TEXT("%s | %.0f°"), *AxisName, GetEffectiveSnapDegrees());
+	DrawDebugString(World, ArrowEnd + FVector(0.f, 0.f, 15.f), InfoText, nullptr, AxisColor, 0.f, true, 1.f);
+}
+
 void UWjWorldPlacementComponent::DestroyPreview()
 {
 	if (PreviewActor)
@@ -937,6 +1086,14 @@ void UWjWorldPlacementComponent::LoadInputSettings()
 	{
 		ToggleAirModeAction = Settings->PlacementToggleAirModeAction.LoadSynchronous();
 	}
+	if (!Settings->PlacementCycleAxisAction.IsNull())
+	{
+		CycleAxisAction = Settings->PlacementCycleAxisAction.LoadSynchronous();
+	}
+	if (!Settings->PlacementCycleSnapAction.IsNull())
+	{
+		CycleSnapAction = Settings->PlacementCycleSnapAction.LoadSynchronous();
+	}
 
 	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Input settings loaded from DeveloperSettings"));
 }
@@ -988,23 +1145,24 @@ void UWjWorldPlacementComponent::BindInputActions()
 	}
 
 	// InputAction 바인딩
+	// Started = 키 1회 입력, Triggered = 매 프레임 (스크롤 등 연속 입력용)
 	if (UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(PC->InputComponent))
 	{
 		if (ConfirmAction)
 		{
-			EIC->BindAction(ConfirmAction, ETriggerEvent::Triggered, this, &UWjWorldPlacementComponent::OnConfirmAction);
+			EIC->BindAction(ConfirmAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnConfirmAction);
 		}
 		if (CancelAction)
 		{
-			EIC->BindAction(CancelAction, ETriggerEvent::Triggered, this, &UWjWorldPlacementComponent::OnCancelAction);
+			EIC->BindAction(CancelAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnCancelAction);
 		}
 		if (RotateAction)
 		{
-			EIC->BindAction(RotateAction, ETriggerEvent::Triggered, this, &UWjWorldPlacementComponent::OnRotateAction);
+			EIC->BindAction(RotateAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnRotateAction);
 		}
 		if (DeleteAction)
 		{
-			EIC->BindAction(DeleteAction, ETriggerEvent::Triggered, this, &UWjWorldPlacementComponent::OnDeleteAction);
+			EIC->BindAction(DeleteAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnDeleteAction);
 		}
 		if (ScrollAction)
 		{
@@ -1012,7 +1170,15 @@ void UWjWorldPlacementComponent::BindInputActions()
 		}
 		if (ToggleAirModeAction)
 		{
-			EIC->BindAction(ToggleAirModeAction, ETriggerEvent::Triggered, this, &UWjWorldPlacementComponent::OnToggleAirModeAction);
+			EIC->BindAction(ToggleAirModeAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnToggleAirModeAction);
+		}
+		if (CycleAxisAction)
+		{
+			EIC->BindAction(CycleAxisAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnCycleAxisAction);
+		}
+		if (CycleSnapAction)
+		{
+			EIC->BindAction(CycleSnapAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnCycleSnapAction);
 		}
 	}
 }
@@ -1093,6 +1259,16 @@ void UWjWorldPlacementComponent::OnToggleAirModeAction(const FInputActionValue& 
 		return;
 	}
 	ToggleAirPlacementMode();
+}
+
+void UWjWorldPlacementComponent::OnCycleAxisAction(const FInputActionValue& Value)
+{
+	CycleRotationAxis();
+}
+
+void UWjWorldPlacementComponent::OnCycleSnapAction(const FInputActionValue& Value)
+{
+	CycleSnapDegrees();
 }
 
 void UWjWorldPlacementComponent::ToggleAirPlacementMode()
@@ -1176,6 +1352,48 @@ int32 UWjWorldPlacementComponent::FindPlacedObjectIndex(AWjWorldPlacedObjectActo
 	}
 
 	return INDEX_NONE;
+}
+
+bool UWjWorldPlacementComponent::ValidateJumpMapLayout(FString& OutErrorMessage) const
+{
+	IWjWorldPlacementDataProvider* DataProvider = GetPlacementDataProvider();
+	if (!DataProvider)
+	{
+		OutErrorMessage = TEXT("Data provider not found");
+		return false;
+	}
+
+	const TArray<FPlacedObjectSaveEntry>& Objects = DataProvider->GetPlacedObjects();
+
+	int32 CheckpointCount = 0;
+	int32 EndCount = 0;
+
+	for (const FPlacedObjectSaveEntry& Entry : Objects)
+	{
+		FString IdStr = Entry.ObjectId.ToString();
+		if (IdStr.Contains(TEXT("Checkpoint")))
+		{
+			CheckpointCount++;
+		}
+		else if (IdStr.Contains(TEXT("End")))
+		{
+			EndCount++;
+		}
+	}
+
+	if (CheckpointCount < 1)
+	{
+		OutErrorMessage = TEXT("체크포인트가 최소 1개 필요합니다.");
+		return false;
+	}
+
+	if (EndCount != 1)
+	{
+		OutErrorMessage = FString::Printf(TEXT("도착점이 정확히 1개여야 합니다. (현재: %d개)"), EndCount);
+		return false;
+	}
+
+	return true;
 }
 
 FString UWjWorldPlacementComponent::GetCurrentSaveSlotName() const

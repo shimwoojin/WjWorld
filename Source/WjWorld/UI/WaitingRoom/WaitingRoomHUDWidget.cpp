@@ -14,6 +14,7 @@
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "DataAsset/WjWorldMinigameDataAsset.h"
 #include "GamePlay/Wall/WjWorldWallDescriptionDataAsset.h"
+#include "GamePlay/JumpMap/JumpMapLayoutDataAsset.h"
 #include "Kismet/GameplayStatics.h"
 #include "WjWorldLogCategories.h"
 
@@ -676,7 +677,33 @@ void UWaitingRoomHUDWidget::UpdateMapComboBoxForGameMode(const FString& GameMode
 					MapOptionDisplayToValue.Add(DisplayStr, Layout.WallName);
 				}
 
-				UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Added %d user layouts"), UserLayouts.Num());
+				UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Added %d AW user layouts"), UserLayouts.Num());
+			}
+		}
+	}
+
+	// JumpMap인 경우 유저 레이아웃도 추가
+	if (GameModeId == TEXT("JumpMap"))
+	{
+		if (!DevSettings->JumpMapLayoutDataAsset.IsNull())
+		{
+			UJumpMapLayoutDataAsset* LayoutAsset = DevSettings->JumpMapLayoutDataAsset.LoadSynchronous();
+			if (LayoutAsset)
+			{
+				TArray<FJumpMapLayout> UserLayouts;
+				LayoutAsset->ScanUserJumpMapLayouts(UserLayouts);
+
+				for (const FJumpMapLayout& Layout : UserLayouts)
+				{
+					FString DisplayName = Layout.LayoutName;
+					DisplayName.RemoveFromStart(TEXT("User_"));
+					FString DisplayStr = FString::Printf(TEXT("[User] %s"), *DisplayName);
+
+					MapComboBox->AddOption(DisplayStr);
+					MapOptionDisplayToValue.Add(DisplayStr, Layout.LayoutName);
+				}
+
+				UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Added %d JumpMap user layouts"), UserLayouts.Num());
 			}
 		}
 	}

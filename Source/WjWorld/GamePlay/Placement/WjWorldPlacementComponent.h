@@ -65,6 +65,8 @@ public:
 	//~ 오브젝트 조작
 	void SelectObject(FName ObjectId);
 	void RotatePreview();
+	void CycleRotationAxis();
+	void CycleSnapDegrees();
 	void ConfirmPlacement();
 	void DeleteHoveredObject();
 
@@ -116,6 +118,13 @@ public:
 	 */
 	FString GetLastExportedCSVPath() const { return LastExportedCSVPath; }
 
+	/**
+	 * JumpMap 레이아웃 검증 (저장 전 호출)
+	 * @param OutErrorMessage 검증 실패 시 오류 메시지
+	 * @return 검증 통과 여부
+	 */
+	bool ValidateJumpMapLayout(FString& OutErrorMessage) const;
+
 	//~ 델리게이트
 	UPROPERTY(BlueprintAssignable, Category = "Placement")
 	FOnPlacementModeChanged OnPlacementModeChanged;
@@ -150,6 +159,12 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> ToggleAirModeAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> CycleAxisAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> CycleSnapAction;
 
 protected:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -190,6 +205,17 @@ private:
 	void OnDeleteAction(const FInputActionValue& Value);
 	void OnScrollAction(const FInputActionValue& Value);
 	void OnToggleAirModeAction(const FInputActionValue& Value);
+	void OnCycleAxisAction(const FInputActionValue& Value);
+	void OnCycleSnapAction(const FInputActionValue& Value);
+
+	/** 3D 회전 축 기즈모 그리기 */
+	void DrawRotationAxisGizmo() const;
+
+	/** 배치 모드 비주얼 갱신 (모든 PlacedObjectActor) */
+	void RefreshPlacementModeVisuals();
+
+	/** 현재 유효 스냅 각도 반환 */
+	float GetEffectiveSnapDegrees() const;
 
 	APlayerController* GetPlayerController() const;
 
@@ -244,4 +270,20 @@ private:
 
 	/** 겹침 체크 반경 (AW 그리드 스냅 컨텍스트) - 정확히 같은 위치만 체크 */
 	static constexpr float GridOverlapCheckRadius = 5.0f;
+
+	/** 스냅 각도 프리셋 */
+	static constexpr float SnapDegreePresets[] = { 90.f, 45.f, 15.f, 5.f, 1.f };
+	static constexpr int32 NumSnapPresets = UE_ARRAY_COUNT(SnapDegreePresets);
+
+	/** 현재 스냅 프리셋 인덱스 */
+	int32 CurrentSnapPresetIndex = 0;
+
+	/** 기즈모 화살표 길이 */
+	static constexpr float GizmoArrowLength = 150.f;
+
+	/** 기즈모 화살표 크기 */
+	static constexpr float GizmoArrowSize = 25.f;
+
+	/** 기즈모 화살표 두께 */
+	static constexpr float GizmoArrowThickness = 3.f;
 };
