@@ -559,12 +559,12 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
 - **JumpMap CSV 커스텀 프로퍼티 확장** (FJumpMapLayoutEntry.CustomProperties, 11번째 컬럼 파싱/내보내기, 하위 호환)
 - **DeveloperSettings JumpMap 매핑** (JumpMapObjectIdToClassMap: ObjectId → ActorClass 중앙 관리)
 - **Lobby 배치 모드 카메라 Pawn** (PlacementCameraPawn 자유 비행, SwitchToPlacementCamera/RestoreOriginalPawn, OnPlacementModeChanged 델리게이트 통합)
+- **배치 카메라 InputAction 에디터 세팅** (IA_PlacementCameraMove/Look/RightMouse/VerticalMove 4개 생성, IMC_Placement 매핑, DeveloperSettings 할당)
+- **JumpMap 맵 레벨 생성 + 패키징 맵 목록 추가**
+- **JumpMap BP_GameRuleJumpMap + PlaceableCatalog DataAsset 생성** (ObjectIdToActorClassMap 프로퍼티 설정)
+- **Sumo Knockoff 6대 기능 에디터 세팅 완료** (BP 프로퍼티 할당, 링 배치, HUD 위젯, 파워업 BP)
 
 ## 진행 중 / 미구현
-- Sumo Knockoff 6대 기능 에디터 세팅 (BP 생성/프로퍼티 할당, 링 배치, HUD 위젯, 파워업 비주얼)
-- JumpMap 맵 레벨 생성 + 패키징 맵 목록 추가
-- JumpMap BP_GameRuleJumpMap 생성 (ObjectIdToActorClassMap 프로퍼티 설정)
-- JumpMap PlaceableCatalog DataAsset 생성
 - Steam 정식 출시 준비
 
 ## 잔존 버그

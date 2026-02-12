@@ -1,4 +1,7 @@
 {
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
   "permissions": {
     "allow": [
       "Bash(git pull:*)",
@@ -9,10 +12,6 @@
       "Bash(\"C:\\\\Program Files\\\\Epic Games\\\\UE_5.7\\\\Engine\\\\Build\\\\BatchFiles\\\\Build.bat\" WjWorldEditor Win64 Development -Project=\"C:\\\\UEProjects\\\\WjWorld\\\\WjWorld.uproject\" -WaitMutex -FromMsBuild)",
       "Bash(find:*)",
       "Bash(\"C:\\\\UEProjects\\\\UE_5.7\\\\Engine\\\\Build\\\\BatchFiles\\\\Build.bat\" WjWorldEditor Win64 Development -Project=\"C:\\\\UEProjects\\\\WjWorld\\\\WjWorld.uproject\" -WaitMutex -FromMsBuild)",
-      "Bash(del \"C:\\\\UEProjects\\\\WjWorld\\\\Source\\\\WjWorld\\\\AbilitySystem\\\\GE_AbilityCooldown.h\")",
-      "Bash(del \"C:\\\\UEProjects\\\\WjWorld\\\\Source\\\\WjWorld\\\\AbilitySystem\\\\GE_AbilityCooldown.cpp\")",
-      "Bash(del \"C:\\\\UEProjects\\\\WjWorld\\\\Source\\\\WjWorld\\\\AbilitySystem\\\\GE_SpawnBrickChargeCost.h\")",
-      "Bash(del \"C:\\\\UEProjects\\\\WjWorld\\\\Source\\\\WjWorld\\\\AbilitySystem\\\\GE_SpawnBrickChargeCost.cpp\")",
       "Bash(\"C:\\\\UEProjects\\\\UE_5.7\\\\Engine\\\\Build\\\\BatchFiles\\\\Build.bat\" WjWorldEditor Win64 DebugGame -Project=\"C:\\\\UEProjects\\\\WjWorld\\\\WjWorld.uproject\" -WaitMutex -FromMsBuild)",
       "Bash(cmd.exe:*)",
       "Bash(\"C:/Program Files/Epic Games/UE_5.7/Engine/Build/BatchFiles/Build.bat\" WjWorldEditor Win64 Development -Project=\"C:/UEProjects/WjWorld/WjWorld.uproject\" -WaitMutex -FromMsBuild)",
@@ -107,7 +106,12 @@
       "Bash(\"C:\\\\Program Files\\\\Epic Games\\\\UE_5.7\\\\Engine\\\\Build\\\\BatchFiles\\\\RunUAT.bat\" BuildEditor -project=\"C:\\\\UEProjects\\\\WjWorld\\\\WjWorld.uproject\" -platform=Win64 -targetconfig=Development)",
       "Bash(\"C:\\\\Program Files\\\\Epic Games\\\\UE_5.7\\\\Engine\\\\Binaries\\\\ThirdParty\\\\DotNet\\\\8.0.412\\\\win-x64\\\\dotnet.exe\" \"C:\\\\Program Files\\\\Epic Games\\\\UE_5.7\\\\Engine\\\\Binaries\\\\DotNET\\\\UnrealBuildTool\\\\UnrealBuildTool.dll\" -Target=\"WjWorldEditor Win64 Development -Project=C:\\\\UEProjects\\\\WjWorld\\\\WjWorld.uproject\")",
       "Bash(\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" WjWorld.sln /t:Build /p:Configuration=\"Development Editor\" /p:Platform=Win64 /m /verbosity:minimal)",
-      "Bash(C:)"
+      "Bash(C:)",
+      "Bash(timeout /t 30 /nobreak)",
+      "Bash(git diff:*)",
+      "Bash(\"C:\\\\UE_5.7\\\\Engine\\\\Build\\\\BatchFiles\\\\Build.bat\" WjWorldEditor Win64 Development -Project=\"C:\\\\UEProjects\\\\WjWorld\\\\WjWorld.uproject\" -WaitMutex -FromMsBuild)",
+      "Bash(\"C:\\\\Program Files\\\\Epic Games\\\\UE_5.7\\\\Engine\\\\Build\\\\BatchFiles\\\\Build.bat\" WjWorldEditor Win64 DebugGame \"C:\\\\UEProjects\\\\WjWorld\\\\WjWorld.uproject\" -WaitMutex)"
     ]
-  }
+  },
+  "teammateMode": "in-process"
 }

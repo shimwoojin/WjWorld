@@ -76,7 +76,28 @@ void AWjWorldPlacementPreviewActor::SetPreviewValid(bool bInIsValid)
 	}
 }
 
-void AWjWorldPlacementPreviewActor::RotatePreview(float DeltaYaw)
+void AWjWorldPlacementPreviewActor::RotatePreview(float DeltaDegrees)
 {
-	CurrentYaw = FMath::Fmod(CurrentYaw + DeltaYaw, 360.0f);
+	switch (CurrentRotationAxis)
+	{
+	case EPlacementRotationAxis::Yaw:
+		CurrentRotation.Yaw = FMath::Fmod(CurrentRotation.Yaw + DeltaDegrees, 360.0f);
+		break;
+	case EPlacementRotationAxis::Pitch:
+		CurrentRotation.Pitch = FMath::Fmod(CurrentRotation.Pitch + DeltaDegrees, 360.0f);
+		break;
+	case EPlacementRotationAxis::Roll:
+		CurrentRotation.Roll = FMath::Fmod(CurrentRotation.Roll + DeltaDegrees, 360.0f);
+		break;
+	}
+}
+
+void AWjWorldPlacementPreviewActor::CycleRotationAxis()
+{
+	switch (CurrentRotationAxis)
+	{
+	case EPlacementRotationAxis::Yaw:   CurrentRotationAxis = EPlacementRotationAxis::Pitch; break;
+	case EPlacementRotationAxis::Pitch:  CurrentRotationAxis = EPlacementRotationAxis::Roll;  break;
+	case EPlacementRotationAxis::Roll:   CurrentRotationAxis = EPlacementRotationAxis::Yaw;   break;
+	}
 }

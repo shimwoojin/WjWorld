@@ -5,6 +5,8 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "WjWorldLogCategories.h"
 
+const FLinearColor AWjWorldPlacedObjectActor::PlacementTintColor(0.3f, 0.6f, 1.0f, 1.0f);
+
 AWjWorldPlacedObjectActor::AWjWorldPlacedObjectActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -120,6 +122,12 @@ void AWjWorldPlacedObjectActor::OnMeshLoaded()
 		MeshComponent->IsVisible(),
 		IsHidden(),
 		*MaterialInfo);
+
+	// 메시 로드 전 배치 모드 비주얼이 요청된 경우 적용
+	if (bShowPlacementVisual)
+	{
+		ApplyPlacementTint();
+	}
 }
 
 void AWjWorldPlacedObjectActor::SetHighlighted(bool bHighlight)
@@ -133,7 +141,98 @@ void AWjWorldPlacedObjectActor::SetHighlighted(bool bHighlight)
 
 	if (MeshComponent)
 	{
-		MeshComponent->SetRenderCustomDepth(bHighlight);
-		MeshComponent->SetCustomDepthStencilValue(bHighlight ? 1 : 0);
+		if (bHighlight)
+		{
+			// 삭제 하이라이트 우선
+			MeshComponent->SetRenderCustomDepth(true);
+			MeshComponent->SetCustomDepthStencilValue(1);
+		}
+		else if (bShowPlacementVisual)
+		{
+			// 배치 모드 비주얼 복원
+			MeshComponent->SetCustomDepthStencilValue(2);
+		}
+		else
+		{
+			MeshComponent->SetRenderCustomDepth(false);
+			MeshComponent->SetCustomDepthStencilValue(0);
+		}
+	}
+}
+
+void AWjWorldPlacedObjectActor::SetPlacementModeVisual(bool bEnable)
+{
+	if (bShowPlacementVisual == bEnable)
+	{
+		return;
+	}
+
+	bShowPlacementVisual = bEnable;
+
+	if (bEnable)
+	{
+		ApplyPlacementTint();
+	}
+	else
+	{
+		RemovePlacementTint();
+	}
+}
+
+void AWjWorldPlacedObjectActor::ApplyPlacementTint()
+{
+	if (!MeshComponent)
+	{
+		return;
+	}
+
+	int32 NumMats = MeshComponent->GetNumMaterials();
+	if (NumMats == 0)
+	{
+		return; // 메시 미로드 상태, OnMeshLoaded에서 재시도
+	}
+
+	// 원본 머티리얼 저장 후 DMI 틴트 적용
+	OriginalMaterials.Empty();
+	for (int32 i = 0; i < NumMats; ++i)
+	{
+		OriginalMaterials.Add(MeshComponent->GetMaterial(i));
+		UMaterialInstanceDynamic* DMI = MeshComponent->CreateAndSetMaterialInstanceDynamic(i);
+		if (DMI)
+		{
+			DMI->SetVectorParameterValue(TEXT("BaseColor"), PlacementTintColor);
+			DMI->SetScalarParameterValue(TEXT("Opacity"), PlacementTintOpacity);
+		}
+	}
+
+	// CustomDepth 추가 (포스트프로세스 아웃라인용)
+	if (!bIsHighlighted)
+	{
+		MeshComponent->SetRenderCustomDepth(true);
+		MeshComponent->SetCustomDepthStencilValue(2);
+	}
+}
+
+void AWjWorldPlacedObjectActor::RemovePlacementTint()
+{
+	if (!MeshComponent)
+	{
+		return;
+	}
+
+	// 원본 머티리얼 복원
+	for (int32 i = 0; i < OriginalMaterials.Num(); ++i)
+	{
+		if (i < MeshComponent->GetNumMaterials())
+		{
+			MeshComponent->SetMaterial(i, OriginalMaterials[i]);
+		}
+	}
+	OriginalMaterials.Empty();
+
+	if (!bIsHighlighted)
+	{
+		MeshComponent->SetRenderCustomDepth(false);
+		MeshComponent->SetCustomDepthStencilValue(0);
 	}
 }

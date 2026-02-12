@@ -1,6 +1,45 @@
 # WjWorld 개발 로그
 
 ## 2026-02-12
+### 작업 내용 - JumpMap 배치 모드 개선 (CustomProperties + 검증 + 유저 레이아웃 선택)
+
+#### JumpMap 배치 에디터 CustomProperties + CSV 11번째 컬럼 (미커밋)
+- **`FPlacedObjectSaveEntry`에 `TMap<FString, FString> CustomProperties` 필드 추가**
+  - UPROPERTY Serialization으로 자동 처리, 빈 맵은 기존 세이브와 하위 호환
+- **ConfirmPlacement에서 Checkpoint 배치 시 자동 CheckpointOrder 할당**
+  - 기존 배치된 체크포인트의 최대 Order를 조회 후 +1 자동 부여
+- **ExportJumpMapLayoutAsCSV에 11번째 Properties 컬럼 추가**
+  - `Key=Value|Key=Value` 형식으로 CustomProperties 직렬화 (JumpMapLayoutDataAsset ParseLayoutCSV와 호환)
+- **TickComponent에서 배치된 체크포인트 위에 `CP #N` 3D 텍스트 표시**
+  - DrawDebugString으로 노란색 텍스트, JumpMap 컨텍스트에서만 렌더링
+
+#### JumpMap 레이아웃 검증 시스템 (미커밋)
+- **`ValidateJumpMapLayout()` 구현** — 저장 전 필수 오브젝트 유효성 검사
+  - 체크포인트 최소 1개, 도착점 정확히 1개 검증
+  - JumpMapEditor HUD의 `ExecuteSave()` 오버라이드에서 검증 후 경고 로그 출력 (작업 중 세이브는 허용)
+- **JumpMapEditor 힌트 텍스트 업데이트** — T(축 전환), G(각도 전환), F(공중모드) 키 안내 추가
+
+#### GameRuleJumpMap CSV 레이아웃 로딩 (미커밋)
+- **`LoadLayoutAndSpawnActors()` 리팩토링** — MapOption 기반 CSV 레이아웃 로드 지원
+  - Default/Random이 아닌 MapOption → JumpMapLayoutDataAsset에서 CSV 레이아웃 검색
+  - CSV 레이아웃 없으면 기존 맵 배치 액터 사용 (폴백)
+- **`SpawnActorsFromLayout()` 신규** — CSV 엔트리 → 액터 스폰 + ApplySerializedProperties
+  - ObjectIdToActorClassMap(BP 프로퍼티) 우선, DeveloperSettings JumpMapObjectIdToClassMap 폴백
+
+#### WaitingRoom JumpMap 유저 레이아웃 선택 (미커밋)
+- **`UpdateMapComboBoxForGameMode()`에 JumpMap 유저 레이아웃 스캔 추가**
+  - AW 패턴과 동일하게 `ScanUserJumpMapLayouts()` → `[User] {이름}` 형식 콤보박스 옵션
+
+#### 빌드 검증
+- 전체 빌드 성공 확인 (15 actions, 0 errors)
+
+### 학습/메모
+- `FPlacedObjectSaveEntry`에 TMap 추가 시 UPROPERTY 시리얼라이제이션으로 자동 처리되어 SaveVersion 변경 불필요 — 빈 맵은 기존 세이브와 하위 호환
+- AW 유저 레이아웃 패턴(WallDescriptionDataAsset.ScanUserWallLayouts → WaitingRoom 콤보박스 → MapOption → GameRule 로딩)을 JumpMap에 그대로 적용 가능 — 일관된 아키텍처의 장점
+- CSV 11번째 Properties 컬럼은 `JumpMapLayoutDataAsset::ParseLayoutCSV`가 이미 지원하므로 내보내기만 추가하면 완전한 왕복 직렬화 가능
+
+---
+
 ### 작업 내용 - Lobby 배치 모드 카메라 Pawn 전환 + JumpMap 에디터 에셋/Intro 영상
 
 #### JumpMap 에디터 에셋 + 에셋 팩 + Intro 영상 (커밋 7682d45)
@@ -37,10 +76,18 @@
 - Possession 전환 시 PlacementComponent(PC의 DefaultSubobject)는 생존하지만, InputComponent는 새 Pawn 것으로 교체됨 → 반드시 Possess 후 BindInputActions 호출 필요
 - OnPlacementModeChanged 델리게이트로 ESC/HUD Exit 등 모든 종료 경로를 통합하면 코드 중복 없이 안전한 cleanup 보장
 
-### 에디터 세팅 TODO
-- InputAction 4개 생성: `IA_PlacementCameraMove`, `IA_PlacementCameraLook`, `IA_PlacementCameraRightMouse`, `IA_PlacementCameraVerticalMove`
-- `IMC_Placement`에 매핑 추가
-- DeveloperSettings > Placement|Camera Input에서 할당
+### 에디터 세팅 완료
+- ~~InputAction 4개 생성~~ ✓ `IA_PlacementCameraMove`, `IA_PlacementCameraLook`, `IA_PlacementCameraRightMouse`, `IA_PlacementCameraVerticalMove`
+- ~~`IMC_Placement`에 매핑 추가~~ ✓
+- ~~DeveloperSettings > Placement|Camera Input에서 할당~~ ✓
+
+#### JumpMap 맵 레벨 + BP/DataAsset 에디터 세팅 완료
+- JumpMap 맵 레벨 생성 + 패키징 맵 목록 추가
+- BP_GameRuleJumpMap 생성 (ObjectIdToActorClassMap 프로퍼티 설정)
+- JumpMap PlaceableCatalog DataAsset 생성
+
+#### Sumo Knockoff 6대 기능 에디터 세팅 완료
+- BP 프로퍼티 할당, 링 배치, HUD 위젯, 파워업 BP 생성
 
 ---
 

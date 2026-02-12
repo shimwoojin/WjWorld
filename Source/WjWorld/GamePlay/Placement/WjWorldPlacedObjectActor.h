@@ -30,6 +30,9 @@ public:
 	/** 삭제 모드 호버 하이라이트 */
 	void SetHighlighted(bool bHighlight);
 
+	/** 배치 모드 색상 구분 (배치된 오브젝트를 레벨 지오메트리와 구별) */
+	void SetPlacementModeVisual(bool bEnable);
+
 	/** 오브젝트 ID */
 	FName GetObjectId() const { return ObjectId; }
 
@@ -41,9 +44,19 @@ private:
 	void LoadMesh(const FPlaceableObjectDefinition& Definition);
 	void OnMeshLoaded();
 
+	void ApplyPlacementTint();
+	void RemovePlacementTint();
+
 	FStreamableManager StreamableManager;
 	TSharedPtr<FStreamableHandle> MeshLoadHandle;
 	FName ObjectId;
 	FVector CachedScale = FVector::OneVector;
 	bool bIsHighlighted = false;
+	bool bShowPlacementVisual = false;
+
+	UPROPERTY()
+	TArray<TObjectPtr<UMaterialInterface>> OriginalMaterials;
+
+	static const FLinearColor PlacementTintColor;
+	static constexpr float PlacementTintOpacity = 0.7f;
 };

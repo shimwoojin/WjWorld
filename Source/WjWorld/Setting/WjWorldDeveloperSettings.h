@@ -209,6 +209,14 @@ public:
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Input")
 	TSoftObjectPtr<UInputAction> PlacementToggleAirModeAction;
 
+	// 회전 축 전환 입력 액션 (T)
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Input")
+	TSoftObjectPtr<UInputAction> PlacementCycleAxisAction;
+
+	// 스냅 각도 전환 입력 액션 (G)
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Input")
+	TSoftObjectPtr<UInputAction> PlacementCycleSnapAction;
+
 	// ========== Placement Camera Input ==========
 
 	// 배치 카메라 이동 (WASD, Axis2D)
