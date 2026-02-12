@@ -21,6 +21,18 @@ AWjWorldCharacterBase::AWjWorldCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	// 컨트롤러 회전을 캐릭터에 직접 적용하지 않음 (카메라만 회전)
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+
+	// 이동 방향으로 캐릭터 회전 (CMC 기반 → 클라이언트→서버 회전 리플리케이션 포함)
+	if (UCharacterMovementComponent* MovementComp = GetCharacterMovement())
+	{
+		MovementComp->bOrientRotationToMovement = true;
+		MovementComp->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
+	}
+
 	// Mesh 컴포넌트 위치 설정 (캡슐 컴포넌트 기준)
 	if (GetMesh())
 	{

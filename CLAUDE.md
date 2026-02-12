@@ -550,9 +550,8 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
 - JumpMap PlaceableCatalog DataAsset 생성
 - Steam 정식 출시 준비
 
-## 잔존 버그 (Steam 2PC 테스트 2026-02-09)
-- **#3(Sumo) Host 관전 Yaw 미적용** — Host가 클라이언트를 관찰할 때 Yaw가 적용되지 않음 (클라→Host 관측은 정상)
-- **#4(Sumo) 유저 맵 클라이언트 벽돌 스폰 위치** — 유저 만든 AW 맵에서 클라이언트가 설치한 벽돌이 엉뚱한 위치에 스폰
+## 잔존 버그
+- (현재 없음)
 
 ## 확인 필요 사항
 - Room 목록 스케일링 — Steam 배포 시 다수 방(1000+) 표시 및 부하 체크
