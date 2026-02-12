@@ -120,6 +120,7 @@ Source/WjWorld/
 │   │   ├── WjWorldPlacementComponent  # 배치 핵심 로직 (컨텍스트 지원, 슬롯 저장/로드)
 │   │   ├── WjWorldPlacementPreviewActor  # 배치 프리뷰 액터
 │   │   ├── WjWorldPlacedObjectActor   # 배치된 오브젝트 액터
+│   │   ├── WjWorldPlacementCameraPawn # 배치 모드 자유 비행 카메라 Pawn
 │   │   ├── WjWorldPlacementTypes      # EPlacementContext, SaveSlot 헬퍼
 │   │   └── IWjWorldPlacementDataProvider  # 배치 데이터 프로바이더 인터페이스
 │   ├── Quest/                         # 퀘스트 시스템
@@ -191,6 +192,13 @@ Source/WjWorld/
         ├── ApproachingWallHUDWidget    # Approaching Wall 전용 HUD
         ├── SumoHUDWidget              # Sumo Knockoff 전용 HUD (킬피드, 라운드)
         └── JumpMapHUDWidget           # JumpMap 전용 HUD (타이머, 체크포인트, 순위)
+
+Source/WjWorldEditor/                      # 에디터 전용 모듈
+├── WjWorldEditor.Build.cs                 # 빌드 규칙
+├── WjWorldEditorModule.h/cpp              # 모듈 (Nomad 탭 등록)
+└── JumpMap/
+    ├── JumpMapLevelEditorSubsystem.h/cpp  # 레벨 액터 일괄 저장/불러오기 (EditorSubsystem)
+    └── SJumpMapLayoutPanel.h/cpp          # Slate UI 패널 (Save/Load/Clear/Refresh)
 ```
 
 ## 주요 클래스 계층
@@ -287,7 +295,9 @@ Lobby / ApproachingWall / JumpMap 3개 컨텍스트를 지원하는 확장된 �
 - **어빌리티**: GA_Dash (Ability8/Shift), GA_Grapple (Ability9/E), GA_DoubleJump (Ability10)
 - **JumpMapGameDataComponent**: ElapsedTime, TimeLimit, PlayerFinishOrder (모두 Replicated)
 - **JumpMapPlayerDataComponent**: CurrentCheckpointIndex, DeathCount, bHasFinished, FinishTime (모두 Replicated)
-- **JumpMapLayoutDataAsset**: 내장+유저 CSV 레이아웃 로드, `#META:MapName:` 헤더 지원
+- **JumpMapLayoutDataAsset**: 내장+유저 CSV 레이아웃 로드, `#META:MapName:` 헤더 지원, CustomProperties 11번째 컬럼, ExportLayoutToCSV()
+- **액터 직렬화**: JumpMapActorBase에 JumpMapObjectId + Get/ApplySerializableProperties 가상 함수, 7개 서브클래스별 프로퍼티 직렬화
+- **에디터 도구**: WjWorldEditor 모듈의 JumpMapLevelEditorSubsystem + SJumpMapLayoutPanel (레벨 액터 일괄 저장/불러오기)
 - **승리 조건**: 전원 완주 or 시간 초과, 최단 시간 플레이어 우승
 - **엣지 케이스**: 솔로 자동, 전원 이탈, 플레이어 없음
 - **상태**: C++ 코드 완료 + 에디터 세팅 완료 (MinigameCatalog, InputMapping, CharacterPlaySetup, HUDPlay)
@@ -430,6 +440,7 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
 - **Approaching Wall**: BrickMesh, TileMesh, WallDescriptionAsset
 - **JumpMap**: JumpMapLayoutDataAsset
 - **배치 카탈로그**: LobbyPlaceableCatalog, ApproachingWallPlaceableCatalog, JumpMapPlaceableCatalog
+- **배치 카메라**: PlacementCameraMoveAction, PlacementCameraLookAction, PlacementCameraRightMouseAction, PlacementCameraVerticalMoveAction
 - **기타 카탈로그**: MinigameCatalog, CosmeticCatalog
 - **헬퍼 함수**: GetLobbyMapPath(), GetWaitingRoomOpenLevelURL(), GetPlayServerTravelURL(), GetPlaceableCatalogForContext(), GetEditorMapOpenLevelURL(), HasEditorMapForContext()
 
@@ -542,6 +553,12 @@ NetConnectionClassName="/Script/SocketSubsystemSteamIP.SteamNetConnection"
 - **BrickMovement 단일 방향 이동 수정** (GetMovementVector에서 전체 방향 합산→단일 방향 선택, 모멘텀 우선 로직)
 - **WallDesc 그리드 속성 리플리케이션** (ApproachingWallGameDataComponent에 BrickSize/CenterOffset/ColumnNum/RowNum 리플리케이트, 클라이언트 CSV 미보유 대응)
 - **GA_LiftBrick 클라이언트 Server RPC 패턴** (ServerLiftBrickAtGridIndex: 클라이언트 그리드 좌표 → Character RPC → 서버 벽돌 탐색, LocalPredicted 위치 불일치 해결)
+- **WjWorldEditor 에디터 모듈** (독립 에디터 모듈, EditorSubsystem + Slate 패널)
+- **JumpMap 레벨 레이아웃 저장/불러오기** (JumpMapLevelEditorSubsystem, SJumpMapLayoutPanel)
+- **JumpMap 액터 직렬화 시스템** (JumpMapActorBase에 JumpMapObjectId + Get/ApplySerializableProperties 인터페이스, 7개 서브클래스 구현)
+- **JumpMap CSV 커스텀 프로퍼티 확장** (FJumpMapLayoutEntry.CustomProperties, 11번째 컬럼 파싱/내보내기, 하위 호환)
+- **DeveloperSettings JumpMap 매핑** (JumpMapObjectIdToClassMap: ObjectId → ActorClass 중앙 관리)
+- **Lobby 배치 모드 카메라 Pawn** (PlacementCameraPawn 자유 비행, SwitchToPlacementCamera/RestoreOriginalPawn, OnPlacementModeChanged 델리게이트 통합)
 
 ## 진행 중 / 미구현
 - Sumo Knockoff 6대 기능 에디터 세팅 (BP 생성/프로퍼티 할당, 링 배치, HUD 위젯, 파워업 비주얼)
@@ -673,6 +690,14 @@ CharacterPreviewActor (3D 프리뷰)
     ↓
 Lobby 선택 → EnterPlacementModeWithContext(Lobby)
 AW/JumpMap 선택 → OpenLevel(EditorMap) → 전용 에디터 진입
+
+[Lobby 카메라 전환] EnterPlacementMode()
+    ↓
+SwitchToPlacementCamera() → PlacementCameraPawn 스폰 + Possess
+    ↓
+배치 모드 시작 + OnPlacementModeChanged 구독
+    ↓
+종료 시: HandlePlacementModeChanged(None) → RestoreOriginalPawn() + HUD 복원
 
 [배치 편집] PlacementHUDWidgetBase
     ↓

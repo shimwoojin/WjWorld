@@ -1,5 +1,49 @@
 # WjWorld 개발 로그
 
+## 2026-02-12
+### 작업 내용 - Lobby 배치 모드 카메라 Pawn 전환 + JumpMap 에디터 에셋/Intro 영상
+
+#### JumpMap 에디터 에셋 + 에셋 팩 + Intro 영상 (커밋 7682d45)
+- JumpMap 에디터 에셋 세팅 완료
+- Platformer_8_Underworld 에셋 팩 추가
+- Intro 영상 추가
+
+#### Lobby 배치 모드 자유 비행 카메라 Pawn 구현
+- **`AWjWorldPlacementCameraPawn`** 신규 생성 — APawn + UCameraComponent + UFloatingPawnMovement
+  - WASD 수평 이동 (컨트롤러 Yaw 기준), Q/E 수직 이동
+  - RMB 홀드 + 마우스 회전 (커서 유지), `bReplicates = false` 로컬 전용
+  - MaxSpeed=1200, Accel=4000, Decel=8000 (부드러운 비행 조작감)
+  - DeveloperSettings에서 InputAction 소프트 로드
+
+- **`AWjWorldPlayerControllerLobby`** — 카메라 전환/복귀 함수 추가
+  - `SwitchToPlacementCamera()`: 현재 카메라 위치에서 PlacementCameraPawn 스폰 + Possess
+  - `RestoreOriginalPawn()`: 원래 캐릭터로 Possess 복귀 + 카메라 Pawn 파괴
+  - `OriginalPawn` (TWeakObjectPtr), `PlacementCameraPawn` (TObjectPtr) 멤버 추가
+
+- **`AWjWorldGameModeLobby`** — 배치 모드 Enter/Exit 흐름 리팩토링
+  - `EnterPlacementMode()`: 카메라 전환 → 배치 모드 시작 → OnPlacementModeChanged 구독 → HUD 전환
+  - `ExitPlacementMode()`: PlacementComp 종료만 호출 (나머지는 델리게이트에서 통합 처리)
+  - `HandlePlacementModeChanged()` 신규: ESC/HUD Exit 모든 종료 경로 통합 (카메라 복귀 + HUD 복원 + 델리게이트 해제)
+
+- **`UWjWorldDeveloperSettings`** — Placement|Camera Input 카테고리 4개 소프트 참조 추가
+  - `PlacementCameraMoveAction`, `PlacementCameraLookAction`, `PlacementCameraRightMouseAction`, `PlacementCameraVerticalMoveAction`
+
+#### 빌드 검증
+- `APlayerController::SpawnLocation` 이름 충돌 수정 (→ `CameraSpawnLoc`)
+- 빌드 성공 확인
+
+### 학습/메모
+- `APlayerController`에 `SpawnLocation` 멤버가 이미 존재하여 지역 변수 이름 충돌 발생 — UE의 PC 클래스는 멤버가 많으므로 항상 네이밍 주의
+- Possession 전환 시 PlacementComponent(PC의 DefaultSubobject)는 생존하지만, InputComponent는 새 Pawn 것으로 교체됨 → 반드시 Possess 후 BindInputActions 호출 필요
+- OnPlacementModeChanged 델리게이트로 ESC/HUD Exit 등 모든 종료 경로를 통합하면 코드 중복 없이 안전한 cleanup 보장
+
+### 에디터 세팅 TODO
+- InputAction 4개 생성: `IA_PlacementCameraMove`, `IA_PlacementCameraLook`, `IA_PlacementCameraRightMouse`, `IA_PlacementCameraVerticalMove`
+- `IMC_Placement`에 매핑 추가
+- DeveloperSettings > Placement|Camera Input에서 할당
+
+---
+
 ## 2026-02-11
 ### 작업 내용 - 레이아웃 삭제 기능 + AW 버그 3건 수정
 

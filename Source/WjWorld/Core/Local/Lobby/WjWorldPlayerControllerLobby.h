@@ -7,6 +7,7 @@
 #include "WjWorldPlayerControllerLobby.generated.h"
 
 class UWjWorldPlacementComponent;
+class AWjWorldPlacementCameraPawn;
 
 /**
  * 로비 플레이어 컨트롤러 클래스
@@ -28,6 +29,15 @@ public:
 	/** 배치 컴포넌트 getter */
 	UFUNCTION(BlueprintCallable, Category = "Lobby|Placement")
 	UWjWorldPlacementComponent* GetPlacementComponent() const { return PlacementComponent; }
+
+	/** 배치 카메라 Pawn으로 전환 */
+	void SwitchToPlacementCamera();
+
+	/** 원래 캐릭터로 복귀 */
+	void RestoreOriginalPawn();
+
+	/** 카메라 모드 중인지 확인 */
+	bool IsInPlacementCameraMode() const { return PlacementCameraPawn != nullptr; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -63,4 +73,11 @@ private:
 	/** 배치 컴포넌트 */
 	UPROPERTY(VisibleAnywhere, Category = "Placement")
 	TObjectPtr<UWjWorldPlacementComponent> PlacementComponent;
+
+	/** 배치 모드 전환 전 원래 Pawn */
+	TWeakObjectPtr<APawn> OriginalPawn;
+
+	/** 배치 카메라 Pawn 인스턴스 */
+	UPROPERTY()
+	TObjectPtr<AWjWorldPlacementCameraPawn> PlacementCameraPawn;
 };

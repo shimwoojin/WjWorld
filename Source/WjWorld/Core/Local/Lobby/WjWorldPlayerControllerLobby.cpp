@@ -3,9 +3,12 @@
 #include "WjWorldPlayerControllerLobby.h"
 #include "Core/Base/WjWorldCharacterBase.h"
 #include "GamePlay/Placement/WjWorldPlacementComponent.h"
+#include "GamePlay/Placement/WjWorldPlacementCameraPawn.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "InputMappingContext.h"
+#include "Camera/PlayerCameraManager.h"
+#include "WjWorldLogCategories.h"
 
 AWjWorldPlayerControllerLobby::AWjWorldPlayerControllerLobby()
 {
@@ -56,4 +59,71 @@ void AWjWorldPlayerControllerLobby::InitializeLobbyController()
 void AWjWorldPlayerControllerLobby::CreateLobbyUI()
 {
 	// 로비 UI 생성 로직
+}
+
+void AWjWorldPlayerControllerLobby::SwitchToPlacementCamera()
+{
+	if (PlacementCameraPawn)
+	{
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlayerControllerLobby: Already in placement camera mode"));
+		return;
+	}
+
+	OriginalPawn = GetPawn();
+
+	// 현재 카메라 위치/회전을 스폰 기준으로 사용
+	FVector CameraSpawnLoc = FVector::ZeroVector;
+	FRotator CameraSpawnRot = FRotator::ZeroRotator;
+	if (PlayerCameraManager)
+	{
+		CameraSpawnLoc = PlayerCameraManager->GetCameraLocation();
+		CameraSpawnRot = PlayerCameraManager->GetCameraRotation();
+	}
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	PlacementCameraPawn = GetWorld()->SpawnActor<AWjWorldPlacementCameraPawn>(
+		AWjWorldPlacementCameraPawn::StaticClass(), CameraSpawnLoc, CameraSpawnRot, SpawnParams);
+
+	if (!PlacementCameraPawn)
+	{
+		UE_LOG(LogWjWorldPlacement, Error, TEXT("PlayerControllerLobby: Failed to spawn PlacementCameraPawn"));
+		return;
+	}
+
+	Possess(PlacementCameraPawn);
+	SetControlRotation(CameraSpawnRot);
+
+	// 마우스 커서 유지
+	SetInputMode(FInputModeGameAndUI().SetHideCursorDuringCapture(false));
+
+	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlayerControllerLobby: Switched to placement camera"));
+}
+
+void AWjWorldPlayerControllerLobby::RestoreOriginalPawn()
+{
+	if (!PlacementCameraPawn)
+	{
+		return;
+	}
+
+	if (OriginalPawn.IsValid())
+	{
+		Possess(OriginalPawn.Get());
+	}
+	else
+	{
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlayerControllerLobby: OriginalPawn is no longer valid"));
+	}
+
+	OriginalPawn.Reset();
+
+	PlacementCameraPawn->Destroy();
+	PlacementCameraPawn = nullptr;
+
+	SetInputMode(FInputModeGameAndUI());
+
+	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlayerControllerLobby: Restored original pawn"));
 }

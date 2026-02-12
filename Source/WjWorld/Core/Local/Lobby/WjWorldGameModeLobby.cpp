@@ -188,16 +188,24 @@ void AWjWorldGameModeLobby::EnterPlacementMode()
 		return;
 	}
 
+	// 1. 카메라 Pawn으로 전환 (Possess → 새 InputComponent)
+	LobbyPC->SwitchToPlacementCamera();
+
+	// 2. 배치 모드 시작 (새 InputComponent에 바인딩)
 	PlacementComp->EnterPlacementMode();
 
-	// HUD 전환
+	// 3. 모드 변경 델리게이트 구독 (ESC 종료 시 카메라 복귀용)
+	PlacementComp->OnPlacementModeChanged.AddDynamic(
+		this, &AWjWorldGameModeLobby::HandlePlacementModeChanged);
+
+	// 4. HUD 전환
 	AWjWorldHUDLobby* LobbyHUD = Cast<AWjWorldHUDLobby>(LobbyPC->GetHUD());
 	if (LobbyHUD)
 	{
 		LobbyHUD->ShowPlacementHUD(PlacementComp);
 	}
 
-	UE_LOG(LogWjWorldPlacement, Log, TEXT("WjWorldGameModeLobby: Entered placement mode (Host)"));
+	UE_LOG(LogWjWorldPlacement, Log, TEXT("WjWorldGameModeLobby: Entered placement mode (Host) with camera pawn"));
 }
 
 void AWjWorldGameModeLobby::ExitPlacementMode()
@@ -210,16 +218,43 @@ void AWjWorldGameModeLobby::ExitPlacementMode()
 	}
 
 	UWjWorldPlacementComponent* PlacementComp = LobbyPC->GetPlacementComponent();
-	if (PlacementComp)
+	if (PlacementComp && PlacementComp->GetCurrentMode() != EPlacementMode::None)
 	{
 		PlacementComp->ExitPlacementMode();
+		// → OnPlacementModeChanged(None) 브로드캐스트
+		// → HandlePlacementModeChanged가 카메라 복귀 + HUD 처리
+	}
+}
+
+void AWjWorldGameModeLobby::HandlePlacementModeChanged(EPlacementMode NewMode)
+{
+	if (NewMode != EPlacementMode::None)
+	{
+		return;
+	}
+
+	AWjWorldPlayerControllerLobby* LobbyPC = Cast<AWjWorldPlayerControllerLobby>(
+		GetWorld()->GetFirstPlayerController());
+
+	// 카메라 Pawn 복귀
+	if (LobbyPC && LobbyPC->IsInPlacementCameraMode())
+	{
+		LobbyPC->RestoreOriginalPawn();
 	}
 
 	// HUD 복원
-	AWjWorldHUDLobby* LobbyHUD = Cast<AWjWorldHUDLobby>(LobbyPC->GetHUD());
+	AWjWorldHUDLobby* LobbyHUD = LobbyPC ? Cast<AWjWorldHUDLobby>(LobbyPC->GetHUD()) : nullptr;
 	if (LobbyHUD)
 	{
 		LobbyHUD->HidePlacementHUD();
+	}
+
+	// 델리게이트 해제
+	UWjWorldPlacementComponent* PlacementComp = LobbyPC ? LobbyPC->GetPlacementComponent() : nullptr;
+	if (PlacementComp)
+	{
+		PlacementComp->OnPlacementModeChanged.RemoveDynamic(
+			this, &AWjWorldGameModeLobby::HandlePlacementModeChanged);
 	}
 
 	UE_LOG(LogWjWorldPlacement, Log, TEXT("WjWorldGameModeLobby: Exited placement mode"));

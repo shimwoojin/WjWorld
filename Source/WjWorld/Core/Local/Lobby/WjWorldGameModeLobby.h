@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Core/Base/WjWorldGameModeBase.h"
+#include "GamePlay/Placement/WjWorldPlacementComponent.h"
 #include "WjWorldGameModeLobby.generated.h"
 
 class UCreateRoomWindow;
@@ -70,6 +71,10 @@ protected:
 	TSubclassOf<URoomListWindow> RoomListWindowClass;
 
 private:
+	/** 배치 모드 변경 콜백 (ESC 등 모든 종료 경로 통합) */
+	UFUNCTION()
+	void HandlePlacementModeChanged(EPlacementMode NewMode);
+
 	/** 카탈로그 로드 */
 	void LoadCatalog();
 

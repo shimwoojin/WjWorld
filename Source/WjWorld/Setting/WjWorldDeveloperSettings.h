@@ -17,6 +17,7 @@ class UWjWorldWallDescriptionDataAsset;
 class UInputMappingContext;
 class UInputAction;
 class UJumpMapLayoutDataAsset;
+class AJumpMapActorBase;
 class USkeletalMesh;
 class UStaticMesh;
 class UAnimInstance;
@@ -117,6 +118,10 @@ public:
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "JumpMap")
 	TSoftObjectPtr<UJumpMapLayoutDataAsset> JumpMapLayoutDataAsset;
 
+	/** JumpMap ObjectId → Actor 클래스 매핑 (에디터/런타임 공용) */
+	UPROPERTY(config, EditAnywhere, Category = "JumpMap")
+	TMap<FName, TSoftClassPtr<AJumpMapActorBase>> JumpMapObjectIdToClassMap;
+
 	// ========== Placement ==========
 
 	/** @deprecated 로비 배치 카탈로그 사용 권장 (LobbyPlaceableCatalog) */
@@ -195,4 +200,30 @@ public:
 	// 삭제 입력 액션 (DEL)
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Input")
 	TSoftObjectPtr<UInputAction> PlacementDeleteAction;
+
+	// 스크롤 입력 액션 (Mouse Wheel, Air 모드 높이 조절)
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Input")
+	TSoftObjectPtr<UInputAction> PlacementScrollAction;
+
+	// Air 모드 토글 입력 액션 (F)
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Input")
+	TSoftObjectPtr<UInputAction> PlacementToggleAirModeAction;
+
+	// ========== Placement Camera Input ==========
+
+	// 배치 카메라 이동 (WASD, Axis2D)
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Camera Input")
+	TSoftObjectPtr<UInputAction> PlacementCameraMoveAction;
+
+	// 배치 카메라 룩 (Mouse XY, Axis2D)
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Camera Input")
+	TSoftObjectPtr<UInputAction> PlacementCameraLookAction;
+
+	// 배치 카메라 RMB (Bool)
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Camera Input")
+	TSoftObjectPtr<UInputAction> PlacementCameraRightMouseAction;
+
+	// 배치 카메라 수직 이동 (Q/E, Axis1D)
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement|Camera Input")
+	TSoftObjectPtr<UInputAction> PlacementCameraVerticalMoveAction;
 };
