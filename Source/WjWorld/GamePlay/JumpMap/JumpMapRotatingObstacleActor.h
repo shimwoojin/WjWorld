@@ -23,6 +23,9 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void GetSerializableProperties(TMap<FString, FString>& OutProperties) const override;
+	virtual void ApplySerializedProperties(const TMap<FString, FString>& Properties) override;
+
 protected:
 	/** 회전 속도 (도/초) */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "JumpMap|RotatingObstacle")

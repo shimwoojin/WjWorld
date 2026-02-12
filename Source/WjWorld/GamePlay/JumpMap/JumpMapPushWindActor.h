@@ -22,6 +22,9 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void GetSerializableProperties(TMap<FString, FString>& OutProperties) const override;
+	virtual void ApplySerializedProperties(const TMap<FString, FString>& Properties) override;
+
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UBoxComponent> WindZone;

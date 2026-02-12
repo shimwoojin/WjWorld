@@ -10,6 +10,7 @@
 
 AJumpMapEndActor::AJumpMapEndActor()
 {
+	JumpMapObjectId = TEXT("End");
 	FinishTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("FinishTrigger"));
 	FinishTrigger->SetupAttachment(RootComp);
 	FinishTrigger->SetBoxExtent(FVector(100.f, 100.f, 200.f));

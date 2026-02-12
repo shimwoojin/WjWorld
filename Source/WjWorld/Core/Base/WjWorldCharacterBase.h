@@ -111,6 +111,7 @@ public:
 	TObjectPtr<UGameplayCameraComponent> GetGamePlayCamera() { return GamePlayCamera; }
 	UInputMappingContext* GetDefaultMappingContext() const;
 	UWjWorldCosmeticComponent* GetCosmeticComponent() const { return CosmeticComponent; }
+	const FGameplayTag& GetCameraMode() const { return CameraMode; }
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))

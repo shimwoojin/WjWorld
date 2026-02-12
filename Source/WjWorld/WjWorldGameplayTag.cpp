@@ -160,3 +160,8 @@ FGameplayTag WjWorldGameplayTag::Cooldown_Grapple()
 {
 	return FGameplayTag::RequestGameplayTag(TEXT("Cooldown.Grapple"));
 }
+
+FGameplayTag WjWorldGameplayTag::Ability_ToggleCameraView()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("Ability.ToggleCameraView"));
+}

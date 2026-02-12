@@ -11,6 +11,7 @@
 
 AJumpMapRotatingObstacleActor::AJumpMapRotatingObstacleActor()
 {
+	JumpMapObjectId = TEXT("RotatingObstacle");
 	PrimaryActorTick.bCanEverTick = true;
 
 	HitTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("HitTrigger"));
@@ -18,6 +19,39 @@ AJumpMapRotatingObstacleActor::AJumpMapRotatingObstacleActor()
 	HitTrigger->SetBoxExtent(FVector(200.f, 50.f, 50.f));
 	HitTrigger->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 	HitTrigger->SetGenerateOverlapEvents(true);
+}
+
+void AJumpMapRotatingObstacleActor::GetSerializableProperties(TMap<FString, FString>& OutProperties) const
+{
+	OutProperties.Add(TEXT("RotationSpeed"), FString::SanitizeFloat(RotationSpeed));
+	OutProperties.Add(TEXT("RotationAxis"), FString::Printf(TEXT("%.2f;%.2f;%.2f"), RotationAxis.Pitch, RotationAxis.Yaw, RotationAxis.Roll));
+	OutProperties.Add(TEXT("bKillOnHit"), bKillOnHit ? TEXT("1") : TEXT("0"));
+	OutProperties.Add(TEXT("KnockbackForce"), FString::SanitizeFloat(KnockbackForce));
+}
+
+void AJumpMapRotatingObstacleActor::ApplySerializedProperties(const TMap<FString, FString>& Properties)
+{
+	if (const FString* Value = Properties.Find(TEXT("RotationSpeed")))
+	{
+		RotationSpeed = FCString::Atof(**Value);
+	}
+	if (const FString* Value = Properties.Find(TEXT("RotationAxis")))
+	{
+		TArray<FString> Components;
+		Value->ParseIntoArray(Components, TEXT(";"), true);
+		if (Components.Num() >= 3)
+		{
+			RotationAxis = FRotator(FCString::Atof(*Components[0]), FCString::Atof(*Components[1]), FCString::Atof(*Components[2]));
+		}
+	}
+	if (const FString* Value = Properties.Find(TEXT("bKillOnHit")))
+	{
+		bKillOnHit = (*Value == TEXT("1"));
+	}
+	if (const FString* Value = Properties.Find(TEXT("KnockbackForce")))
+	{
+		KnockbackForce = FCString::Atof(**Value);
+	}
 }
 
 void AJumpMapRotatingObstacleActor::BeginPlay()

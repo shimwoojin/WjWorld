@@ -13,6 +13,11 @@
 				"CoreUObject",
 				"DeveloperSettings"
 			]
+		},
+		{
+			"Name": "WjWorldEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [

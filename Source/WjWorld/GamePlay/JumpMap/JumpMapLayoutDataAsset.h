@@ -21,6 +21,10 @@ struct FJumpMapLayoutEntry
 	/** 월드 트랜스폼 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FTransform Transform;
+
+	/** 액터별 커스텀 프로퍼티 (Key=Value 쌍) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TMap<FString, FString> CustomProperties;
 };
 
 /**
@@ -69,6 +73,9 @@ public:
 
 	/** 랜덤 레이아웃 이름 반환 */
 	FString GetRandomLayoutName() const;
+
+	/** 레이아웃을 CSV 문자열로 내보내기 */
+	static FString ExportLayoutToCSV(const FJumpMapLayout& Layout);
 
 private:
 	/** CSV 파일 내용을 레이아웃으로 파싱 */

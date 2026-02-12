@@ -22,6 +22,9 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void GetSerializableProperties(TMap<FString, FString>& OutProperties) const override;
+	virtual void ApplySerializedProperties(const TMap<FString, FString>& Properties) override;
+
 protected:
 	/** 시작 위치로부터의 이동 오프셋 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "JumpMap|MovingPlatform")

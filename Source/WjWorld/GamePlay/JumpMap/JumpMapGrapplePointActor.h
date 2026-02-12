@@ -21,6 +21,9 @@ class WJWORLD_API AJumpMapGrapplePointActor : public AJumpMapActorBase
 public:
 	AJumpMapGrapplePointActor();
 
+	virtual void GetSerializableProperties(TMap<FString, FString>& OutProperties) const override;
+	virtual void ApplySerializedProperties(const TMap<FString, FString>& Properties) override;
+
 	/** 그래플 사거리 (cm) */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "JumpMap|Grapple")
 	float GrappleRadius = 1500.f;

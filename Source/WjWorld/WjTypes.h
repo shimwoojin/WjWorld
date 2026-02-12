@@ -33,4 +33,5 @@ enum class EWjWorldAbilityInputID : uint8
 	Ability8 = 8,	// Dash
 	Ability9 = 9,	// Grapple
 	Ability10 = 10,	// DoubleJump
+	Ability11 = 11,	// ToggleCameraView
 };

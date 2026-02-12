@@ -35,7 +35,7 @@ void UPlacementHUDWidgetBase::NativeConstruct()
 	}
 
 	// 기본 조작 안내
-	SetControlsHintText(FText::FromString(TEXT("LMB: 배치 | R: 회전 | DEL: 삭제 | ESC: 나가기")));
+	SetControlsHintText(FText::FromString(TEXT("LMB: 배치 | R: 회전 | DEL: 삭제 | F: 공중모드 | ESC: 나가기")));
 }
 
 void UPlacementHUDWidgetBase::SetPlacementComponent(UWjWorldPlacementComponent* InComponent)

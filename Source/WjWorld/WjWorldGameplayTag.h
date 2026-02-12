@@ -31,6 +31,9 @@ public:
 	static FGameplayTag Ability_Grapple();
 	static FGameplayTag Ability_DoubleJump();
 
+	// Camera
+	static FGameplayTag Ability_ToggleCameraView();
+
 	//State
 	static FGameplayTag State_SpawnBrickPreview();
 	static FGameplayTag State_LiftBrickCarry();

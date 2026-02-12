@@ -184,12 +184,72 @@ bool UJumpMapLayoutDataAsset::ParseLayoutCSV(const FString& FileContent, FJumpMa
 		Scale.Z = FCString::Atof(*Values[9]);
 
 		Entry.Transform = FTransform(Rotation, Location, Scale);
+
+		// 11번째 컬럼: 커스텀 프로퍼티 (하위 호환: 10컬럼도 정상 처리)
+		if (Values.Num() >= 11)
+		{
+			FString PropertiesStr = Values[10].TrimStartAndEnd();
+			if (!PropertiesStr.IsEmpty())
+			{
+				TArray<FString> PropertyPairs;
+				PropertiesStr.ParseIntoArray(PropertyPairs, TEXT("|"), true);
+
+				for (const FString& Pair : PropertyPairs)
+				{
+					FString Key, Value;
+					if (Pair.Split(TEXT("="), &Key, &Value))
+					{
+						Entry.CustomProperties.Add(Key.TrimStartAndEnd(), Value.TrimStartAndEnd());
+					}
+				}
+			}
+		}
+
 		OutLayout.Objects.Add(Entry);
 	}
 
 	UE_LOG(LogWjWorld, Log, TEXT("ParseLayoutCSV: Parsed %d objects for layout '%s'"),
 		OutLayout.Objects.Num(), *OutLayout.LayoutName);
 	return OutLayout.Objects.Num() > 0;
+}
+
+FString UJumpMapLayoutDataAsset::ExportLayoutToCSV(const FJumpMapLayout& Layout)
+{
+	FString Result;
+
+	// 메타데이터 헤더
+	Result += FString::Printf(TEXT("#META:MapName:%s\n"), *Layout.LayoutName);
+
+	// CSV 헤더
+	Result += TEXT("ObjectId,PosX,PosY,PosZ,RotPitch,RotYaw,RotRoll,ScaleX,ScaleY,ScaleZ,Properties\n");
+
+	// 데이터 행
+	for (const FJumpMapLayoutEntry& Entry : Layout.Objects)
+	{
+		const FVector Location = Entry.Transform.GetLocation();
+		const FRotator Rotation = Entry.Transform.Rotator();
+		const FVector Scale = Entry.Transform.GetScale3D();
+
+		// 커스텀 프로퍼티 직렬화 (Key=Value|Key=Value)
+		FString PropertiesStr;
+		for (const auto& Pair : Entry.CustomProperties)
+		{
+			if (!PropertiesStr.IsEmpty())
+			{
+				PropertiesStr += TEXT("|");
+			}
+			PropertiesStr += FString::Printf(TEXT("%s=%s"), *Pair.Key, *Pair.Value);
+		}
+
+		Result += FString::Printf(TEXT("%s,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%s\n"),
+			*Entry.ObjectId.ToString(),
+			Location.X, Location.Y, Location.Z,
+			Rotation.Pitch, Rotation.Yaw, Rotation.Roll,
+			Scale.X, Scale.Y, Scale.Z,
+			*PropertiesStr);
+	}
+
+	return Result;
 }
 
 FString UJumpMapLayoutDataAsset::GetUserJumpMapLayoutDirectory()

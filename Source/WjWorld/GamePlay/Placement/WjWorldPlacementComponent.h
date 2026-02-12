@@ -32,6 +32,7 @@ enum class EPlacementMode : uint8
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlacementModeChanged, EPlacementMode, NewMode);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnObjectPlaced);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnObjectDeleted);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAirModeChanged, bool, bIsAirMode);
 
 /**
  * 로비 오브젝트 배치 핵심 컴포넌트
@@ -55,6 +56,9 @@ public:
 
 	void ExitPlacementMode();
 	void ToggleDeleteMode();
+	void ToggleAirPlacementMode();
+	bool IsAirPlacementMode() const { return bAirPlacementMode; }
+	float GetAirPlaneHeight() const { return AirPlaneHeight; }
 	EPlacementMode GetCurrentMode() const { return CurrentMode; }
 	EPlacementContext GetCurrentContext() const { return CurrentContext; }
 
@@ -122,6 +126,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Placement")
 	FOnObjectDeleted OnObjectDeleted;
 
+	UPROPERTY(BlueprintAssignable, Category = "Placement")
+	FOnAirModeChanged OnAirModeChanged;
+
 	//~ 입력 에셋 (에디터에서 설정)
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputMappingContext> PlacementMappingContext;
@@ -138,12 +145,21 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> DeleteAction;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> ScrollAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> ToggleAirModeAction;
+
 protected:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
 	/** 마우스→월드 라인트레이스 (바닥 탐색) */
 	bool TraceGroundUnderMouse(FHitResult& OutHit) const;
+
+	/** Air 모드: 수평 평면(Z=AirPlaneHeight)과 레이 교차점 계산 */
+	bool TraceAirPlane(FVector& OutLocation) const;
 
 	/** 배치 위치 유효성 검사 (겹침 체크) */
 	bool IsPlacementLocationValid(const FVector& Location) const;
@@ -172,6 +188,8 @@ private:
 	void OnCancelAction(const FInputActionValue& Value);
 	void OnRotateAction(const FInputActionValue& Value);
 	void OnDeleteAction(const FInputActionValue& Value);
+	void OnScrollAction(const FInputActionValue& Value);
+	void OnToggleAirModeAction(const FInputActionValue& Value);
 
 	APlayerController* GetPlayerController() const;
 
@@ -203,8 +221,20 @@ private:
 	/** 현재 프리뷰 유효 상태 캐싱 */
 	bool bCurrentPreviewValid = false;
 
+	/** Air 배치 모드 활성 여부 */
+	bool bAirPlacementMode = false;
+
+	/** Air 모드 수평 평면 높이 (Z) */
+	float AirPlaneHeight = 0.f;
+
 	/** AW 컨텍스트: 마지막으로 내보낸 CSV 경로 */
 	FString LastExportedCSVPath;
+
+	/** Air 모드 스크롤 1단위당 높이 변화 */
+	static constexpr float AirHeightStep = 50.f;
+
+	/** Air 모드 최대 레이-평면 교차 거리 */
+	static constexpr float MaxAirTraceDistance = 50000.f;
 
 	/** 트레이스 거리 */
 	static constexpr float TraceDistance = 10000.0f;

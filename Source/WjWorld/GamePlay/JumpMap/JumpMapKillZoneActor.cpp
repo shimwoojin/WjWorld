@@ -10,6 +10,7 @@
 
 AJumpMapKillZoneActor::AJumpMapKillZoneActor()
 {
+	JumpMapObjectId = TEXT("KillZone");
 	KillTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("KillTrigger"));
 	KillTrigger->SetupAttachment(RootComp);
 	KillTrigger->SetBoxExtent(FVector(500.f, 500.f, 50.f));

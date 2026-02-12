@@ -10,11 +10,35 @@
 
 AJumpMapCheckpointActor::AJumpMapCheckpointActor()
 {
+	JumpMapObjectId = TEXT("Checkpoint");
 	CheckpointTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("CheckpointTrigger"));
 	CheckpointTrigger->SetupAttachment(RootComp);
 	CheckpointTrigger->SetBoxExtent(FVector(100.f, 100.f, 100.f));
 	CheckpointTrigger->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 	CheckpointTrigger->SetGenerateOverlapEvents(true);
+}
+
+void AJumpMapCheckpointActor::GetSerializableProperties(TMap<FString, FString>& OutProperties) const
+{
+	OutProperties.Add(TEXT("CheckpointOrder"), FString::FromInt(CheckpointOrder));
+	OutProperties.Add(TEXT("RespawnOffset"), FString::Printf(TEXT("%.2f;%.2f;%.2f"), RespawnOffset.X, RespawnOffset.Y, RespawnOffset.Z));
+}
+
+void AJumpMapCheckpointActor::ApplySerializedProperties(const TMap<FString, FString>& Properties)
+{
+	if (const FString* Value = Properties.Find(TEXT("CheckpointOrder")))
+	{
+		CheckpointOrder = FCString::Atoi(**Value);
+	}
+	if (const FString* Value = Properties.Find(TEXT("RespawnOffset")))
+	{
+		TArray<FString> Components;
+		Value->ParseIntoArray(Components, TEXT(";"), true);
+		if (Components.Num() >= 3)
+		{
+			RespawnOffset = FVector(FCString::Atof(*Components[0]), FCString::Atof(*Components[1]), FCString::Atof(*Components[2]));
+		}
+	}
 }
 
 void AJumpMapCheckpointActor::BeginPlay()

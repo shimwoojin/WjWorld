@@ -72,6 +72,8 @@ void UWjWorldPlacementComponent::ExitPlacementMode()
 
 	SelectedObjectId = NAME_None;
 	CurrentMode = EPlacementMode::None;
+	bAirPlacementMode = false;
+	AirPlaneHeight = 0.f;
 	// 컨텍스트는 리셋하지 않음 (다음 EnterPlacementMode 시 설정)
 
 	OnPlacementModeChanged.Broadcast(CurrentMode);
@@ -674,15 +676,34 @@ void UWjWorldPlacementComponent::TickComponent(float DeltaTime, ELevelTick TickT
 
 	if (CurrentMode == EPlacementMode::Placing && PreviewActor)
 	{
-		// 프리뷰 위치 갱신
-		FHitResult HitResult;
-		if (TraceGroundUnderMouse(HitResult))
+		const FPlaceableObjectDefinition* Def = Catalog ? Catalog->FindByObjectId(SelectedObjectId) : nullptr;
+		float GroundOffset = Def ? Def->GroundOffset : 0.0f;
+		FVector PlaceLocation;
+		bool bTraceSuccess = false;
+
+		if (bAirPlacementMode)
 		{
-			const FPlaceableObjectDefinition* Def = Catalog ? Catalog->FindByObjectId(SelectedObjectId) : nullptr;
-			float GroundOffset = Def ? Def->GroundOffset : 0.0f;
+			// Air 모드: 수평 평면과 교차
+			FVector AirLocation;
+			if (TraceAirPlane(AirLocation))
+			{
+				PlaceLocation = AirLocation + FVector(0.0f, 0.0f, GroundOffset);
+				bTraceSuccess = true;
+			}
+		}
+		else
+		{
+			// Ground 모드: 기존 바닥 트레이스
+			FHitResult HitResult;
+			if (TraceGroundUnderMouse(HitResult))
+			{
+				PlaceLocation = HitResult.ImpactPoint + FVector(0.0f, 0.0f, GroundOffset);
+				bTraceSuccess = true;
+			}
+		}
 
-			FVector PlaceLocation = HitResult.ImpactPoint + FVector(0.0f, 0.0f, GroundOffset);
-
+		if (bTraceSuccess)
+		{
 			// AW 컨텍스트: 그리드 스냅 적용
 			if (CurrentContext == EPlacementContext::ApproachingWall)
 			{
@@ -747,6 +768,37 @@ bool UWjWorldPlacementComponent::TraceGroundUnderMouse(FHitResult& OutHit) const
 	}
 
 	return GetWorld()->LineTraceSingleByChannel(OutHit, WorldLocation, TraceEnd, ECC_Visibility, QueryParams);
+}
+
+bool UWjWorldPlacementComponent::TraceAirPlane(FVector& OutLocation) const
+{
+	APlayerController* PC = GetPlayerController();
+	if (!PC)
+	{
+		return false;
+	}
+
+	FVector WorldLoc, WorldDir;
+	if (!PC->DeprojectMousePositionToWorld(WorldLoc, WorldDir))
+	{
+		return false;
+	}
+
+	// Ray-plane intersection: Plane at Z = AirPlaneHeight, Normal = UpVector
+	float Denom = FVector::DotProduct(WorldDir, FVector::UpVector);
+	if (FMath::Abs(Denom) < KINDA_SMALL_NUMBER)
+	{
+		return false; // 레이가 평면과 평행
+	}
+
+	float T = (AirPlaneHeight - WorldLoc.Z) / Denom;
+	if (T < 0.f || T > MaxAirTraceDistance)
+	{
+		return false; // 뒤쪽이거나 너무 먼 교차점
+	}
+
+	OutLocation = WorldLoc + WorldDir * T;
+	return true;
 }
 
 bool UWjWorldPlacementComponent::IsPlacementLocationValid(const FVector& Location) const
@@ -877,6 +929,14 @@ void UWjWorldPlacementComponent::LoadInputSettings()
 	{
 		DeleteAction = Settings->PlacementDeleteAction.LoadSynchronous();
 	}
+	if (!Settings->PlacementScrollAction.IsNull())
+	{
+		ScrollAction = Settings->PlacementScrollAction.LoadSynchronous();
+	}
+	if (!Settings->PlacementToggleAirModeAction.IsNull())
+	{
+		ToggleAirModeAction = Settings->PlacementToggleAirModeAction.LoadSynchronous();
+	}
 
 	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Input settings loaded from DeveloperSettings"));
 }
@@ -946,6 +1006,14 @@ void UWjWorldPlacementComponent::BindInputActions()
 		{
 			EIC->BindAction(DeleteAction, ETriggerEvent::Triggered, this, &UWjWorldPlacementComponent::OnDeleteAction);
 		}
+		if (ScrollAction)
+		{
+			EIC->BindAction(ScrollAction, ETriggerEvent::Triggered, this, &UWjWorldPlacementComponent::OnScrollAction);
+		}
+		if (ToggleAirModeAction)
+		{
+			EIC->BindAction(ToggleAirModeAction, ETriggerEvent::Triggered, this, &UWjWorldPlacementComponent::OnToggleAirModeAction);
+		}
 	}
 }
 
@@ -1005,6 +1073,41 @@ void UWjWorldPlacementComponent::OnDeleteAction(const FInputActionValue& Value)
 	{
 		ToggleDeleteMode();
 	}
+}
+
+void UWjWorldPlacementComponent::OnScrollAction(const FInputActionValue& Value)
+{
+	if (CurrentMode != EPlacementMode::Placing || !bAirPlacementMode)
+	{
+		return;
+	}
+
+	float ScrollValue = Value.Get<float>();
+	AirPlaneHeight += ScrollValue * AirHeightStep;
+}
+
+void UWjWorldPlacementComponent::OnToggleAirModeAction(const FInputActionValue& Value)
+{
+	if (CurrentMode != EPlacementMode::Placing)
+	{
+		return;
+	}
+	ToggleAirPlacementMode();
+}
+
+void UWjWorldPlacementComponent::ToggleAirPlacementMode()
+{
+	bAirPlacementMode = !bAirPlacementMode;
+
+	if (bAirPlacementMode && PreviewActor)
+	{
+		// 현재 프리뷰 위치의 Z를 초기 높이로 설정
+		AirPlaneHeight = PreviewActor->GetActorLocation().Z;
+	}
+
+	OnAirModeChanged.Broadcast(bAirPlacementMode);
+	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Air mode %s (Height: %.0f)"),
+		bAirPlacementMode ? TEXT("ON") : TEXT("OFF"), AirPlaneHeight);
 }
 
 APlayerController* UWjWorldPlacementComponent::GetPlayerController() const

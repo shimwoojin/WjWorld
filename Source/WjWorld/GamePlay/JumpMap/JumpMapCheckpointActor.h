@@ -21,6 +21,9 @@ class WJWORLD_API AJumpMapCheckpointActor : public AJumpMapActorBase
 public:
 	AJumpMapCheckpointActor();
 
+	virtual void GetSerializableProperties(TMap<FString, FString>& OutProperties) const override;
+	virtual void ApplySerializedProperties(const TMap<FString, FString>& Properties) override;
+
 	/** 체크포인트 순서 (0부터 시작, 높을수록 후반부) */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "JumpMap|Checkpoint")
 	int32 CheckpointOrder = 0;

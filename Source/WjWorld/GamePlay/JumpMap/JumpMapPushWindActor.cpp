@@ -8,6 +8,7 @@
 
 AJumpMapPushWindActor::AJumpMapPushWindActor()
 {
+	JumpMapObjectId = TEXT("PushWind");
 	PrimaryActorTick.bCanEverTick = true;
 
 	WindZone = CreateDefaultSubobject<UBoxComponent>(TEXT("WindZone"));
@@ -15,6 +16,19 @@ AJumpMapPushWindActor::AJumpMapPushWindActor()
 	WindZone->SetBoxExtent(FVector(200.f, 200.f, 200.f));
 	WindZone->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 	WindZone->SetGenerateOverlapEvents(true);
+}
+
+void AJumpMapPushWindActor::GetSerializableProperties(TMap<FString, FString>& OutProperties) const
+{
+	OutProperties.Add(TEXT("WindForce"), FString::SanitizeFloat(WindForce));
+}
+
+void AJumpMapPushWindActor::ApplySerializedProperties(const TMap<FString, FString>& Properties)
+{
+	if (const FString* Value = Properties.Find(TEXT("WindForce")))
+	{
+		WindForce = FCString::Atof(**Value);
+	}
 }
 
 void AJumpMapPushWindActor::Tick(float DeltaTime)
