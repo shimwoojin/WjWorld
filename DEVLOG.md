@@ -24,13 +24,26 @@
 - **Default 맵 로딩 수정** — `GameRuleJumpMap::LoadLayoutAndSpawnActors`에서 Default MapOption이 BuiltInLayouts[0] 로드하도록 수정
 - **GameModePlay InputMode 수정** — PlayerControllerPlay BeginPlay에서 FInputModeGameOnly 설정
 
+#### Currency 콘솔 명령어 추가 (미커밋)
+- **`WjWorldPlayerControllerBase`에 Currency_* Exec 명령어 8개 추가** — 기존 Cosmetic_* 패턴 동일
+  - `Currency_GrantCoin/GrantGem` — 로컬 재화 부여
+  - `Currency_SetCoin/SetGem` — 잔액 직접 설정
+  - `Currency_Print` — 잔액 로그 출력
+  - `Currency_Refresh` — Steam 잔액 갱신
+  - `Currency_BuyGemPack` — Gem 팩 구매 테스트
+  - `Currency_SimulateReward` — 매치 보상 시뮬레이션 (0=패배, 1=승리)
+- **`WjWorldCurrencySubsystem`에 `SetCurrencyLocally()` public 래퍼 추가** — private SetBalance 위임, DevelopmentOnly 메타
+- 상태 변경 명령어는 함수 본문 내부 `#if !UE_BUILD_SHIPPING` 가드 (UHT 제약으로 선언부 가드 불가)
+
 ### 학습/메모
 - UE TMap은 리플리케이션 미지원 → 컴포넌트에 UPROPERTY 제거하거나 USTRUCT 멤버에서 NotReplicated 사용
 - Steam Inventory playtimegenerator의 drop_interval/drop_window/drop_max_per_window로 일일 보상 상한 제어
 - ExchangeItems로 재화 소비 + 코스메틱 교환 원자적 처리 가능
+- **UHT는 `#if !UE_BUILD_SHIPPING` 내부의 `UFUNCTION` 선언을 허용하지 않음** — `WITH_EDITORONLY_DATA`만 예외. 가드는 함수 본문 내부에서 처리해야 함
 
 ### 이슈/해결
 - **NotReplicated UHT 에러**: UActorComponent UPROPERTY에 NotReplicated 지정 시 "Only Struct members can be marked NotReplicated" 에러 → UPROPERTY 자체를 제거하여 해결
+- **UFUNCTION 전처리기 가드 에러**: `UFUNCTION(Exec)`를 `#if !UE_BUILD_SHIPPING` 안에 넣으면 UHT 에러 → 선언은 가드 밖에, 구현 본문 내부에서 가드 처리로 해결
 
 ---
 

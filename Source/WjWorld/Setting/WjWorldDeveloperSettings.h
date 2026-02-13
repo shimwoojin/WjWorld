@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/DeveloperSettingsBackedByCVars.h"
 #include "GamePlay/Placement/WjWorldPlacementTypes.h"
+#include "Currency/WjWorldCurrencyTypes.h"
 #include "WjWorldDeveloperSettings.generated.h"
 
 class AWjWorldTileActor;
@@ -129,6 +130,10 @@ public:
 	/** 패배 시 보상 Playtimegenerator DefId */
 	UPROPERTY(config, EditAnywhere, Category = "Currency")
 	int32 MatchLossRewardDefId = 11;
+
+	/** Gem 팩 정의 목록 (Steam 결제용) */
+	UPROPERTY(config, EditAnywhere, Category = "Currency")
+	TArray<FGemPackDefinition> GemPackDefinitions;
 
 	// ========== JumpMap ==========
 

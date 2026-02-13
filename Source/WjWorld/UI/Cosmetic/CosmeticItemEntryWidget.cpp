@@ -44,6 +44,8 @@ void UCosmeticItemEntryWidget::NativeDestruct()
 void UCosmeticItemEntryWidget::SetItemDefinition(const FCosmeticItemDefinition& Def)
 {
 	CachedItemId = Def.ItemId;
+	CachedCoinPrice = Def.CoinPrice;
+	CachedGemPrice = Def.GemPrice;
 
 	// 이름 설정
 	if (NameText)
@@ -61,9 +63,13 @@ void UCosmeticItemEntryWidget::SetItemDefinition(const FCosmeticItemDefinition& 
 	// 가격 표시 (보유 여부는 SetOwned로 갱신)
 	if (PriceText)
 	{
-		if (Def.Price > 0)
+		if (Def.CoinPrice > 0)
 		{
-			PriceText->SetText(FText::Format(NSLOCTEXT("Cosmetic", "PriceFormat", "{0}"), FText::AsNumber(Def.Price)));
+			PriceText->SetText(FText::Format(NSLOCTEXT("Cosmetic", "CoinPriceEntryFormat", "{0} Coin"), FText::AsNumber(Def.CoinPrice)));
+		}
+		else if (Def.GemPrice > 0)
+		{
+			PriceText->SetText(FText::Format(NSLOCTEXT("Cosmetic", "GemPriceEntryFormat", "{0} Gem"), FText::AsNumber(Def.GemPrice)));
 		}
 		else
 		{
@@ -103,6 +109,19 @@ void UCosmeticItemEntryWidget::SetOwned(bool bOwned)
 		}
 		else
 		{
+			// 미보유 시 캐시된 가격으로 복원
+			if (CachedCoinPrice > 0)
+			{
+				PriceText->SetText(FText::Format(NSLOCTEXT("Cosmetic", "CoinPriceEntryFormat", "{0} Coin"), FText::AsNumber(CachedCoinPrice)));
+			}
+			else if (CachedGemPrice > 0)
+			{
+				PriceText->SetText(FText::Format(NSLOCTEXT("Cosmetic", "GemPriceEntryFormat", "{0} Gem"), FText::AsNumber(CachedGemPrice)));
+			}
+			else
+			{
+				PriceText->SetText(NSLOCTEXT("Cosmetic", "Free", "무료"));
+			}
 			PriceText->SetColorAndOpacity(FSlateColor(FLinearColor::White));
 		}
 	}

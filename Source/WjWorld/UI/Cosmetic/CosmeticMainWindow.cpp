@@ -3,9 +3,12 @@
 #include "UI/Cosmetic/CosmeticMainWindow.h"
 #include "UI/Cosmetic/CosmeticItemEntryWidget.h"
 #include "UI/Cosmetic/CosmeticPreviewPanel.h"
+#include "UI/Currency/CurrencyBalanceWidget.h"
+#include "UI/Currency/GemPackStoreWidget.h"
 #include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "Cosmetic/WjWorldCosmeticDataAsset.h"
 #include "Cosmetic/WjWorldPurchaseSubsystem.h"
+#include "Currency/WjWorldCurrencySubsystem.h"
 #include "Components/Button.h"
 #include "Components/ScrollBox.h"
 #include "Components/UniformGridPanel.h"
@@ -67,6 +70,20 @@ void UCosmeticMainWindow::NativeConstruct()
 		CloseButton->OnClicked.AddDynamic(this, &UCosmeticMainWindow::OnCloseClicked);
 	}
 
+	// Gem 충전 버튼 바인딩
+	if (GemChargeButton)
+	{
+		GemChargeButton->OnClicked.RemoveDynamic(this, &UCosmeticMainWindow::OnGemChargeClicked);
+		GemChargeButton->OnClicked.AddDynamic(this, &UCosmeticMainWindow::OnGemChargeClicked);
+	}
+
+	// CurrencyBalanceWidget의 Gem 영역 클릭 구독
+	if (CurrencyBalanceWidget)
+	{
+		CurrencyBalanceWidget->OnGemAreaClicked.RemoveDynamic(this, &UCosmeticMainWindow::OnGemAreaClicked);
+		CurrencyBalanceWidget->OnGemAreaClicked.AddDynamic(this, &UCosmeticMainWindow::OnGemAreaClicked);
+	}
+
 	// 서브시스템 델리게이트 바인딩
 	UGameInstance* GI = GetGameInstance();
 	if (GI)
@@ -84,6 +101,12 @@ void UCosmeticMainWindow::NativeConstruct()
 			PurchaseSub->OnPurchaseComplete.RemoveDynamic(this, &UCosmeticMainWindow::OnPurchaseComplete);
 			PurchaseSub->OnPurchaseComplete.AddDynamic(this, &UCosmeticMainWindow::OnPurchaseComplete);
 		}
+
+		if (UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>())
+		{
+			CurrencySub->OnCurrencyPurchaseComplete.RemoveDynamic(this, &UCosmeticMainWindow::OnCurrencyPurchaseComplete);
+			CurrencySub->OnCurrencyPurchaseComplete.AddDynamic(this, &UCosmeticMainWindow::OnCurrencyPurchaseComplete);
+		}
 	}
 
 	UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticMainWindow: NativeConstruct completed"));
@@ -91,7 +114,18 @@ void UCosmeticMainWindow::NativeConstruct()
 
 void UCosmeticMainWindow::NativeDestruct()
 {
-	// 델리게이트 바인딩 해제
+	// Gem 관련 델리게이트 해제
+	if (GemChargeButton)
+	{
+		GemChargeButton->OnClicked.RemoveDynamic(this, &UCosmeticMainWindow::OnGemChargeClicked);
+	}
+
+	if (CurrencyBalanceWidget)
+	{
+		CurrencyBalanceWidget->OnGemAreaClicked.RemoveDynamic(this, &UCosmeticMainWindow::OnGemAreaClicked);
+	}
+
+	// 서브시스템 델리게이트 바인딩 해제
 	UGameInstance* GI = GetGameInstance();
 	if (GI)
 	{
@@ -104,6 +138,11 @@ void UCosmeticMainWindow::NativeDestruct()
 		if (UWjWorldPurchaseSubsystem* PurchaseSub = GI->GetSubsystem<UWjWorldPurchaseSubsystem>())
 		{
 			PurchaseSub->OnPurchaseComplete.RemoveDynamic(this, &UCosmeticMainWindow::OnPurchaseComplete);
+		}
+
+		if (UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>())
+		{
+			CurrencySub->OnCurrencyPurchaseComplete.RemoveDynamic(this, &UCosmeticMainWindow::OnCurrencyPurchaseComplete);
 		}
 	}
 
@@ -228,12 +267,40 @@ void UCosmeticMainWindow::OnActionButtonClicked()
 		}
 		else
 		{
-			// 미보유 아이템 → 구매
-			UWjWorldPurchaseSubsystem* PurchaseSub = GI->GetSubsystem<UWjWorldPurchaseSubsystem>();
-			if (PurchaseSub && !PurchaseSub->IsPurchasePending())
+			// 미보유 아이템 → 재화 구매 우선, 불가 시 Steam 실결제
+			const FCosmeticItemDefinition* ItemDef = CosmeticSub->GetCatalog() ? CosmeticSub->GetCatalog()->FindByItemId(SelectedItemId) : nullptr;
+			UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
+
+			bool bCurrencyPurchased = false;
+			if (ItemDef && CurrencySub)
 			{
-				PurchaseSub->RequestPurchase(SelectedItemId);
-				UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticMainWindow: Purchase requested for %s"), *SelectedItemId.ToString());
+				if (ItemDef->CoinPrice > 0)
+				{
+					bCurrencyPurchased = CurrencySub->PurchaseItemWithCurrency(SelectedItemId, ECurrencyType::Coin);
+					if (bCurrencyPurchased)
+					{
+						UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticMainWindow: Coin purchase requested for %s"), *SelectedItemId.ToString());
+					}
+				}
+
+				if (!bCurrencyPurchased && ItemDef->GemPrice > 0)
+				{
+					bCurrencyPurchased = CurrencySub->PurchaseItemWithCurrency(SelectedItemId, ECurrencyType::Gem);
+					if (bCurrencyPurchased)
+					{
+						UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticMainWindow: Gem purchase requested for %s"), *SelectedItemId.ToString());
+					}
+				}
+			}
+
+			if (!bCurrencyPurchased)
+			{
+				UWjWorldPurchaseSubsystem* PurchaseSub = GI->GetSubsystem<UWjWorldPurchaseSubsystem>();
+				if (PurchaseSub && !PurchaseSub->IsPurchasePending())
+				{
+					PurchaseSub->RequestPurchase(SelectedItemId);
+					UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticMainWindow: Steam purchase requested for %s"), *SelectedItemId.ToString());
+				}
 			}
 		}
 	}
@@ -257,6 +324,35 @@ void UCosmeticMainWindow::OnActionButtonClicked()
 void UCosmeticMainWindow::OnCloseClicked()
 {
 	ClosePopup();
+}
+
+void UCosmeticMainWindow::OnGemChargeClicked()
+{
+	OpenGemPackStore();
+}
+
+void UCosmeticMainWindow::OnGemAreaClicked()
+{
+	OpenGemPackStore();
+}
+
+void UCosmeticMainWindow::OpenGemPackStore()
+{
+	if (!GemPackStoreWidgetClass)
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("CosmeticMainWindow: GemPackStoreWidgetClass is not set"));
+		return;
+	}
+
+	if (!GemPackStoreInstance)
+	{
+		GemPackStoreInstance = CreateWidget<UGemPackStoreWidget>(GetOwningPlayer(), GemPackStoreWidgetClass);
+	}
+
+	if (GemPackStoreInstance)
+	{
+		GemPackStoreInstance->ShowPopup();
+	}
 }
 
 void UCosmeticMainWindow::OnItemClicked(FName ItemId)
@@ -285,6 +381,12 @@ void UCosmeticMainWindow::OnLoadoutChanged(ECosmeticSlot CosmeticSlot, FName Ite
 void UCosmeticMainWindow::OnPurchaseComplete(FName ItemId, bool bSuccess)
 {
 	UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticMainWindow: Purchase %s for %s"), bSuccess ? TEXT("succeeded") : TEXT("failed"), *ItemId.ToString());
+	RefreshUI();
+}
+
+void UCosmeticMainWindow::OnCurrencyPurchaseComplete(FName ItemId, bool bSuccess)
+{
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticMainWindow: Currency purchase %s for %s"), bSuccess ? TEXT("succeeded") : TEXT("failed"), *ItemId.ToString());
 	RefreshUI();
 }
 
@@ -363,9 +465,23 @@ void UCosmeticMainWindow::RefreshDetailInfo()
 		{
 			SelectedItemPriceText->SetText(NSLOCTEXT("Cosmetic", "Owned", "보유중"));
 		}
-		else if (ItemDef->Price > 0)
+		else if (ItemDef->CoinPrice > 0 && ItemDef->GemPrice > 0)
 		{
-			SelectedItemPriceText->SetText(FText::Format(NSLOCTEXT("Cosmetic", "PriceFormat", "{0}"), FText::AsNumber(ItemDef->Price)));
+			SelectedItemPriceText->SetText(FText::Format(
+				NSLOCTEXT("Cosmetic", "CoinGemPriceFormat", "{0} Coin / {1} Gem"),
+				FText::AsNumber(ItemDef->CoinPrice), FText::AsNumber(ItemDef->GemPrice)));
+		}
+		else if (ItemDef->CoinPrice > 0)
+		{
+			SelectedItemPriceText->SetText(FText::Format(
+				NSLOCTEXT("Cosmetic", "CoinPriceFormat", "{0} Coin"),
+				FText::AsNumber(ItemDef->CoinPrice)));
+		}
+		else if (ItemDef->GemPrice > 0)
+		{
+			SelectedItemPriceText->SetText(FText::Format(
+				NSLOCTEXT("Cosmetic", "GemPriceFormat", "{0} Gem"),
+				FText::AsNumber(ItemDef->GemPrice)));
 		}
 		else
 		{
@@ -427,10 +543,34 @@ void UCosmeticMainWindow::RefreshActionButton()
 			UWjWorldPurchaseSubsystem* PurchaseSub = GI->GetSubsystem<UWjWorldPurchaseSubsystem>();
 			bool bPending = PurchaseSub && PurchaseSub->IsPurchasePending();
 
+			// 재화 구매 가능 여부 확인
+			const FCosmeticItemDefinition* ItemDef = nullptr;
+			if (CosmeticSub->GetCatalog())
+			{
+				ItemDef = CosmeticSub->GetCatalog()->FindByItemId(SelectedItemId);
+			}
+
+			bool bCanBuyWithCoin = ItemDef && ItemDef->CoinPrice > 0;
+			bool bCanBuyWithGem = ItemDef && ItemDef->GemPrice > 0;
+
 			ActionButton->SetIsEnabled(!bPending);
-			ActionButtonText->SetText(bPending
-				? NSLOCTEXT("Cosmetic", "Purchasing", "구매 중...")
-				: NSLOCTEXT("Cosmetic", "Purchase", "구매"));
+
+			if (bPending)
+			{
+				ActionButtonText->SetText(NSLOCTEXT("Cosmetic", "Purchasing", "구매 중..."));
+			}
+			else if (bCanBuyWithCoin)
+			{
+				ActionButtonText->SetText(NSLOCTEXT("Cosmetic", "PurchaseCoin", "Coin 구매"));
+			}
+			else if (bCanBuyWithGem)
+			{
+				ActionButtonText->SetText(NSLOCTEXT("Cosmetic", "PurchaseGem", "Gem 구매"));
+			}
+			else
+			{
+				ActionButtonText->SetText(NSLOCTEXT("Cosmetic", "Purchase", "구매"));
+			}
 		}
 	}
 	else

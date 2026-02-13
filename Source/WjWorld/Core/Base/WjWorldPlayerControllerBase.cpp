@@ -7,6 +7,7 @@
 #include "InputMappingContext.h"
 #include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "Cosmetic/WjWorldCosmeticTypes.h"
+#include "Currency/WjWorldCurrencySubsystem.h"
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "WjWorldLogCategories.h"
 
@@ -280,4 +281,146 @@ void AWjWorldPlayerControllerBase::Cosmetic_OpenShop()
 	// 로비 HUD에서 코스메틱 상점을 여는 로직
 	// 실제 구현은 HUD 클래스에서 처리
 	UE_LOG(LogWjWorld, Log, TEXT("Cosmetic_OpenShop: 콘솔에서 상점 열기는 로비에서만 가능합니다. LobbyHUD의 코스메틱 버튼을 사용하세요."));
+}
+
+// ---- 재화 테스트 콘솔 명령어 ----
+
+void AWjWorldPlayerControllerBase::Currency_GrantCoin(int32 Amount)
+{
+#if !UE_BUILD_SHIPPING
+	UGameInstance* GI = GetGameInstance();
+	if (!GI) return;
+
+	UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
+	if (!CurrencySub)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("Currency_GrantCoin: CurrencySubsystem 없음"));
+		return;
+	}
+
+	CurrencySub->GrantCurrencyLocally(ECurrencyType::Coin, Amount);
+#endif
+}
+
+void AWjWorldPlayerControllerBase::Currency_GrantGem(int32 Amount)
+{
+#if !UE_BUILD_SHIPPING
+	UGameInstance* GI = GetGameInstance();
+	if (!GI) return;
+
+	UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
+	if (!CurrencySub)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("Currency_GrantGem: CurrencySubsystem 없음"));
+		return;
+	}
+
+	CurrencySub->GrantCurrencyLocally(ECurrencyType::Gem, Amount);
+#endif
+}
+
+void AWjWorldPlayerControllerBase::Currency_SetCoin(int32 Amount)
+{
+#if !UE_BUILD_SHIPPING
+	UGameInstance* GI = GetGameInstance();
+	if (!GI) return;
+
+	UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
+	if (!CurrencySub)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("Currency_SetCoin: CurrencySubsystem 없음"));
+		return;
+	}
+
+	CurrencySub->SetCurrencyLocally(ECurrencyType::Coin, Amount);
+#endif
+}
+
+void AWjWorldPlayerControllerBase::Currency_SetGem(int32 Amount)
+{
+#if !UE_BUILD_SHIPPING
+	UGameInstance* GI = GetGameInstance();
+	if (!GI) return;
+
+	UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
+	if (!CurrencySub)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("Currency_SetGem: CurrencySubsystem 없음"));
+		return;
+	}
+
+	CurrencySub->SetCurrencyLocally(ECurrencyType::Gem, Amount);
+#endif
+}
+
+void AWjWorldPlayerControllerBase::Currency_BuyGemPack(int32 PackDefId)
+{
+#if !UE_BUILD_SHIPPING
+	UGameInstance* GI = GetGameInstance();
+	if (!GI) return;
+
+	UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
+	if (!CurrencySub)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("Currency_BuyGemPack: CurrencySubsystem 없음"));
+		return;
+	}
+
+	if (CurrencySub->PurchaseGemPack(PackDefId))
+	{
+		UE_LOG(LogWjWorldCurrency, Log, TEXT("Currency_BuyGemPack: PackDefId %d 구매 요청 완료"), PackDefId);
+	}
+	else
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("Currency_BuyGemPack: PackDefId %d 구매 요청 실패"), PackDefId);
+	}
+#endif
+}
+
+void AWjWorldPlayerControllerBase::Currency_SimulateReward(int32 bWin)
+{
+#if !UE_BUILD_SHIPPING
+	UGameInstance* GI = GetGameInstance();
+	if (!GI) return;
+
+	UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
+	if (!CurrencySub)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("Currency_SimulateReward: CurrencySubsystem 없음"));
+		return;
+	}
+
+	CurrencySub->TriggerMatchReward(bWin != 0);
+#endif
+}
+
+void AWjWorldPlayerControllerBase::Currency_Print()
+{
+	UGameInstance* GI = GetGameInstance();
+	if (!GI) return;
+
+	UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
+	if (!CurrencySub)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("Currency_Print: CurrencySubsystem 없음"));
+		return;
+	}
+
+	CurrencySub->DebugPrintBalances();
+}
+
+void AWjWorldPlayerControllerBase::Currency_Refresh()
+{
+	UGameInstance* GI = GetGameInstance();
+	if (!GI) return;
+
+	UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
+	if (!CurrencySub)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("Currency_Refresh: CurrencySubsystem 없음"));
+		return;
+	}
+
+	CurrencySub->RefreshBalancesFromInventory();
+	UE_LOG(LogWjWorldCurrency, Log, TEXT("Currency_Refresh: 잔액 갱신 요청"));
 }

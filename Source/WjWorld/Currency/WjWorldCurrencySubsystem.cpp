@@ -343,6 +343,15 @@ void UWjWorldCurrencySubsystem::GrantCurrencyLocally(ECurrencyType Type, int32 A
 		Amount, GetBalance(Type));
 }
 
+void UWjWorldCurrencySubsystem::SetCurrencyLocally(ECurrencyType Type, int32 Amount)
+{
+	SetBalance(Type, Amount);
+
+	UE_LOG(LogWjWorldCurrency, Log, TEXT("로컬 재화 설정: %s = %d"),
+		(Type == ECurrencyType::Coin) ? TEXT("Coin") : TEXT("Gem"),
+		GetBalance(Type));
+}
+
 void UWjWorldCurrencySubsystem::DebugPrintBalances() const
 {
 	UE_LOG(LogWjWorldCurrency, Log, TEXT("========== 재화 잔액 =========="));

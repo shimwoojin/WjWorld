@@ -93,4 +93,38 @@ public:
 	/** 코스메틱 상점 UI 열기 */
 	UFUNCTION(Exec)
 	void Cosmetic_OpenShop();
+
+	// ---- 재화 테스트 콘솔 명령어 ----
+
+	/** Coin 로컬 부여 */
+	UFUNCTION(Exec)
+	void Currency_GrantCoin(int32 Amount);
+
+	/** Gem 로컬 부여 */
+	UFUNCTION(Exec)
+	void Currency_GrantGem(int32 Amount);
+
+	/** Coin 잔액 직접 설정 */
+	UFUNCTION(Exec)
+	void Currency_SetCoin(int32 Amount);
+
+	/** Gem 잔액 직접 설정 */
+	UFUNCTION(Exec)
+	void Currency_SetGem(int32 Amount);
+
+	/** Gem 팩 구매 테스트 */
+	UFUNCTION(Exec)
+	void Currency_BuyGemPack(int32 PackDefId);
+
+	/** 매치 보상 시뮬레이션 (0=패배, 1=승리) */
+	UFUNCTION(Exec)
+	void Currency_SimulateReward(int32 bWin);
+
+	/** 재화 잔액 출력 */
+	UFUNCTION(Exec)
+	void Currency_Print();
+
+	/** Steam 재화 잔액 갱신 */
+	UFUNCTION(Exec)
+	void Currency_Refresh();
 };

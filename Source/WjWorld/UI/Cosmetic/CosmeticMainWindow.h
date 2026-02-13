@@ -13,6 +13,8 @@ class UUniformGridPanel;
 class UTextBlock;
 class UCosmeticPreviewPanel;
 class UCosmeticItemEntryWidget;
+class UCurrencyBalanceWidget;
+class UGemPackStoreWidget;
 struct FCosmeticItemDefinition;
 
 /**
@@ -90,6 +92,10 @@ protected:
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UTextBlock> SelectedItemPriceText;
 
+	//~ 잔액 표시 위젯
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UCurrencyBalanceWidget> CurrencyBalanceWidget;
+
 	//~ 프리뷰 패널
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UCosmeticPreviewPanel> PreviewPanel;
@@ -104,9 +110,17 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> CloseButton;
 
+	//~ Gem 충전 버튼
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UButton> GemChargeButton;
+
 	//~ 엔트리 위젯 클래스
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UCosmeticItemEntryWidget> ItemEntryWidgetClass;
+
+	/** Gem 팩 상점 위젯 클래스 */
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UGemPackStoreWidget> GemPackStoreWidgetClass;
 
 protected:
 	//~ 버튼 클릭 핸들러
@@ -135,6 +149,12 @@ protected:
 	UFUNCTION()
 	void OnCloseClicked();
 
+	UFUNCTION()
+	void OnGemChargeClicked();
+
+	UFUNCTION()
+	void OnGemAreaClicked();
+
 	//~ 아이템 클릭 핸들러
 	UFUNCTION()
 	void OnItemClicked(FName ItemId);
@@ -148,6 +168,9 @@ protected:
 
 	UFUNCTION()
 	void OnPurchaseComplete(FName ItemId, bool bSuccess);
+
+	UFUNCTION()
+	void OnCurrencyPurchaseComplete(FName ItemId, bool bSuccess);
 
 private:
 	//~ UI 갱신 함수
@@ -188,7 +211,14 @@ private:
 	/** 그리드 클리어 */
 	void ClearItemGrid();
 
+	/** Gem 팩 상점 팝업 열기 */
+	void OpenGemPackStore();
+
 	//~ 상태
+
+	/** Gem 팩 상점 위젯 인스턴스 */
+	UPROPERTY()
+	TObjectPtr<UGemPackStoreWidget> GemPackStoreInstance;
 
 	/** 현재 모드 */
 	ECosmeticWindowMode CurrentMode = ECosmeticWindowMode::Shop;

@@ -73,6 +73,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Currency|Debug", meta = (DevelopmentOnly))
 	void GrantCurrencyLocally(ECurrencyType Type, int32 Amount);
 
+	/** 잔액을 특정 값으로 설정 (테스트용) */
+	UFUNCTION(BlueprintCallable, Category = "Currency|Debug", meta = (DevelopmentOnly))
+	void SetCurrencyLocally(ECurrencyType Type, int32 Amount);
+
 	/** 현재 잔액을 로그로 출력 */
 	UFUNCTION(BlueprintCallable, Category = "Currency|Debug")
 	void DebugPrintBalances() const;

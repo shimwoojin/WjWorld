@@ -98,6 +98,12 @@ private:
 	/** 캐시된 아이템 ID */
 	FName CachedItemId;
 
+	/** 캐시된 Coin 가격 */
+	int32 CachedCoinPrice = 0;
+
+	/** 캐시된 Gem 가격 */
+	int32 CachedGemPrice = 0;
+
 	/** 보유 여부 */
 	bool bIsOwned = false;
 

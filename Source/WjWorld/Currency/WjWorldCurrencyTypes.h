@@ -38,3 +38,28 @@ struct WJWORLD_API FCurrencyBalance
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 Amount = 0;
 };
+
+/**
+ * Gem 팩 정의 (Steam 결제용)
+ */
+USTRUCT(BlueprintType)
+struct WJWORLD_API FGemPackDefinition
+{
+	GENERATED_BODY()
+
+	/** Steam ItemDef ID (예: 20, 21) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 SteamItemDefId = 0;
+
+	/** 표시 이름 (예: "100 WjGems") */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText DisplayName;
+
+	/** 팩에 포함된 Gem 수량 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 GemAmount = 0;
+
+	/** 가격 표시 텍스트 (예: "$0.99") */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText PriceText;
+};
