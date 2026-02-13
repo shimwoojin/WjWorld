@@ -10,6 +10,7 @@
 #include "Core/Session/SessionManager.h"
 #include "DataAsset/WjWorldMinigameDataAsset.h"
 #include "GamePlay/Wall/WjWorldWallDescriptionDataAsset.h"
+#include "GamePlay/JumpMap/JumpMapLayoutDataAsset.h"
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "Kismet/GameplayStatics.h"
 #include "WjWorldLogCategories.h"
@@ -495,11 +496,32 @@ void UCreateRoomWindow::AddUserMapOptions(FName GameModeId)
 			}
 		}
 	}
-	// JumpMap: 추후 구현 시 여기에 추가
-	// else if (GameModeId == FName("JumpMap"))
-	// {
-	//     // JumpMap 유저 레이아웃 스캔 로직
-	// }
+	else if (GameModeId == FName("JumpMap"))
+	{
+		if (!DevSettings->JumpMapLayoutDataAsset.IsNull())
+		{
+			UJumpMapLayoutDataAsset* JumpMapAsset = DevSettings->JumpMapLayoutDataAsset.LoadSynchronous();
+			if (JumpMapAsset)
+			{
+				TArray<FJumpMapLayout> UserLayouts;
+				int32 Count = JumpMapAsset->ScanUserJumpMapLayouts(UserLayouts);
+
+				for (const FJumpMapLayout& Layout : UserLayouts)
+				{
+					FString DisplayName = Layout.LayoutName;
+					DisplayName.RemoveFromStart(TEXT("User_"));
+					FString DisplayStr = FString::Printf(TEXT("[User] %s"), *DisplayName);
+					MapComboBox->AddOption(DisplayStr);
+					MapOptionDisplayToValue.Add(DisplayStr, Layout.LayoutName);
+				}
+
+				if (Count > 0)
+				{
+					UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Added %d user layouts for JumpMap"), Count);
+				}
+			}
+		}
+	}
 }
 
 void UCreateRoomWindow::InitializeNetworkModeOptions()

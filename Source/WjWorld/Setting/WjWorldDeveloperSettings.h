@@ -112,6 +112,24 @@ public:
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "Cosmetic")
 	TSoftObjectPtr<UWjWorldCosmeticCatalogDataAsset> CosmeticCatalog;
 
+	// ========== Currency ==========
+
+	/** Coin (무료 재화) Steam ItemDef ID */
+	UPROPERTY(config, EditAnywhere, Category = "Currency")
+	int32 CoinSteamItemDefId = 1000;
+
+	/** Gem (유료 재화) Steam ItemDef ID */
+	UPROPERTY(config, EditAnywhere, Category = "Currency")
+	int32 GemSteamItemDefId = 1001;
+
+	/** 승리 시 보상 Playtimegenerator DefId */
+	UPROPERTY(config, EditAnywhere, Category = "Currency")
+	int32 MatchWinRewardDefId = 10;
+
+	/** 패배 시 보상 Playtimegenerator DefId */
+	UPROPERTY(config, EditAnywhere, Category = "Currency")
+	int32 MatchLossRewardDefId = 11;
+
 	// ========== JumpMap ==========
 
 	/** JumpMap 레이아웃 데이터 에셋 */

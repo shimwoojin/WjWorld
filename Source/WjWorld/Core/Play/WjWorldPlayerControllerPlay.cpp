@@ -3,3 +3,10 @@
 
 #include "Core/Play/WjWorldPlayerControllerPlay.h"
 
+void AWjWorldPlayerControllerPlay::BeginPlay()
+{
+	Super::BeginPlay();
+
+	SetInputMode(FInputModeGameOnly());
+}
+

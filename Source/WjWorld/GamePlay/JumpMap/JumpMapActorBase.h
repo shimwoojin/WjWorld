@@ -30,6 +30,10 @@ public:
 	/** 맵에서 커스텀 프로퍼티 적용 */
 	virtual void ApplySerializedProperties(const TMap<FString, FString>& Properties) {}
 
+	/** 기본 배치 액터 여부 (레이아웃 저장/삭제 대상에서 제외) */
+	UPROPERTY(EditInstanceOnly, Category = "JumpMap")
+	bool bIsDefaultPlacement = false;
+
 protected:
 	/** 이 액터의 레이아웃 ObjectId (서브클래스 생성자에서 설정) */
 	UPROPERTY(EditDefaultsOnly, Category = "JumpMap")

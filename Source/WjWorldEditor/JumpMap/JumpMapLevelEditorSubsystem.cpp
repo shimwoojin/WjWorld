@@ -6,9 +6,6 @@
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "EngineUtils.h"
 #include "Editor.h"
-#include "Misc/FileHelper.h"
-#include "Misc/Paths.h"
-#include "HAL/PlatformFileManager.h"
 
 bool UJumpMapLevelEditorSubsystem::SaveCurrentLevelLayout(const FString& LayoutName)
 {
@@ -19,6 +16,13 @@ bool UJumpMapLevelEditorSubsystem::SaveCurrentLevelLayout(const FString& LayoutN
 		return false;
 	}
 
+	UJumpMapLayoutDataAsset* LayoutDA = GetLayoutDataAsset();
+	if (!LayoutDA)
+	{
+		UE_LOG(LogTemp, Error, TEXT("JumpMapLevelEditor: JumpMapLayoutDataAsset not found in DeveloperSettings"));
+		return false;
+	}
+
 	FJumpMapLayout Layout;
 	Layout.LayoutName = LayoutName;
 
@@ -26,7 +30,7 @@ bool UJumpMapLevelEditorSubsystem::SaveCurrentLevelLayout(const FString& LayoutN
 	for (TActorIterator<AJumpMapActorBase> It(World); It; ++It)
 	{
 		AJumpMapActorBase* Actor = *It;
-		if (!Actor || Actor->GetJumpMapObjectId().IsNone())
+		if (!Actor || Actor->GetJumpMapObjectId().IsNone() || Actor->bIsDefaultPlacement)
 		{
 			continue;
 		}
@@ -45,26 +49,29 @@ bool UJumpMapLevelEditorSubsystem::SaveCurrentLevelLayout(const FString& LayoutN
 		return false;
 	}
 
-	// CSV 내보내기
-	FString CSVContent = UJumpMapLayoutDataAsset::ExportLayoutToCSV(Layout);
-
-	// 저장 디렉토리 생성
-	FString SaveDir = GetUserLayoutDirectory();
-	IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
-	if (!PlatformFile.DirectoryExists(*SaveDir))
+	// 동일 이름의 기존 레이아웃이 있으면 갱신, 없으면 추가
+	bool bUpdated = false;
+	for (FJumpMapLayout& Existing : LayoutDA->BuiltInLayouts)
 	{
-		PlatformFile.CreateDirectoryTree(*SaveDir);
+		if (Existing.LayoutName == LayoutName)
+		{
+			Existing = Layout;
+			bUpdated = true;
+			break;
+		}
 	}
 
-	FString FilePath = SaveDir / FString::Printf(TEXT("%s.csv"), *LayoutName);
-
-	if (!FFileHelper::SaveStringToFile(CSVContent, *FilePath))
+	if (!bUpdated)
 	{
-		UE_LOG(LogTemp, Error, TEXT("JumpMapLevelEditor: Failed to save layout to: %s"), *FilePath);
-		return false;
+		LayoutDA->BuiltInLayouts.Add(Layout);
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("JumpMapLevelEditor: Saved %d actors to '%s'"), Layout.Objects.Num(), *FilePath);
+	// DataAsset 패키지를 Dirty 마킹 (에디터에서 저장 가능하도록)
+	LayoutDA->Modify();
+	LayoutDA->MarkPackageDirty();
+
+	UE_LOG(LogTemp, Log, TEXT("JumpMapLevelEditor: %s layout '%s' (%d actors) to DataAsset"),
+		bUpdated ? TEXT("Updated") : TEXT("Added"), *LayoutName, Layout.Objects.Num());
 	return true;
 }
 
@@ -77,85 +84,33 @@ bool UJumpMapLevelEditorSubsystem::LoadLayoutToCurrentLevel(const FString& Layou
 		return false;
 	}
 
-	// CSV 파일 로드
-	FString FilePath = GetUserLayoutDirectory() / FString::Printf(TEXT("%s.csv"), *LayoutName);
-	FString FileContent;
-
-	if (!FFileHelper::LoadFileToString(FileContent, *FilePath))
+	UJumpMapLayoutDataAsset* LayoutDA = GetLayoutDataAsset();
+	if (!LayoutDA)
 	{
-		UE_LOG(LogTemp, Error, TEXT("JumpMapLevelEditor: Failed to load file: %s"), *FilePath);
+		UE_LOG(LogTemp, Error, TEXT("JumpMapLevelEditor: JumpMapLayoutDataAsset not found in DeveloperSettings"));
 		return false;
 	}
 
-	// 임시 DataAsset을 통해 CSV 파싱
-	UJumpMapLayoutDataAsset* TempAsset = NewObject<UJumpMapLayoutDataAsset>();
-	TArray<FJumpMapLayout> ParsedLayouts;
-	// ParseLayoutCSV는 private이므로 ScanUserJumpMapLayouts 패턴 대신 직접 파싱
-	// ExportLayoutToCSV의 역함수가 필요하므로 수동 파싱
-	FJumpMapLayout Layout;
+	// BuiltInLayouts에서 이름으로 검색
+	const FJumpMapLayout* FoundLayout = nullptr;
+	for (const FJumpMapLayout& Layout : LayoutDA->BuiltInLayouts)
 	{
-		TArray<FString> Lines;
-		FileContent.ParseIntoArrayLines(Lines);
-		bool bHeaderParsed = false;
-
-		for (const FString& Line : Lines)
+		if (Layout.LayoutName == LayoutName)
 		{
-			if (Line.IsEmpty()) continue;
-
-			if (Line.StartsWith(TEXT("#")))
-			{
-				if (Line.StartsWith(TEXT("#META:MapName:")))
-				{
-					Layout.LayoutName = Line.RightChop(14);
-					Layout.LayoutName.TrimStartAndEndInline();
-				}
-				continue;
-			}
-
-			if (!bHeaderParsed && Line.Contains(TEXT("ObjectId")))
-			{
-				bHeaderParsed = true;
-				continue;
-			}
-
-			TArray<FString> Values;
-			Line.ParseIntoArray(Values, TEXT(","), true);
-
-			if (Values.Num() < 10) continue;
-
-			FJumpMapLayoutEntry Entry;
-			Entry.ObjectId = FName(*Values[0].TrimStartAndEnd());
-
-			FVector Location(FCString::Atof(*Values[1]), FCString::Atof(*Values[2]), FCString::Atof(*Values[3]));
-			FRotator Rotation(FCString::Atof(*Values[4]), FCString::Atof(*Values[5]), FCString::Atof(*Values[6]));
-			FVector Scale(FCString::Atof(*Values[7]), FCString::Atof(*Values[8]), FCString::Atof(*Values[9]));
-			Entry.Transform = FTransform(Rotation, Location, Scale);
-
-			if (Values.Num() >= 11)
-			{
-				FString PropertiesStr = Values[10].TrimStartAndEnd();
-				if (!PropertiesStr.IsEmpty())
-				{
-					TArray<FString> PropertyPairs;
-					PropertiesStr.ParseIntoArray(PropertyPairs, TEXT("|"), true);
-					for (const FString& Pair : PropertyPairs)
-					{
-						FString Key, Value;
-						if (Pair.Split(TEXT("="), &Key, &Value))
-						{
-							Entry.CustomProperties.Add(Key.TrimStartAndEnd(), Value.TrimStartAndEnd());
-						}
-					}
-				}
-			}
-
-			Layout.Objects.Add(Entry);
+			FoundLayout = &Layout;
+			break;
 		}
 	}
 
-	if (Layout.Objects.Num() == 0)
+	if (!FoundLayout)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("JumpMapLevelEditor: No objects parsed from layout '%s'"), *LayoutName);
+		UE_LOG(LogTemp, Warning, TEXT("JumpMapLevelEditor: Layout '%s' not found in DataAsset"), *LayoutName);
+		return false;
+	}
+
+	if (FoundLayout->Objects.Num() == 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("JumpMapLevelEditor: Layout '%s' has no objects"), *LayoutName);
 		return false;
 	}
 
@@ -166,7 +121,7 @@ bool UJumpMapLevelEditorSubsystem::LoadLayoutToCurrentLevel(const FString& Layou
 	FScopedTransaction Transaction(FText::FromString(TEXT("Load JumpMap Layout")));
 
 	int32 SpawnedCount = 0;
-	for (const FJumpMapLayoutEntry& Entry : Layout.Objects)
+	for (const FJumpMapLayoutEntry& Entry : FoundLayout->Objects)
 	{
 		TSubclassOf<AJumpMapActorBase> ActorClass = GetActorClassForObjectId(Entry.ObjectId);
 		if (!ActorClass)
@@ -187,7 +142,7 @@ bool UJumpMapLevelEditorSubsystem::LoadLayoutToCurrentLevel(const FString& Layou
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("JumpMapLevelEditor: Spawned %d/%d actors from layout '%s'"),
-		SpawnedCount, Layout.Objects.Num(), *LayoutName);
+		SpawnedCount, FoundLayout->Objects.Num(), *LayoutName);
 	return SpawnedCount > 0;
 }
 
@@ -201,7 +156,10 @@ void UJumpMapLevelEditorSubsystem::ClearAllJumpMapActors()
 	TArray<AJumpMapActorBase*> ActorsToDestroy;
 	for (TActorIterator<AJumpMapActorBase> It(World); It; ++It)
 	{
-		ActorsToDestroy.Add(*It);
+		if (!(*It)->bIsDefaultPlacement)
+		{
+			ActorsToDestroy.Add(*It);
+		}
 	}
 
 	for (AJumpMapActorBase* Actor : ActorsToDestroy)
@@ -220,20 +178,15 @@ TArray<FString> UJumpMapLevelEditorSubsystem::GetAvailableLayoutNames() const
 {
 	TArray<FString> LayoutNames;
 
-	FString UserLayoutDir = GetUserLayoutDirectory();
-	IFileManager& FileManager = IFileManager::Get();
-
-	if (!FileManager.DirectoryExists(*UserLayoutDir))
+	UJumpMapLayoutDataAsset* LayoutDA = GetLayoutDataAsset();
+	if (!LayoutDA)
 	{
 		return LayoutNames;
 	}
 
-	TArray<FString> FoundFiles;
-	FileManager.FindFiles(FoundFiles, *UserLayoutDir, TEXT("*.csv"));
-
-	for (const FString& FileName : FoundFiles)
+	for (const FJumpMapLayout& Layout : LayoutDA->BuiltInLayouts)
 	{
-		LayoutNames.Add(FPaths::GetBaseFilename(FileName));
+		LayoutNames.Add(Layout.LayoutName);
 	}
 
 	return LayoutNames;
@@ -252,9 +205,15 @@ int32 UJumpMapLevelEditorSubsystem::GetJumpMapActorCount() const
 	return Count;
 }
 
-FString UJumpMapLevelEditorSubsystem::GetUserLayoutDirectory()
+UJumpMapLayoutDataAsset* UJumpMapLevelEditorSubsystem::GetLayoutDataAsset() const
 {
-	return FPaths::ProjectContentDir() / TEXT("JumpMapLayouts") / TEXT("User");
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	if (!Settings || Settings->JumpMapLayoutDataAsset.IsNull())
+	{
+		return nullptr;
+	}
+
+	return Settings->JumpMapLayoutDataAsset.LoadSynchronous();
 }
 
 TSubclassOf<AJumpMapActorBase> UJumpMapLevelEditorSubsystem::GetActorClassForObjectId(const FName& ObjectId) const

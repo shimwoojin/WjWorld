@@ -19,3 +19,4 @@ DECLARE_LOG_CATEGORY_EXTERN(LogWjWorldAbilities, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(LogWjWorldCosmetic, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(LogWjWorldStats, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(LogWjWorldPlacement, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogWjWorldCurrency, Log, All);

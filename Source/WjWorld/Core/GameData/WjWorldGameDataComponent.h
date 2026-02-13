@@ -37,13 +37,10 @@ public:
 	void RemoveValueString(const FGameplayTag& InTag);
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TMap<FGameplayTag, int32> IntDataMap;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TMap<FGameplayTag, float> FloatDataMap;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TMap<FGameplayTag, FString> StringDataMap;
 };
 

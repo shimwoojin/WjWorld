@@ -6,6 +6,7 @@
 #include "Core/Play/WjWorldHUDPlay.h"
 #include "Stats/WjWorldStatsSubsystem.h"
 #include "Stats/WjWorldStatTypes.h"
+#include "Currency/WjWorldCurrencySubsystem.h"
 #include "GameFramework/PlayerState.h"
 #include "Net/UnrealNetwork.h"
 
@@ -243,6 +244,14 @@ void AWjWorldGameStatePlay::OnRep_GameResult()
 		}
 
 		Stats->StoreStats();
+	}
+
+	// 재화 보상 지급 (각 클라이언트가 자신의 보상 요청)
+	UWjWorldCurrencySubsystem* CurrencySub = GetGameInstance()->GetSubsystem<UWjWorldCurrencySubsystem>();
+	if (CurrencySub && PC->PlayerState)
+	{
+		bool bIsLocalPlayerWinner = bGameHasWinner && (WinnerPlayerName == LocalPlayerName);
+		CurrencySub->TriggerMatchReward(bIsLocalPlayerWinner);
 	}
 
 	UE_LOG(LogWjWorld, Log, TEXT("GameState: Game Result - %s"), *ResultText);

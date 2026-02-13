@@ -58,35 +58,54 @@ void UWjWorldGameRuleJumpMap::LoadLayoutAndSpawnActors()
 		MapOpt = GameModePlay->GetMapOption();
 	}
 
-	// MapOption이 있고 Default/Random이 아니면 CSV 레이아웃 로드 시도
-	bool bLoadedFromCSV = false;
-	if (!MapOpt.IsEmpty() && !MapOpt.Equals(TEXT("Default"), ESearchCase::IgnoreCase)
-		&& !MapOpt.Equals(TEXT("Random"), ESearchCase::IgnoreCase))
+	// DataAsset에서 레이아웃 로드
+	bool bLayoutLoaded = false;
+	if (!DevSettings->JumpMapLayoutDataAsset.IsNull())
 	{
-		if (!DevSettings->JumpMapLayoutDataAsset.IsNull())
+		UJumpMapLayoutDataAsset* LayoutAsset = DevSettings->JumpMapLayoutDataAsset.LoadSynchronous();
+		if (LayoutAsset)
 		{
-			UJumpMapLayoutDataAsset* LayoutAsset = DevSettings->JumpMapLayoutDataAsset.LoadSynchronous();
-			if (LayoutAsset)
+			FString LayoutName;
+
+			if (MapOpt.IsEmpty() || MapOpt.Equals(TEXT("Default"), ESearchCase::IgnoreCase))
 			{
-				const FJumpMapLayout* Layout = LayoutAsset->GetLayoutByNameIncludingUser(MapOpt);
+				// Default: BuiltInLayouts 첫 번째 레이아웃
+				if (LayoutAsset->BuiltInLayouts.Num() > 0)
+				{
+					LayoutName = LayoutAsset->BuiltInLayouts[0].LayoutName;
+				}
+			}
+			else if (MapOpt.Equals(TEXT("Random"), ESearchCase::IgnoreCase))
+			{
+				LayoutName = LayoutAsset->GetRandomLayoutName();
+			}
+			else
+			{
+				// 직접 지정된 레이아웃 이름 (유저 레이아웃 포함)
+				LayoutName = MapOpt;
+			}
+
+			if (!LayoutName.IsEmpty())
+			{
+				const FJumpMapLayout* Layout = LayoutAsset->GetLayoutByNameIncludingUser(LayoutName);
 				if (Layout)
 				{
 					SpawnActorsFromLayout(*Layout);
-					bLoadedFromCSV = true;
-					UE_LOG(LogWjWorld, Log, TEXT("GameRuleJumpMap: Loaded layout '%s' from CSV (%d objects)"),
-						*MapOpt, Layout->Objects.Num());
+					bLayoutLoaded = true;
+					UE_LOG(LogWjWorld, Log, TEXT("GameRuleJumpMap: Loaded layout '%s' (%d objects)"),
+						*LayoutName, Layout->Objects.Num());
 				}
 				else
 				{
-					UE_LOG(LogWjWorld, Warning, TEXT("GameRuleJumpMap: Layout '%s' not found"), *MapOpt);
+					UE_LOG(LogWjWorld, Warning, TEXT("GameRuleJumpMap: Layout '%s' not found"), *LayoutName);
 				}
 			}
 		}
 	}
 
-	if (!bLoadedFromCSV)
+	if (!bLayoutLoaded)
 	{
-		UE_LOG(LogWjWorld, Log, TEXT("GameRuleJumpMap: Using map-placed actors (no CSV layout)"));
+		UE_LOG(LogWjWorld, Log, TEXT("GameRuleJumpMap: Using map-placed actors (no layout loaded)"));
 	}
 
 	// 체크포인트/엔드 액터 수집 (CSV 로딩 후에도 실행하여 CheckpointLocations 갱신)

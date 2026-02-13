@@ -2,6 +2,52 @@
     "appid": 4399350,
     "items": [
         {
+            "itemdefid": "10",
+            "type": "playtimegenerator",
+            "name": "Match Win Reward",
+            "name_english": "Match Win Reward",
+            "bundle": "1000x50",
+            "drop_interval": "15",
+            "use_drop_window": "true",
+            "drop_window": "1440",
+            "drop_max_per_window": "5"
+        },
+        {
+            "itemdefid": "11",
+            "type": "playtimegenerator",
+            "name": "Match Loss Reward",
+            "name_english": "Match Loss Reward",
+            "bundle": "1000x10",
+            "drop_interval": "15",
+            "use_drop_window": "true",
+            "drop_window": "1440",
+            "drop_max_per_window": "10"
+        },
+        {
+            "itemdefid": "20",
+            "type": "bundle",
+            "name": "100 WjGems",
+            "name_english": "100 WjGems",
+            "description": "A pack of 100 WjGems",
+            "description_english": "A pack of 100 WjGems",
+            "bundle": "1001x100",
+            "price": "99;USD",
+            "tradable": "false",
+            "marketable": "false"
+        },
+        {
+            "itemdefid": "21",
+            "type": "bundle",
+            "name": "500 WjGems",
+            "name_english": "500 WjGems",
+            "description": "A pack of 500 WjGems",
+            "description_english": "A pack of 500 WjGems",
+            "bundle": "1001x500",
+            "price": "399;USD",
+            "tradable": "false",
+            "marketable": "false"
+        },
+        {
             "itemdefid": "100",
             "type": "item",
             "name": "Delivery Bag",
@@ -14,7 +60,8 @@
             "marketable": "false",
             "promo": "manual",
             "price": "1;USD",
-            "tags": "slot:Back;rarity:Common"
+            "tags": "slot:Back;rarity:Common",
+            "exchange": "1000x500;1001x100"
         },
         {
             "itemdefid": "101",
@@ -29,7 +76,28 @@
             "marketable": "false",
             "promo": "manual",
             "price": "1;USD",
-            "tags": "slot:Head;rarity:Uncommon"
+            "tags": "slot:Head;rarity:Uncommon",
+            "exchange": "1000x500;1001x100"
+        },
+        {
+            "itemdefid": "1000",
+            "type": "item",
+            "name": "WjCoin",
+            "name_english": "WjCoin",
+            "auto_stack": "true",
+            "tradable": "false",
+            "marketable": "false",
+            "hidden": "true"
+        },
+        {
+            "itemdefid": "1001",
+            "type": "item",
+            "name": "WjGem",
+            "name_english": "WjGem",
+            "auto_stack": "true",
+            "tradable": "false",
+            "marketable": "false",
+            "hidden": "true"
         }
     ]
 }

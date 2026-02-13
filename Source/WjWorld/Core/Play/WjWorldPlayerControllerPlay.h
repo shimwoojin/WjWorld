@@ -13,5 +13,7 @@ UCLASS()
 class WJWORLD_API AWjWorldPlayerControllerPlay : public AWjWorldPlayerControllerBase
 {
 	GENERATED_BODY()
-	
+
+protected:
+	virtual void BeginPlay() override;
 };

@@ -1,5 +1,39 @@
 # WjWorld 개발 로그
 
+## 2026-02-13
+### 작업 내용 - 재화 시스템 구현 + JumpMap 버그 수정 모음
+
+#### 재화 시스템 (Currency System) 신규 구현
+- **`WjWorldCurrencyTypes.h` 생성** — `ECurrencyType` (Coin/Gem), `FCurrencyBalance` 구조체
+- **`WjWorldCurrencySubsystem.h/.cpp` 생성** — GameInstanceSubsystem 기반
+  - GetBalance, TriggerMatchReward, PurchaseItemWithCurrency, PurchaseGemPack, RefreshBalancesFromInventory
+  - Steam Inventory API 연동 (TriggerItemDrop, ExchangeItems, StartPurchase)
+  - 비Steam GConfig 기반 로컬 잔액 폴백
+  - CosmeticSubsystem.OnInventoryUpdated 구독하여 잔액 자동 갱신
+- **`WjWorldDeveloperSettings.h`** — Currency 카테고리 추가 (CoinSteamItemDefId, GemSteamItemDefId, MatchWin/LossRewardDefId)
+- **`WjWorldCosmeticDataAsset.h`** — FCosmeticItemDefinition에 CoinPrice/GemPrice 필드 추가
+- **`Steam/itemdefs.json` 확장** — WjCoin(1000), WjGem(1001), playtimegenerator(10/11), GemPack(20/21), exchange 레시피
+- **`WjWorldGameStatePlay.cpp`** — 게임 종료 시 CurrencySubsystem.TriggerMatchReward() 호출 추가
+- **`WjWorldLogCategories`** — LogWjWorldCurrency 카테고리 추가
+
+#### JumpMap 버그 수정
+- **방 만들기에서 JumpMap 유저 맵 미노출 수정** — `CreateRoomWindow::AddUserMapOptions`에 JumpMap 분기 구현
+- **TMap 리플리케이션 에러 수정** — `WjWorldGameDataComponent`의 TMap UPROPERTY 제거 (TMap은 리플리케이션 미지원)
+- **JumpMap 에디터 서브시스템 리팩토링** — CSV 기반에서 DataAsset BuiltInLayouts 기반으로 전환
+- **bIsDefaultPlacement 플래그 추가** — JumpMapActorBase에 기본 배치 액터 보호 플래그, 에디터 Save/Clear에서 제외
+- **Default 맵 로딩 수정** — `GameRuleJumpMap::LoadLayoutAndSpawnActors`에서 Default MapOption이 BuiltInLayouts[0] 로드하도록 수정
+- **GameModePlay InputMode 수정** — PlayerControllerPlay BeginPlay에서 FInputModeGameOnly 설정
+
+### 학습/메모
+- UE TMap은 리플리케이션 미지원 → 컴포넌트에 UPROPERTY 제거하거나 USTRUCT 멤버에서 NotReplicated 사용
+- Steam Inventory playtimegenerator의 drop_interval/drop_window/drop_max_per_window로 일일 보상 상한 제어
+- ExchangeItems로 재화 소비 + 코스메틱 교환 원자적 처리 가능
+
+### 이슈/해결
+- **NotReplicated UHT 에러**: UActorComponent UPROPERTY에 NotReplicated 지정 시 "Only Struct members can be marked NotReplicated" 에러 → UPROPERTY 자체를 제거하여 해결
+
+---
+
 ## 2026-02-12
 ### 작업 내용 - JumpMap 배치 모드 개선 (CustomProperties + 검증 + 유저 레이아웃 선택)
 

@@ -56,6 +56,14 @@ struct WJWORLD_API FCosmeticItemDefinition
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int32 Price = 0;
 
+	/** 무료 재화(Coin) 가격 (0 = Coin으로 구매 불가) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Price")
+	int32 CoinPrice = 0;
+
+	/** 유료 재화(Gem) 가격 (0 = Gem으로 구매 불가) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Price")
+	int32 GemPrice = 0;
+
 	/** 부착 소켓 이름 (비어있으면 슬롯 기본값 사용) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attachment")
 	FName AttachSocketName;

@@ -8,3 +8,4 @@ DEFINE_LOG_CATEGORY(LogWjWorldAbilities);
 DEFINE_LOG_CATEGORY(LogWjWorldCosmetic);
 DEFINE_LOG_CATEGORY(LogWjWorldStats);
 DEFINE_LOG_CATEGORY(LogWjWorldPlacement);
+DEFINE_LOG_CATEGORY(LogWjWorldCurrency);
