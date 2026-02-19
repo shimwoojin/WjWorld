@@ -24,6 +24,116 @@
             "drop_max_per_window": "10"
         },
         {
+            "itemdefid": "300",
+            "type": "playtimegenerator",
+            "name": "Treasure Chest #0",
+            "name_english": "Treasure Chest #0",
+            "bundle": "1000x50",
+            "drop_interval": "1440",
+            "use_drop_window": "true",
+            "drop_window": "1440",
+            "drop_max_per_window": "1"
+        },
+        {
+            "itemdefid": "301",
+            "type": "playtimegenerator",
+            "name": "Treasure Chest #1",
+            "name_english": "Treasure Chest #1",
+            "bundle": "1000x50",
+            "drop_interval": "1440",
+            "use_drop_window": "true",
+            "drop_window": "1440",
+            "drop_max_per_window": "1"
+        },
+        {
+            "itemdefid": "302",
+            "type": "playtimegenerator",
+            "name": "Treasure Chest #2",
+            "name_english": "Treasure Chest #2",
+            "bundle": "1000x50",
+            "drop_interval": "1440",
+            "use_drop_window": "true",
+            "drop_window": "1440",
+            "drop_max_per_window": "1"
+        },
+        {
+            "itemdefid": "303",
+            "type": "playtimegenerator",
+            "name": "Treasure Chest #3",
+            "name_english": "Treasure Chest #3",
+            "bundle": "1000x50",
+            "drop_interval": "1440",
+            "use_drop_window": "true",
+            "drop_window": "1440",
+            "drop_max_per_window": "1"
+        },
+        {
+            "itemdefid": "304",
+            "type": "playtimegenerator",
+            "name": "Treasure Chest #4",
+            "name_english": "Treasure Chest #4",
+            "bundle": "1000x50",
+            "drop_interval": "1440",
+            "use_drop_window": "true",
+            "drop_window": "1440",
+            "drop_max_per_window": "1"
+        },
+        {
+            "itemdefid": "305",
+            "type": "playtimegenerator",
+            "name": "Treasure Chest #5",
+            "name_english": "Treasure Chest #5",
+            "bundle": "1000x50",
+            "drop_interval": "1440",
+            "use_drop_window": "true",
+            "drop_window": "1440",
+            "drop_max_per_window": "1"
+        },
+        {
+            "itemdefid": "306",
+            "type": "playtimegenerator",
+            "name": "Treasure Chest #6",
+            "name_english": "Treasure Chest #6",
+            "bundle": "1000x50",
+            "drop_interval": "1440",
+            "use_drop_window": "true",
+            "drop_window": "1440",
+            "drop_max_per_window": "1"
+        },
+        {
+            "itemdefid": "307",
+            "type": "playtimegenerator",
+            "name": "Treasure Chest #7",
+            "name_english": "Treasure Chest #7",
+            "bundle": "1000x50",
+            "drop_interval": "1440",
+            "use_drop_window": "true",
+            "drop_window": "1440",
+            "drop_max_per_window": "1"
+        },
+        {
+            "itemdefid": "308",
+            "type": "playtimegenerator",
+            "name": "Treasure Chest #8",
+            "name_english": "Treasure Chest #8",
+            "bundle": "1000x50",
+            "drop_interval": "1440",
+            "use_drop_window": "true",
+            "drop_window": "1440",
+            "drop_max_per_window": "1"
+        },
+        {
+            "itemdefid": "309",
+            "type": "playtimegenerator",
+            "name": "Treasure Chest #9",
+            "name_english": "Treasure Chest #9",
+            "bundle": "1000x50",
+            "drop_interval": "1440",
+            "use_drop_window": "true",
+            "drop_window": "1440",
+            "drop_max_per_window": "1"
+        },
+        {
             "itemdefid": "20",
             "type": "bundle",
             "name": "100 WjGems",

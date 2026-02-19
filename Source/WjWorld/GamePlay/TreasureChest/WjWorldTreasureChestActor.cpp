@@ -13,7 +13,12 @@
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "UI/Interact/InteractionWidget.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "WjWorldLogCategories.h"
+
+#if WITH_STEAM
+#include "steam/steam_api.h"
+#endif
 
 const FString AWjWorldTreasureChestActor::ConfigSection = TEXT("TreasureChestCooldown");
 
@@ -198,7 +203,7 @@ void AWjWorldTreasureChestActor::OnInteract()
 		return;
 	}
 
-	// 쿨타임 확인
+	// 로컬 쿨타임 확인 (UI용, Steam에서는 서버도 이중 검증)
 	if (IsOnCooldown())
 	{
 		UE_LOG(LogWjWorld, Log, TEXT("TreasureChest: On cooldown, remaining: %s"),
@@ -206,22 +211,14 @@ void AWjWorldTreasureChestActor::OnInteract()
 		return;
 	}
 
-	// Coin 보상 지급
-	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
-	int32 RewardAmount = Settings ? Settings->TreasureChestCoinReward : 50;
-
-	UGameInstance* GI = GetGameInstance();
-	if (GI)
+	// 보상 지급 시도
+	if (!TryGrantReward())
 	{
-		UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
-		if (CurrencySub)
-		{
-			CurrencySub->GrantCurrencyLocally(ECurrencyType::Coin, RewardAmount);
-			UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest: Granted %d Coin"), RewardAmount);
-		}
+		UE_LOG(LogWjWorld, Log, TEXT("TreasureChest: Reward grant failed (Steam cooldown or error)"));
+		return;
 	}
 
-	// 쿨타임 저장
+	// 쿨타임 타임스탬프 저장 (UI 표시용)
 	SaveCooldown();
 
 	// 뚜껑 열기 연출
@@ -232,6 +229,78 @@ void AWjWorldTreasureChestActor::OnInteract()
 
 	// UI 갱신
 	UpdateInteractionUI();
+}
+
+bool AWjWorldTreasureChestActor::TryGrantReward()
+{
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	if (!Settings)
+	{
+		return false;
+	}
+
+#if WITH_STEAM
+	ISteamInventory* SteamInv = SteamInventory();
+	if (SteamInv)
+	{
+		SteamInventoryResult_t ResultHandle = k_SteamInventoryResultInvalid;
+		int32 GeneratorDefId = Settings->TreasureChestGeneratorStartDefId + ChestIndex;
+		SteamItemDef_t DropDef = static_cast<SteamItemDef_t>(GeneratorDefId);
+
+		if (SteamInv->TriggerItemDrop(&ResultHandle, DropDef))
+		{
+			// 결과 상태 확인 (캐시된 경우 즉시 반환)
+			EResult Status = SteamInv->GetResultStatus(ResultHandle);
+			SteamInv->DestroyResult(ResultHandle);
+
+			if (Status == k_EResultOK)
+			{
+				UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest[%d]: Steam TriggerItemDrop 성공 (DefId: %d)"),
+					ChestIndex, GeneratorDefId);
+
+				// 인벤토리 갱신으로 잔액 반영
+				UGameInstance* GI = GetGameInstance();
+				if (GI)
+				{
+					UWjWorldCosmeticSubsystem* CosmeticSub = GI->GetSubsystem<UWjWorldCosmeticSubsystem>();
+					if (CosmeticSub)
+					{
+						CosmeticSub->RequestInventoryRefresh();
+					}
+				}
+
+				return true;
+			}
+			else
+			{
+				UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest[%d]: Steam TriggerItemDrop 쿨타임 또는 실패 (DefId: %d, Status: %d)"),
+					ChestIndex, GeneratorDefId, static_cast<int32>(Status));
+				return false;
+			}
+		}
+		else
+		{
+			UE_LOG(LogWjWorldCurrency, Warning, TEXT("TreasureChest[%d]: Steam TriggerItemDrop 호출 실패 (DefId: %d)"),
+				ChestIndex, GeneratorDefId);
+			return false;
+		}
+	}
+#endif
+
+	// 비Steam 폴백: 로컬 재화 부여
+	int32 RewardAmount = Settings->TreasureChestCoinReward;
+	UGameInstance* GI = GetGameInstance();
+	if (GI)
+	{
+		UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
+		if (CurrencySub)
+		{
+			CurrencySub->GrantCurrencyLocally(ECurrencyType::Coin, RewardAmount);
+			UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest: 로컬 보상 %d Coin 지급"), RewardAmount);
+		}
+	}
+
+	return true;
 }
 
 void AWjWorldTreasureChestActor::ShowInteractionUI()
@@ -303,7 +372,7 @@ bool AWjWorldTreasureChestActor::IsOnCooldown() const
 	if (GConfig->GetString(*ConfigSection, *Key, LastOpenedStr, ConfigPath))
 	{
 		FDateTime LastOpened;
-		if (FDateTime::Parse(LastOpenedStr, LastOpened))
+		if (FDateTime::ParseIso8601(*LastOpenedStr, LastOpened))
 		{
 			const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
 			float CooldownSeconds = Settings ? Settings->TreasureChestCooldownSeconds : 86400.0f;
@@ -322,7 +391,7 @@ FTimespan AWjWorldTreasureChestActor::GetRemainingCooldown() const
 	if (GConfig->GetString(*ConfigSection, *Key, LastOpenedStr, ConfigPath))
 	{
 		FDateTime LastOpened;
-		if (FDateTime::Parse(LastOpenedStr, LastOpened))
+		if (FDateTime::ParseIso8601(*LastOpenedStr, LastOpened))
 		{
 			const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
 			float CooldownSeconds = Settings ? Settings->TreasureChestCooldownSeconds : 86400.0f;

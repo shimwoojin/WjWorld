@@ -13,9 +13,10 @@ class UInteractionWidget;
 class UInputAction;
 
 /**
- * 보물상자 배치 오브젝트
- * 플레이어가 접근하여 F키로 열면 Coin 보상 획득, 쿨타임 적용
- * 각 플레이어마다 독립적인 상태 (로컬 GConfig 저장)
+ * 보물상자 오브젝트 (로비 레벨에 개발자가 직접 배치)
+ * 플레이어가 접근하여 F키로 열면 Coin 보상 획득
+ * Steam: TriggerItemDrop으로 보상 + 서버 사이드 쿨타임 강제
+ * 비Steam: GrantCurrencyLocally + GConfig 로컬 쿨타임 (에디터 테스트용)
  */
 UCLASS()
 class WJWORLD_API AWjWorldTreasureChestActor : public AWjWorldPlacedObjectActor
@@ -42,6 +43,12 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UWidgetComponent> InteractionWidgetComponent;
+
+	// === Settings (레벨에서 인스턴스별 설정) ===
+
+	/** 상자 고유 인덱스 (Steam DefId = StartDefId + ChestIndex) */
+	UPROPERTY(EditAnywhere, Category = "TreasureChest", meta = (ClampMin = "0"))
+	int32 ChestIndex = 0;
 
 	// === State ===
 
@@ -73,7 +80,12 @@ private:
 	void HideInteractionUI();
 	void UpdateInteractionUI();
 
-	// === Cooldown (per-player, GConfig) ===
+	// === Reward ===
+
+	/** Steam TriggerItemDrop 또는 비Steam 로컬 보상 지급. 성공 시 true 반환 */
+	bool TryGrantReward();
+
+	// === Cooldown (per-player, 로컬 UI 표시용 + 비Steam 폴백) ===
 
 	FString GetChestKey() const;
 	bool IsOnCooldown() const;

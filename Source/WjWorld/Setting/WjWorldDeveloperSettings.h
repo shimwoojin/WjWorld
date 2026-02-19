@@ -137,13 +137,17 @@ public:
 
 	// ========== TreasureChest ==========
 
-	/** 보물상자 Coin 보상량 */
+	/** 보물상자 Coin 보상량 (비Steam 폴백용) */
 	UPROPERTY(config, EditAnywhere, Category = "TreasureChest")
 	int32 TreasureChestCoinReward = 50;
 
-	/** 보물상자 쿨타임 (초) */
+	/** 보물상자 쿨타임 (초, 비Steam 폴백용. Steam에서는 drop_interval이 적용됨) */
 	UPROPERTY(config, EditAnywhere, Category = "TreasureChest")
 	float TreasureChestCooldownSeconds = 86400.0f;
+
+	/** 보물상자 Playtimegenerator 시작 DefId (실제 DefId = Start + ChestIndex) */
+	UPROPERTY(config, EditAnywhere, Category = "TreasureChest")
+	int32 TreasureChestGeneratorStartDefId = 300;
 
 	/** 보물상자 상호작용 InputAction */
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "TreasureChest")

@@ -27,6 +27,9 @@ void UWjWorldCosmeticSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 
 	LoadLoadoutFromLocal();
 
+	// Steam 인벤토리 초기 로드
+	RequestInventoryRefresh();
+
 	UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticSubsystem 초기화 완료"));
 }
 
@@ -159,6 +162,7 @@ bool UWjWorldCosmeticSubsystem::EquipItem(ECosmeticSlot Slot, FName ItemId)
 	}
 
 	CurrentLoadout.Equip(Slot, ItemId);
+	SaveLoadoutToLocal();
 	OnLoadoutChanged.Broadcast(Slot, ItemId);
 
 	UE_LOG(LogWjWorldCosmetic, Log, TEXT("장착: 슬롯 %d ← %s"), static_cast<int32>(Slot), *ItemId.ToString());
@@ -168,6 +172,7 @@ bool UWjWorldCosmeticSubsystem::EquipItem(ECosmeticSlot Slot, FName ItemId)
 void UWjWorldCosmeticSubsystem::UnequipSlot(ECosmeticSlot Slot)
 {
 	CurrentLoadout.Unequip(Slot);
+	SaveLoadoutToLocal();
 	OnLoadoutChanged.Broadcast(Slot, NAME_None);
 
 	UE_LOG(LogWjWorldCosmetic, Log, TEXT("해제: 슬롯 %d"), static_cast<int32>(Slot));
