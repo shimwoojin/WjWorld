@@ -37,6 +37,7 @@ Source/WjWorld/
 ├── GamePlay/
 │   ├── Camera/
 │   ├── Interact/InteractablePortal
+│   ├── TreasureChest/                 # TreasureChestActor (보물상자 배치 오브젝트, 쿨타임+Coin 보상)
 │   ├── Placement/                     # PlacementComponent, PreviewActor, PlacedObjectActor, CameraPawn, Types, IDataProvider
 │   ├── Quest/                         # Quest, QuestInstance, QuestState, QuestFactory, QuestSubsystem
 │   ├── Sumo/                          # SumoFloorRingActor, SumoPowerUpActor
@@ -60,6 +61,7 @@ HUD: AWjWorldHUDBase → Lobby, WaitingRoom, Play
 GameRule: UWjWorldGameRuleBase → ApproachingWall, Sumo, JumpMap
 GameData: UWjWorldGameDataComponent → AW/Sumo/JumpMap Game/PlayerData
 Ability: UWjWorldGameplayAbilityBase → GA_NormalAttack, GA_SpawnBrick, GA_LiftBrick, GA_Push, GA_Jump(→GA_DoubleJump), GA_Dash, GA_Grapple
+PlacedObject: AWjWorldPlacedObjectActor → TreasureChestActor
 Subsystem: UGameInstanceSubsystem → CosmeticSubsystem, PurchaseSubsystem, StatsSubsystem
 ```
 
@@ -81,7 +83,7 @@ Lobby / ApproachingWall / JumpMap 3개 컨텍스트 지원.
 - **EPlacementContext** 열거형, **IWjWorldPlacementDataProvider** GameState 인터페이스
 - **PlacementComponent**: 컨텍스트별 저장/로드/삭제, `ValidateJumpMapLayout()` 검증
 - **PreviewActor**: 유효/무효 색상, 비동기 메시 로드, 회전 축(Yaw/Pitch/Roll) 전환
-- **PlacedObjectActor**: ObjectId 저장, 삭제 하이라이트
+- **PlacedObjectActor**: ObjectId 저장, 삭제 하이라이트, `ActorClassOverride`로 서브클래스 스폰 분기
 - **LayoutSaveGame**: `FPlacedObjectSaveEntry.CustomProperties` (JumpMap CheckpointOrder 등)
 - **입력**: LMB(배치), R(회전), T(축 전환), G(각도 전환), DEL(삭제), F(공중모드), ESC(종료)
 - **CSV 내보내기**: AW(`Content/WallLayouts/User/`), JumpMap(`Content/JumpMapLayouts/User/`, 11번째 Properties 컬럼)
@@ -128,8 +130,17 @@ ItemId(FName) 기반. `ECosmeticSlot`(Head/Body/Back/Effect), 비동기 메시 �
 - **Config**: DriverClassName `/Script/ModuleName.ClassName` 정규 경로 필수
 - **LAN 소켓 충돌**: SocketSubsystemSteamIP가 기본 소켓 오버라이드 → WjWorldLanNetDriver로 해결
 
+### 보물상자 시스템
+`AWjWorldTreasureChestActor` — `AWjWorldPlacedObjectActor` 서브클래스. 로비 배치 상호작용 오브젝트.
+- **상호작용**: BoxComponent 오버랩 → EnableInput + EnhancedInput BindAction(F키) → OnInteract
+- **보상**: `CurrencySubsystem->GrantCurrencyLocally(Coin, RewardAmount)`
+- **쿨타임**: per-player 로컬 GConfig (`TreasureChestCooldown.ini`), 위치 해시 키 (`Chest_X_Y_Z`)
+- **비주얼**: DMI 어두운 회색 틴트 (쿨타임 중), UI 프롬프트 (InteractionWidget)
+- **ActorClassOverride**: `FPlaceableObjectDefinition`에 스폰 클래스 분기 필드 → GameStateLobby에서 사용
+- **DeveloperSettings**: `TreasureChest` 카테고리 (CoinReward, CooldownSeconds, InteractAction, WidgetClass)
+
 ### WjWorldDeveloperSettings
-Project Settings > Game > WjWorld. 맵 경로, GameMode 클래스, 캐릭터 기본값, 미니게임 에셋, 배치 카탈로그, 카메라 InputAction.
+Project Settings > Game > WjWorld. 맵 경로, GameMode 클래스, 캐릭터 기본값, 미니게임 에셋, 배치 카탈로그, 카메라 InputAction, 보물상자 설정.
 **설정 우선순위**: BP 서브클래스 UPROPERTY 값 우선 → DeveloperSettings 폴백
 
 ### 패키징 주의사항
@@ -139,6 +150,7 @@ Project Settings > Game > WjWorld. 맵 경로, GameMode 클래스, 캐릭터 기
 
 ## 진행 중 / 미구현
 - Steam 정식 출시 준비
+- 보물상자 BP 작업 필요: PlaceableObjectDataAsset에 ObjectId 등록, ActorClassOverride 설정, InteractAction/WidgetClass 에디터 설정
 
 ## 잔존 버그
 - (현재 없음)

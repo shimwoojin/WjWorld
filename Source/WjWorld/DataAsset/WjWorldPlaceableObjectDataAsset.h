@@ -6,6 +6,8 @@
 #include "Engine/DataAsset.h"
 #include "WjWorldPlaceableObjectDataAsset.generated.h"
 
+class AWjWorldPlacedObjectActor;
+
 /**
  * 배치 가능한 오브젝트 정의
  */
@@ -45,6 +47,10 @@ struct FPlaceableObjectDefinition
 	/** 회전 단위 (도) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ClampMin = "1.0"))
 	float RotationSnapDegrees = 90.0f;
+
+	/** 스폰할 액터 클래스 (nullptr이면 기본 AWjWorldPlacedObjectActor) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<AWjWorldPlacedObjectActor> ActorClassOverride;
 };
 
 /**

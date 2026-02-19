@@ -155,8 +155,12 @@ void AWjWorldGameStateLobby::RespawnAllPlacedObjects()
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
+		UClass* SpawnClass = Def->ActorClassOverride
+			? Def->ActorClassOverride.Get()
+			: AWjWorldPlacedObjectActor::StaticClass();
+
 		AWjWorldPlacedObjectActor* NewActor = World->SpawnActor<AWjWorldPlacedObjectActor>(
-			AWjWorldPlacedObjectActor::StaticClass(),
+			SpawnClass,
 			Entry.Transform.GetLocation(),
 			Entry.Transform.GetRotation().Rotator(),
 			SpawnParams

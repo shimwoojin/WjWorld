@@ -144,4 +144,7 @@ private:
 
 	bool bExchangePending = false;
 	bool bGemPurchasePending = false;
+
+	/** Gem 팩 구매 시작 시간 (타임아웃 판단용) */
+	float GemPurchaseStartTime = 0.0f;
 };

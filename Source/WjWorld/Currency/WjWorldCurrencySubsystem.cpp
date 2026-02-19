@@ -517,7 +517,6 @@ void UWjWorldCurrencySubsystem::PollGemPurchaseResult()
 	// 에서 Gem 잔액 변경이 감지되면 구매 완료로 판단
 
 	// 간단한 타임아웃 처리 (300초)
-	static float GemPurchaseStartTime = 0.0f;
 	UWorld* World = GetWorld();
 	if (World)
 	{

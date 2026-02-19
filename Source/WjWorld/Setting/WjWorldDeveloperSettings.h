@@ -135,6 +135,24 @@ public:
 	UPROPERTY(config, EditAnywhere, Category = "Currency")
 	TArray<FGemPackDefinition> GemPackDefinitions;
 
+	// ========== TreasureChest ==========
+
+	/** 보물상자 Coin 보상량 */
+	UPROPERTY(config, EditAnywhere, Category = "TreasureChest")
+	int32 TreasureChestCoinReward = 50;
+
+	/** 보물상자 쿨타임 (초) */
+	UPROPERTY(config, EditAnywhere, Category = "TreasureChest")
+	float TreasureChestCooldownSeconds = 86400.0f;
+
+	/** 보물상자 상호작용 InputAction */
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "TreasureChest")
+	TSoftObjectPtr<UInputAction> TreasureChestInteractAction;
+
+	/** 보물상자 상호작용 UI 위젯 클래스 */
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "TreasureChest")
+	TSoftClassPtr<UUserWidget> TreasureChestWidgetClass;
+
 	// ========== JumpMap ==========
 
 	/** JumpMap 레이아웃 데이터 에셋 */

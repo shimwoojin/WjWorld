@@ -100,6 +100,10 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UCosmeticPreviewPanel> PreviewPanel;
 
+	//~ 알림 텍스트
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UTextBlock> NotificationText;
+
 	//~ 액션 버튼
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> ActionButton;
@@ -232,6 +236,18 @@ private:
 	/** 생성된 엔트리 위젯 목록 */
 	UPROPERTY()
 	TArray<TObjectPtr<UCosmeticItemEntryWidget>> ItemEntryWidgets;
+
+	//~ 알림
+
+	/** 알림 표시 (성공=초록, 실패=빨강) */
+	void ShowNotification(const FText& Message, bool bSuccess);
+
+	/** 알림 숨기기 */
+	void HideNotification();
+
+	FTimerHandle NotificationTimerHandle;
+
+	static constexpr float NotificationDisplayDuration = 3.0f;
 
 	/** 그리드 열 수 */
 	static constexpr int32 GridColumnCount = 4;
