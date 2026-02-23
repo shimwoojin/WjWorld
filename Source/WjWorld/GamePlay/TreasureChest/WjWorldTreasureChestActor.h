@@ -59,6 +59,9 @@ private:
 	TObjectPtr<APawn> InteractingPlayer;
 
 	bool bPlayerInRange = false;
+	bool bInputBound = false;
+
+	FTimerHandle CooldownUITimerHandle;
 
 	// === Events ===
 
@@ -116,8 +119,17 @@ private:
 	void ApplyCooldownVisual();
 	void RemoveCooldownVisual();
 
+public:
+	/** 쿨타임 초기화 (테스트용) */
+	void ResetCooldown();
+
+private:
+
 	// === Config ===
 
 	static const FString ConfigSection;
 	FString GetConfigPath() const;
+
+	/** 쿨타임 인메모리 캐시 (GConfig read-back 불안정 해결) */
+	FDateTime CachedLastOpenedTime;
 };

@@ -180,22 +180,18 @@ void UWjWorldCosmeticSubsystem::UnequipSlot(ECosmeticSlot Slot)
 
 void UWjWorldCosmeticSubsystem::SaveLoadoutToLocal()
 {
-	FString ConfigFilePath = FPaths::GeneratedConfigDir() + TEXT("CosmeticLoadout.ini");
-
 	for (const FCosmeticSlotEntry& Entry : CurrentLoadout.Entries)
 	{
 		FString SlotKey = FString::Printf(TEXT("Slot_%d"), static_cast<int32>(Entry.Slot));
-		GConfig->SetString(*LoadoutConfigSection, *SlotKey, *Entry.ItemId.ToString(), ConfigFilePath);
+		GConfig->SetString(*LoadoutConfigSection, *SlotKey, *Entry.ItemId.ToString(), GGameUserSettingsIni);
 	}
 
-	GConfig->Flush(false, ConfigFilePath);
+	GConfig->Flush(false, GGameUserSettingsIni);
 	UE_LOG(LogWjWorldCosmetic, Log, TEXT("로드아웃 로컬 저장 완료"));
 }
 
 void UWjWorldCosmeticSubsystem::LoadLoadoutFromLocal()
 {
-	FString ConfigFilePath = FPaths::GeneratedConfigDir() + TEXT("CosmeticLoadout.ini");
-
 	CurrentLoadout.Reset();
 
 	for (int32 SlotIdx = static_cast<int32>(ECosmeticSlot::Head);
@@ -203,7 +199,7 @@ void UWjWorldCosmeticSubsystem::LoadLoadoutFromLocal()
 	{
 		FString SlotKey = FString::Printf(TEXT("Slot_%d"), SlotIdx);
 		FString ItemIdStr;
-		if (GConfig->GetString(*LoadoutConfigSection, *SlotKey, ItemIdStr, ConfigFilePath))
+		if (GConfig->GetString(*LoadoutConfigSection, *SlotKey, ItemIdStr, GGameUserSettingsIni))
 		{
 			if (!ItemIdStr.IsEmpty())
 			{

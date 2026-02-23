@@ -60,6 +60,9 @@ void UWjWorldCurrencySubsystem::Deinitialize()
 			GemPurchaseResultHandle = k_SteamInventoryResultInvalid;
 		}
 	}
+
+	CachedCoinInstanceId = k_SteamItemInstanceIDInvalid;
+	CachedGemInstanceId = k_SteamItemInstanceIDInvalid;
 #endif
 
 	Super::Deinitialize();
@@ -198,6 +201,17 @@ bool UWjWorldCurrencySubsystem::PurchaseItemWithCurrency(FName CosmeticItemId, E
 	ISteamInventory* SteamInv = SteamInventory();
 	if (SteamInv && CosmeticDefId > 0)
 	{
+		// 캐시된 재화 인스턴스 ID 조회
+		SteamItemInstanceID_t CurrencyInstanceId = (CurrencyType == ECurrencyType::Coin)
+			? CachedCoinInstanceId
+			: CachedGemInstanceId;
+
+		if (CurrencyInstanceId == k_SteamItemInstanceIDInvalid)
+		{
+			UE_LOG(LogWjWorldCurrency, Warning, TEXT("재화 인스턴스 ID가 캐싱되지 않음 — 인벤토리 갱신 필요"));
+			return false;
+		}
+
 		// 기존 핸들 정리
 		if (ExchangeResultHandle != k_SteamInventoryResultInvalid)
 		{
@@ -209,30 +223,30 @@ bool UWjWorldCurrencySubsystem::PurchaseItemWithCurrency(FName CosmeticItemId, E
 		SteamItemDef_t OutputItemDef = static_cast<SteamItemDef_t>(CosmeticDefId);
 		uint32 OutputQuantity = 1;
 
-		// 입력: 재화 아이템 (인벤토리에서 해당 수량 소비)
-		// ExchangeItems는 인스턴스 ID가 필요하므로, 전체 인벤토리에서 재화 인스턴스를 찾아야 함
-		// 여기서는 간단화를 위해 재화가 auto_stack이므로 단일 인스턴스라 가정
-		// 실제 구현시에는 GetAllItems 결과에서 인스턴스 ID를 캐싱해야 함
+		uint32 InputQuantity = static_cast<uint32>(ItemPrice);
 
-		// Steam ExchangeItems는 SteamItemInstanceID_t가 필요
-		// exchange 레시피는 서버 사이드에서 itemdef의 "exchange" 프로퍼티로 검증
-		// 따라서 클라이언트에서는 재화 인스턴스 ID만 전달하면 됨
+		bool bExchangeResult = SteamInv->ExchangeItems(
+			&ExchangeResultHandle,
+			&OutputItemDef, &OutputQuantity, 1,       // 출력: 코스메틱 아이템 1개
+			&CurrencyInstanceId, &InputQuantity, 1     // 입력: 재화 인스턴스 × 가격
+		);
 
-		// 재화 인스턴스 ID를 찾기 위해 인벤토리 조회 필요
-		// CosmeticSubsystem의 캐시된 결과에서는 인스턴스 ID를 보관하지 않으므로
-		// 별도의 GetAllItems 호출 후 처리해야 함
-		// 이 부분은 추후 인스턴스 ID 캐싱이 구현되면 개선
+		if (bExchangeResult)
+		{
+			bExchangePending = true;
+			PendingExchangeItemId = CosmeticItemId;
+			StartExchangePolling();
 
-		UE_LOG(LogWjWorldCurrency, Log, TEXT("Steam ExchangeItems는 인스턴스 ID 기반 - 인벤토리 갱신 후 재시도 필요"));
-
-		// 현재는 로컬 차감 + CosmeticSubsystem으로 아이템 부여하는 방식으로 처리
-		// Steam 서버 사이드 exchange는 추후 인스턴스 ID 캐싱 구현 시 활성화
-		SetBalance(CurrencyType, CurrentBalance - ItemPrice);
-		CosmeticSub->GrantItemLocally(CosmeticItemId, 1);
-		CosmeticSub->RequestInventoryRefresh();
-
-		OnCurrencyPurchaseComplete.Broadcast(CosmeticItemId, true);
-		return true;
+			UE_LOG(LogWjWorldCurrency, Log, TEXT("Steam ExchangeItems 요청 성공: %s (CurrencyInstanceId=%llu, Price=%d)"),
+				*CosmeticItemId.ToString(), CurrencyInstanceId, ItemPrice);
+			return true;
+		}
+		else
+		{
+			UE_LOG(LogWjWorldCurrency, Warning, TEXT("Steam ExchangeItems 호출 실패: %s"), *CosmeticItemId.ToString());
+			ExchangeResultHandle = k_SteamInventoryResultInvalid;
+			return false;
+		}
 	}
 #endif
 
@@ -305,11 +319,60 @@ void UWjWorldCurrencySubsystem::RefreshBalancesFromInventory()
 	ISteamInventory* SteamInv = SteamInventory();
 	if (SteamInv)
 	{
-		// CosmeticSubsystem의 인벤토리 갱신을 구독하고 있으므로
-		// 여기서는 캐시된 인벤토리에서 재화 수량을 파싱
-		int32 NewCoinBalance = GetItemQuantityFromInventory(Settings->CoinSteamItemDefId);
-		int32 NewGemBalance = GetItemQuantityFromInventory(Settings->GemSteamItemDefId);
+		// 단일 GetAllItems 호출로 잔액 + 인스턴스 ID 동시 캐싱
+		SteamInventoryResult_t ResultHandle = k_SteamInventoryResultInvalid;
+		if (!SteamInv->GetAllItems(&ResultHandle))
+		{
+			UE_LOG(LogWjWorldCurrency, Warning, TEXT("Steam GetAllItems 실패"));
+			return;
+		}
 
+		int32 NewCoinBalance = 0;
+		int32 NewGemBalance = 0;
+		SteamItemInstanceID_t NewCoinInstanceId = k_SteamItemInstanceIDInvalid;
+		SteamItemInstanceID_t NewGemInstanceId = k_SteamItemInstanceIDInvalid;
+
+		EResult Status = SteamInv->GetResultStatus(ResultHandle);
+		if (Status == k_EResultOK)
+		{
+			uint32 ItemCount = 0;
+			if (SteamInv->GetResultItems(ResultHandle, nullptr, &ItemCount) && ItemCount > 0)
+			{
+				TArray<SteamItemDetails_t> ItemDetails;
+				ItemDetails.SetNum(ItemCount);
+
+				if (SteamInv->GetResultItems(ResultHandle, ItemDetails.GetData(), &ItemCount))
+				{
+					for (uint32 i = 0; i < ItemCount; ++i)
+					{
+						const SteamItemDetails_t& Detail = ItemDetails[i];
+						if (Detail.m_unQuantity == 0)
+						{
+							continue;
+						}
+
+						if (Detail.m_iDefinition == Settings->CoinSteamItemDefId)
+						{
+							NewCoinBalance += Detail.m_unQuantity;
+							NewCoinInstanceId = Detail.m_itemId;
+						}
+						else if (Detail.m_iDefinition == Settings->GemSteamItemDefId)
+						{
+							NewGemBalance += Detail.m_unQuantity;
+							NewGemInstanceId = Detail.m_itemId;
+						}
+					}
+				}
+			}
+		}
+
+		SteamInv->DestroyResult(ResultHandle);
+
+		// 인스턴스 ID 캐시 갱신
+		CachedCoinInstanceId = NewCoinInstanceId;
+		CachedGemInstanceId = NewGemInstanceId;
+
+		// 잔액 갱신
 		if (NewCoinBalance != CoinBalance)
 		{
 			SetBalance(ECurrencyType::Coin, NewCoinBalance);
@@ -319,7 +382,8 @@ void UWjWorldCurrencySubsystem::RefreshBalancesFromInventory()
 			SetBalance(ECurrencyType::Gem, NewGemBalance);
 		}
 
-		UE_LOG(LogWjWorldCurrency, Log, TEXT("Steam 잔액 갱신: Coin=%d, Gem=%d"), CoinBalance, GemBalance);
+		UE_LOG(LogWjWorldCurrency, Log, TEXT("Steam 잔액 갱신: Coin=%d (InstanceId=%llu), Gem=%d (InstanceId=%llu)"),
+			CoinBalance, CachedCoinInstanceId, GemBalance, CachedGemInstanceId);
 		return;
 	}
 #endif
@@ -360,64 +424,132 @@ void UWjWorldCurrencySubsystem::DebugPrintBalances() const
 	UE_LOG(LogWjWorldCurrency, Log, TEXT("================================"));
 }
 
-void UWjWorldCurrencySubsystem::HandleInventoryUpdated()
+void UWjWorldCurrencySubsystem::DebugConsumeAllSteamCurrency()
 {
-	RefreshBalancesFromInventory();
-}
-
-int32 UWjWorldCurrencySubsystem::GetItemQuantityFromInventory(int32 SteamItemDefId) const
-{
-	// CosmeticSubsystem의 캐시된 인벤토리에서 해당 DefId의 수량을 찾음
-	// 재화 아이템은 CosmeticCatalog에 등록되어 있지 않으므로
-	// CosmeticSubsystem의 파싱에서 "알 수 없는 SteamItemDefId"로 스킵됨
-	// 따라서 별도의 Steam Inventory 조회가 필요
-
-	// 현재는 CosmeticSubsystem의 인벤토리 갱신 시점에 호출되므로
-	// 직접 Steam API를 호출하여 확인
 #if WITH_STEAM
 	ISteamInventory* SteamInv = SteamInventory();
 	if (!SteamInv)
 	{
-		return 0;
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("DebugConsumeAllSteamCurrency: Steam Inventory API 없음"));
+		return;
 	}
 
-	SteamInventoryResult_t ResultHandle = k_SteamInventoryResultInvalid;
-	if (!SteamInv->GetAllItems(&ResultHandle))
+	// 캐시된 인스턴스 ID로 소비
+	if (CachedCoinInstanceId != k_SteamItemInstanceIDInvalid && CoinBalance > 0)
 	{
-		return 0;
-	}
-
-	// 결과 대기 (동기적 폴링 - 이미 캐시된 경우 즉시 반환)
-	// 참고: GetAllItems는 이전에 성공한 결과가 캐시되어 있으면 즉시 반환됨
-	int32 TotalQuantity = 0;
-
-	EResult Status = SteamInv->GetResultStatus(ResultHandle);
-	if (Status == k_EResultOK)
-	{
-		uint32 ItemCount = 0;
-		if (SteamInv->GetResultItems(ResultHandle, nullptr, &ItemCount) && ItemCount > 0)
+		SteamInventoryResult_t ResultHandle = k_SteamInventoryResultInvalid;
+		if (SteamInv->ConsumeItem(&ResultHandle, CachedCoinInstanceId, static_cast<uint32>(CoinBalance)))
 		{
-			TArray<SteamItemDetails_t> ItemDetails;
-			ItemDetails.SetNum(ItemCount);
-
-			if (SteamInv->GetResultItems(ResultHandle, ItemDetails.GetData(), &ItemCount))
-			{
-				for (uint32 i = 0; i < ItemCount; ++i)
-				{
-					if (ItemDetails[i].m_iDefinition == SteamItemDefId && ItemDetails[i].m_unQuantity > 0)
-					{
-						TotalQuantity += ItemDetails[i].m_unQuantity;
-					}
-				}
-			}
+			UE_LOG(LogWjWorldCurrency, Log, TEXT("Steam Coin 소비 요청 성공: %d개 (InstanceId=%llu)"), CoinBalance, CachedCoinInstanceId);
+			SteamInv->DestroyResult(ResultHandle);
+		}
+		else
+		{
+			UE_LOG(LogWjWorldCurrency, Warning, TEXT("Steam Coin 소비 요청 실패"));
 		}
 	}
 
-	SteamInv->DestroyResult(ResultHandle);
-	return TotalQuantity;
+	if (CachedGemInstanceId != k_SteamItemInstanceIDInvalid && GemBalance > 0)
+	{
+		SteamInventoryResult_t ResultHandle = k_SteamInventoryResultInvalid;
+		if (SteamInv->ConsumeItem(&ResultHandle, CachedGemInstanceId, static_cast<uint32>(GemBalance)))
+		{
+			UE_LOG(LogWjWorldCurrency, Log, TEXT("Steam Gem 소비 요청 성공: %d개 (InstanceId=%llu)"), GemBalance, CachedGemInstanceId);
+			SteamInv->DestroyResult(ResultHandle);
+		}
+		else
+		{
+			UE_LOG(LogWjWorldCurrency, Warning, TEXT("Steam Gem 소비 요청 실패"));
+		}
+	}
+
+	// 인벤토리 갱신으로 잔액 반영
+	UWjWorldCosmeticSubsystem* CosmeticSub = GetGameInstance()->GetSubsystem<UWjWorldCosmeticSubsystem>();
+	if (CosmeticSub)
+	{
+		CosmeticSub->RequestInventoryRefresh();
+	}
 #else
-	return 0;
+	UE_LOG(LogWjWorldCurrency, Warning, TEXT("DebugConsumeAllSteamCurrency: Steam 환경에서만 사용 가능"));
 #endif
+}
+
+void UWjWorldCurrencySubsystem::DebugConsumeAllSteamItems()
+{
+#if WITH_STEAM
+	ISteamInventory* SteamInv = SteamInventory();
+	if (!SteamInv)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("DebugConsumeAllSteamItems: Steam Inventory API 없음"));
+		return;
+	}
+
+	SteamInventoryResult_t AllItemsHandle = k_SteamInventoryResultInvalid;
+	if (!SteamInv->GetAllItems(&AllItemsHandle))
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("DebugConsumeAllSteamItems: GetAllItems 실패"));
+		return;
+	}
+
+	EResult Status = SteamInv->GetResultStatus(AllItemsHandle);
+	if (Status != k_EResultOK)
+	{
+		SteamInv->DestroyResult(AllItemsHandle);
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("DebugConsumeAllSteamItems: GetAllItems 상태 실패 (%d)"), static_cast<int32>(Status));
+		return;
+	}
+
+	uint32 ItemCount = 0;
+	if (!SteamInv->GetResultItems(AllItemsHandle, nullptr, &ItemCount) || ItemCount == 0)
+	{
+		SteamInv->DestroyResult(AllItemsHandle);
+		UE_LOG(LogWjWorldCurrency, Log, TEXT("DebugConsumeAllSteamItems: 인벤토리가 이미 비어있음"));
+		return;
+	}
+
+	TArray<SteamItemDetails_t> Items;
+	Items.SetNum(ItemCount);
+	SteamInv->GetResultItems(AllItemsHandle, Items.GetData(), &ItemCount);
+	SteamInv->DestroyResult(AllItemsHandle);
+
+	int32 ConsumedCount = 0;
+	for (const SteamItemDetails_t& Detail : Items)
+	{
+		if (Detail.m_unQuantity == 0)
+		{
+			continue;
+		}
+
+		SteamInventoryResult_t ConsumeHandle = k_SteamInventoryResultInvalid;
+		if (SteamInv->ConsumeItem(&ConsumeHandle, Detail.m_itemId, Detail.m_unQuantity))
+		{
+			UE_LOG(LogWjWorldCurrency, Log, TEXT("  소비: DefId=%d, Quantity=%d, InstanceId=%llu"),
+				Detail.m_iDefinition, Detail.m_unQuantity, Detail.m_itemId);
+			SteamInv->DestroyResult(ConsumeHandle);
+			++ConsumedCount;
+		}
+	}
+
+	// 캐시 초기화
+	CachedCoinInstanceId = k_SteamItemInstanceIDInvalid;
+	CachedGemInstanceId = k_SteamItemInstanceIDInvalid;
+
+	// 인벤토리 갱신
+	UWjWorldCosmeticSubsystem* CosmeticSub = GetGameInstance()->GetSubsystem<UWjWorldCosmeticSubsystem>();
+	if (CosmeticSub)
+	{
+		CosmeticSub->RequestInventoryRefresh();
+	}
+
+	UE_LOG(LogWjWorldCurrency, Log, TEXT("DebugConsumeAllSteamItems: %d/%d 아이템 소비 완료"), ConsumedCount, ItemCount);
+#else
+	UE_LOG(LogWjWorldCurrency, Warning, TEXT("DebugConsumeAllSteamItems: Steam 환경에서만 사용 가능"));
+#endif
+}
+
+void UWjWorldCurrencySubsystem::HandleInventoryUpdated()
+{
+	RefreshBalancesFromInventory();
 }
 
 void UWjWorldCurrencySubsystem::PollExchangeResult()
@@ -567,24 +699,20 @@ void UWjWorldCurrencySubsystem::StopGemPurchasePolling()
 
 void UWjWorldCurrencySubsystem::SaveBalancesToLocal()
 {
-	FString ConfigFilePath = FPaths::GeneratedConfigDir() + TEXT("CurrencyBalance.ini");
+	GConfig->SetInt(*CurrencyConfigSection, TEXT("CoinBalance"), CoinBalance, GGameUserSettingsIni);
+	GConfig->SetInt(*CurrencyConfigSection, TEXT("GemBalance"), GemBalance, GGameUserSettingsIni);
 
-	GConfig->SetInt(*CurrencyConfigSection, TEXT("CoinBalance"), CoinBalance, ConfigFilePath);
-	GConfig->SetInt(*CurrencyConfigSection, TEXT("GemBalance"), GemBalance, ConfigFilePath);
-
-	GConfig->Flush(false, ConfigFilePath);
+	GConfig->Flush(false, GGameUserSettingsIni);
 	UE_LOG(LogWjWorldCurrency, Log, TEXT("재화 잔액 로컬 저장 완료"));
 }
 
 void UWjWorldCurrencySubsystem::LoadBalancesFromLocal()
 {
-	FString ConfigFilePath = FPaths::GeneratedConfigDir() + TEXT("CurrencyBalance.ini");
-
 	int32 LoadedCoin = 0;
 	int32 LoadedGem = 0;
 
-	GConfig->GetInt(*CurrencyConfigSection, TEXT("CoinBalance"), LoadedCoin, ConfigFilePath);
-	GConfig->GetInt(*CurrencyConfigSection, TEXT("GemBalance"), LoadedGem, ConfigFilePath);
+	GConfig->GetInt(*CurrencyConfigSection, TEXT("CoinBalance"), LoadedCoin, GGameUserSettingsIni);
+	GConfig->GetInt(*CurrencyConfigSection, TEXT("GemBalance"), LoadedGem, GGameUserSettingsIni);
 
 	CoinBalance = FMath::Max(0, LoadedCoin);
 	GemBalance = FMath::Max(0, LoadedGem);

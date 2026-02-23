@@ -127,4 +127,16 @@ public:
 	/** Steam 재화 잔액 갱신 */
 	UFUNCTION(Exec)
 	void Currency_Refresh();
+
+	/** Steam 인벤토리에서 모든 재화(Coin/Gem) 소비 */
+	UFUNCTION(Exec)
+	void Steam_ConsumeCurrency();
+
+	/** Steam 인벤토리 전체 초기화 (모든 아이템 소비) */
+	UFUNCTION(Exec)
+	void Steam_ConsumeAllItems();
+
+	/** 모든 보물상자 쿨타임 초기화 */
+	UFUNCTION(Exec)
+	void TreasureChest_ClearCooldowns();
 };

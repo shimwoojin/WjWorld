@@ -8,7 +8,9 @@
 #include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "Cosmetic/WjWorldCosmeticTypes.h"
 #include "Currency/WjWorldCurrencySubsystem.h"
+#include "GamePlay/TreasureChest/WjWorldTreasureChestActor.h"
 #include "Setting/WjWorldDeveloperSettings.h"
+#include "EngineUtils.h"
 #include "WjWorldLogCategories.h"
 
 AWjWorldPlayerControllerBase::AWjWorldPlayerControllerBase()
@@ -423,4 +425,55 @@ void AWjWorldPlayerControllerBase::Currency_Refresh()
 
 	CurrencySub->RefreshBalancesFromInventory();
 	UE_LOG(LogWjWorldCurrency, Log, TEXT("Currency_Refresh: 잔액 갱신 요청"));
+}
+
+void AWjWorldPlayerControllerBase::Steam_ConsumeCurrency()
+{
+#if !UE_BUILD_SHIPPING
+	UGameInstance* GI = GetGameInstance();
+	if (!GI) return;
+
+	UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
+	if (!CurrencySub)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("Steam_ConsumeCurrency: CurrencySubsystem 없음"));
+		return;
+	}
+
+	CurrencySub->DebugConsumeAllSteamCurrency();
+#endif
+}
+
+void AWjWorldPlayerControllerBase::Steam_ConsumeAllItems()
+{
+#if !UE_BUILD_SHIPPING
+	UGameInstance* GI = GetGameInstance();
+	if (!GI) return;
+
+	UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
+	if (!CurrencySub)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("Steam_ConsumeAllItems: CurrencySubsystem 없음"));
+		return;
+	}
+
+	CurrencySub->DebugConsumeAllSteamItems();
+#endif
+}
+
+void AWjWorldPlayerControllerBase::TreasureChest_ClearCooldowns()
+{
+#if !UE_BUILD_SHIPPING
+	UWorld* World = GetWorld();
+	if (!World) return;
+
+	int32 Count = 0;
+	for (TActorIterator<AWjWorldTreasureChestActor> It(World); It; ++It)
+	{
+		It->ResetCooldown();
+		++Count;
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("TreasureChest_ClearCooldowns: %d개 보물상자 쿨타임 초기화 완료"), Count);
+#endif
 }

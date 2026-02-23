@@ -76,6 +76,16 @@ void AWjWorldTreasureChestActor::BeginPlay()
 		}
 	}
 
+	// GConfig에서 쿨타임 캐시 초기화 (cross-session 복원)
+	{
+		FString Key = GetChestKey();
+		FString LastOpenedStr;
+		if (GConfig->GetString(*ConfigSection, *Key, LastOpenedStr, GetConfigPath()))
+		{
+			FDateTime::ParseIso8601(*LastOpenedStr, CachedLastOpenedTime);
+		}
+	}
+
 	// 쿨타임 비주얼 초기화
 	if (IsOnCooldown())
 	{
@@ -90,7 +100,7 @@ void AWjWorldTreasureChestActor::BeginPlay()
 
 void AWjWorldTreasureChestActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	// 입력 해제
+	// 입력 해제 + 바인딩 정리
 	if (InteractingPlayer)
 	{
 		APlayerController* PC = Cast<APlayerController>(InteractingPlayer->GetController());
@@ -99,6 +109,14 @@ void AWjWorldTreasureChestActor::EndPlay(const EEndPlayReason::Type EndPlayReaso
 			DisableInput(PC);
 		}
 	}
+	if (InputComponent)
+	{
+		InputComponent->ClearActionBindings();
+	}
+	bInputBound = false;
+
+	// 쿨타임 UI 타이머 정리
+	GetWorldTimerManager().ClearTimer(CooldownUITimerHandle);
 
 	Super::EndPlay(EndPlayReason);
 }
@@ -147,27 +165,45 @@ void AWjWorldTreasureChestActor::OnTriggerBeginOverlap(UPrimitiveComponent* Over
 	bPlayerInRange = true;
 	InteractingPlayer = Pawn;
 
-	// 입력 바인딩
+	// 입력 바인딩 (중복 방지)
 	APlayerController* PC = Cast<APlayerController>(Pawn->GetController());
 	if (PC)
 	{
 		EnableInput(PC);
 
-		const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
-		if (Settings && InputComponent)
+		if (!bInputBound)
 		{
-			UInputAction* IA = Settings->TreasureChestInteractAction.LoadSynchronous();
-			if (IA)
+			const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+			if (Settings && InputComponent)
 			{
-				if (UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(InputComponent))
+				UInputAction* IA = Settings->TreasureChestInteractAction.LoadSynchronous();
+				if (IA)
 				{
-					EIC->BindAction(IA, ETriggerEvent::Started, this, &AWjWorldTreasureChestActor::OnInteract);
+					if (UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(InputComponent))
+					{
+						EIC->BindAction(IA, ETriggerEvent::Started, this, &AWjWorldTreasureChestActor::OnInteract);
+						bInputBound = true;
+					}
 				}
 			}
 		}
 	}
 
+	// 쿨타임 만료 시 비주얼 복원 (Fix 3)
+	if (!IsOnCooldown())
+	{
+		RemoveCooldownVisual();
+		PlayLidClose();
+	}
+
 	ShowInteractionUI();
+
+	// 쿨타임 중이면 UI 실시간 갱신 타이머 시작 (Fix 4)
+	if (IsOnCooldown())
+	{
+		GetWorldTimerManager().SetTimer(CooldownUITimerHandle, this,
+			&AWjWorldTreasureChestActor::UpdateInteractionUI, 1.0f, true);
+	}
 
 	UE_LOG(LogWjWorld, Log, TEXT("TreasureChest: Player entered range"));
 }
@@ -181,12 +217,20 @@ void AWjWorldTreasureChestActor::OnTriggerEndOverlap(UPrimitiveComponent* Overla
 		return;
 	}
 
-	// 입력 해제
+	// 입력 해제 + 바인딩 정리
 	APlayerController* PC = Cast<APlayerController>(Pawn->GetController());
 	if (PC)
 	{
 		DisableInput(PC);
 	}
+	if (InputComponent)
+	{
+		InputComponent->ClearActionBindings();
+	}
+	bInputBound = false;
+
+	// 쿨타임 UI 타이머 정리
+	GetWorldTimerManager().ClearTimer(CooldownUITimerHandle);
 
 	bPlayerInRange = false;
 	InteractingPlayer = nullptr;
@@ -249,34 +293,22 @@ bool AWjWorldTreasureChestActor::TryGrantReward()
 
 		if (SteamInv->TriggerItemDrop(&ResultHandle, DropDef))
 		{
-			// 결과 상태 확인 (캐시된 경우 즉시 반환)
-			EResult Status = SteamInv->GetResultStatus(ResultHandle);
+			UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest[%d]: Steam TriggerItemDrop 요청 성공 (DefId: %d)"),
+				ChestIndex, GeneratorDefId);
 			SteamInv->DestroyResult(ResultHandle);
 
-			if (Status == k_EResultOK)
+			// 인벤토리 갱신으로 잔액 반영
+			UGameInstance* GI = GetGameInstance();
+			if (GI)
 			{
-				UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest[%d]: Steam TriggerItemDrop 성공 (DefId: %d)"),
-					ChestIndex, GeneratorDefId);
-
-				// 인벤토리 갱신으로 잔액 반영
-				UGameInstance* GI = GetGameInstance();
-				if (GI)
+				UWjWorldCosmeticSubsystem* CosmeticSub = GI->GetSubsystem<UWjWorldCosmeticSubsystem>();
+				if (CosmeticSub)
 				{
-					UWjWorldCosmeticSubsystem* CosmeticSub = GI->GetSubsystem<UWjWorldCosmeticSubsystem>();
-					if (CosmeticSub)
-					{
-						CosmeticSub->RequestInventoryRefresh();
-					}
+					CosmeticSub->RequestInventoryRefresh();
 				}
+			}
 
-				return true;
-			}
-			else
-			{
-				UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest[%d]: Steam TriggerItemDrop 쿨타임 또는 실패 (DefId: %d, Status: %d)"),
-					ChestIndex, GeneratorDefId, static_cast<int32>(Status));
-				return false;
-			}
+			return true;
 		}
 		else
 		{
@@ -342,6 +374,11 @@ void AWjWorldTreasureChestActor::UpdateInteractionUI()
 	}
 	else
 	{
+		// 쿨타임 만료 감지 → 타이머 정지 + 비주얼 복원
+		GetWorldTimerManager().ClearTimer(CooldownUITimerHandle);
+		RemoveCooldownVisual();
+		PlayLidClose();
+
 		FString InteractText = FString::Printf(TEXT("Open Chest (%d Coin)"), RewardAmount);
 		InteractionWidget->SetInteractionText(InteractText);
 	}
@@ -360,63 +397,69 @@ FString AWjWorldTreasureChestActor::GetChestKey() const
 
 FString AWjWorldTreasureChestActor::GetConfigPath() const
 {
-	return FPaths::GeneratedConfigDir() + TEXT("TreasureChestCooldown.ini");
+	return GGameUserSettingsIni;
 }
 
 bool AWjWorldTreasureChestActor::IsOnCooldown() const
 {
-	FString Key = GetChestKey();
-	FString LastOpenedStr;
-	FString ConfigPath = GetConfigPath();
-
-	if (GConfig->GetString(*ConfigSection, *Key, LastOpenedStr, ConfigPath))
+	if (CachedLastOpenedTime.GetTicks() == 0)
 	{
-		FDateTime LastOpened;
-		if (FDateTime::ParseIso8601(*LastOpenedStr, LastOpened))
-		{
-			const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
-			float CooldownSeconds = Settings ? Settings->TreasureChestCooldownSeconds : 86400.0f;
-			return (FDateTime::UtcNow() - LastOpened).GetTotalSeconds() < CooldownSeconds;
-		}
+		return false;
 	}
-	return false;
+
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	float CooldownSeconds = Settings ? Settings->TreasureChestCooldownSeconds : 86400.0f;
+	return (FDateTime::UtcNow() - CachedLastOpenedTime).GetTotalSeconds() < CooldownSeconds;
 }
 
 FTimespan AWjWorldTreasureChestActor::GetRemainingCooldown() const
 {
-	FString Key = GetChestKey();
-	FString LastOpenedStr;
-	FString ConfigPath = GetConfigPath();
-
-	if (GConfig->GetString(*ConfigSection, *Key, LastOpenedStr, ConfigPath))
+	if (CachedLastOpenedTime.GetTicks() == 0)
 	{
-		FDateTime LastOpened;
-		if (FDateTime::ParseIso8601(*LastOpenedStr, LastOpened))
-		{
-			const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
-			float CooldownSeconds = Settings ? Settings->TreasureChestCooldownSeconds : 86400.0f;
+		return FTimespan::Zero();
+	}
 
-			FDateTime CooldownEnd = LastOpened + FTimespan::FromSeconds(CooldownSeconds);
-			FTimespan Remaining = CooldownEnd - FDateTime::UtcNow();
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	float CooldownSeconds = Settings ? Settings->TreasureChestCooldownSeconds : 86400.0f;
 
-			if (Remaining.GetTotalSeconds() > 0)
-			{
-				return Remaining;
-			}
-		}
+	FDateTime CooldownEnd = CachedLastOpenedTime + FTimespan::FromSeconds(CooldownSeconds);
+	FTimespan Remaining = CooldownEnd - FDateTime::UtcNow();
+
+	if (Remaining.GetTotalSeconds() > 0)
+	{
+		return Remaining;
 	}
 	return FTimespan::Zero();
 }
 
 void AWjWorldTreasureChestActor::SaveCooldown()
 {
+	CachedLastOpenedTime = FDateTime::UtcNow();
+
 	FString Key = GetChestKey();
 	FString ConfigPath = GetConfigPath();
 
-	GConfig->SetString(*ConfigSection, *Key, *FDateTime::UtcNow().ToIso8601(), ConfigPath);
+	GConfig->SetString(*ConfigSection, *Key, *CachedLastOpenedTime.ToIso8601(), ConfigPath);
 	GConfig->Flush(false, ConfigPath);
 
 	UE_LOG(LogWjWorld, Log, TEXT("TreasureChest: Cooldown saved for %s"), *Key);
+}
+
+void AWjWorldTreasureChestActor::ResetCooldown()
+{
+	CachedLastOpenedTime = FDateTime();
+
+	// GConfig에서도 제거
+	FString Key = GetChestKey();
+	FString ConfigPath = GetConfigPath();
+	GConfig->RemoveKey(*ConfigSection, *Key, ConfigPath);
+	GConfig->Flush(false, ConfigPath);
+
+	// 비주얼 복원
+	RemoveCooldownVisual();
+	PlayLidClose();
+
+	UE_LOG(LogWjWorld, Log, TEXT("TreasureChest: Cooldown reset for %s"), *Key);
 }
 
 // === Lid Animation ===

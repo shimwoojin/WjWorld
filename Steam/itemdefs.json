@@ -6,7 +6,7 @@
             "type": "playtimegenerator",
             "name": "Match Win Reward",
             "name_english": "Match Win Reward",
-            "bundle": "1000x50",
+            "bundle": "50x1",
             "drop_interval": "15",
             "use_drop_window": "true",
             "drop_window": "1440",
@@ -17,121 +17,145 @@
             "type": "playtimegenerator",
             "name": "Match Loss Reward",
             "name_english": "Match Loss Reward",
-            "bundle": "1000x10",
+            "bundle": "51x1",
             "drop_interval": "15",
             "use_drop_window": "true",
             "drop_window": "1440",
             "drop_max_per_window": "10"
         },
         {
+            "itemdefid": "50",
+            "type": "bundle",
+            "name": "Match Win Coin Bundle",
+            "name_english": "Match Win Coin Bundle",
+            "bundle": "1000x50",
+            "hidden": "true"
+        },
+        {
+            "itemdefid": "51",
+            "type": "bundle",
+            "name": "Match Loss Coin Bundle",
+            "name_english": "Match Loss Coin Bundle",
+            "bundle": "1000x10",
+            "hidden": "true"
+        },
+        {
+            "itemdefid": "52",
+            "type": "bundle",
+            "name": "Treasure Chest Coin Bundle",
+            "name_english": "Treasure Chest Coin Bundle",
+            "bundle": "1000x50",
+            "hidden": "true"
+        },
+        {
             "itemdefid": "300",
             "type": "playtimegenerator",
             "name": "Treasure Chest #0",
             "name_english": "Treasure Chest #0",
-            "bundle": "1000x50",
-            "drop_interval": "1440",
+            "bundle": "52x1",
+            "drop_interval": "1",
             "use_drop_window": "true",
             "drop_window": "1440",
-            "drop_max_per_window": "1"
+            "drop_max_per_window": "100"
         },
         {
             "itemdefid": "301",
             "type": "playtimegenerator",
             "name": "Treasure Chest #1",
             "name_english": "Treasure Chest #1",
-            "bundle": "1000x50",
-            "drop_interval": "1440",
+            "bundle": "52x1",
+            "drop_interval": "1",
             "use_drop_window": "true",
             "drop_window": "1440",
-            "drop_max_per_window": "1"
+            "drop_max_per_window": "100"
         },
         {
             "itemdefid": "302",
             "type": "playtimegenerator",
             "name": "Treasure Chest #2",
             "name_english": "Treasure Chest #2",
-            "bundle": "1000x50",
-            "drop_interval": "1440",
+            "bundle": "52x1",
+            "drop_interval": "1",
             "use_drop_window": "true",
             "drop_window": "1440",
-            "drop_max_per_window": "1"
+            "drop_max_per_window": "100"
         },
         {
             "itemdefid": "303",
             "type": "playtimegenerator",
             "name": "Treasure Chest #3",
             "name_english": "Treasure Chest #3",
-            "bundle": "1000x50",
-            "drop_interval": "1440",
+            "bundle": "52x1",
+            "drop_interval": "1",
             "use_drop_window": "true",
             "drop_window": "1440",
-            "drop_max_per_window": "1"
+            "drop_max_per_window": "100"
         },
         {
             "itemdefid": "304",
             "type": "playtimegenerator",
             "name": "Treasure Chest #4",
             "name_english": "Treasure Chest #4",
-            "bundle": "1000x50",
-            "drop_interval": "1440",
+            "bundle": "52x1",
+            "drop_interval": "1",
             "use_drop_window": "true",
             "drop_window": "1440",
-            "drop_max_per_window": "1"
+            "drop_max_per_window": "100"
         },
         {
             "itemdefid": "305",
             "type": "playtimegenerator",
             "name": "Treasure Chest #5",
             "name_english": "Treasure Chest #5",
-            "bundle": "1000x50",
-            "drop_interval": "1440",
+            "bundle": "52x1",
+            "drop_interval": "1",
             "use_drop_window": "true",
             "drop_window": "1440",
-            "drop_max_per_window": "1"
+            "drop_max_per_window": "100"
         },
         {
             "itemdefid": "306",
             "type": "playtimegenerator",
             "name": "Treasure Chest #6",
             "name_english": "Treasure Chest #6",
-            "bundle": "1000x50",
-            "drop_interval": "1440",
+            "bundle": "52x1",
+            "drop_interval": "1",
             "use_drop_window": "true",
             "drop_window": "1440",
-            "drop_max_per_window": "1"
+            "drop_max_per_window": "100"
         },
         {
             "itemdefid": "307",
             "type": "playtimegenerator",
             "name": "Treasure Chest #7",
             "name_english": "Treasure Chest #7",
-            "bundle": "1000x50",
-            "drop_interval": "1440",
+            "bundle": "52x1",
+            "drop_interval": "1",
             "use_drop_window": "true",
             "drop_window": "1440",
-            "drop_max_per_window": "1"
+            "drop_max_per_window": "100"
         },
         {
             "itemdefid": "308",
             "type": "playtimegenerator",
             "name": "Treasure Chest #8",
             "name_english": "Treasure Chest #8",
-            "bundle": "1000x50",
-            "drop_interval": "1440",
+            "bundle": "52x1",
+            "drop_interval": "1",
             "use_drop_window": "true",
             "drop_window": "1440",
-            "drop_max_per_window": "1"
+            "drop_max_per_window": "100"
         },
         {
             "itemdefid": "309",
             "type": "playtimegenerator",
             "name": "Treasure Chest #9",
             "name_english": "Treasure Chest #9",
-            "bundle": "1000x50",
-            "drop_interval": "1440",
+            "bundle": "52x1",
+            "drop_interval": "1",
             "use_drop_window": "true",
             "drop_window": "1440",
-            "drop_max_per_window": "1"
+            "drop_max_per_window": "100"
         },
         {
             "itemdefid": "20",

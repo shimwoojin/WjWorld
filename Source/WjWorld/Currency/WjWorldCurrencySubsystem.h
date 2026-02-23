@@ -81,6 +81,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Currency|Debug")
 	void DebugPrintBalances() const;
 
+	/** Steam 인벤토리에서 모든 재화(Coin/Gem) 소비 (테스트용) */
+	UFUNCTION(BlueprintCallable, Category = "Currency|Debug", meta = (DevelopmentOnly))
+	void DebugConsumeAllSteamCurrency();
+
+	/** Steam 인벤토리의 모든 아이템 소비 — 전체 초기화 (테스트용) */
+	UFUNCTION(BlueprintCallable, Category = "Currency|Debug", meta = (DevelopmentOnly))
+	void DebugConsumeAllSteamItems();
+
 	// ---- 델리게이트 ----
 
 	UPROPERTY(BlueprintAssignable, Category = "Currency")
@@ -93,9 +101,6 @@ private:
 	/** 인벤토리 갱신 콜백 (CosmeticSubsystem.OnInventoryUpdated 구독) */
 	UFUNCTION()
 	void HandleInventoryUpdated();
-
-	/** Steam Inventory에서 특정 ItemDefId의 수량 파싱 */
-	int32 GetItemQuantityFromInventory(int32 SteamItemDefId) const;
 
 	/** Exchange 결과 폴링 */
 	void PollExchangeResult();
@@ -137,6 +142,10 @@ private:
 #if WITH_STEAM
 	SteamInventoryResult_t ExchangeResultHandle = k_SteamInventoryResultInvalid;
 	SteamInventoryResult_t GemPurchaseResultHandle = k_SteamInventoryResultInvalid;
+
+	// 재화 인스턴스 ID 캐시 (ExchangeItems 호출에 필요)
+	SteamItemInstanceID_t CachedCoinInstanceId = k_SteamItemInstanceIDInvalid;
+	SteamItemInstanceID_t CachedGemInstanceId = k_SteamItemInstanceIDInvalid;
 #endif
 
 	FTimerHandle ExchangePollTimerHandle;
