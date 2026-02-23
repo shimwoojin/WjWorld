@@ -2,6 +2,8 @@
 
 #include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "Cosmetic/WjWorldCosmeticDataAsset.h"
+#include "DataAsset/WjWorldPlaceableObjectDataAsset.h"
+#include "GamePlay/Placement/WjWorldPlacementTypes.h"
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "WjWorldLogCategories.h"
 #include "Engine/World.h"
@@ -26,6 +28,7 @@ void UWjWorldCosmeticSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	}
 
 	LoadLoadoutFromLocal();
+	LoadPlacementInventoryFromLocal();
 
 	// Steam 인벤토리 초기 로드
 	RequestInventoryRefresh();
@@ -290,13 +293,19 @@ void UWjWorldCosmeticSubsystem::PollSteamInventoryResult()
 #endif
 }
 
+int32 UWjWorldCosmeticSubsystem::GetItemQuantityByDefId(int32 SteamItemDefId) const
+{
+	const int32* Found = AllItemQuantities.Find(SteamItemDefId);
+	return Found ? *Found : 0;
+}
+
 void UWjWorldCosmeticSubsystem::ParseInventoryResult()
 {
 #if WITH_STEAM
 	ISteamInventory* SteamInv = SteamInventory();
-	if (!SteamInv || !Catalog)
+	if (!SteamInv)
 	{
-		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("ParseInventoryResult: SteamInventory 또는 Catalog 없음"));
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("ParseInventoryResult: SteamInventory 없음"));
 		return;
 	}
 
@@ -311,6 +320,7 @@ void UWjWorldCosmeticSubsystem::ParseInventoryResult()
 	{
 		UE_LOG(LogWjWorldCosmetic, Log, TEXT("Steam 인벤토리: 아이템 0개"));
 		CachedInventory.Empty();
+		AllItemQuantities.Empty();
 		return;
 	}
 
@@ -324,24 +334,41 @@ void UWjWorldCosmeticSubsystem::ParseInventoryResult()
 		return;
 	}
 
-	// 캐시된 인벤토리 갱신
+	// 전체 DefId별 수량 캐시 갱신 (배치 오브젝트 소유권 추적용)
+	AllItemQuantities.Empty();
+	for (uint32 i = 0; i < ItemCount; ++i)
+	{
+		const SteamItemDetails_t& Details = ItemDetails[i];
+		if (Details.m_unQuantity > 0)
+		{
+			AllItemQuantities.FindOrAdd(Details.m_iDefinition) += Details.m_unQuantity;
+		}
+	}
+
+	// 캐시된 코스메틱 인벤토리 갱신 (Catalog 필요)
 	CachedInventory.Empty(ItemCount);
+
+	if (!Catalog)
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("ParseInventoryResult: Catalog 없음 — 전체 수량만 캐싱"));
+		return;
+	}
 
 	for (uint32 i = 0; i < ItemCount; ++i)
 	{
 		const SteamItemDetails_t& Details = ItemDetails[i];
 
+		// 수량 체크 (0이면 소비됨/만료됨)
+		if (Details.m_unQuantity == 0)
+		{
+			continue;
+		}
+
 		// SteamItemDefId → ItemId 변환
 		FName ItemId = Catalog->SteamItemDefIdToItemId(Details.m_iDefinition);
 		if (ItemId.IsNone())
 		{
-			UE_LOG(LogWjWorldCosmetic, Warning, TEXT("알 수 없는 SteamItemDefId: %d"), Details.m_iDefinition);
-			continue;
-		}
-
-		// 수량 체크 (0이면 소비됨/만료됨)
-		if (Details.m_unQuantity == 0)
-		{
+			// 코스메틱 카탈로그에 없는 아이템 — 전체 수량 캐시에는 이미 기록됨
 			continue;
 		}
 
@@ -366,7 +393,48 @@ void UWjWorldCosmeticSubsystem::ParseInventoryResult()
 			*ItemId.ToString(), Details.m_iDefinition, Details.m_unQuantity);
 	}
 
-	UE_LOG(LogWjWorldCosmetic, Log, TEXT("Steam 인벤토리 파싱 완료: %d개 아이템"), CachedInventory.Num());
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("Steam 인벤토리 파싱 완료: %d개 코스메틱 아이템, %d개 전체 DefId"),
+		CachedInventory.Num(), AllItemQuantities.Num());
+#endif
+}
+
+void UWjWorldCosmeticSubsystem::LoadPlacementInventoryFromLocal()
+{
+#if !WITH_STEAM
+	// 비Steam 환경: GConfig에서 배치 오브젝트 소유 수량 로드
+	static const FString PlacementInventorySection = TEXT("PlacementInventory");
+
+	TArray<FString> Keys;
+	GConfig->GetSection(*PlacementInventorySection, Keys, GGameUserSettingsIni);
+
+	for (const FString& KeyValuePair : Keys)
+	{
+		FString Key, Value;
+		if (KeyValuePair.Split(TEXT("="), &Key, &Value))
+		{
+			int32 Quantity = FCString::Atoi(*Value);
+			if (Quantity > 0)
+			{
+				// ObjectId에 해당하는 SteamItemDefId를 찾아서 AllItemQuantities에 기록
+				// DeveloperSettings의 카탈로그에서 검색
+				const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+				if (Settings)
+				{
+					UWjWorldPlaceableObjectDataAsset* PlacementCatalog = Settings->GetPlaceableCatalogForContext(EPlacementContext::Lobby);
+					if (PlacementCatalog)
+					{
+						const FPlaceableObjectDefinition* Def = PlacementCatalog->FindByObjectId(FName(*Key));
+						if (Def && Def->SteamItemDefId > 0)
+						{
+							AllItemQuantities.FindOrAdd(Def->SteamItemDefId) += Quantity;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("비Steam 배치 인벤토리 로드 완료 (%d DefIds)"), AllItemQuantities.Num());
 #endif
 }
 

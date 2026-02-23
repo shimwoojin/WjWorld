@@ -3,6 +3,7 @@
 #include "Currency/WjWorldCurrencySubsystem.h"
 #include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "Cosmetic/WjWorldCosmeticDataAsset.h"
+#include "DataAsset/WjWorldPlaceableObjectDataAsset.h"
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "WjWorldLogCategories.h"
 #include "Engine/World.h"
@@ -234,6 +235,7 @@ bool UWjWorldCurrencySubsystem::PurchaseItemWithCurrency(FName CosmeticItemId, E
 		if (bExchangeResult)
 		{
 			bExchangePending = true;
+			bPendingIsPlacement = false;
 			PendingExchangeItemId = CosmeticItemId;
 			StartExchangePolling();
 
@@ -259,6 +261,138 @@ bool UWjWorldCurrencySubsystem::PurchaseItemWithCurrency(FName CosmeticItemId, E
 	UE_LOG(LogWjWorldCurrency, Log, TEXT("로컬 재화 구매 완료: %s (%d %s 차감)"),
 		*CosmeticItemId.ToString(), ItemPrice,
 		(CurrencyType == ECurrencyType::Coin) ? TEXT("Coin") : TEXT("Gem"));
+
+	return true;
+}
+
+bool UWjWorldCurrencySubsystem::PurchasePlacementObject(FName ObjectId)
+{
+	if (bExchangePending)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("이미 교환이 진행 중입니다."));
+		return false;
+	}
+
+	if (ObjectId.IsNone())
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("유효하지 않은 ObjectId"));
+		return false;
+	}
+
+	// DeveloperSettings에서 LobbyPlaceableCatalog 로드
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	if (!Settings)
+	{
+		return false;
+	}
+
+	UWjWorldPlaceableObjectDataAsset* PlacementCatalog = Settings->GetPlaceableCatalogForContext(EPlacementContext::Lobby);
+	if (!PlacementCatalog)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("LobbyPlaceableCatalog 없음"));
+		return false;
+	}
+
+	const FPlaceableObjectDefinition* Def = PlacementCatalog->FindByObjectId(ObjectId);
+	if (!Def)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("카탈로그에서 오브젝트 '%s' 찾을 수 없음"), *ObjectId.ToString());
+		return false;
+	}
+
+	if (Def->CoinPrice <= 0)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("오브젝트 '%s'은 무료입니다 (구매 불필요)"), *ObjectId.ToString());
+		return false;
+	}
+
+	if (Def->SteamItemDefId <= 0)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("오브젝트 '%s'에 SteamItemDefId가 설정되지 않음"), *ObjectId.ToString());
+		return false;
+	}
+
+	// 잔액 확인
+	int32 CurrentBalance = GetBalance(ECurrencyType::Coin);
+	if (CurrentBalance < Def->CoinPrice)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("Coin 잔액 부족: %d < %d"), CurrentBalance, Def->CoinPrice);
+		return false;
+	}
+
+	UE_LOG(LogWjWorldCurrency, Log, TEXT("배치 오브젝트 구매 요청: %s (%d Coin → DefId %d)"),
+		*ObjectId.ToString(), Def->CoinPrice, Def->SteamItemDefId);
+
+#if WITH_STEAM
+	ISteamInventory* SteamInv = SteamInventory();
+	if (SteamInv)
+	{
+		SteamItemInstanceID_t CoinInstanceId = CachedCoinInstanceId;
+		if (CoinInstanceId == k_SteamItemInstanceIDInvalid)
+		{
+			UE_LOG(LogWjWorldCurrency, Warning, TEXT("Coin 인스턴스 ID가 캐싱되지 않음 — 인벤토리 갱신 필요"));
+			return false;
+		}
+
+		// 기존 핸들 정리
+		if (ExchangeResultHandle != k_SteamInventoryResultInvalid)
+		{
+			SteamInv->DestroyResult(ExchangeResultHandle);
+			ExchangeResultHandle = k_SteamInventoryResultInvalid;
+		}
+
+		// ExchangeItems: Coin 소비 → 배치 오브젝트 아이템 획득
+		SteamItemDef_t OutputItemDef = static_cast<SteamItemDef_t>(Def->SteamItemDefId);
+		uint32 OutputQuantity = 1;
+		uint32 InputQuantity = static_cast<uint32>(Def->CoinPrice);
+
+		bool bExchangeResult = SteamInv->ExchangeItems(
+			&ExchangeResultHandle,
+			&OutputItemDef, &OutputQuantity, 1,
+			&CoinInstanceId, &InputQuantity, 1
+		);
+
+		if (bExchangeResult)
+		{
+			bExchangePending = true;
+			bPendingIsPlacement = true;
+			PendingExchangeItemId = ObjectId;
+			StartExchangePolling();
+
+			UE_LOG(LogWjWorldCurrency, Log, TEXT("Steam ExchangeItems 요청 성공 (배치): %s (CoinInstanceId=%llu, Price=%d)"),
+				*ObjectId.ToString(), CoinInstanceId, Def->CoinPrice);
+			return true;
+		}
+		else
+		{
+			UE_LOG(LogWjWorldCurrency, Warning, TEXT("Steam ExchangeItems 호출 실패 (배치): %s"), *ObjectId.ToString());
+			ExchangeResultHandle = k_SteamInventoryResultInvalid;
+			return false;
+		}
+	}
+#endif
+
+	// 비Steam 폴백: 로컬 잔액 차감 + 로컬 소유 수량 증가
+	SetBalance(ECurrencyType::Coin, CurrentBalance - Def->CoinPrice);
+
+	// GConfig에 소유 수량 기록
+	static const FString PlacementInventorySection = TEXT("PlacementInventory");
+	int32 CurrentOwned = 0;
+	GConfig->GetInt(*PlacementInventorySection, *ObjectId.ToString(), CurrentOwned, GGameUserSettingsIni);
+	GConfig->SetInt(*PlacementInventorySection, *ObjectId.ToString(), CurrentOwned + 1, GGameUserSettingsIni);
+	GConfig->Flush(false, GGameUserSettingsIni);
+
+	// CosmeticSubsystem의 AllItemQuantities도 갱신 (비Steam)
+	UWjWorldCosmeticSubsystem* CosmeticSub = GetGameInstance()->GetSubsystem<UWjWorldCosmeticSubsystem>();
+	if (CosmeticSub)
+	{
+		CosmeticSub->AllItemQuantities.FindOrAdd(Def->SteamItemDefId) += 1;
+	}
+
+	OnPlacementPurchaseComplete.Broadcast(ObjectId, true);
+
+	UE_LOG(LogWjWorldCurrency, Log, TEXT("로컬 배치 오브젝트 구매 완료: %s (%d Coin 차감)"),
+		*ObjectId.ToString(), Def->CoinPrice);
 
 	return true;
 }
@@ -566,7 +700,15 @@ void UWjWorldCurrencySubsystem::PollExchangeResult()
 	{
 		StopExchangePolling();
 		bExchangePending = false;
-		OnCurrencyPurchaseComplete.Broadcast(PendingExchangeItemId, false);
+		if (bPendingIsPlacement)
+		{
+			OnPlacementPurchaseComplete.Broadcast(PendingExchangeItemId, false);
+		}
+		else
+		{
+			OnCurrencyPurchaseComplete.Broadcast(PendingExchangeItemId, false);
+		}
+		bPendingIsPlacement = false;
 		PendingExchangeItemId = NAME_None;
 		return;
 	}
@@ -599,7 +741,17 @@ void UWjWorldCurrencySubsystem::PollExchangeResult()
 	ExchangeResultHandle = k_SteamInventoryResultInvalid;
 
 	bExchangePending = false;
-	OnCurrencyPurchaseComplete.Broadcast(PendingExchangeItemId, bSuccess);
+
+	// 배치 vs 코스메틱 분기
+	if (bPendingIsPlacement)
+	{
+		OnPlacementPurchaseComplete.Broadcast(PendingExchangeItemId, bSuccess);
+	}
+	else
+	{
+		OnCurrencyPurchaseComplete.Broadcast(PendingExchangeItemId, bSuccess);
+	}
+	bPendingIsPlacement = false;
 	PendingExchangeItemId = NAME_None;
 
 	StopExchangePolling();

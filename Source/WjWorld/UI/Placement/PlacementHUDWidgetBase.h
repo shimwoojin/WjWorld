@@ -9,11 +9,15 @@
 
 class UWjWorldPlacementComponent;
 class UWjWorldPlaceableObjectDataAsset;
+class UWjWorldCosmeticSubsystem;
+class UWjWorldCurrencySubsystem;
 class UPlacementSaveDialogWidget;
 class UPlacementLoadDialogWidget;
+class UConfirmDialogWidget;
 class UScrollBox;
 class UButton;
 class UTextBlock;
+class UHorizontalBox;
 
 /**
  * 배치 모드 HUD 기본 클래스
@@ -68,6 +72,10 @@ protected:
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UTextBlock> TitleText;
 
+	/** 전체 배치 수 표시 텍스트 (선택적, 예: "12/20") */
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UTextBlock> TotalPlacementCountText;
+
 	/** 저장 다이얼로그 위젯 클래스 (BP에서 설정) */
 	UPROPERTY(EditDefaultsOnly, Category = "Placement")
 	TSubclassOf<UPlacementSaveDialogWidget> SaveDialogClass;
@@ -75,6 +83,14 @@ protected:
 	/** 불러오기 다이얼로그 위젯 클래스 (BP에서 설정) */
 	UPROPERTY(EditDefaultsOnly, Category = "Placement")
 	TSubclassOf<UPlacementLoadDialogWidget> LoadDialogClass;
+
+	/** 확인 다이얼로그 위젯 클래스 (BP에서 설정) */
+	UPROPERTY(EditDefaultsOnly, Category = "Placement")
+	TSubclassOf<UConfirmDialogWidget> ConfirmDialogClass;
+
+	/** 전체 삭제 버튼 (선택적 — AW/JumpMap 에디터에는 없어도 됨) */
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UButton> ClearButton;
 
 	/** 카탈로그 아이템 목록 채우기 */
 	virtual void PopulateCatalog(UWjWorldPlaceableObjectDataAsset* Catalog);
@@ -103,6 +119,14 @@ protected:
 	UFUNCTION()
 	void OnSlotDeleteRequested(const FString& SlotName);
 
+	/** 전체 삭제 버튼 클릭 핸들러 */
+	UFUNCTION()
+	void OnClearClicked();
+
+	/** 전체 삭제 확인 핸들러 */
+	UFUNCTION()
+	void OnClearConfirmed();
+
 	/** 실제 저장 로직 - 서브클래스에서 오버라이드 가능 */
 	virtual void ExecuteSave(const FString& SlotName);
 
@@ -116,8 +140,27 @@ protected:
 	UFUNCTION()
 	void OnCatalogButtonClicked();
 
-	/** 카탈로그 항목 클릭 시 호출 */
+	/** 구매 버튼 클릭 핸들러 */
+	UFUNCTION()
+	void OnBuyButtonClicked();
+
+	/** 카탈로그 항목 클릭 시 호출 — 소유 아이템만 선택 */
 	virtual void OnCatalogItemClicked(FName ObjectId);
+
+	/** 전체 배치 수 텍스트 갱신 */
+	void UpdateTotalPlacementCountText();
+
+	/** 카탈로그 UI 리프레시 (인벤토리/구매 완료 후) */
+	UFUNCTION()
+	void RefreshCatalogUI();
+
+	/** 구매 완료 콜백 */
+	UFUNCTION()
+	void HandlePlacementPurchaseComplete(FName ObjectId, bool bSuccess);
+
+	/** 인벤토리 갱신 콜백 */
+	UFUNCTION()
+	void HandleInventoryUpdated();
 
 	/** 타이틀 텍스트 설정 */
 	void SetTitleText(const FText& Title);
@@ -128,9 +171,13 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UWjWorldPlacementComponent> PlacementComponent;
 
-	/** 버튼 → ObjectId 매핑 */
+	/** 아이템 버튼 → ObjectId 매핑 */
 	UPROPERTY()
 	TMap<TObjectPtr<UButton>, FName> ButtonToObjectIdMap;
+
+	/** 구매 버튼 → ObjectId 매핑 */
+	UPROPERTY()
+	TMap<TObjectPtr<UButton>, FName> BuyButtonToObjectIdMap;
 
 	/** 저장 다이얼로그 인스턴스 */
 	UPROPERTY()
@@ -139,4 +186,8 @@ protected:
 	/** 불러오기 다이얼로그 인스턴스 */
 	UPROPERTY()
 	TObjectPtr<UPlacementLoadDialogWidget> LoadDialogInstance;
+
+	/** 확인 다이얼로그 인스턴스 */
+	UPROPERTY()
+	TObjectPtr<UConfirmDialogWidget> ConfirmDialogInstance;
 };

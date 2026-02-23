@@ -12,9 +12,11 @@
 #endif
 
 class UWjWorldCosmeticSubsystem;
+class UWjWorldPlaceableObjectDataAsset;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCurrencyBalanceChanged, ECurrencyType, CurrencyType, int32, NewBalance);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCurrencyPurchaseComplete, FName, ItemId, bool, bSuccess);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlacementPurchaseComplete, FName, ObjectId, bool, bSuccess);
 
 /**
  * 재화 관리 서브시스템
@@ -54,6 +56,12 @@ public:
 	/** 재화를 소비하여 코스메틱 아이템 구매 */
 	UFUNCTION(BlueprintCallable, Category = "Currency")
 	bool PurchaseItemWithCurrency(FName CosmeticItemId, ECurrencyType CurrencyType);
+
+	// ---- 재화로 배치 오브젝트 구매 ----
+
+	/** 코인을 소비하여 배치 오브젝트 구매 */
+	UFUNCTION(BlueprintCallable, Category = "Currency")
+	bool PurchasePlacementObject(FName ObjectId);
 
 	// ---- 유료 재화 팩 구매 ----
 
@@ -97,6 +105,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Currency")
 	FOnCurrencyPurchaseComplete OnCurrencyPurchaseComplete;
 
+	UPROPERTY(BlueprintAssignable, Category = "Currency")
+	FOnPlacementPurchaseComplete OnPlacementPurchaseComplete;
+
 private:
 	/** 인벤토리 갱신 콜백 (CosmeticSubsystem.OnInventoryUpdated 구독) */
 	UFUNCTION()
@@ -138,6 +149,7 @@ private:
 
 	// Exchange 관련
 	FName PendingExchangeItemId;
+	bool bPendingIsPlacement = false;
 
 #if WITH_STEAM
 	SteamInventoryResult_t ExchangeResultHandle = k_SteamInventoryResultInvalid;

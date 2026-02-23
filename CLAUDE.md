@@ -29,6 +29,7 @@ Source/WjWorld/
 │   ├── Session/SessionManager         # OSS 세션 관리 (Steam/LAN)
 │   └── WjWorldGameInstance
 ├── Cosmetic/                          # CosmeticTypes, CosmeticComponent, CosmeticSubsystem, CosmeticDataAsset, PurchaseSubsystem
+├── Currency/                          # CurrencySubsystem, CurrencyTypes (Coin/Gem 재화 관리)
 ├── Stats/                             # StatsSubsystem(Steam User Stats), StatTypes
 ├── Animation/                         # WjWorldAnimInstance
 ├── Setting/WjWorldDeveloperSettings   # 중앙 설정 (맵, GameMode, 에셋 참조)
@@ -62,7 +63,7 @@ GameRule: UWjWorldGameRuleBase → ApproachingWall, Sumo, JumpMap
 GameData: UWjWorldGameDataComponent → AW/Sumo/JumpMap Game/PlayerData
 Ability: UWjWorldGameplayAbilityBase → GA_NormalAttack, GA_SpawnBrick, GA_LiftBrick, GA_Push, GA_Jump(→GA_DoubleJump), GA_Dash, GA_Grapple
 PlacedObject: AWjWorldPlacedObjectActor → TreasureChestActor
-Subsystem: UGameInstanceSubsystem → CosmeticSubsystem, PurchaseSubsystem, StatsSubsystem
+Subsystem: UGameInstanceSubsystem → CosmeticSubsystem, CurrencySubsystem, PurchaseSubsystem, StatsSubsystem
 ```
 
 ## 핵심 시스템
@@ -88,6 +89,13 @@ Lobby / ApproachingWall / JumpMap 3개 컨텍스트 지원.
 - **입력**: LMB(배치), R(회전), T(축 전환), G(각도 전환), DEL(삭제), F(공중모드), ESC(종료)
 - **CSV 내보내기**: AW(`Content/WallLayouts/User/`), JumpMap(`Content/JumpMapLayouts/User/`, 11번째 Properties 컬럼)
 - **유저 레이아웃**: `WallDescriptionDataAsset`/`JumpMapLayoutDataAsset`에서 유저 CSV 런타임 스캔
+- **구매 시스템 (Lobby 전용)**: `FPlaceableObjectDefinition.CoinPrice/SteamItemDefId/MaxPlacementCount`, `DeveloperSettings.MaxTotalLobbyPlacedObjects`
+  - **소유권**: `CosmeticSubsystem.GetItemQuantityByDefId()` (AllItemQuantities 캐시)
+  - **구매**: `CurrencySubsystem.PurchasePlacementObject()` → Steam ExchangeItems / 비Steam GConfig
+  - **제한**: SelectObject() 소유권 게이트, ConfirmPlacement()+GameStateLobby 서버 측 수량 검증
+  - **UI**: PopulateCatalog()에서 소유/가격/수량 표시, 미소유 클릭→구매
+  - **비Steam 폴백**: GConfig `[PlacementInventory]` 섹션
+  - **테스트**: `Placement_Buy`, `Placement_PrintInventory`, `Placement_GrantItem` 콘솔 명령어
 
 ### Approaching Wall 미니게임
 벽이 다가오며 안전 구역으로 이동하는 PvP. BrickSpawner(비동기 8개/틱) → BrickMovement(단일 방향 선택) → WallManager(레벨별 속도). 12초마다 레벨업, Flood Fill 안전 구역 축소, TileActor 폭탄 신호.
@@ -130,14 +138,25 @@ ItemId(FName) 기반. `ECosmeticSlot`(Head/Body/Back/Effect), 비동기 메시 �
 - **Config**: DriverClassName `/Script/ModuleName.ClassName` 정규 경로 필수
 - **LAN 소켓 충돌**: SocketSubsystemSteamIP가 기본 소켓 오버라이드 → WjWorldLanNetDriver로 해결
 
+### 재화 시스템
+`UWjWorldCurrencySubsystem` — Coin/Gem 재화 관리. Steam Inventory 기반 + 비Steam GConfig 폴백.
+- **잔액 조회**: `GetBalance()`, `GetAllBalances()` — Steam 환경에서 `GetAllItems` 단일 패스로 잔액 + 인스턴스 ID 동시 캐싱
+- **미니게임 보상**: `TriggerMatchReward()` → Steam `TriggerItemDrop` / 비Steam 로컬 부여
+- **코스메틱 구매**: `PurchaseItemWithCurrency()` → Steam `ExchangeItems` (캐시된 인스턴스 ID 사용) / 비Steam 로컬 차감
+- **유료 재화 팩**: `PurchaseGemPack()` → Steam `StartPurchase` → 오버레이 결제 UI
+- **폴링**: Exchange 결과 0.5초, Gem 구매 1초 주기 폴링 + 300초 타임아웃
+- **로컬 저장**: `GGameUserSettingsIni` (cross-session 안정)
+- **테스트**: `Currency_GrantCoin/Gem`, `Currency_SetCoin/Gem`, `Currency_Print/Refresh`, `Steam_ConsumeCurrency`, `Steam_ConsumeAllItems` 콘솔 명령어
+
 ### 보물상자 시스템
 `AWjWorldTreasureChestActor` — `AWjWorldPlacedObjectActor` 서브클래스. 로비 배치 상호작용 오브젝트.
 - **상호작용**: BoxComponent 오버랩 → EnableInput + EnhancedInput BindAction(F키) → OnInteract
-- **보상**: `CurrencySubsystem->GrantCurrencyLocally(Coin, RewardAmount)`
-- **쿨타임**: per-player 로컬 GConfig (`TreasureChestCooldown.ini`), 위치 해시 키 (`Chest_X_Y_Z`)
-- **비주얼**: DMI 어두운 회색 틴트 (쿨타임 중), UI 프롬프트 (InteractionWidget)
+- **보상**: Steam `TriggerItemDrop`(ChestIndex별 독립 generator DefId 300~309) / 비Steam `GrantCurrencyLocally`
+- **쿨타임**: `FDateTime CachedLastOpenedTime` 인메모리 캐시 + `GGameUserSettingsIni` 영속 저장, 위치 해시 키 (`Chest_X_Y_Z`)
+- **비주얼**: DMI 어두운 회색 틴트 (쿨타임 중), UI 프롬프트 (InteractionWidget), 뚜껑 Roll 애니메이션
 - **ActorClassOverride**: `FPlaceableObjectDefinition`에 스폰 클래스 분기 필드 → GameStateLobby에서 사용
-- **DeveloperSettings**: `TreasureChest` 카테고리 (CoinReward, CooldownSeconds, InteractAction, WidgetClass)
+- **DeveloperSettings**: `TreasureChest` 카테고리 (CoinReward, CooldownSeconds, InteractAction, WidgetClass, GeneratorStartDefId)
+- **테스트**: `TreasureChest_ClearCooldowns` 콘솔 명령어
 
 ### WjWorldDeveloperSettings
 Project Settings > Game > WjWorld. 맵 경로, GameMode 클래스, 캐릭터 기본값, 미니게임 에셋, 배치 카탈로그, 카메라 InputAction, 보물상자 설정.
@@ -151,6 +170,7 @@ Project Settings > Game > WjWorld. 맵 경로, GameMode 클래스, 캐릭터 기
 ## 진행 중 / 미구현
 - Steam 정식 출시 준비
 - 보물상자 BP 작업 필요: PlaceableObjectDataAsset에 ObjectId 등록, ActorClassOverride 설정, InteractAction/WidgetClass 에디터 설정
+- 배치 오브젝트 에디터 설정 필요: DataAsset에서 각 오브젝트의 CoinPrice/SteamItemDefId/MaxPlacementCount 입력, BP 위젯에 TotalPlacementCountText 바인딩
 
 ## 출시 전 체크리스트
 - `Steam/itemdefs.json`: 보물상자(Treasure Chest #0~#9) `drop_max_per_window`를 `100` → `1`로 되돌리기 (현재 테스트용 100)

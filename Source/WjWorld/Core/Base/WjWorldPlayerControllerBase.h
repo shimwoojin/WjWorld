@@ -139,4 +139,18 @@ public:
 	/** 모든 보물상자 쿨타임 초기화 */
 	UFUNCTION(Exec)
 	void TreasureChest_ClearCooldowns();
+
+	// ---- 배치 오브젝트 구매 테스트 콘솔 명령어 ----
+
+	/** 배치 오브젝트 구매 테스트 (ObjectId) */
+	UFUNCTION(Exec)
+	void Placement_Buy(FString ObjectId);
+
+	/** 배치 오브젝트 소유 현황 출력 */
+	UFUNCTION(Exec)
+	void Placement_PrintInventory();
+
+	/** 배치 오브젝트 로컬 부여 (테스트용, ObjectId 기준) */
+	UFUNCTION(Exec)
+	void Placement_GrantItem(FString ObjectId, int32 Quantity = 1);
 };

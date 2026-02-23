@@ -7,6 +7,22 @@
 #include "Net/UnrealNetwork.h"
 #include "WjWorldLogCategories.h"
 
+namespace
+{
+	int32 CountObjectsByType(const TArray<FPlacedObjectSaveEntry>& Objects, FName ObjectId)
+	{
+		int32 Count = 0;
+		for (const FPlacedObjectSaveEntry& Entry : Objects)
+		{
+			if (Entry.ObjectId == ObjectId)
+			{
+				++Count;
+			}
+		}
+		return Count;
+	}
+}
+
 AWjWorldGameStateLobby::AWjWorldGameStateLobby()
 {
 	bReplicates = true;
@@ -25,6 +41,34 @@ void AWjWorldGameStateLobby::AddPlacedObject(const FPlacedObjectSaveEntry& Entry
 	if (!HasAuthority())
 	{
 		return;
+	}
+
+	// 서버 측 배치 수량 검증
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	if (Settings && Settings->MaxTotalLobbyPlacedObjects > 0)
+	{
+		if (PlacedObjects.Num() >= Settings->MaxTotalLobbyPlacedObjects)
+		{
+			UE_LOG(LogWjWorldPlacement, Warning, TEXT("GameStateLobby: 서버 거부 — 전체 배치 상한 도달 (%d/%d)"),
+				PlacedObjects.Num(), Settings->MaxTotalLobbyPlacedObjects);
+			return;
+		}
+	}
+
+	EnsureCatalogLoaded();
+	if (Catalog)
+	{
+		const FPlaceableObjectDefinition* Def = Catalog->FindByObjectId(Entry.ObjectId);
+		if (Def && Def->MaxPlacementCount > 0)
+		{
+			int32 TypeCount = CountObjectsByType(PlacedObjects, Entry.ObjectId);
+			if (TypeCount >= Def->MaxPlacementCount)
+			{
+				UE_LOG(LogWjWorldPlacement, Warning, TEXT("GameStateLobby: 서버 거부 — 종류당 배치 상한 도달 (%s: %d/%d)"),
+					*Entry.ObjectId.ToString(), TypeCount, Def->MaxPlacementCount);
+				return;
+			}
+		}
 	}
 
 	PlacedObjects.Add(Entry);

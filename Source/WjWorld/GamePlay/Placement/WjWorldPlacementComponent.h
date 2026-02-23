@@ -70,6 +70,12 @@ public:
 	void ConfirmPlacement();
 	void DeleteHoveredObject();
 
+	/** 배치된 모든 오브젝트 삭제 + 저장 + 델리게이트 */
+	void ClearAllPlacedObjects();
+
+	/** 특정 ObjectId의 현재 배치 수 반환 */
+	int32 CountPlacedObjectsByType(FName ObjectId) const;
+
 	//~ 카탈로그
 	void SetCatalog(UWjWorldPlaceableObjectDataAsset* InCatalog);
 	UWjWorldPlaceableObjectDataAsset* GetCatalog() const { return Catalog; }

@@ -1,5 +1,76 @@
 # WjWorld 개발 로그
 
+## 2026-02-23 (2)
+### 작업 내용
+
+#### 로비 배치 오브젝트 구매 시스템 구현
+- **데이터 모델 확장** — `FPlaceableObjectDefinition`에 `CoinPrice`, `SteamItemDefId`, `MaxPlacementCount` 추가. `DeveloperSettings`에 `MaxTotalLobbyPlacedObjects` 추가
+- **소유권 추적** — `CosmeticSubsystem`의 `ParseInventoryResult()`에서 전체 DefId별 수량 캐시(`AllItemQuantities`) 추가. `GetItemQuantityByDefId()` API 추가
+- **구매 흐름** — `CurrencySubsystem::PurchasePlacementObject()` 추가. 기존 `ExchangeItems` 인프라 공유, `bPendingIsPlacement` 분기로 `OnPlacementPurchaseComplete`/`OnCurrencyPurchaseComplete` 분리
+- **배치 제한** — `PlacementComponent::SelectObject()`에 소유권 게이트, `ConfirmPlacement()`에 종류당/전체 수량 게이트 추가. `GameStateLobby::AddPlacedObject()`에 서버 측 동일 검증 추가
+- **UI 갱신** — `PlacementHUDWidgetBase::PopulateCatalog()`에서 소유/미소유/가격/수량 표시. 미소유 클릭 시 구매 시도. `OnObjectPlaced`/`OnObjectDeleted`/`OnPlacementPurchaseComplete`/`OnInventoryUpdated` 구독으로 자동 리프레시
+- **비Steam 폴백** — GConfig `[PlacementInventory]` 섹션에 `ObjectId=Quantity` 저장/로드. `LoadPlacementInventoryFromLocal()`로 초기화 시 `AllItemQuantities` 복원
+- **Steam itemdefs** — DefId 200~202 (Chair, Table, Lamp) 배치 오브젝트 아이템 등록, `exchange: "1000x{가격}"`
+- **테스트 치트** — `Placement_Buy <ObjectId>`, `Placement_PrintInventory`, `Placement_GrantItem <ObjectId> [Qty]` 콘솔 명령어
+
+### 변경 파일
+- `DataAsset/WjWorldPlaceableObjectDataAsset.h`
+- `Setting/WjWorldDeveloperSettings.h`
+- `Cosmetic/WjWorldCosmeticSubsystem.h/.cpp`
+- `Currency/WjWorldCurrencySubsystem.h/.cpp`
+- `GamePlay/Placement/WjWorldPlacementComponent.h/.cpp`
+- `Core/Local/Lobby/WjWorldGameStateLobby.cpp`
+- `UI/Placement/PlacementHUDWidgetBase.h/.cpp`
+- `Core/Base/WjWorldPlayerControllerBase.h/.cpp`
+- `Steam/itemdefs.json`
+
+### 참고
+- Lobby 컨텍스트만 구매/소유권 적용. AW/JumpMap은 기존대로 자유 배치
+- `TotalPlacementCountText`는 BP 위젯에 바인딩 필요 (BindWidgetOptional이라 없어도 동작)
+- DataAsset에서 실제 오브젝트의 CoinPrice/SteamItemDefId/MaxPlacementCount 설정은 에디터에서 수동 입력 필요
+
+---
+
+## 2026-02-23
+### 작업 내용
+
+#### Steam ExchangeItems 실제 구현 (CurrencySubsystem)
+- **PurchaseItemWithCurrency() Steam 분기 교체** — stub(로컬 차감+GrantItemLocally)를 실제 `ISteamInventory::ExchangeItems()` 호출로 교체
+- **RefreshBalancesFromInventory() 리팩터** — `GetItemQuantityFromInventory()` 2회 호출 → 단일 `GetAllItems` 패스로 잔액 + `SteamItemInstanceID_t` 동시 캐싱
+- **인스턴스 ID 캐시 추가** — `CachedCoinInstanceId`, `CachedGemInstanceId` (`ExchangeItems`에 필수)
+- **Deinitialize()** — 인스턴스 ID 리셋 추가
+
+#### 보물상자 쿨타임/보상 버그 수정
+- **GConfig 세션간 영속성 수정** — 커스텀 ini 파일 → `GGameUserSettingsIni`로 통일 (TreasureChest, Currency, Cosmetic 3곳)
+- **인메모리 캐시 추가** — `FDateTime CachedLastOpenedTime`으로 GConfig read-back 불안정 해결, F키 스팸 방지
+- **itemdefs.json 보상 수량 수정** — `playtimegenerator`의 `bundle` 필드는 weight(확률)임을 발견, 중간 bundle 아이템(DefId 50,51,52) 추가로 Coin 50개 정상 지급
+- **drop_interval 수정** — 1440(24시간 플레이타임) → 1(1분)로 변경
+
+#### 테스트 치트 명령어 추가
+- `Steam_ConsumeAllItems` — 인벤토리 전체 초기화 (GetAllItems 순회 → ConsumeItem)
+- `Steam_ConsumeCurrency` — Coin/Gem만 소비
+- `TreasureChest_ClearCooldowns` — TActorIterator로 모든 보물상자 로컬 쿨타임 초기화
+- `TreasureChestActor::ResetCooldown()` — 캐시 초기화 + GConfig 키 삭제 + 비주얼 복원
+
+#### itemdefs.json 테스트 설정
+- 보물상자 `drop_max_per_window`: 1 → 100 (테스트용, 출시 전 1로 복원 필요)
+- CLAUDE.md에 출시 전 체크리스트 섹션 추가
+
+### 학습/메모
+- **Steam `playtimegenerator` bundle 필드**: `"1000x50"`에서 `x50`은 수량이 아니라 **weight(확률 가중치)**. 실제 수량 지급은 `type: "bundle"` 중간 아이템 필요
+- **Steam `drop_window`/`drop_max_per_window`**: 서버 측 rate limit으로 클라이언트/Web API로 초기화 불가. 테스트 시 `drop_max_per_window`를 높이는 것이 유일한 우회법
+- **GConfig 커스텀 ini**: `FPaths::GeneratedConfigDir() + "Custom.ini"`는 UE 재시작 시 자동 로드 안됨. `GGameUserSettingsIni`가 cross-session 안정적
+- **Steam Web API vs Client API**: `IInventoryService/ConsumeItem` Web API는 Publisher Key 필요 (보안 위험). 클라이언트 `ISteamInventory::ConsumeItem`으로 동일 결과 가능
+- **Steam `StartPurchase`**: `price` 필드가 있는 아이템에 대해 Steam 오버레이 결제 UI 팝업 → 실결제 진행
+
+### 이슈/해결
+- **Coin 1개만 지급**: playtimegenerator bundle의 weight/quantity 혼동 → 중간 bundle 아이템으로 해결
+- **쿨타임 미저장 (세션간)**: 커스텀 ini 미로드 → GGameUserSettingsIni로 전환
+- **쿨타임 미동작 (세션내)**: GConfig read-back 불안정 → FDateTime 인메모리 캐시로 해결
+- **ExchangeItems stub**: 로컬 차감만 하고 서버 미반영 → 인스턴스 ID 캐싱 + 실제 API 호출로 교체
+
+---
+
 ## 2026-02-19
 ### 작업 내용 - 보물상자 로비 배치 오브젝트 구현
 
@@ -32,10 +103,40 @@
 - `EnableInput(PC)` → UE5에서 자동으로 EnhancedInputComponent 생성 → `BindAction` 가능 (InteractablePortal 참조)
 - Tick 기반 애니메이션: `bStartWithTickEnabled=false`, 애니메이션 시작 시 `SetActorTickEnabled(true)`, 완료 시 false — 불필요한 Tick 비용 방지
 
+#### Steam 보물상자 보안 강화 (e4c0918)
+- **TreasureChestActor — Steam TriggerItemDrop 적용**
+  - `TryGrantReward()` 메서드 신규: Steam 환경에서 `SteamInventory()->TriggerItemDrop()` 호출로 서버 사이드 쿨타임 강제
+  - 비Steam 폴백: 기존 `GrantCurrencyLocally()` + GConfig 로컬 쿨타임 유지 (에디터 테스트용)
+  - `ChestIndex` UPROPERTY 추가 — 레벨 인스턴스별 고유 인덱스 설정, DefId = StartDefId + ChestIndex
+- **itemdefs.json — 보물상자 playtimegenerator 10개 추가** (DefId 300-309)
+  - 각 상자 독립 쿨타임 (`drop_interval: 1440분`, `drop_max_per_window: 1`)
+- **DeveloperSettings** — `TreasureChestGeneratorStartDefId = 300` 설정 추가
+- **FDateTime 파싱 버그 수정** — `FDateTime::Parse()` → `FDateTime::ParseIso8601()` (ToIso8601 출력 호환)
+
+#### 코스메틱 인벤토리/장착 버그 수정 (e4c0918)
+- **CosmeticSubsystem::Initialize()** — `RequestInventoryRefresh()` 호출 추가 → Steam 인벤토리 초기 로드 (빈 캐시 버그 해결)
+- **EquipItem() / UnequipSlot()** — 즉시 `SaveLoadoutToLocal()` 호출 → 패키지 빌드에서 장착 영속성 보장
+  - 기존: `Deinitialize()`에서만 저장 → Steam 빌드에서 미호출 가능성
+  - 수정: 장착/해제 즉시 CosmeticLoadout.ini에 기록
+
+### 학습/메모
+- `FPlaceableObjectDefinition`에 `ActorClassOverride`를 두면 기존 배치 시스템 변경 없이 서브클래스 스폰 가능 — 확장 패턴으로 유용
+- `EnableInput(PC)` → UE5에서 자동으로 EnhancedInputComponent 생성 → `BindAction` 가능 (InteractablePortal 참조)
+- Tick 기반 애니메이션: `bStartWithTickEnabled=false`, 애니메이션 시작 시 `SetActorTickEnabled(true)`, 완료 시 false — 불필요한 Tick 비용 방지
+- **Steam TriggerItemDrop**: `playtimegenerator` 타입 ItemDef의 `drop_interval`로 서버 사이드 쿨타임 강제 가능 — 로컬 config 조작 방지
+- **FDateTime::Parse() vs ParseIso8601()**: `Parse()`는 UE 포맷(`YYYY.MM.DD-HH.MM.SS`)만 처리, `ToIso8601()` 출력은 `ParseIso8601()`로 파싱해야 함
+- **UGameInstanceSubsystem::Deinitialize()**: 패키지 빌드(특히 Steam)에서 안정적으로 호출되지 않을 수 있음 — 중요 데이터는 변경 시점에 즉시 저장
+
+### 이슈/해결
+- **쿨타임 저장 실패**: `FDateTime::Parse()`가 ISO8601 포맷 인식 불가 → `ParseIso8601()`로 교체
+- **인벤토리 미표시**: `CosmeticSubsystem::Initialize()`에서 `RequestInventoryRefresh()` 미호출 → CachedInventory 빈 상태 유지 → 추가
+- **장착 미저장**: `Deinitialize()` 전용 저장 → Steam 빌드에서 CosmeticLoadout.ini 미생성 → 즉시 저장으로 변경
+- **보안 취약점**: 로컬 GConfig 쿨타임은 파일 수정으로 우회 가능 → Steam TriggerItemDrop 서버 쿨타임으로 전환
+
 ### 남은 작업
 - BP 작업: PlaceableObjectDataAsset에 보물상자 ObjectId 등록, ActorClassOverride 설정
-- DeveloperSettings에 InteractAction / WidgetClass 에디터 설정
 - LidMeshComponent에 뚜껑 StaticMesh 할당
+- Steam 빌드에서 CosmeticLoadout.ini 생성 및 장착 영속성 검증
 
 ---
 

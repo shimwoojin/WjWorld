@@ -169,6 +169,10 @@ public:
 
 	// ========== Placement ==========
 
+	/** 로비 전체 배치 상한 (0 = 무제한) */
+	UPROPERTY(config, EditAnywhere, Category = "Placement", meta = (ClampMin = "0"))
+	int32 MaxTotalLobbyPlacedObjects = 20;
+
 	/** @deprecated 로비 배치 카탈로그 사용 권장 (LobbyPlaceableCatalog) */
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "Placement", meta = (DisplayName = "Placeable Object Catalog (Legacy)"))
 	TSoftObjectPtr<UWjWorldPlaceableObjectDataAsset> PlaceableObjectCatalog;

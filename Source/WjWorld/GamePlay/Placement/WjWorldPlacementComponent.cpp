@@ -6,6 +6,7 @@
 #include "GamePlay/Placement/IWjWorldPlacementDataProvider.h"
 #include "Core/Local/Lobby/WjWorldGameStateLobby.h"
 #include "DataAsset/WjWorldPlaceableObjectDataAsset.h"
+#include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "Save/WjWorldLayoutSaveGame.h"
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "EnhancedInputComponent.h"
@@ -129,6 +130,22 @@ void UWjWorldPlacementComponent::SelectObject(FName ObjectId)
 		return;
 	}
 
+	// 로비 컨텍스트 + 유료 오브젝트: 소유권 체크
+	if (CurrentContext == EPlacementContext::Lobby && Def->CoinPrice > 0 && Def->SteamItemDefId > 0)
+	{
+		UGameInstance* GI = GetWorld() ? GetWorld()->GetGameInstance() : nullptr;
+		UWjWorldCosmeticSubsystem* CosmeticSub = GI ? GI->GetSubsystem<UWjWorldCosmeticSubsystem>() : nullptr;
+		if (CosmeticSub)
+		{
+			int32 OwnedQty = CosmeticSub->GetItemQuantityByDefId(Def->SteamItemDefId);
+			if (OwnedQty <= 0)
+			{
+				UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlacementComponent: 오브젝트 '%s' 미소유 — 구매 필요"), *ObjectId.ToString());
+				return;
+			}
+		}
+	}
+
 	// 삭제 모드에서 선택하면 배치 모드로 전환
 	if (CurrentMode == EPlacementMode::Deleting)
 	{
@@ -212,6 +229,47 @@ void UWjWorldPlacementComponent::ConfirmPlacement()
 		return;
 	}
 
+	// 로비 컨텍스트: 배치 수량 제한 체크
+	if (CurrentContext == EPlacementContext::Lobby)
+	{
+		const UWjWorldDeveloperSettings* DevSettings = GetDefault<UWjWorldDeveloperSettings>();
+
+		// 전체 배치 상한
+		if (DevSettings && DevSettings->MaxTotalLobbyPlacedObjects > 0)
+		{
+			if (DataProvider->GetPlacedObjects().Num() >= DevSettings->MaxTotalLobbyPlacedObjects)
+			{
+				UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlacementComponent: 전체 배치 상한 도달 (%d/%d)"),
+					DataProvider->GetPlacedObjects().Num(), DevSettings->MaxTotalLobbyPlacedObjects);
+				return;
+			}
+		}
+
+		// 종류당 배치 상한
+		{
+			int32 CurrentTypeCount = CountPlacedObjectsByType(SelectedObjectId);
+			int32 PlacementLimit = Def->MaxPlacementCount; // 0 = 무제한
+
+			// 유료 아이템 + 상한: 구매 수량(OwnedQty)이 배치 상한
+			if (Def->CoinPrice > 0 && Def->SteamItemDefId > 0 && Def->MaxPlacementCount > 0)
+			{
+				UGameInstance* GI = GetWorld() ? GetWorld()->GetGameInstance() : nullptr;
+				UWjWorldCosmeticSubsystem* CosmeticSub = GI ? GI->GetSubsystem<UWjWorldCosmeticSubsystem>() : nullptr;
+				if (CosmeticSub)
+				{
+					PlacementLimit = CosmeticSub->GetItemQuantityByDefId(Def->SteamItemDefId);
+				}
+			}
+
+			if (PlacementLimit > 0 && CurrentTypeCount >= PlacementLimit)
+			{
+				UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlacementComponent: 종류당 배치 상한 도달 (%s: %d/%d)"),
+					*SelectedObjectId.ToString(), CurrentTypeCount, PlacementLimit);
+				return;
+			}
+		}
+	}
+
 	// 배치 데이터 생성
 	FVector SpawnLocation = PreviewActor->GetActorLocation();
 	FRotator SpawnRotation = PreviewActor->GetCurrentRotation();
@@ -284,11 +342,40 @@ void UWjWorldPlacementComponent::DeleteHoveredObject()
 	// DataProvider에서 제거 (서버에서 파괴 + 클라이언트 리플리케이션)
 	DataProvider->RemovePlacedObjectAt(Index);
 
+	// 재스폰된 오브젝트에 배치 모드 비주얼 재적용
+	RefreshPlacementModeVisuals();
+
 	// 로컬 SaveGame에도 저장
 	SaveLayout();
 
 	OnObjectDeleted.Broadcast();
 	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Object deleted at index %d"), Index);
+}
+
+void UWjWorldPlacementComponent::ClearAllPlacedObjects()
+{
+	IWjWorldPlacementDataProvider* DataProvider = GetPlacementDataProvider();
+	if (!DataProvider)
+	{
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlacementComponent: ClearAllPlacedObjects - PlacementDataProvider not found"));
+		return;
+	}
+
+	int32 PrevCount = DataProvider->GetPlacedObjects().Num();
+	if (PrevCount == 0)
+	{
+		UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: ClearAllPlacedObjects - no objects to clear"));
+		return;
+	}
+
+	// DataProvider에서 전부 제거 (내부에서 RespawnAllPlacedObjects 호출)
+	DataProvider->ClearPlacedObjects();
+
+	RefreshPlacementModeVisuals();
+	SaveLayout();
+
+	OnObjectDeleted.Broadcast();
+	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: ClearAllPlacedObjects - cleared %d objects"), PrevCount);
 }
 
 void UWjWorldPlacementComponent::SetCatalog(UWjWorldPlaceableObjectDataAsset* InCatalog)
@@ -1352,6 +1439,25 @@ int32 UWjWorldPlacementComponent::FindPlacedObjectIndex(AWjWorldPlacedObjectActo
 	}
 
 	return INDEX_NONE;
+}
+
+int32 UWjWorldPlacementComponent::CountPlacedObjectsByType(FName ObjectId) const
+{
+	IWjWorldPlacementDataProvider* DataProvider = GetPlacementDataProvider();
+	if (!DataProvider)
+	{
+		return 0;
+	}
+
+	int32 Count = 0;
+	for (const FPlacedObjectSaveEntry& Entry : DataProvider->GetPlacedObjects())
+	{
+		if (Entry.ObjectId == ObjectId)
+		{
+			++Count;
+		}
+	}
+	return Count;
 }
 
 bool UWjWorldPlacementComponent::ValidateJumpMapLayout(FString& OutErrorMessage) const

@@ -9,6 +9,8 @@
 #include "Cosmetic/WjWorldCosmeticTypes.h"
 #include "Currency/WjWorldCurrencySubsystem.h"
 #include "GamePlay/TreasureChest/WjWorldTreasureChestActor.h"
+#include "DataAsset/WjWorldPlaceableObjectDataAsset.h"
+#include "GamePlay/Placement/WjWorldPlacementTypes.h"
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "EngineUtils.h"
 #include "WjWorldLogCategories.h"
@@ -475,5 +477,122 @@ void AWjWorldPlayerControllerBase::TreasureChest_ClearCooldowns()
 	}
 
 	UE_LOG(LogWjWorld, Log, TEXT("TreasureChest_ClearCooldowns: %d개 보물상자 쿨타임 초기화 완료"), Count);
+#endif
+}
+
+void AWjWorldPlayerControllerBase::Placement_Buy(FString ObjectId)
+{
+#if !UE_BUILD_SHIPPING
+	UWjWorldCurrencySubsystem* CurrencySub = GetGameInstance()->GetSubsystem<UWjWorldCurrencySubsystem>();
+	if (!CurrencySub)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("Placement_Buy: CurrencySubsystem 없음"));
+		return;
+	}
+
+	if (CurrencySub->PurchasePlacementObject(FName(*ObjectId)))
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("Placement_Buy: %s 구매 요청 성공"), *ObjectId);
+	}
+	else
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("Placement_Buy: %s 구매 요청 실패"), *ObjectId);
+	}
+#endif
+}
+
+void AWjWorldPlayerControllerBase::Placement_PrintInventory()
+{
+#if !UE_BUILD_SHIPPING
+	UWjWorldCosmeticSubsystem* CosmeticSub = GetGameInstance()->GetSubsystem<UWjWorldCosmeticSubsystem>();
+	if (!CosmeticSub)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("Placement_PrintInventory: CosmeticSubsystem 없음"));
+		return;
+	}
+
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	if (!Settings)
+	{
+		return;
+	}
+
+	UWjWorldPlaceableObjectDataAsset* Catalog = Settings->GetPlaceableCatalogForContext(EPlacementContext::Lobby);
+	if (!Catalog)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("Placement_PrintInventory: LobbyPlaceableCatalog 없음"));
+		return;
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("========== 배치 오브젝트 소유 현황 =========="));
+	for (const FPlaceableObjectDefinition& Def : Catalog->Objects)
+	{
+		if (Def.SteamItemDefId > 0 && Def.CoinPrice > 0)
+		{
+			int32 OwnedQty = CosmeticSub->GetItemQuantityByDefId(Def.SteamItemDefId);
+			UE_LOG(LogWjWorld, Log, TEXT("  %s (DefId:%d, Price:%d Coin) — 소유: %d"),
+				*Def.ObjectId.ToString(), Def.SteamItemDefId, Def.CoinPrice, OwnedQty);
+		}
+		else
+		{
+			UE_LOG(LogWjWorld, Log, TEXT("  %s — 무료"), *Def.ObjectId.ToString());
+		}
+	}
+	UE_LOG(LogWjWorld, Log, TEXT("============================================="));
+#endif
+}
+
+void AWjWorldPlayerControllerBase::Placement_GrantItem(FString ObjectId, int32 Quantity)
+{
+#if !UE_BUILD_SHIPPING
+	if (Quantity <= 0) Quantity = 1;
+
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	if (!Settings)
+	{
+		return;
+	}
+
+	UWjWorldPlaceableObjectDataAsset* Catalog = Settings->GetPlaceableCatalogForContext(EPlacementContext::Lobby);
+	if (!Catalog)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("Placement_GrantItem: LobbyPlaceableCatalog 없음"));
+		return;
+	}
+
+	const FPlaceableObjectDefinition* Def = Catalog->FindByObjectId(FName(*ObjectId));
+	if (!Def)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("Placement_GrantItem: '%s' 카탈로그에 없음"), *ObjectId);
+		return;
+	}
+
+	if (Def->SteamItemDefId <= 0)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("Placement_GrantItem: '%s'에 SteamItemDefId 없음"), *ObjectId);
+		return;
+	}
+
+	UWjWorldCosmeticSubsystem* CosmeticSub = GetGameInstance()->GetSubsystem<UWjWorldCosmeticSubsystem>();
+	if (!CosmeticSub)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("Placement_GrantItem: CosmeticSubsystem 없음"));
+		return;
+	}
+
+	// AllItemQuantities에 직접 추가 (로컬 테스트용)
+	CosmeticSub->AllItemQuantities.FindOrAdd(Def->SteamItemDefId) += Quantity;
+
+	// 비Steam: GConfig에도 기록
+	static const FString PlacementInventorySection = TEXT("PlacementInventory");
+	int32 CurrentOwned = 0;
+	GConfig->GetInt(*PlacementInventorySection, *ObjectId, CurrentOwned, GGameUserSettingsIni);
+	GConfig->SetInt(*PlacementInventorySection, *ObjectId, CurrentOwned + Quantity, GGameUserSettingsIni);
+	GConfig->Flush(false, GGameUserSettingsIni);
+
+	CosmeticSub->OnInventoryUpdated.Broadcast();
+
+	UE_LOG(LogWjWorld, Log, TEXT("Placement_GrantItem: %s x%d 부여 완료 (DefId: %d)"),
+		*ObjectId, Quantity, Def->SteamItemDefId);
 #endif
 }

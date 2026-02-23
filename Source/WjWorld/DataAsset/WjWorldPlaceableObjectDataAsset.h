@@ -51,6 +51,18 @@ struct FPlaceableObjectDefinition
 	/** 스폰할 액터 클래스 (nullptr이면 기본 AWjWorldPlacedObjectActor) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AWjWorldPlacedObjectActor> ActorClassOverride;
+
+	/** 코인 가격 (0 = 무료, 구매 불필요) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Purchase")
+	int32 CoinPrice = 0;
+
+	/** Steam Inventory ItemDef ID (0 = Steam 미연동) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Purchase")
+	int32 SteamItemDefId = 0;
+
+	/** 종류당 배치 상한 (0 = 무제한) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Purchase", meta = (ClampMin = "0"))
+	int32 MaxPlacementCount = 0;
 };
 
 /**

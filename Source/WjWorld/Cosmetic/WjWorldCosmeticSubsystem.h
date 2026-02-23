@@ -70,6 +70,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Cosmetic")
 	bool AddAllPromoItems();
 
+	// ---- 전체 아이템 수량 조회 (배치 오브젝트 소유권 등) ----
+
+	/** SteamItemDefId별 보유 수량 조회 (코스메틱 카탈로그 외 아이템 포함) */
+	UFUNCTION(BlueprintCallable, Category = "Cosmetic")
+	int32 GetItemQuantityByDefId(int32 SteamItemDefId) const;
+
+	/** 전체 SteamItemDefId별 수량 캐시 (코스메틱 + 배치 오브젝트 등 모든 아이템) */
+	TMap<int32, int32> AllItemQuantities;
+
 	// ---- 테스트/디버그 ----
 
 	/** Steam GenerateItems를 사용하여 테스트 아이템 생성 (개발 빌드 전용) */
@@ -145,6 +154,9 @@ private:
 
 	/** 현재 로드아웃 */
 	FCosmeticLoadout CurrentLoadout;
+
+	/** 배치 인벤토리 비Steam 폴백 로드 */
+	void LoadPlacementInventoryFromLocal();
 
 	/** 로드아웃 저장/로드용 설정 섹션 */
 	static const FString LoadoutConfigSection;
