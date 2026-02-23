@@ -297,6 +297,11 @@ void AWjWorldCharacterPlay::GasInputReleased(int32 InputID)
 	}
 }
 
+bool AWjWorldCharacterPlay::CanNativeJump() const
+{
+	return false; // GAS의 GA_Jump가 점프 처리
+}
+
 void AWjWorldCharacterPlay::ShowAbilityPrompt(const FText& ConfirmKeyName, const FText& CancelKeyName, const FText& Description)
 {
 	if (!AbilityPromptComponent)

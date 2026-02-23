@@ -338,3 +338,24 @@ void AWjWorldCharacterBase::Interact(const FInputActionValue& Value)
 {
 	// Base implementation - override in derived classes
 }
+
+void AWjWorldCharacterBase::Jump_Started()
+{
+	if (CanNativeJump())
+	{
+		Jump();
+	}
+}
+
+void AWjWorldCharacterBase::Jump_Completed()
+{
+	if (CanNativeJump())
+	{
+		StopJumping();
+	}
+}
+
+bool AWjWorldCharacterBase::CanNativeJump() const
+{
+	return true;
+}

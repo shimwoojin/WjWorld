@@ -72,6 +72,18 @@ protected:
 	UFUNCTION()
 	virtual void Interact(const FInputActionValue& Value);
 
+	/**
+	 * 점프 입력 처리 (IA_Jump 자동 바인딩)
+	 */
+	UFUNCTION()
+	void Jump_Started();
+
+	UFUNCTION()
+	void Jump_Completed();
+
+	/** 네이티브 점프 허용 여부 (Play에서는 GAS가 처리하므로 false) */
+	virtual bool CanNativeJump() const;
+
 public:
 	UPROPERTY(BlueprintAssignable)
 	FOnCharacterViewModeChanged OnCharacterViewModeChanged;

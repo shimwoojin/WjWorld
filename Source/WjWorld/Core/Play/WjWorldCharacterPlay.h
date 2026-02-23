@@ -99,6 +99,8 @@ private:
 	virtual void GasInputPressed(int32 InputID) override;
 	virtual void GasInputReleased(int32 InputID) override;
 
+	virtual bool CanNativeJump() const override;
+
 public:
 	FOnDeadStackCounthanged OnDeadStackCountChanged;
 
