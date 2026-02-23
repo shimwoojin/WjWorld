@@ -182,23 +182,7 @@
             "marketable": "false"
         },
         {
-            "itemdefid": "100",
-            "type": "item",
-            "name": "Delivery Bag",
-            "name_english": "Delivery Bag",
-            "description": "A stylish delivery bag for your back",
-            "description_english": "A stylish delivery bag for your back",
-            "background_color": "3C352E",
-            "icon_url": "",
-            "tradable": "false",
-            "marketable": "false",
-            "promo": "manual",
-            "price": "1;USD",
-            "tags": "slot:Back;rarity:Common",
-            "exchange": "1000x500;1001x100"
-        },
-        {
-            "itemdefid": "101",
+            "itemdefid": "2000",
             "type": "item",
             "name": "Military Hat",
             "name_english": "Military Hat",
@@ -209,8 +193,37 @@
             "tradable": "false",
             "marketable": "false",
             "promo": "manual",
-            "price": "1;USD",
             "tags": "slot:Head;rarity:Uncommon",
+            "exchange": "1000x500"
+        },
+        {
+            "itemdefid": "2001",
+            "type": "item",
+            "name": "Fedora Hat",
+            "name_english": "Fedora Hat",
+            "description": "A classic fedora hat",
+            "description_english": "A classic fedora hat",
+            "background_color": "3C352E",
+            "icon_url": "",
+            "tradable": "false",
+            "marketable": "false",
+            "promo": "manual",
+            "tags": "slot:Head;rarity:Uncommon",
+            "exchange": "1000x500"
+        },
+        {
+            "itemdefid": "2400",
+            "type": "item",
+            "name": "Delivery Bag",
+            "name_english": "Delivery Bag",
+            "description": "A stylish delivery bag for your back",
+            "description_english": "A stylish delivery bag for your back",
+            "background_color": "3C352E",
+            "icon_url": "",
+            "tradable": "false",
+            "marketable": "false",
+            "promo": "manual",
+            "tags": "slot:Back;rarity:Common",
             "exchange": "1000x500;1001x100"
         },
         {
