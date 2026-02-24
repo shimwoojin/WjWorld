@@ -4,11 +4,11 @@
 #include "UI/Profile/PlayerProfileWidget.h"
 #include "UI/Cosmetic/CosmeticMainWindow.h"
 #include "UI/Placement/PlacementContextSelectWidget.h"
+#include "UI/Setting/SettingsWidget.h"
 #include "Components/Button.h"
 #include "Core/Local/Lobby/WjWorldGameModeLobby.h"
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "Kismet/GameplayStatics.h"
-#include "GameFramework/GameUserSettings.h"
 #include "WjWorldLogCategories.h"
 
 void ULobbyHUDWidget::NativeConstruct()
@@ -86,23 +86,29 @@ void ULobbyHUDWidget::OnSettingsClicked()
 {
 	UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: Settings button clicked"));
 
-	UGameUserSettings* UserSettings = GEngine->GetGameUserSettings();
-	if (!UserSettings)
+	if (!SettingsWidgetClass)
 	{
+		UE_LOG(LogWjWorld, Warning, TEXT("LobbyHUDWidget: SettingsWidgetClass is not set"));
 		return;
 	}
 
-	// 그래픽 품질 사이클: Low(0) → Medium(1) → High(2) → Epic(3) → Low(0)
-	int32 CurrentLevel = UserSettings->GetOverallScalabilityLevel();
-	// -1은 커스텀 설정 → Epic으로 취급
-	if (CurrentLevel < 0) CurrentLevel = 3;
-	int32 NextLevel = (CurrentLevel + 1) % 4;
+	// 이미 열려있으면 닫기
+	if (SettingsWidgetInstance && SettingsWidgetInstance->IsInViewport())
+	{
+		SettingsWidgetInstance->ClosePopup();
+		return;
+	}
 
-	UserSettings->SetOverallScalabilityLevel(NextLevel);
-	UserSettings->ApplySettings(false);
+	// 인스턴스가 없으면 생성
+	if (!SettingsWidgetInstance)
+	{
+		SettingsWidgetInstance = CreateWidget<USettingsWidget>(GetOwningPlayer(), SettingsWidgetClass);
+	}
 
-	static const TCHAR* QualityNames[] = { TEXT("Low"), TEXT("Medium"), TEXT("High"), TEXT("Epic") };
-	UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: Graphics quality changed to %s (%d)"), QualityNames[NextLevel], NextLevel);
+	if (SettingsWidgetInstance)
+	{
+		SettingsWidgetInstance->ShowPopup();
+	}
 }
 
 void ULobbyHUDWidget::OnProfileClicked()

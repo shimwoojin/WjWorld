@@ -540,10 +540,11 @@ void UCreateRoomWindow::InitializeNetworkModeOptions()
 	// Steam 옵션 추가 (Steam 빌드에서만 활성화)
 #if WITH_STEAM
 	NetworkModeComboBox->AddOption(TEXT("Steam"));
-#endif
-
-	// 기본값은 LAN
+	// Steam 빌드에서는 Steam이 기본
+	NetworkModeComboBox->SetSelectedOption(TEXT("Steam"));
+#else
 	NetworkModeComboBox->SetSelectedOption(TEXT("LAN"));
+#endif
 
 	UE_LOG(LogWjWorld, Log, TEXT("CreateRoomWindow: Network mode options initialized"));
 }

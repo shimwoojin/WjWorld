@@ -23,6 +23,7 @@ public:
 	UGA_Grapple();
 
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
 protected:
 	/** 그래플 감지 범위 */
@@ -47,6 +48,7 @@ private:
 
 	bool bIsPulling = false;
 	FVector GrappleTargetLocation;
+	FTimerHandle ArrivalCheckTimerHandle;
 
 	// EndAbility 호출용 캐시
 	FGameplayAbilitySpecHandle CachedHandle;

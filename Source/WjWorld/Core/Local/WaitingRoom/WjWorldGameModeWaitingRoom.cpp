@@ -146,6 +146,35 @@ void AWjWorldGameModeWaitingRoom::StartGame()
 {
 	UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameModeWaitingRoom: Starting game..."));
 
+	// ⭐ GameState에서 현재 RoomSettings 가져오기 (UI에서 업데이트된 값)
+	FRoomSettings Settings;
+	AWjWorldGameStateWaitingRoom* WjGameState = GetGameState<AWjWorldGameStateWaitingRoom>();
+	if (WjGameState)
+	{
+		Settings = WjGameState->GetRoomSettings();
+	}
+
+	// ⭐ 최소 인원 검증 (ServerTravel 전에 차단)
+	const UWjWorldDeveloperSettings* DevSettings = GetDefault<UWjWorldDeveloperSettings>();
+	if (DevSettings && !DevSettings->MinigameCatalog.IsNull())
+	{
+		UWjWorldMinigameDataAsset* Catalog = DevSettings->MinigameCatalog.LoadSynchronous();
+		if (Catalog)
+		{
+			const FWjWorldMinigameDefinition* MinigameDef = Catalog->FindByGameModeId(FName(*Settings.GameMode));
+			if (MinigameDef && WjGameState)
+			{
+				int32 PlayerCount = WjGameState->GetPlayerCount();
+				if (PlayerCount < MinigameDef->MinimumPlayers)
+				{
+					UE_LOG(LogWjWorld, Warning, TEXT("WjWorldGameModeWaitingRoom: Not enough players (%d < %d) for %s"),
+						PlayerCount, MinigameDef->MinimumPlayers, *Settings.GameMode);
+					return;
+				}
+			}
+		}
+	}
+
 	// GameInstance를 통해 세션 시작
 	UWjWorldGameInstance* GameInstance = Cast<UWjWorldGameInstance>(GetGameInstance());
 	if (!GameInstance)
@@ -163,16 +192,10 @@ void AWjWorldGameModeWaitingRoom::StartGame()
 
 	UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameModeWaitingRoom: Session start initiated"));
 
-	// ⭐ GameState에서 현재 RoomSettings 가져오기 (UI에서 업데이트된 값)
-	FRoomSettings Settings;
-	AWjWorldGameStateWaitingRoom* WjGameState = GetGameState<AWjWorldGameStateWaitingRoom>();
-	if (WjGameState)
-	{
-		Settings = WjGameState->GetRoomSettings();
-		UE_LOG(LogWjWorld, Warning, TEXT("WjWorldGameModeWaitingRoom: Using GameState settings - GameMode: '%s', Map: '%s'"),
-			*Settings.GameMode, *Settings.MapName);
-	}
-	else if (GameInstance->GetSessionManager())
+	UE_LOG(LogWjWorld, Warning, TEXT("WjWorldGameModeWaitingRoom: Using GameState settings - GameMode: '%s', Map: '%s'"),
+		*Settings.GameMode, *Settings.MapName);
+
+	if (!WjGameState && GameInstance->GetSessionManager())
 	{
 		// 폴백: SessionManager에서 가져오기
 		Settings = GameInstance->GetSessionManager()->GetLastRoomSettings();
@@ -182,7 +205,6 @@ void AWjWorldGameModeWaitingRoom::StartGame()
 
 	// 카탈로그에서 LevelPath 조회
 	FString TravelURL;
-	const UWjWorldDeveloperSettings* DevSettings = GetDefault<UWjWorldDeveloperSettings>();
 	if (DevSettings && !DevSettings->MinigameCatalog.IsNull())
 	{
 		UWjWorldMinigameDataAsset* Catalog = DevSettings->MinigameCatalog.LoadSynchronous();

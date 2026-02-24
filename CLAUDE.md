@@ -175,10 +175,6 @@ Project Settings > Game > WjWorld. 맵 경로, GameMode 클래스, 캐릭터 기
 
 ## 진행 중 / 미구현
 - Steam 정식 출시 준비
-- 보물상자 BP 작업 필요: PlaceableObjectDataAsset에 ObjectId 등록, ActorClassOverride 설정, InteractAction/WidgetClass 에디터 설정
-- 배치 오브젝트 에디터 설정 필요: DataAsset에서 각 오브젝트의 CoinPrice/SteamItemDefId/MaxPlacementCount 입력, BP 위젯에 TotalPlacementCountText 바인딩
-- 확인 다이얼로그 BP 작업 필요: WBP_ConfirmDialog 생성 (MessageText, ConfirmButton, CancelButton 바인딩), WBP_PlacementHUD에 ClearButton 추가 + ConfirmDialogClass 설정
-- DA_CosmeticCatalog DefId 매핑 업데이트 필요: MilitaryHat→2000, FedoraHat→2001, DeliveryBag→2400
 - Lobby/WaitingRoom 점프 검증 필요: Play에서 GA_Jump 정상 동작 확인, AW SpawnBrickPreview 중 점프 차단 확인
 
 ## 출시 전 체크리스트

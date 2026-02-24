@@ -54,6 +54,10 @@ public:
 	void SetStatNamespace(FName InNamespace);
 	FName GetStatNamespace() const { return StatNamespace; }
 
+	// 초기 참여 인원 (1인 플레이 시 스탯/보상 제외용)
+	void SetInitialPlayerCount(int32 InCount);
+	int32 GetInitialPlayerCount() const { return InitialPlayerCount; }
+
 public:
     // 게임별 데이터는 컴포넌트로
     template<typename T>
@@ -120,4 +124,8 @@ private:
     // 스탯 네임스페이스 (미니게임별)
     UPROPERTY(Replicated)
     FName StatNamespace;
+
+    // 게임 시작 시점 참여 인원 (1인 플레이 스탯/보상 제외용)
+    UPROPERTY(Replicated)
+    int32 InitialPlayerCount = 0;
 };

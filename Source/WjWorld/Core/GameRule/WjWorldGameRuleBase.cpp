@@ -90,6 +90,14 @@ void UWjWorldGameRuleBase::OnGameStart()
 	if (!HasAuthority()) return;
 
 	ChangeGamePhase(EGamePhase::Playing);
+
+	// 게임 시작 시점 참여 인원 기록 (1인 플레이 스탯/보상 제외용)
+	AWjWorldGameStatePlay* GameState = GetGameStatePlay();
+	if (GameState)
+	{
+		GameState->SetInitialPlayerCount(GameState->PlayerArray.Num());
+	}
+
 	UE_LOG(LogWjWorld, Log, TEXT("GameRuleBase: Game Started"));
 }
 

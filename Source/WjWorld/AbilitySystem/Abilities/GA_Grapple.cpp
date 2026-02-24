@@ -39,62 +39,79 @@ void UGA_Grapple::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const
 	CachedActorInfo = ActorInfo;
 	CachedActivationInfo = ActivationInfo;
 
-	ACharacter* Character = Cast<ACharacter>(ActorInfo->AvatarActor.Get());
-	if (!Character)
+	if (HasAuthorityOrPredictionKey(ActorInfo, &ActivationInfo))
 	{
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
-		return;
-	}
-
-	APlayerController* PC = Cast<APlayerController>(Character->GetController());
-	if (!PC)
-	{
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
-		return;
-	}
-
-	// 카메라 방향으로 라인 트레이스
-	FVector CamLoc;
-	FRotator CamRot;
-	PC->GetPlayerViewPoint(CamLoc, CamRot);
-
-	FVector TraceEnd = CamLoc + CamRot.Vector() * GrappleRange;
-	FHitResult HitResult;
-	FCollisionQueryParams Params;
-	Params.AddIgnoredActor(Character);
-
-	if (GetWorld()->LineTraceSingleByChannel(HitResult, CamLoc, TraceEnd, ECC_Visibility, Params))
-	{
-		AJumpMapGrapplePointActor* GrapplePoint = Cast<AJumpMapGrapplePointActor>(HitResult.GetActor());
-		if (GrapplePoint)
+		ACharacter* Character = Cast<ACharacter>(ActorInfo->AvatarActor.Get());
+		if (!Character)
 		{
-			if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
-			{
-				EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
-				return;
-			}
-
-			GrappleTargetLocation = GrapplePoint->GetActorLocation();
-			bIsPulling = true;
-
-			// 캐릭터를 타겟 방향으로 발사
-			FVector Direction = (GrappleTargetLocation - Character->GetActorLocation()).GetSafeNormal();
-			Character->LaunchCharacter(Direction * GrapplePullSpeed, true, true);
-
-			UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_Grapple: Pulling %s toward %s"),
-				*Character->GetName(), *GrappleTargetLocation.ToString());
-
-			// 도착 체크 타이머 (매 틱)
-			if (UWorld* World = GetWorld())
-			{
-				World->GetTimerManager().SetTimerForNextTick(FTimerDelegate::CreateUObject(this, &UGA_Grapple::CheckArrival));
-			}
+			EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 			return;
 		}
+
+		APlayerController* PC = Cast<APlayerController>(Character->GetController());
+		if (!PC)
+		{
+			EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+			return;
+		}
+
+		// 카메라 방향으로 라인 트레이스
+		FVector CamLoc;
+		FRotator CamRot;
+		PC->GetPlayerViewPoint(CamLoc, CamRot);
+
+		FVector TraceEnd = CamLoc + CamRot.Vector() * GrappleRange;
+		FHitResult HitResult;
+		FCollisionQueryParams Params;
+		Params.AddIgnoredActor(Character);
+
+		if (GetWorld()->LineTraceSingleByChannel(HitResult, CamLoc, TraceEnd, ECC_WorldStatic, Params))
+		{
+			AJumpMapGrapplePointActor* GrapplePoint = Cast<AJumpMapGrapplePointActor>(HitResult.GetActor());
+			if (GrapplePoint)
+			{
+				if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
+				{
+					EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+					return;
+				}
+
+				GrappleTargetLocation = GrapplePoint->GetActorLocation();
+				bIsPulling = true;
+
+				// 캐릭터를 타겟 방향으로 발사
+				FVector Direction = (GrappleTargetLocation - Character->GetActorLocation()).GetSafeNormal();
+				Character->LaunchCharacter(Direction * GrapplePullSpeed, true, true);
+
+				UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_Grapple: Pulling %s toward %s"),
+					*Character->GetName(), *GrappleTargetLocation.ToString());
+
+				// 도착 체크 타이머 (매 틱)
+				if (UWorld* World = GetWorld())
+				{
+					ArrivalCheckTimerHandle = World->GetTimerManager().SetTimerForNextTick(
+						FTimerDelegate::CreateUObject(this, &UGA_Grapple::CheckArrival));
+				}
+				return;
+			}
+		}
+
+		// 미스 → 쿨다운 없이 종료
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+	}
+}
+
+void UGA_Grapple::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+{
+	bIsPulling = false;
+
+	// 타이머 정리
+	if (UWorld* World = GetWorld())
+	{
+		World->GetTimerManager().ClearTimer(ArrivalCheckTimerHandle);
 	}
 
-	// 미스 → 쿨다운 없이 종료
-	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
 void UGA_Grapple::CheckArrival()
@@ -130,6 +147,7 @@ void UGA_Grapple::CheckArrival()
 	// 아직 이동 중 → 다음 틱에 다시 체크
 	if (UWorld* World = GetWorld())
 	{
-		World->GetTimerManager().SetTimerForNextTick(FTimerDelegate::CreateUObject(this, &UGA_Grapple::CheckArrival));
+		ArrivalCheckTimerHandle = World->GetTimerManager().SetTimerForNextTick(
+			FTimerDelegate::CreateUObject(this, &UGA_Grapple::CheckArrival));
 	}
 }

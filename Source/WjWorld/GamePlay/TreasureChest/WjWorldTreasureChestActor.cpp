@@ -297,16 +297,23 @@ bool AWjWorldTreasureChestActor::TryGrantReward()
 				ChestIndex, GeneratorDefId);
 			SteamInv->DestroyResult(ResultHandle);
 
-			// 인벤토리 갱신으로 잔액 반영
-			UGameInstance* GI = GetGameInstance();
-			if (GI)
+			// Steam 서버 반영 대기 후 인벤토리 갱신 (즉시 호출 시 이전 잔액 반환)
+			FTimerHandle TimerHandle;
+			GetWorldTimerManager().SetTimer(TimerHandle, [WeakThis = TWeakObjectPtr<AWjWorldTreasureChestActor>(this)]()
 			{
-				UWjWorldCosmeticSubsystem* CosmeticSub = GI->GetSubsystem<UWjWorldCosmeticSubsystem>();
-				if (CosmeticSub)
+				if (AWjWorldTreasureChestActor* Self = WeakThis.Get())
 				{
-					CosmeticSub->RequestInventoryRefresh();
+					UGameInstance* GI = Self->GetGameInstance();
+					if (GI)
+					{
+						UWjWorldCosmeticSubsystem* CosmeticSub = GI->GetSubsystem<UWjWorldCosmeticSubsystem>();
+						if (CosmeticSub)
+						{
+							CosmeticSub->RequestInventoryRefresh();
+						}
+					}
 				}
-			}
+			}, 1.5f, false);
 
 			return true;
 		}

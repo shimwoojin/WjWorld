@@ -112,11 +112,22 @@ void UWjWorldCurrencySubsystem::TriggerMatchReward(bool bIsWinner)
 			UE_LOG(LogWjWorldCurrency, Log, TEXT("Steam TriggerItemDrop 요청 성공 (DefId: %d)"), GeneratorDefId);
 			SteamInv->DestroyResult(ResultHandle);
 
-			// 인벤토리 갱신으로 잔액 반영
-			UWjWorldCosmeticSubsystem* CosmeticSub = GetGameInstance()->GetSubsystem<UWjWorldCosmeticSubsystem>();
-			if (CosmeticSub)
+			// Steam 서버 반영 대기 후 인벤토리 갱신 (즉시 호출 시 이전 잔액 반환)
+			UWorld* World = GetWorld();
+			if (World)
 			{
-				CosmeticSub->RequestInventoryRefresh();
+				FTimerHandle TimerHandle;
+				World->GetTimerManager().SetTimer(TimerHandle, [WeakThis = TWeakObjectPtr<UWjWorldCurrencySubsystem>(this)]()
+				{
+					if (UWjWorldCurrencySubsystem* Self = WeakThis.Get())
+					{
+						UWjWorldCosmeticSubsystem* CosmeticSub = Self->GetGameInstance()->GetSubsystem<UWjWorldCosmeticSubsystem>();
+						if (CosmeticSub)
+						{
+							CosmeticSub->RequestInventoryRefresh();
+						}
+					}
+				}, 1.5f, false);
 			}
 		}
 		else

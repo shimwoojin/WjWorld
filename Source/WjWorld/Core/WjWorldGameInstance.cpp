@@ -2,6 +2,7 @@
 
 #include "Core/WjWorldGameInstance.h"
 #include "Core/Session/SessionManager.h"
+#include "UI/Setting/SettingsWidget.h"
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "Engine/Engine.h"
 #include "GameFramework/PlayerState.h"
@@ -23,6 +24,9 @@ void UWjWorldGameInstance::Init()
 	{
 		UE_LOG(LogWjWorld, Error, TEXT("WjWorldGameInstance: Failed to create SessionManager"));
 	}
+
+	// 저장된 마스터 볼륨 복원
+	USettingsWidget::ApplySavedMasterVolume();
 
 	// NetworkFailure 핸들러 등록
 	if (GEngine)

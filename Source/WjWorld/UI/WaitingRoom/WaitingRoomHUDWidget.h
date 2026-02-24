@@ -13,6 +13,7 @@ class UVerticalBox;
 class UPlayerProfileWidget;
 class UComboBoxString;
 class UCanvasPanel;
+class USettingsWidget;
 
 /**
  * 대기실 HUD 위젯
@@ -90,9 +91,17 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> LeaveButton;
 
+	/** 설정 버튼 */
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UButton> SettingsButton;
+
 	/** 프로필 위젯 클래스 (Blueprint에서 설정) */
 	UPROPERTY(EditDefaultsOnly, Category = "Profile")
 	TSubclassOf<UPlayerProfileWidget> ProfileWidgetClass;
+
+	/** 설정 위젯 클래스 (Blueprint에서 설정) */
+	UPROPERTY(EditDefaultsOnly, Category = "Settings")
+	TSubclassOf<USettingsWidget> SettingsWidgetClass;
 
 protected:
 	//~ 버튼 클릭 이벤트
@@ -105,6 +114,9 @@ protected:
 
 	UFUNCTION()
 	void OnLeaveClicked();
+
+	UFUNCTION()
+	void OnSettingsClicked();
 
 	UFUNCTION()
 	void OnApplySettingsClicked();
@@ -172,4 +184,8 @@ private:
 
 	/** 맵 옵션 표시명 → 실제 값 매핑 (호스트 설정용) */
 	TMap<FString, FString> MapOptionDisplayToValue;
+
+	/** 설정 위젯 인스턴스 */
+	UPROPERTY()
+	TObjectPtr<USettingsWidget> SettingsWidgetInstance;
 };

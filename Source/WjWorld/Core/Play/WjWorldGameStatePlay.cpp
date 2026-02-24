@@ -36,6 +36,7 @@ void AWjWorldGameStatePlay::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	DOREPLIFETIME(AWjWorldGameStatePlay, GameRuleClass);
 	DOREPLIFETIME(AWjWorldGameStatePlay, AllowedAbilityTags);
 	DOREPLIFETIME(AWjWorldGameStatePlay, StatNamespace);
+	DOREPLIFETIME(AWjWorldGameStatePlay, InitialPlayerCount);
 }
 
 bool AWjWorldGameStatePlay::HasMatchStarted() const
@@ -226,10 +227,13 @@ void AWjWorldGameStatePlay::OnRep_GameResult()
 
 	HUD->ShowGameResultText(ResultText, 5.0f);
 
+	// 1인 플레이 시 스탯/보상 제외
+	const bool bShouldRecordStats = (InitialPlayerCount > 1);
+
 	// 스탯 기록 (각 클라이언트가 자신의 스탯만 기록)
 	// StatNamespace 기반 동적 스탯 키 생성
 	UWjWorldStatsSubsystem* Stats = GetGameInstance()->GetSubsystem<UWjWorldStatsSubsystem>();
-	if (Stats && PC->PlayerState && !StatNamespace.IsNone())
+	if (bShouldRecordStats && Stats && PC->PlayerState && !StatNamespace.IsNone())
 	{
 		FString NS = StatNamespace.ToString();
 		Stats->IncrementLocalStat(FName(*FString::Printf(TEXT("%s_GamesPlayed"), *NS)));
@@ -245,10 +249,14 @@ void AWjWorldGameStatePlay::OnRep_GameResult()
 
 		Stats->StoreStats();
 	}
+	else if (!bShouldRecordStats)
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("GameState: Skipping stats/rewards for solo play (InitialPlayerCount=%d)"), InitialPlayerCount);
+	}
 
 	// 재화 보상 지급 (각 클라이언트가 자신의 보상 요청)
 	UWjWorldCurrencySubsystem* CurrencySub = GetGameInstance()->GetSubsystem<UWjWorldCurrencySubsystem>();
-	if (CurrencySub && PC->PlayerState)
+	if (bShouldRecordStats && CurrencySub && PC->PlayerState)
 	{
 		bool bIsLocalPlayerWinner = bGameHasWinner && (WinnerPlayerName == LocalPlayerName);
 		CurrencySub->TriggerMatchReward(bIsLocalPlayerWinner);
@@ -279,4 +287,10 @@ void AWjWorldGameStatePlay::SetAllowedAbilityTags(const FGameplayTagContainer& I
 void AWjWorldGameStatePlay::SetStatNamespace(FName InNamespace)
 {
 	StatNamespace = InNamespace;
+}
+
+void AWjWorldGameStatePlay::SetInitialPlayerCount(int32 InCount)
+{
+	InitialPlayerCount = InCount;
+	UE_LOG(LogWjWorld, Log, TEXT("GameState: InitialPlayerCount set to %d"), InitialPlayerCount);
 }

@@ -11,6 +11,7 @@ class UButton;
 class UPlayerProfileWidget;
 class UCosmeticMainWindow;
 class UPlacementContextSelectWidget;
+class USettingsWidget;
 
 /**
  * 로비 HUD 위젯
@@ -69,6 +70,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Placement")
 	TSubclassOf<UPlacementContextSelectWidget> PlacementContextSelectClass;
 
+	/** 설정 위젯 클래스 (Blueprint에서 설정) */
+	UPROPERTY(EditDefaultsOnly, Category = "Settings")
+	TSubclassOf<USettingsWidget> SettingsWidgetClass;
+
 protected:
 	//~ 버튼 클릭 이벤트
 
@@ -103,4 +108,7 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UPlacementContextSelectWidget> PlacementContextSelectInstance;
+
+	UPROPERTY()
+	TObjectPtr<USettingsWidget> SettingsWidgetInstance;
 };

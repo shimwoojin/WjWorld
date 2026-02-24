@@ -2,6 +2,7 @@
 
 #include "UI/WaitingRoom/WaitingRoomHUDWidget.h"
 #include "UI/Profile/PlayerProfileWidget.h"
+#include "UI/Setting/SettingsWidget.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
@@ -38,6 +39,11 @@ void UWaitingRoomHUDWidget::NativeConstruct()
 	if (LeaveButton)
 	{
 		LeaveButton->OnClicked.AddDynamic(this, &UWaitingRoomHUDWidget::OnLeaveClicked);
+	}
+
+	if (SettingsButton)
+	{
+		SettingsButton->OnClicked.AddDynamic(this, &UWaitingRoomHUDWidget::OnSettingsClicked);
 	}
 
 	if (ApplySettingsButton)
@@ -200,6 +206,35 @@ void UWaitingRoomHUDWidget::OnLeaveClicked()
 	else
 	{
 		UE_LOG(LogWjWorld, Error, TEXT("WaitingRoomHUDWidget: GameInstance is null"));
+	}
+}
+
+void UWaitingRoomHUDWidget::OnSettingsClicked()
+{
+	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Settings button clicked"));
+
+	if (!SettingsWidgetClass)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("WaitingRoomHUDWidget: SettingsWidgetClass is not set"));
+		return;
+	}
+
+	// 이미 열려있으면 닫기
+	if (SettingsWidgetInstance && SettingsWidgetInstance->IsInViewport())
+	{
+		SettingsWidgetInstance->ClosePopup();
+		return;
+	}
+
+	// 인스턴스가 없으면 생성
+	if (!SettingsWidgetInstance)
+	{
+		SettingsWidgetInstance = CreateWidget<USettingsWidget>(GetOwningPlayer(), SettingsWidgetClass);
+	}
+
+	if (SettingsWidgetInstance)
+	{
+		SettingsWidgetInstance->ShowPopup();
 	}
 }
 
@@ -513,14 +548,30 @@ void UWaitingRoomHUDWidget::UpdateStartGameButton()
 		// 호스트는 모든 플레이어가 준비되었을 때만 게임 시작 가능
 		bool bAllReady = CachedGameState->AreAllPlayersReady();
 		int32 PlayerCount = CachedGameState->GetPlayerCount();
-		
-		// 최소 1명 이상 있어야 시작 가능
-		bool bCanStart = bAllReady && (PlayerCount > 0);
-		
+
+		// 카탈로그에서 최소 인원 조회
+		int32 MinPlayers = 1;
+		const FRoomSettings& CurrentSettings = CachedGameState->GetRoomSettings();
+		const UWjWorldDeveloperSettings* DevSettings = GetDefault<UWjWorldDeveloperSettings>();
+		if (DevSettings && !DevSettings->MinigameCatalog.IsNull())
+		{
+			UWjWorldMinigameDataAsset* Catalog = DevSettings->MinigameCatalog.LoadSynchronous();
+			if (Catalog)
+			{
+				const FWjWorldMinigameDefinition* Def = Catalog->FindByGameModeId(FName(*CurrentSettings.GameMode));
+				if (Def)
+				{
+					MinPlayers = Def->MinimumPlayers;
+				}
+			}
+		}
+
+		bool bCanStart = bAllReady && (PlayerCount >= MinPlayers);
+
 		StartGameButton->SetIsEnabled(bCanStart);
-		
-		UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Start button enabled = %d (AllReady=%d, Count=%d)"),
-			bCanStart, bAllReady, PlayerCount);
+
+		UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Start button enabled = %d (AllReady=%d, Count=%d, MinPlayers=%d)"),
+			bCanStart, bAllReady, PlayerCount, MinPlayers);
 	}
 	else
 	{

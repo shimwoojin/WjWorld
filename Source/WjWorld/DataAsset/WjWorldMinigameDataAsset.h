@@ -60,6 +60,10 @@ struct FWjWorldMinigameDefinition
 	/** 스탯 네임스페이스 (예: "AW", "Sumo") - 스탯 키 접두사로 사용 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minigame")
 	FName StatNamespace;
+
+	/** 최소 플레이어 수 (이 미만이면 게임 시작 불가, 기본 1) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minigame", meta = (ClampMin = "1"))
+	int32 MinimumPlayers = 1;
 };
 
 /**
