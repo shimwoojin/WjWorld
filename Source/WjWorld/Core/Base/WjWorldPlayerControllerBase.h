@@ -136,6 +136,10 @@ public:
 	UFUNCTION(Exec)
 	void Steam_ConsumeAllItems();
 
+	/** Steam 인벤토리에 실제 코인 추가 (TriggerItemDrop, 1회=50코인) */
+	UFUNCTION(Exec)
+	void Steam_GrantCoin(int32 Count = 1);
+
 	/** 모든 보물상자 쿨타임 초기화 */
 	UFUNCTION(Exec)
 	void TreasureChest_ClearCooldowns();

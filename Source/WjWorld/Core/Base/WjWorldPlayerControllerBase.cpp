@@ -463,6 +463,52 @@ void AWjWorldPlayerControllerBase::Steam_ConsumeAllItems()
 #endif
 }
 
+void AWjWorldPlayerControllerBase::Steam_GrantCoin(int32 Count)
+{
+#if !UE_BUILD_SHIPPING && WITH_STEAM
+	ISteamInventory* SteamInv = SteamInventory();
+	if (!SteamInv)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("Steam_GrantCoin: Steam Inventory 사용 불가"));
+		return;
+	}
+
+	if (Count < 1) Count = 1;
+
+	// GenerateItems: 퍼블리셔 계정 전용 개발 API — 아이템 직접 생성
+	SteamItemDef_t ItemDef = 1000; // WjCoin
+	uint32 Quantity = static_cast<uint32>(Count);
+	SteamInventoryResult_t ResultHandle = k_SteamInventoryResultInvalid;
+
+	if (SteamInv->GenerateItems(&ResultHandle, &ItemDef, &Quantity, 1))
+	{
+		UE_LOG(LogWjWorldCurrency, Log, TEXT("Steam_GrantCoin: GenerateItems 성공 (%d코인)"), Count);
+		SteamInv->DestroyResult(ResultHandle);
+
+		// Steam 서버 반영 대기 후 인벤토리 갱신 (즉시 호출 시 아직 반영 안 됨)
+		FTimerHandle TimerHandle;
+		GetWorldTimerManager().SetTimer(TimerHandle, [WeakThis = TWeakObjectPtr<AWjWorldPlayerControllerBase>(this)]()
+		{
+			if (AWjWorldPlayerControllerBase* PC = WeakThis.Get())
+			{
+				UWjWorldCosmeticSubsystem* CosmeticSub = PC->GetGameInstance()->GetSubsystem<UWjWorldCosmeticSubsystem>();
+				if (CosmeticSub)
+				{
+					CosmeticSub->RequestInventoryRefresh();
+				}
+				UE_LOG(LogWjWorldCurrency, Log, TEXT("Steam_GrantCoin: 지연 인벤토리 갱신 완료"));
+			}
+		}, 1.5f, false);
+	}
+	else
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("Steam_GrantCoin: GenerateItems 실패 (퍼블리셔 계정 필요)"));
+	}
+#else
+	UE_LOG(LogWjWorldCurrency, Warning, TEXT("Steam_GrantCoin: Steam 빌드에서만 사용 가능"));
+#endif
+}
+
 void AWjWorldPlayerControllerBase::TreasureChest_ClearCooldowns()
 {
 #if !UE_BUILD_SHIPPING

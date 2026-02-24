@@ -46,6 +46,7 @@ Source/WjWorld/
 │   └── Wall/                          # BrickActor/Component/Movement/Spawner, BrickPreviewActor, TileActor, WallManager, WallDescriptionDA, WallLayoutConverter
 ├── Network/                           # PacketData, SessionTypes, WjWorldLanNetDriver
 └── UI/                                # UserWidgetBase, Intro, Login, Lobby, Placement, Session, WaitingRoom, Interact, Ability, Profile, Cosmetic, HUD
+    └── Common/                        # ConfirmDialogWidget (공용 확인/취소 팝업)
 
 Source/WjWorldEditor/                  # 에디터 전용 모듈
 └── JumpMap/                           # JumpMapLevelEditorSubsystem, SJumpMapLayoutPanel
@@ -63,6 +64,7 @@ GameRule: UWjWorldGameRuleBase → ApproachingWall, Sumo, JumpMap
 GameData: UWjWorldGameDataComponent → AW/Sumo/JumpMap Game/PlayerData
 Ability: UWjWorldGameplayAbilityBase → GA_NormalAttack, GA_SpawnBrick, GA_LiftBrick, GA_Push, GA_Jump(→GA_DoubleJump), GA_Dash, GA_Grapple
 PlacedObject: AWjWorldPlacedObjectActor → TreasureChestActor
+Widget: UWjWorldUserWidgetBase → PlacementHUDWidgetBase, PlacementSaveDialogWidget, PlacementLoadDialogWidget, ConfirmDialogWidget
 Subsystem: UGameInstanceSubsystem → CosmeticSubsystem, CurrencySubsystem, PurchaseSubsystem, StatsSubsystem
 ```
 
@@ -92,10 +94,13 @@ Lobby / ApproachingWall / JumpMap 3개 컨텍스트 지원.
 - **구매 시스템 (Lobby 전용)**: `FPlaceableObjectDefinition.CoinPrice/SteamItemDefId/MaxPlacementCount`, `DeveloperSettings.MaxTotalLobbyPlacedObjects`
   - **소유권**: `CosmeticSubsystem.GetItemQuantityByDefId()` (AllItemQuantities 캐시)
   - **구매**: `CurrencySubsystem.PurchasePlacementObject()` → Steam ExchangeItems / 비Steam GConfig
-  - **제한**: SelectObject() 소유권 게이트, ConfirmPlacement()+GameStateLobby 서버 측 수량 검증
-  - **UI**: PopulateCatalog()에서 소유/가격/수량 표시, 미소유 클릭→구매
+  - **구매 수량 = 설치 상한**: 1회 구매 = 1개 설치 권한, `MaxPlacementCount`는 구매 상한 (무료 아이템은 `MaxPlacementCount`가 설치 상한)
+  - **제한**: SelectObject() 소유권 게이트, ConfirmPlacement() 유료→OwnedQty/무료→MaxPlacementCount 검증, GameStateLobby 서버 측 수량 검증
+  - **UI**: PopulateCatalog()에서 유료 `[배치수/OwnedQty]`/무료 `[배치수/MaxPlacementCount]` 표시, 구매 버튼은 `OwnedQty < MaxPlacementCount`일 때 표시
+  - **전체 삭제**: ClearButton → ConfirmDialogWidget 확인 → `ClearAllPlacedObjects()` (DataProvider.ClearPlacedObjects + SaveLayout)
   - **비Steam 폴백**: GConfig `[PlacementInventory]` 섹션
   - **테스트**: `Placement_Buy`, `Placement_PrintInventory`, `Placement_GrantItem` 콘솔 명령어
+- **공용 ConfirmDialogWidget**: `UI/Common/` — ShowPopup/ClosePopup + OnConfirmed/OnCancelled 델리게이트, NativeConstruct 전 호출 캐시 패턴
 
 ### Approaching Wall 미니게임
 벽이 다가오며 안전 구역으로 이동하는 PvP. BrickSpawner(비동기 8개/틱) → BrickMovement(단일 방향 선택) → WallManager(레벨별 속도). 12초마다 레벨업, Flood Fill 안전 구역 축소, TileActor 폭탄 신호.
@@ -137,6 +142,7 @@ ItemId(FName) 기반. `ECosmeticSlot`(Head/Body/Back/Effect), 비동기 메시 �
 - **네트워킹**: Steam=SteamNetDriver, LAN=WjWorldLanNetDriver(`PLATFORM_SOCKETSUBSYSTEM` 명시)
 - **Config**: DriverClassName `/Script/ModuleName.ClassName` 정규 경로 필수
 - **LAN 소켓 충돌**: SocketSubsystemSteamIP가 기본 소켓 오버라이드 → WjWorldLanNetDriver로 해결
+- **코스메틱 DefId 넘버링**: Head 2000~2199, Body 2200~2399, Back 2400~2599, Effect 2600~2799 (200 간격)
 
 ### 재화 시스템
 `UWjWorldCurrencySubsystem` — Coin/Gem 재화 관리. Steam Inventory 기반 + 비Steam GConfig 폴백.
@@ -171,6 +177,9 @@ Project Settings > Game > WjWorld. 맵 경로, GameMode 클래스, 캐릭터 기
 - Steam 정식 출시 준비
 - 보물상자 BP 작업 필요: PlaceableObjectDataAsset에 ObjectId 등록, ActorClassOverride 설정, InteractAction/WidgetClass 에디터 설정
 - 배치 오브젝트 에디터 설정 필요: DataAsset에서 각 오브젝트의 CoinPrice/SteamItemDefId/MaxPlacementCount 입력, BP 위젯에 TotalPlacementCountText 바인딩
+- 확인 다이얼로그 BP 작업 필요: WBP_ConfirmDialog 생성 (MessageText, ConfirmButton, CancelButton 바인딩), WBP_PlacementHUD에 ClearButton 추가 + ConfirmDialogClass 설정
+- DA_CosmeticCatalog DefId 매핑 업데이트 필요: MilitaryHat→2000, FedoraHat→2001, DeliveryBag→2400
+- Lobby/WaitingRoom 점프 검증 필요: Play에서 GA_Jump 정상 동작 확인, AW SpawnBrickPreview 중 점프 차단 확인
 
 ## 출시 전 체크리스트
 - `Steam/itemdefs.json`: 보물상자(Treasure Chest #0~#9) `drop_max_per_window`를 `100` → `1`로 되돌리기 (현재 테스트용 100)

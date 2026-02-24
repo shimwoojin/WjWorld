@@ -1,5 +1,74 @@
 # WjWorld 개발 로그
 
+## 2026-02-23 (5)
+### 작업 내용
+
+#### Lobby/WaitingRoom 네이티브 점프 추가
+- **배경** — Lobby/WaitingRoom에서 점프 불가. 점프는 GA_Jump(GAS 어빌리티)로만 존재하며 GAS는 Play 전용
+- **방식** — GAS 도입 없이 CharacterBase에 네이티브 점프 바인딩 추가. 기존 auto-binding 시스템 활용
+- **CharacterBase** — `Jump_Started()`, `Jump_Completed()` UFUNCTION 추가 → `IA_Jump` InputAction에 자동 바인딩. `CanNativeJump()` 가드 (기본 true)
+- **CharacterPlay** — `CanNativeJump()` override → false 반환. 기존 GAS GA_Jump 경로 유지
+- **BP 작업** — `IA_Jump` InputAction 생성, `IMC_Default`에 Space 키 바인딩 추가
+- **키 충돌 해결** — Space는 `IA_Ability7`(GA_Jump)과 `IA_Jump`(네이티브) 모두 발동. Lobby에서는 GAS 미등록이라 네이티브만 동작, Play에서는 `CanNativeJump()=false`로 네이티브 차단
+
+### 변경 파일
+- `Core/Base/WjWorldCharacterBase.h/.cpp` — Jump_Started, Jump_Completed, CanNativeJump
+- `Core/Play/WjWorldCharacterPlay.h/.cpp` — CanNativeJump override (false)
+- `Content/Core/Input/InputAction/IA_Jump.uasset` (신규)
+- `Content/Core/Input/IMC_Default.uasset`
+
+### 학습/메모
+- 기존 auto-binding 시스템(`SetupInputBindings`)이 IMC의 `IA_Jump` → `Jump_Started`/`Jump_Completed` 함수명 매칭을 자동 처리
+- GAS를 비Play 컨텍스트에 도입하는 것보다 `CanNativeJump()` 가드 패턴이 훨씬 간결
+
+---
+
+## 2026-02-23 (4)
+### 작업 내용
+
+#### 코스메틱 아이템 DefId 카테고리별 재넘버링
+- **넘버링 규칙** — 카테고리별 200 간격: Head 2000+, Body 2200+, Back 2400+, Effect 2600+
+- **Military Hat** — 100→2000, 개별 `exchange: "1000x500"` 추가
+- **Fedora Hat** — 신규 아이템 2001 (Head, 500코인)
+- **Delivery Bag** — 120→2400, 기존 exchange 유지
+- **Hat Bundle 삭제** — 140번 번들 제거 (불필요)
+- 기존 100번대 코스메틱 DefId 전체 폐기
+
+### 변경 파일
+- `Steam/itemdefs.json`
+
+### 학습/메모
+- Steam itemdefs에서 `type: "bundle"`은 자동 언팩되는 묶음이라 개별 아이템으로 관리하는 게 맞음
+- DefId 넘버링은 카테고리별 충분한 간격을 두면 향후 확장이 편리
+
+---
+
+## 2026-02-23 (3)
+### 작업 내용
+
+#### 공용 확인 다이얼로그 + Placement Clear 기능
+- **ConfirmDialogWidget 신규** — `UI/Common/ConfirmDialogWidget.h/.cpp` 공용 확인/취소 팝업. `SetMessage()`, `SetButtonLabels()`, `OnConfirmed`/`OnCancelled` 델리게이트. NativeConstruct 전 호출 대비 캐시 패턴 적용
+- **ClearAllPlacedObjects()** — `PlacementComponent`에 전체 삭제 함수 추가. DataProvider.ClearPlacedObjects() → RefreshVisuals → SaveLayout → OnObjectDeleted 브로드캐스트
+- **PlacementHUD Clear 버튼** — `ClearButton`(BindWidgetOptional) + `ConfirmDialogClass`(EditDefaultsOnly) 추가. 클릭 → 확인 다이얼로그 → 전체 삭제. AW/JumpMap 에디터에는 버튼 없어도 정상 동작
+
+#### 구매 수량 = 설치 상한 로직 수정
+- **기존 문제** — 1회 구매로 MaxPlacementCount(5)만큼 무제한 설치 가능
+- **수정 후** — 1회 구매 = 1개 설치 권한. 5회 구매(250 Coin) = 5개 설치 권한
+- **PopulateCatalog UI** — 유료 아이템: `[배치수/OwnedQty]` 표시, 구매 버튼은 `OwnedQty < MaxPlacementCount`일 때 표시 (추가 구매 가능)
+- **ConfirmPlacement 제한** — 유료 아이템: `OwnedQty`로 배치 제한, 무료 아이템: `MaxPlacementCount` 유지
+
+### 변경 파일
+- `UI/Common/ConfirmDialogWidget.h/.cpp` (신규)
+- `GamePlay/Placement/WjWorldPlacementComponent.h/.cpp`
+- `UI/Placement/PlacementHUDWidgetBase.h/.cpp`
+
+### 학습/메모
+- `MaxPlacementCount`의 역할이 "설치 상한"에서 "구매 상한"으로 의미 변경됨. 유료 아이템의 실제 설치 상한은 `OwnedQty`(구매 수량)
+- 무료 아이템은 기존과 동일하게 `MaxPlacementCount`가 설치 상한
+- BindWidgetOptional로 선언하면 컨텍스트별 BP에서 위젯이 없어도 크래시 없이 동작
+
+---
+
 ## 2026-02-23 (2)
 ### 작업 내용
 

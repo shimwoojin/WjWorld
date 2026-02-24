@@ -69,6 +69,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Currency")
 	bool PurchaseGemPack(int32 PackDefId);
 
+	/** 재화 교환(ExchangeItems)이 진행 중인지 여부 */
+	UFUNCTION(BlueprintCallable, Category = "Currency")
+	bool IsExchangePending() const { return bExchangePending; }
+
 	// ---- 잔액 갱신 ----
 
 	/** Steam Inventory에서 재화 잔액 갱신 */

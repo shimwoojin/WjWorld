@@ -281,8 +281,16 @@ void UCosmeticMainWindow::OnActionButtonClicked()
 		else
 		{
 			// 미보유 아이템 → 재화 구매 우선, 재화 가격 없는 경우만 Steam 실결제
-			const FCosmeticItemDefinition* ItemDef = CosmeticSub->GetCatalog() ? CosmeticSub->GetCatalog()->FindByItemId(SelectedItemId) : nullptr;
 			UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
+
+			// 재화 교환 진행 중이면 중복 요청 방지
+			if (CurrencySub && CurrencySub->IsExchangePending())
+			{
+				UE_LOG(LogWjWorldCosmetic, Log, TEXT("CosmeticMainWindow: Exchange already pending, ignoring click"));
+				return;
+			}
+
+			const FCosmeticItemDefinition* ItemDef = CosmeticSub->GetCatalog() ? CosmeticSub->GetCatalog()->FindByItemId(SelectedItemId) : nullptr;
 
 			bool bHasCurrencyPrice = ItemDef && (ItemDef->CoinPrice > 0 || ItemDef->GemPrice > 0);
 			bool bCurrencyPurchased = false;
@@ -596,7 +604,9 @@ void UCosmeticMainWindow::RefreshActionButton()
 		{
 			// 미보유 아이템 → 구매
 			UWjWorldPurchaseSubsystem* PurchaseSub = GI->GetSubsystem<UWjWorldPurchaseSubsystem>();
-			bool bPending = PurchaseSub && PurchaseSub->IsPurchasePending();
+			UWjWorldCurrencySubsystem* CurrencySub2 = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
+			bool bPending = (PurchaseSub && PurchaseSub->IsPurchasePending())
+				|| (CurrencySub2 && CurrencySub2->IsExchangePending());
 
 			const FCosmeticItemDefinition* ItemDef = nullptr;
 			if (CosmeticSub->GetCatalog())
