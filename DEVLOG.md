@@ -94,6 +94,82 @@
 - `Memo/260225.txt` — 완료/미완료 분류 정리
 - `CLAUDE.md` — 채팅/코인알림/폴더구조/패턴 문서 갱신
 
+#### JumpMap 장애물 서버 동기화
+- **문제** — MovingPlatform/RotatingObstacle이 클라이언트 독립 Tick → DeltaTime 차이로 위치 드리프트
+- **MovingPlatform** — `ServerElapsedTime` (Replicated) 추가, 순수 함수 `CalculatePositionFromTime()` 으로 서버/클라 동일 위치 계산
+  - 왕복 주기 = `TotalDistance / MoveSpeed * 2 + PauseTime * 2`, `fmod(Time, CycleTime)` → phase → 위치 보간
+- **RotatingObstacle** — 동일 패턴, `CalculateRotationFromTime()` 으로 `RotationAxis * RotationSpeed * Time` 계산 (누적 오차 없음)
+
+#### NormalAttack 플레이어 경직 (1초)
+- **GE_NormalAttackStagger 신규** — `AbilitySystem/Effects/` 생성, `HasDuration` 1초, `State.Staggered` 태그 부여
+- **WjWorldGameplayTag** — `State_Staggered()` 추가
+- **GA_NormalAttack** — `ExecuteAttack()`에 플레이어 감지 추가 (벽돌 처리 이후)
+  - `Cast<AWjWorldCharacterPlay>` 체크, 자기 자신/탈락자 제외
+  - 대상 ASC에 `GE_NormalAttackStagger` 적용 + `SetLastAttacker()` (킬 추적)
+  - 서버에서 `DisableMovement()` + 1초 타이머 `SetMovementMode(MOVE_Walking)` 복원
+- **WjWorldGameplayAbilityBase** — 생성자에 `State_Staggered` ActivationBlockedTags 추가 (전체 어빌리티 공통)
+
+#### Enter 키 채팅 + ESC 팝업 닫기
+- **PlayerControllerBase** — `SetupInputComponent()` override에 Enter/ESC 키 바인딩
+  - `OnEnterPressed()`: HUDBase → ChatWidget → `FocusChatInput()` (이미 포커스 중이면 스킵)
+  - `OnEscapePressed()`: HUDBase → `TryCloseTopPopup()` (가상 함수)
+- **ChatWidget** — `IsChatInputFocused()` API 추가
+- **HUDBase** — `virtual bool TryCloseTopPopup()` 기본 구현 (false 반환)
+- **LobbyHUDWidget** — `TryCloseTopPopup()` override: Settings → Profile → Cosmetic → PlacementContextSelect 순서
+- **WaitingRoomHUDWidget** — `TryCloseTopPopup()` override: Settings → Profile 순서
+- **HUDLobby/HUDWaitingRoom** — AHUD 서브클래스에서 위젯 인스턴스로 위임
+- **PlayerControllerPlay** — `OnEscapePressed()` override로 변경 (기존 독립 ESC 바인딩 제거 → Base 상속)
+
+#### 코인 보상 안정성 + 일일 제한
+- **CurrencySubsystem** — `TriggerMatchReward()` 강화
+  - TriggerItemDrop 실패 시 `GrantCurrencyLocally()` 로컬 폴백
+  - 인벤토리 갱신: 2.5초 1차 + 5초 재시도 (`ScheduleInventoryRefresh()`)
+  - 일일 보상 제한: `TodayMatchRewardCount` + `LastRewardDate` GConfig 영속
+  - `GetRemainingDailyRewards()` BlueprintCallable API
+  - `CheckDailyReset()` 날짜 변경 감지 + 카운트 리셋
+- **TreasureChestActor** — 동일 패턴 적용 (TriggerItemDrop 실패 → 로컬 폴백 + 2.5s/5s 재시도)
+- **DeveloperSettings** — `MaxDailyMatchRewards` (기본 10, 0=무제한) 추가
+
+#### 미니게임별 카메라 모드
+- **MinigameDataAsset** — `FWjWorldMinigameDefinition`에 `DefaultCameraMode` 필드 추가 (기본 TopDown)
+- **GameStatePlay** — `DefaultCameraMode` Replicated 프로퍼티 + `SetDefaultCameraMode()`/`GetDefaultCameraMode()`
+- **GameRuleBase** — `OnGameReady()`에서 카탈로그 DefaultCameraMode를 GameState에 세팅
+- **CharacterPlay** — `PossessedBy()` (서버) + `OnRep_PlayerState()` (클라)에서 GameState 카메라 모드 적용
+
+#### PreviewActor 렌더링 수정
+- **RenderTarget 포맷** — `InitAutoFormat` → `InitCustomFormat(Width, Height, PF_FloatRGBA, false)` + `RTF_RGBA16f` (alpha 보존)
+- **bAlwaysPersistRenderingState** — `true` 설정 (씬 외부 렌더링 안정화)
+- 디버그 로그 추가 (ShowOnlyComponents 상태 출력)
+
+#### JumpMap 에디터 검증 차단
+- **PlacementHUDWidgetJumpMapEditor** — `ExecuteSave()` 검증 실패 시 `return` 추가 (기존: 경고만 출력 후 저장 진행)
+
+### 변경 파일 (추가분)
+- `GamePlay/JumpMap/JumpMapMovingPlatformActor.h/.cpp` — ServerElapsedTime 리플리케이션
+- `GamePlay/JumpMap/JumpMapRotatingObstacleActor.h/.cpp` — ServerElapsedTime 리플리케이션
+- `AbilitySystem/Effects/GE_NormalAttackStagger.h/.cpp` (신규) — 경직 GE
+- `AbilitySystem/Abilities/GA_NormalAttack.h/.cpp` — 플레이어 감지 + 경직 적용
+- `AbilitySystem/Abilities/WjWorldGameplayAbilityBase.cpp` — State_Staggered 블록
+- `WjWorldGameplayTag.h/.cpp` — State_Staggered 태그
+- `Core/Base/WjWorldPlayerControllerBase.h/.cpp` — Enter/ESC 키 바인딩
+- `Core/Play/WjWorldPlayerControllerPlay.h/.cpp` — OnEscapePressed override
+- `Core/Base/WjWorldHUDBase.h/.cpp` — TryCloseTopPopup
+- `Core/Local/Lobby/WjWorldHUDLobby.h/.cpp` — TryCloseTopPopup 위임
+- `Core/Local/WaitingRoom/WjWorldHUDWaitingRoom.h/.cpp` — TryCloseTopPopup 위임
+- `UI/Chat/ChatWidget.h/.cpp` — IsChatInputFocused
+- `UI/Lobby/LobbyHUDWidget.h/.cpp` — TryCloseTopPopup 구현
+- `UI/WaitingRoom/WaitingRoomHUDWidget.h/.cpp` — TryCloseTopPopup 구현
+- `Currency/WjWorldCurrencySubsystem.h/.cpp` — 폴백 + 재시도 + 일일 제한
+- `GamePlay/TreasureChest/WjWorldTreasureChestActor.cpp` — 폴백 + 재시도
+- `Setting/WjWorldDeveloperSettings.h` — MaxDailyMatchRewards
+- `DataAsset/WjWorldMinigameDataAsset.h` — DefaultCameraMode 필드
+- `Core/Play/WjWorldGameStatePlay.h/.cpp` — DefaultCameraMode 리플리케이션
+- `Core/Play/WjWorldCharacterPlay.cpp` — 카메라 모드 적용
+- `Core/GameRule/WjWorldGameRuleBase.cpp` — DefaultCameraMode 세팅
+- `UI/Profile/CharacterPreviewActor.cpp` — RenderTarget 포맷 수정
+- `UI/Placement/PlacementHUDWidgetJumpMapEditor.cpp` — 검증 차단
+- `Config/DefaultGameplayTags.ini` — State.Staggered 태그
+
 ### 학습/메모
 - `FAudioDeviceHandle AudioDevice = GEngine->GetMainAudioDevice()` → `SetTransientPrimaryVolume()` 로 마스터 볼륨 제어 가능
 - `GConfig->SetFloat()` + `GConfig->Flush(false, GGameUserSettingsIni)` 로 즉시 영속 저장
@@ -107,6 +183,12 @@
 - **APlayerState 전방선언 주의**: `GetPlayerName()` 호출 시 full include (`GameFramework/PlayerState.h`) 필수, forward declaration만으로는 C2027/C2039 에러
 - **게임 종료 시 마이그레이션 방지**: 게임 끝나고 ServerTravel 중 호스트 이탈은 마이그레이션 불필요 → 별도 플래그로 failure handler에서 분기
 - **호스트 마이그레이션 클라이언트 상태**: JoinSession은 LastRoomSettings를 설정하지 않음 → 마이그레이션 시 명시적 동기화 필요
+- **네트워크 동기화 패턴**: Tick 기반 시뮬레이션은 DeltaTime 차이로 드리프트 발생 → `ServerElapsedTime` Replicated + 순수 함수 `CalculateXxxFromTime(float)` 패턴으로 서버/클라 동일 결과 보장
+- **GameplayEffect Duration 하드코딩**: `DurationPolicy = HasDuration` + `DurationMagnitude.SetValue(1.0f)` 으로 C++ GE에서 기간 고정 가능 (블루프린트 불필요)
+- **ActivationBlockedTags 공통 추가**: Base 어빌리티 생성자에서 태그 추가하면 모든 서브클래스에 자동 상속 — 전역 상태 차단에 유용
+- **PlayerController BindKey vs EnhancedInput**: 글로벌 핫키(Enter, ESC)는 `InputComponent->BindKey(EKeys::Xxx)` 가 간결. EnhancedInput IA 불필요
+- **RenderTarget alpha**: `InitAutoFormat`은 `PF_B8G8R8A8` 기본 → alpha 손상 가능. `InitCustomFormat(W, H, PF_FloatRGBA, false)` + `RTF_RGBA16f` 로 alpha 보존
+- **코인 보상 폴백 전략**: Steam TriggerItemDrop은 네트워크 의존 → 실패 시 로컬 폴백 + 지연 인벤토리 갱신(2.5s + 5s 재시도)이 실용적
 
 ---
 
