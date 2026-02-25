@@ -40,7 +40,9 @@ ACharacterPreviewActor::ACharacterPreviewActor()
 	SceneCaptureComponent->SetRelativeLocation(FVector(200.f, 0.f, 90.f));
 	SceneCaptureComponent->SetRelativeRotation(FRotator(-10.f, 180.f, 0.f));
 	SceneCaptureComponent->PrimitiveRenderMode = ESceneCapturePrimitiveRenderMode::PRM_UseShowOnlyList;
-	SceneCaptureComponent->CaptureSource = SCS_FinalColorLDR;
+	// PropagateAlpha=1 환경에서 SCS_FinalColorLDR은 full post-processing을 거치며 alpha 손상 발생
+	// SCS_FinalToneCurveHDR은 tone curve만 적용하여 alpha를 보존하면서 HDR→LDR 매핑
+	SceneCaptureComponent->CaptureSource = SCS_FinalToneCurveHDR;
 	SceneCaptureComponent->bCaptureEveryFrame = false;
 	SceneCaptureComponent->bCaptureOnMovement = false;
 }

@@ -56,6 +56,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Session")
 	bool EndGame();
 
+	/** 게임 종료 후 WaitingRoom 복귀 중임을 표시 (클라이언트 OnRep_GamePhase에서 호출) */
+	void MarkGameEndTraveling() { bGameEndTraveling = true; }
+
 	//~ 캐싱 (호스트 마이그레이션용)
 	/** 플레이어 목록 캐시 */
 	void CachePlayerList(const TArray<FPlayerDisplayInfo>& PlayerList);
@@ -142,4 +145,7 @@ private:
 
 	/** 마이그레이션 재시도 타이머 */
 	FTimerHandle MigrationRetryHandle;
+
+	/** 게임 종료 후 WaitingRoom 복귀 ServerTravel 중 (migration 스킵용) */
+	bool bGameEndTraveling = false;
 };

@@ -273,6 +273,7 @@ void UWjWorldPlacementComponent::ConfirmPlacement()
 	// 배치 데이터 생성
 	FVector SpawnLocation = PreviewActor->GetActorLocation();
 	FRotator SpawnRotation = PreviewActor->GetCurrentRotation();
+	SpawnRotation.Normalize(); // 회전값 정규화 (서버/클라이언트 FQuat 변환 일관성 보장)
 
 	FPlacedObjectSaveEntry Entry;
 	Entry.ObjectId = SelectedObjectId;

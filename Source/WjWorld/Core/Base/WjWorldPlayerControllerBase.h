@@ -39,6 +39,16 @@ protected:
 	virtual void InitializeUI();
 
 public:
+	/** 채팅 메시지 전송 (클라이언트에서 호출) */
+	UFUNCTION(BlueprintCallable, Category = "Chat")
+	void SendChatMessage(const FString& Message);
+
+private:
+	/** 서버에 채팅 메시지 전달 */
+	UFUNCTION(Server, Reliable)
+	void ServerSendChatMessage(const FString& Message);
+
+public:
 	UFUNCTION(Exec)
 	void CheckInputMode();
 

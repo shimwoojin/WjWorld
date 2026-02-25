@@ -334,14 +334,21 @@ void UWjWorldCosmeticSubsystem::ParseInventoryResult()
 		return;
 	}
 
-	// 전체 DefId별 수량 캐시 갱신 (배치 오브젝트 소유권 추적용)
+	// 전체 DefId별 수량 + 인스턴스 ID 캐시 갱신 (재화 잔액/ExchangeItems + 배치 소유권)
 	AllItemQuantities.Empty();
+	AllItemInstanceIds.Empty();
 	for (uint32 i = 0; i < ItemCount; ++i)
 	{
 		const SteamItemDetails_t& Details = ItemDetails[i];
 		if (Details.m_unQuantity > 0)
 		{
 			AllItemQuantities.FindOrAdd(Details.m_iDefinition) += Details.m_unQuantity;
+
+			// 첫 번째 인스턴스 ID만 저장 (재화 ExchangeItems용)
+			if (!AllItemInstanceIds.Contains(Details.m_iDefinition))
+			{
+				AllItemInstanceIds.Add(Details.m_iDefinition, Details.m_itemId);
+			}
 		}
 	}
 

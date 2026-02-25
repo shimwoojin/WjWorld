@@ -2,6 +2,7 @@
 
 
 #include "Core/Play/WjWorldGameStatePlay.h"
+#include "Core/WjWorldGameInstance.h"
 #include "Core/GameData/WjWorldGameDataComponent.h"
 #include "Core/Play/WjWorldHUDPlay.h"
 #include "Stats/WjWorldStatsSubsystem.h"
@@ -114,6 +115,11 @@ void AWjWorldGameStatePlay::OnRep_GamePhase()
 	case EGamePhase::Finished:
 		// 결과 표시는 OnRep_GameResult에서 처리
 		UE_LOG(LogWjWorld, Log, TEXT("GameState: Match Finished"));
+		// 게임 종료 후 ServerTravel 중 호스트 퇴장 시 마이그레이션 스킵용
+		if (UWjWorldGameInstance* GI = Cast<UWjWorldGameInstance>(GetGameInstance()))
+		{
+			GI->MarkGameEndTraveling();
+		}
 		break;
 	}
 

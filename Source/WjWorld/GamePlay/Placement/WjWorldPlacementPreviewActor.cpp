@@ -81,13 +81,13 @@ void AWjWorldPlacementPreviewActor::RotatePreview(float DeltaDegrees)
 	switch (CurrentRotationAxis)
 	{
 	case EPlacementRotationAxis::Yaw:
-		CurrentRotation.Yaw = FMath::Fmod(CurrentRotation.Yaw + DeltaDegrees, 360.0f);
+		CurrentRotation.Yaw = FRotator::NormalizeAxis(CurrentRotation.Yaw + DeltaDegrees);
 		break;
 	case EPlacementRotationAxis::Pitch:
-		CurrentRotation.Pitch = FMath::Fmod(CurrentRotation.Pitch + DeltaDegrees, 360.0f);
+		CurrentRotation.Pitch = FRotator::NormalizeAxis(CurrentRotation.Pitch + DeltaDegrees);
 		break;
 	case EPlacementRotationAxis::Roll:
-		CurrentRotation.Roll = FMath::Fmod(CurrentRotation.Roll + DeltaDegrees, 360.0f);
+		CurrentRotation.Roll = FRotator::NormalizeAxis(CurrentRotation.Roll + DeltaDegrees);
 		break;
 	}
 }

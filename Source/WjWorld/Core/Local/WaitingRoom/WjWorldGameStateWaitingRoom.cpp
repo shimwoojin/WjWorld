@@ -170,6 +170,9 @@ void AWjWorldGameStateWaitingRoom::OnRep_RoomSettings()
 		GI->CacheRoomSettings(RoomSettings);
 	}
 
+	// 클라이언트: 플레이어 목록도 캐시 (호스트 마이그레이션용)
+	BroadcastPlayerListChanged();
+
 	// 이벤트 브로드캐스트
 	OnRoomInfoChanged.Broadcast(RoomSettings);
 }

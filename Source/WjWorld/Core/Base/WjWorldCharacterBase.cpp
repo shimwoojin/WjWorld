@@ -266,6 +266,13 @@ void AWjWorldCharacterBase::SetupInputBindings(UInputComponent* PlayerInputCompo
 					{
 						EnhancedInputComponent->BindAction(Mapping.Action, EventSuffix.Key, this, FName(*FunctionName));
 						AlreadyBoundActions.Add(FunctionName);
+
+						// 접미사 있는 바인딩 존재 시 접미사 없는(Triggered) 바인딩 차단
+						// 예: Jump_Started 존재 시 ACharacter::Jump() 중복 바인딩 방지
+						if (!EventSuffix.Value.IsEmpty())
+						{
+							AlreadyBoundActions.Add(ActionName);
+						}
 					}
 				}
 			}

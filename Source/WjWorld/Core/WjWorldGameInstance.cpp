@@ -5,6 +5,7 @@
 #include "UI/Setting/SettingsWidget.h"
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "Engine/Engine.h"
+#include "GameFramework/GameStateBase.h"
 #include "GameFramework/PlayerState.h"
 #include "Kismet/GameplayStatics.h"
 #include "WjWorldLogCategories.h"
@@ -68,6 +69,8 @@ void UWjWorldGameInstance::Shutdown()
 
 bool UWjWorldGameInstance::CreateRoom(const FRoomSettings& Settings)
 {
+	bGameEndTraveling = false;
+
 	if (SessionManager)
 	{
 		return SessionManager->CreateSession(Settings);
@@ -123,6 +126,9 @@ bool UWjWorldGameInstance::LeaveRoom()
 
 bool UWjWorldGameInstance::EndGame()
 {
+	// 게임 종료 후 ServerTravel 중 호스트 퇴장 시 마이그레이션 스킵용
+	bGameEndTraveling = true;
+
 	if (SessionManager)
 	{
 		return SessionManager->EndSession();
@@ -182,6 +188,15 @@ void UWjWorldGameInstance::HandleNetworkFailure(UWorld* World, UNetDriver* NetDr
 		return;
 	}
 
+	// 게임 종료 후 WaitingRoom 복귀 중 호스트 퇴장 → 마이그레이션 없이 로비 복귀
+	if (bGameEndTraveling)
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameInstance: NetworkFailure during game-end travel - skipping migration, returning to lobby"));
+		bGameEndTraveling = false;
+		MigrationFailed();
+		return;
+	}
+
 	// 연결 관련 Failure 타입은 모두 마이그레이션 시도
 	// (Steam P2P에서는 다양한 에러 타입이 발생할 수 있음)
 	switch (FailureType)
@@ -220,6 +235,15 @@ void UWjWorldGameInstance::HandleTravelFailure(UWorld* World, ETravelFailure::Ty
 		return;
 	}
 
+	// 게임 종료 후 WaitingRoom 복귀 중 호스트 퇴장 → 마이그레이션 없이 로비 복귀
+	if (bGameEndTraveling)
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameInstance: TravelFailure during game-end travel - skipping migration, returning to lobby"));
+		bGameEndTraveling = false;
+		MigrationFailed();
+		return;
+	}
+
 	// ServerTravel 실패 시 호스트 마이그레이션 시도
 	switch (FailureType)
 	{
@@ -249,11 +273,49 @@ void UWjWorldGameInstance::BeginHostMigration()
 	MigrationContext.RetryCount = 0;
 	SetMigrationState(EHostMigrationState::Detected);
 
+	// 클라이언트: CachedPlayerList가 비어있으면 PlayerArray에서 직접 빌드
+	if (MigrationContext.CachedPlayerList.Num() == 0)
+	{
+		UWorld* World = GetWorld();
+		if (World)
+		{
+			if (AGameStateBase* GS = World->GetGameState())
+			{
+				for (APlayerState* PS : GS->PlayerArray)
+				{
+					if (PS)
+					{
+						FPlayerDisplayInfo Info;
+						Info.PlayerName = PS->GetPlayerName();
+						Info.PlayerID = PS->GetPlayerId();
+						MigrationContext.CachedPlayerList.Add(Info);
+					}
+				}
+			}
+
+			APlayerController* PC = UGameplayStatics::GetPlayerController(World, 0);
+			if (PC && PC->PlayerState)
+			{
+				MigrationContext.LocalPlayerID = PC->PlayerState->GetPlayerId();
+			}
+
+			UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameInstance: Built player cache from PlayerArray - %d players (LocalID: %d)"),
+				MigrationContext.CachedPlayerList.Num(), MigrationContext.LocalPlayerID);
+		}
+	}
+
+	// SessionManager의 LastRoomSettings 동기화 (클라이언트에서 올바른 NetworkMode 사용)
+	if (SessionManager)
+	{
+		SessionManager->UpdateLastRoomSettings(MigrationContext.CachedRoomSettings);
+	}
+
 	// 마이그레이션 태그 생성 (모든 클라이언트 동일)
 	MigrationContext.MigrationSessionTag = GenerateMigrationTag();
 
-	UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameInstance: Host migration started - Tag: '%s'"),
-		*MigrationContext.MigrationSessionTag);
+	UE_LOG(LogWjWorld, Log, TEXT("WjWorldGameInstance: Host migration started - Tag: '%s', NetworkMode: %s"),
+		*MigrationContext.MigrationSessionTag,
+		MigrationContext.CachedRoomSettings.NetworkMode == ENetworkMode::Steam ? TEXT("Steam") : TEXT("LAN"));
 
 	// 기존 세션 파괴
 	if (SessionManager)
@@ -521,6 +583,7 @@ void UWjWorldGameInstance::MigrationFailed()
 
 	// 마이그레이션 컨텍스트 리셋
 	MigrationContext.Reset();
+	bGameEndTraveling = false;
 	SetMigrationState(EHostMigrationState::None);
 
 	// 로비로 복귀

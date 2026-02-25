@@ -21,21 +21,46 @@
 - **CurrencySubsystem** — `IsExchangePending()` BlueprintCallable API 추가
 - **PlayerControllerBase** — `Steam_GrantCoin` 콘솔 명령어 (GenerateItems)
 
+#### 캐릭터 프리뷰 개선 (SceneCapture)
+- **투명 배경** — `DefaultEngine.ini`에 `r.PostProcessing.PropagateAlpha=1` 추가, `ClearColor::Transparent` + `SCS_FinalColorLDR` 조합으로 배경 투명화
+- **실시간 Idle 모션** — `SetupFromPawn()` 완료 후 `bCaptureEveryFrame = true` 활성화 (생성자에서는 false 유지)
+- **Yaw 수정** — `PreviewMeshComponent->SetRelativeRotation(SourceMesh->GetRelativeRotation())` 로 ACharacter Yaw=-90° 보정값 복사
+- **PlayerProfileWidget 간소화** — 0.5초 타이머 제거 → 즉시 `ApplyRenderTargetToImage()`, `SetBrushResourceObject(RT)` 패턴으로 통일
+
+#### 비밀번호 방 시스템
+- **SessionManager** — `CreateSession()`에서 `PASSWORD` 커스텀 설정 저장, `GetSessionPassword()` API 추가
+- **PasswordInputWidget 신규** — ShowPopup/ClosePopup 패턴, Enter키 제출, 에러 메시지 표시, `OnPasswordSubmitted`/`OnPasswordCancelled` 델리게이트
+- **RoomListEntryWidget** — `bIsPrivate` 확인 → 부모 `RoomListWindow::RequestJoinPrivateRoom()` 호출, `[Private]` 접두사 표시
+- **RoomListWindow** — `JoinRoomWithPassword()` 비밀번호 대조 → 불일치 시 에러, 일치 시 `JoinRoom()`
+
+#### 기타 개선
+- **RoomListWindow** — `ShowPopup()`에서 `#if WITH_STEAM` → Steam 기본 모드
+- **GA_Grapple** — `MaxPullDuration` (2초) 타임아웃 추가, 무한 풀 방지
+- **WaitingRoomHUD** — `StartGameStatusText` 추가 (인원 부족/준비 대기 사유 표시)
+- **PlayerProfileWidget** — LAN/NULL 환경에서 UniqueId 미유효 시 "Stats unavailable" 표시
+- **메모 정리** — 12개 항목 검토, 완료 7건 / 추가 논의 6건 분류
+
 ### 변경 파일
-- `UI/Setting/SettingsWidget.h/.cpp` (신규)
-- `UI/Lobby/LobbyHUDWidget.h/.cpp`
-- `UI/WaitingRoom/WaitingRoomHUDWidget.h/.cpp`
-- `Core/WjWorldGameInstance.cpp`
-- `Content/UI/Blueprint/Setting/WBP_SettingsWidget.uasset` (신규)
-- `Content/UI/Blueprint/Lobby/WBP_LobbyHUDWidget.uasset`
-- `Content/UI/Blueprint/WaitingRoom/BP_WaitingRoomHUDWidget.uasset`
-- 기타 다수 (GA_Grapple, GameStatePlay, PlayerControllerPlay, GameRule 등)
+- `Config/DefaultEngine.ini` — PropagateAlpha 추가
+- `UI/Profile/CharacterPreviewActor.cpp` — 회전 복사 + 실시간 캡처
+- `UI/Profile/PlayerProfileWidget.cpp` — 타이머 제거 + 브러시 간소화 + LAN 스탯 처리
+- `UI/Session/PasswordInputWidget.h/.cpp` (신규)
+- `UI/Session/RoomListEntryWidget.h/.cpp` — 비공개 방 표시 + 비밀번호 팝업 연동
+- `UI/Session/RoomListWindow.h/.cpp` — Steam 기본 모드 + 비밀번호 검증 흐름
+- `Core/Session/SessionManager.h/.cpp` — GetSessionPassword API
+- `AbilitySystem/Abilities/GA_Grapple.h/.cpp` — MaxPullDuration 타임아웃
+- `UI/WaitingRoom/WaitingRoomHUDWidget.h/.cpp` — StartGameStatusText
+- `Memo/260225.txt` — 완료/미완료 분류 정리
+- `CLAUDE.md` — 세션/설정/폴더 구조 문서 갱신
 
 ### 학습/메모
 - `FAudioDeviceHandle AudioDevice = GEngine->GetMainAudioDevice()` → `SetTransientPrimaryVolume()` 로 마스터 볼륨 제어 가능
 - `GConfig->SetFloat()` + `GConfig->Flush(false, GGameUserSettingsIni)` 로 즉시 영속 저장
 - 설정 UI처럼 단순한 경우 Subsystem 불필요 — 위젯에서 직접 UGameUserSettings/GConfig 접근이 간결
 - ShowPopup에서 `FInputModeGameAndUI` 사용 (UIOnly 대신) — Lobby/WaitingRoom은 이미 GameAndUI 모드
+- `r.PostProcessing.PropagateAlpha=1` — post-processing 파이프라인에서 alpha 채널 보존, 셰이더 재컴파일 1회 발생
+- SceneCapture에서 `bCaptureEveryFrame`은 메시 설정 완료 후 활성화해야 불필요 캡처 방지
+- 위젯 부모 탐색: `GetParent()` 루프 + `GetTypedOuter<T>()` 조합으로 ScrollBox 내부 위젯에서 부모 UserWidget 탐색
 
 ---
 

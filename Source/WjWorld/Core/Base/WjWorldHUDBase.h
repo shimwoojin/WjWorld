@@ -6,12 +6,28 @@
 #include "GameFramework/HUD.h"
 #include "WjWorldHUDBase.generated.h"
 
+class UCoinGainNotificationWidget;
+class UChatWidget;
+
 /**
- * 
+ * HUD 베이스 클래스
+ * Coin 획득 알림, 채팅 등 모든 컨텍스트 공통 UI 관리
  */
 UCLASS()
 class WJWORLD_API AWjWorldHUDBase : public AHUD
 {
 	GENERATED_BODY()
-	
+
+public:
+	virtual void BeginPlay() override;
+
+	/** 채팅 위젯 접근 */
+	UChatWidget* GetChatWidget() const { return ChatWidget; }
+
+private:
+	UPROPERTY()
+	TObjectPtr<UCoinGainNotificationWidget> CoinGainNotificationWidget;
+
+	UPROPERTY()
+	TObjectPtr<UChatWidget> ChatWidget;
 };

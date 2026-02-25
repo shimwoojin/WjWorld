@@ -46,7 +46,9 @@ Source/WjWorld/
 │   └── Wall/                          # BrickActor/Component/Movement/Spawner, BrickPreviewActor, TileActor, WallManager, WallDescriptionDA, WallLayoutConverter
 ├── Network/                           # PacketData, SessionTypes, WjWorldLanNetDriver
 └── UI/                                # UserWidgetBase, Intro, Login, Lobby, Placement, Session, WaitingRoom, Interact, Ability, Profile, Cosmetic, HUD
+    ├── Chat/                          # ChatWidget (멀티플레이어 채팅)
     ├── Common/                        # ConfirmDialogWidget (공용 확인/취소 팝업)
+    ├── HUD/                           # CoinGainNotificationWidget (재화 획득 토스트)
     ├── Session/                       # CreateRoomWindow, RoomListWindow, RoomListEntryWidget, PasswordInputWidget
     └── Setting/                       # SettingsWidget (그래픽 품질 + 마스터 볼륨 팝업)
 
@@ -170,6 +172,15 @@ ItemId(FName) 기반. `ECosmeticSlot`(Head/Body/Back/Effect), 비동기 메시 �
 - **DeveloperSettings**: `TreasureChest` 카테고리 (CoinReward, CooldownSeconds, InteractAction, WidgetClass, GeneratorStartDefId)
 - **테스트**: `TreasureChest_ClearCooldowns` 콘솔 명령어
 
+### 캐릭터 프리뷰 시스템
+`ACharacterPreviewActor` — 프로필/상점 UI용 3D 캐릭터 프리뷰. `UPlayerProfileWidget`, `UCosmeticPreviewPanel`에서 사용.
+- **메시 복사**: `SetupFromPawn()` — SkeletalMesh + AnimBlueprint + RelativeRotation 복사 (Yaw=-90 보정 포함)
+- **코스메틱 프리뷰**: `SetupPreview()` — 비동기 메시 로드 + Socket 부착 + ShowOnlyList
+- **SceneCapture**: `PRM_UseShowOnlyList` + `SCS_FinalColorLDR` + `ClearColor::Transparent`
+- **실시간 캡처**: `bCaptureEveryFrame = true` (SetupFromPawn 완료 후 활성화, Idle 모션 반영)
+- **투명 배경**: `r.PostProcessing.PropagateAlpha=1` (DefaultEngine.ini) — post-processing alpha 보존
+- **RenderTarget 적용**: `UImage::SetBrushResourceObject(RT)` 패턴
+
 ### 설정 시스템
 `USettingsWidget` — 로비/대기실 설정 팝업. ShowPopup/ClosePopup 패턴.
 - **그래픽 품질**: `UGameUserSettings::SetOverallScalabilityLevel()` (Low/Medium/High/Epic), `SaveSettings()` 영속
@@ -178,6 +189,20 @@ ItemId(FName) 기반. `ECosmeticSlot`(Head/Body/Back/Effect), 비동기 메시 �
 - **즉시 적용**: Apply 버튼 없이 변경 시 바로 반영
 - **시작 시 복원**: `GameInstance::Init()` → `ApplySavedMasterVolume()`
 - **HUD 연동**: LobbyHUDWidget, WaitingRoomHUDWidget에서 `SettingsWidgetClass`/`SettingsWidgetInstance` 관리
+
+### 채팅 시스템
+`UChatWidget` — 멀티플레이어 채팅. HUDBase에서 생성, 모든 컨텍스트(Lobby, WaitingRoom, Play) 공용.
+- **RPC 흐름**: PlayerControllerBase.SendChatMessage() → Server RPC → GameStateBase.MulticastReceiveChatMessage() → OnChatMessageReceived 델리게이트
+- **위젯**: ScrollBox(메시지 목록) + EditableTextBox(입력), Enter 키 전송
+- **DeveloperSettings**: `ChatWidgetClass` (UI 카테고리)
+- **UMG Blueprint 필요**: `WBP_ChatWidget` 생성 필요 (ChatScrollBox, ChatInputBox BindWidget)
+
+### Coin 획득 알림 시스템
+`UCoinGainNotificationWidget` — "+X Coin" 토스트 표시. HUDBase에서 생성.
+- **구독**: OnCurrencyBalanceChanged 델리게이트 (CurrencySubsystem)
+- **표시**: 이전 잔액 캐시 → 델타 계산 → 양수면 금색 텍스트 3초 표시
+- **DeveloperSettings**: `CoinGainNotificationWidgetClass` (UI 카테고리)
+- **UMG Blueprint 필요**: `WBP_CoinGainNotification` 생성 필요 (NotificationText BindWidget)
 
 ### WjWorldDeveloperSettings
 Project Settings > Game > WjWorld. 맵 경로, GameMode 클래스, 캐릭터 기본값, 미니게임 에셋, 배치 카탈로그, 카메라 InputAction, 보물상자 설정.
@@ -190,7 +215,11 @@ Project Settings > Game > WjWorld. 맵 경로, GameMode 클래스, 캐릭터 기
 
 ## 진행 중 / 미구현
 - Steam 정식 출시 준비
-- Lobby/WaitingRoom 점프 검증 필요: Play에서 GA_Jump 정상 동작 확인, AW SpawnBrickPreview 중 점프 차단 확인
+- AW 벽 이동 알고리즘 재설계 필요: 현재 FloodFill 독립 방향 선택 → 벽돌 간 간격 발생, 목표 그리드 좌표 1:1 할당 방식으로 변경 검토
+- 솔로 컨텐츠 기획 필요: 봇 시스템, 솔로 모드, 또는 싱글 미니게임 추가
+- Skeletal mesh 코스메틱 확장: 코드 인프라 준비 완료, 에셋 제작 + itemdefs.json 등록 필요
+- 게임 진행 중 방 노출 + 중간 입장 처리: bAllowJoinInProgress/bInProgress 존재, UI 시각 구분 및 모드별 정책 미구현
+- UMG Blueprint 생성 필요: WBP_ChatWidget (ChatScrollBox, ChatInputBox), WBP_CoinGainNotification (NotificationText) + DeveloperSettings 설정
 
 ## 출시 전 체크리스트
 - `Steam/itemdefs.json`: 보물상자(Treasure Chest #0~#9) `drop_max_per_window`를 `100` → `1`로 되돌리기 (현재 테스트용 100)
@@ -202,6 +231,8 @@ Project Settings > Game > WjWorld. 맵 경로, GameMode 클래스, 캐릭터 기
 - Room 목록 스케일링 — 1000+ 방 표시 시 부하 체크
 - Sumo FloorRing 디자인 변경 검토 — 개별 타일 랜덤 파괴 전환 시 리플리케이션 비용
 - 에셋 커밋 전략 수립 — LFS 정책, 브랜치 전략, 에셋 전용 커밋 분리
+- BP_WaitingRoomHUDWidget에서 ProfileWidgetClass 설정 확인 — 3자 프로필이 안 보이는 문제 (코드 로직 정상)
+- JumpMap GrapplePoint 콜리전 확인 — SphereComponent가 NoCollision, MeshComponent 콜리전으로 라인트레이스 감지되는지 테스트 필요
 
 ## 코딩 컨벤션
 - 언리얼 엔진 코딩 표준 준수

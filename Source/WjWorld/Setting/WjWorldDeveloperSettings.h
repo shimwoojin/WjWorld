@@ -157,6 +157,16 @@ public:
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "TreasureChest")
 	TSoftClassPtr<UUserWidget> TreasureChestWidgetClass;
 
+	// ========== UI ==========
+
+	/** Coin 획득 알림 위젯 클래스 (HUDBase에서 생성) */
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "UI")
+	TSoftClassPtr<UUserWidget> CoinGainNotificationWidgetClass;
+
+	/** 채팅 위젯 클래스 (HUDBase에서 생성) */
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "UI")
+	TSoftClassPtr<UUserWidget> ChatWidgetClass;
+
 	// ========== JumpMap ==========
 
 	/** JumpMap 레이아웃 데이터 에셋 */

@@ -2,10 +2,13 @@
 
 #include "WjWorldPlayerControllerBase.h"
 #include "WjWorldCharacterBase.h"
+#include "WjWorldGameStateBase.h"
+#include "GameFramework/PlayerState.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "InputMappingContext.h"
 #include "Cosmetic/WjWorldCosmeticSubsystem.h"
+#include "UI/Setting/SettingsWidget.h"
 #include "Cosmetic/WjWorldCosmeticTypes.h"
 #include "Currency/WjWorldCurrencySubsystem.h"
 #include "GamePlay/TreasureChest/WjWorldTreasureChestActor.h"
@@ -23,7 +26,13 @@ AWjWorldPlayerControllerBase::AWjWorldPlayerControllerBase()
 void AWjWorldPlayerControllerBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	// 맵 전환 후 저장된 마스터 볼륨 재적용 (ServerTravel 시 AudioDevice 볼륨 리셋 대응)
+	if (IsLocalPlayerController())
+	{
+		USettingsWidget::ApplySavedMasterVolume();
+	}
+
 	InitializeController();
 	InitializeUI();
 }
@@ -36,6 +45,36 @@ void AWjWorldPlayerControllerBase::InitializeController()
 void AWjWorldPlayerControllerBase::InitializeUI()
 {
 	// Base implementation - override in derived classes
+}
+
+void AWjWorldPlayerControllerBase::SendChatMessage(const FString& Message)
+{
+	if (Message.IsEmpty())
+	{
+		return;
+	}
+
+	// 최대 200자 제한
+	FString TrimmedMessage = Message.Left(200);
+	ServerSendChatMessage(TrimmedMessage);
+}
+
+void AWjWorldPlayerControllerBase::ServerSendChatMessage_Implementation(const FString& Message)
+{
+	// 서버: 발신자 이름 확인 후 GameState를 통해 전체 브로드캐스트
+	FString SenderName = TEXT("Unknown");
+	if (PlayerState)
+	{
+		SenderName = PlayerState->GetPlayerName();
+	}
+
+	if (UWorld* World = GetWorld())
+	{
+		if (AWjWorldGameStateBase* GS = Cast<AWjWorldGameStateBase>(World->GetGameState()))
+		{
+			GS->MulticastReceiveChatMessage(SenderName, Message);
+		}
+	}
 }
 
 void AWjWorldPlayerControllerBase::CheckInputMode()

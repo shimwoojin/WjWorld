@@ -79,6 +79,9 @@ public:
 	/** 전체 SteamItemDefId별 수량 캐시 (코스메틱 + 배치 오브젝트 등 모든 아이템) */
 	TMap<int32, int32> AllItemQuantities;
 
+	/** 전체 SteamItemDefId별 인스턴스 ID 캐시 (재화 ExchangeItems에 필요) */
+	TMap<int32, uint64> AllItemInstanceIds;
+
 	// ---- 테스트/디버그 ----
 
 	/** Steam GenerateItems를 사용하여 테스트 아이템 생성 (개발 빌드 전용) */
