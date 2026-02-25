@@ -7,12 +7,14 @@
 #include "Core/Play/WjWorldGameModePlay.h"
 #include "Core/GameRule/WjWorldGameRuleJumpMap.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "WjWorldLogCategories.h"
 
 AJumpMapRotatingObstacleActor::AJumpMapRotatingObstacleActor()
 {
 	JumpMapObjectId = TEXT("RotatingObstacle");
 	PrimaryActorTick.bCanEverTick = true;
+	bReplicates = true;
 
 	HitTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("HitTrigger"));
 	HitTrigger->SetupAttachment(RootComp);
@@ -54,9 +56,18 @@ void AJumpMapRotatingObstacleActor::ApplySerializedProperties(const TMap<FString
 	}
 }
 
+void AJumpMapRotatingObstacleActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AJumpMapRotatingObstacleActor, ServerElapsedTime);
+}
+
 void AJumpMapRotatingObstacleActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	InitialRotation = GetActorRotation();
 
 	if (HasAuthority())
 	{
@@ -68,8 +79,15 @@ void AJumpMapRotatingObstacleActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	const FRotator DeltaRotation = RotationAxis * RotationSpeed * DeltaTime;
-	AddActorLocalRotation(DeltaRotation);
+	if (HasAuthority())
+	{
+		// 서버: 경과 시간 누적
+		ServerElapsedTime += DeltaTime;
+	}
+
+	// 서버/클라이언트 모두 동일한 시간 기반 회전 계산 (누적 오차 없음)
+	const FRotator TotalRotation = RotationAxis * RotationSpeed * ServerElapsedTime;
+	SetActorRotation(InitialRotation + TotalRotation);
 }
 
 void AJumpMapRotatingObstacleActor::OnHitOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,

@@ -31,6 +31,9 @@ class WJWORLD_API ULobbyHUDWidget : public UWjWorldUserWidgetBase
 public:
 	virtual void NativeConstruct() override;
 
+	/** 가장 위에 열린 팝업 닫기 (ESC 키 핸들링) */
+	bool TryCloseTopPopup();
+
 protected:
 	//~ UI 위젯 바인딩 (Blueprint에서 설정)
 

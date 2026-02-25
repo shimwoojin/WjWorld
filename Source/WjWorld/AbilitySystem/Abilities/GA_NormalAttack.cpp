@@ -7,6 +7,7 @@
 #include "WjWorldLogCategories.h"
 
 #include "Core/Play/WjWorldGameModePlay.h"
+#include "Core/Play/WjWorldCharacterPlay.h"
 #include "Core/GameRule/WjWorldGameRuleApproachingWall.h"
 
 #include "GamePlay/Wall/WjWorldBrickSpawner.h"
@@ -14,8 +15,10 @@
 #include "GamePlay/Wall/WjWorldBrickActor.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/Effects/GE_NormalAttackStagger.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Engine/OverlapResult.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 UGA_NormalAttack::UGA_NormalAttack()
 {
@@ -110,6 +113,12 @@ void UGA_NormalAttack::ExecuteAttack(const FGameplayAbilityActivationInfo& Activ
 	FVector TargetLocation = CalculateTargetLocation();
 	FVector HalfSize = CachedWallDesc.BrickSize * 0.3f;
 
+	// BrickSize가 0이면 플레이어 감지용 기본 범위 사용
+	if (HalfSize.IsNearlyZero())
+	{
+		HalfSize = FVector(75.f, 75.f, 90.f);
+	}
+
 	TArray<FOverlapResult> Overlaps;
 	FCollisionShape CollisionShape = FCollisionShape::MakeBox(HalfSize);
 
@@ -120,43 +129,95 @@ void UGA_NormalAttack::ExecuteAttack(const FGameplayAbilityActivationInfo& Activ
 		FCollisionObjectQueryParams::AllObjects,
 		CollisionShape))
 	{
+		AActor* AvatarActor = GetAvatarActorFromActorInfo();
+
 		for (const FOverlapResult& Overlap : Overlaps)
 		{
+			// 벽돌 감지
 			AWjWorldBrickActor* BrickActor = Cast<AWjWorldBrickActor>(Overlap.GetActor());
-			if (!BrickActor) continue;
-
-			UWjWorldBrickComponent* BrickComp = BrickActor->GetBrickComponent();
-			if (!BrickComp) continue;
-
-			const FWjWorldBrickProperties& Props = BrickComp->GetBrickProperties();
-
-			switch (Props.BrickType)
+			if (BrickActor)
 			{
-			case EWjWorldBrickType::Standard:
-				// 파괴 불가
-				UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Standard brick - cannot destroy"));
-				break;
+				UWjWorldBrickComponent* BrickComp = BrickActor->GetBrickComponent();
+				if (!BrickComp) continue;
 
-			case EWjWorldBrickType::Explosive:
-				// 폭발 처리
-				UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Explosive brick - HandleWallCollision"));
-				BrickComp->HandleWallCollision(FVector::ZeroVector);
-				break;
+				const FWjWorldBrickProperties& Props = BrickComp->GetBrickProperties();
 
-			case EWjWorldBrickType::Moving:
-				//UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Moving brick - destroying"));
-				//BrickComp->ReserveDestroyBrick(0.1f);
-				break;
+				switch (Props.BrickType)
+				{
+				case EWjWorldBrickType::Standard:
+					UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Standard brick - cannot destroy"));
+					break;
 
-			case EWjWorldBrickType::Destructible:
-				// HP 기반 데미지
-				UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Destructible brick - applying damage"));
-				BrickComp->ApplyDamage(1);
+				case EWjWorldBrickType::Explosive:
+					UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Explosive brick - HandleWallCollision"));
+					BrickComp->HandleWallCollision(FVector::ZeroVector);
+					break;
+
+				case EWjWorldBrickType::Moving:
+					break;
+
+				case EWjWorldBrickType::Destructible:
+					UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Destructible brick - applying damage"));
+					BrickComp->ApplyDamage(1);
+					break;
+				}
+
+				// 첫 번째 벽돌만 처리
 				break;
 			}
 
-			// 첫 번째 벽돌만 처리
-			break;
+			// 플레이어 감지 — 경직 적용
+			AWjWorldCharacterPlay* HitCharacter = Cast<AWjWorldCharacterPlay>(Overlap.GetActor());
+			if (HitCharacter && HitCharacter != AvatarActor && !HitCharacter->IsEliminated())
+			{
+				UAbilitySystemComponent* TargetASC = HitCharacter->GetAbilitySystemComponent();
+				if (TargetASC && !TargetASC->HasMatchingGameplayTag(WjWorldGameplayTag::State_Staggered()))
+				{
+					// 경직 GE 적용
+					UClass* StaggerGEClass = StaggerEffectClass ? StaggerEffectClass.Get() : UGE_NormalAttackStagger::StaticClass();
+					FGameplayEffectContextHandle ContextHandle = TargetASC->MakeEffectContext();
+					ContextHandle.AddSourceObject(AvatarActor);
+					FGameplayEffectSpecHandle SpecHandle = TargetASC->MakeOutgoingSpec(StaggerGEClass, 1.f, ContextHandle);
+					if (SpecHandle.IsValid())
+					{
+						TargetASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+					}
+
+					// 경직 태그 + 이동 차단
+					TargetASC->AddLooseGameplayTag(WjWorldGameplayTag::State_Staggered());
+
+					if (UCharacterMovementComponent* MovementComp = HitCharacter->GetCharacterMovement())
+					{
+						MovementComp->DisableMovement();
+						MovementComp->StopMovementImmediately();
+					}
+
+					// 1초 후 경직 해제
+					FTimerHandle StaggerTimerHandle;
+					TWeakObjectPtr<AWjWorldCharacterPlay> WeakHitChar = HitCharacter;
+					GetWorld()->GetTimerManager().SetTimer(StaggerTimerHandle, [WeakHitChar]()
+					{
+						AWjWorldCharacterPlay* Char = WeakHitChar.Get();
+						if (!Char || Char->IsEliminated()) return;
+
+						UAbilitySystemComponent* ASC = Char->GetAbilitySystemComponent();
+						if (ASC)
+						{
+							ASC->RemoveLooseGameplayTag(WjWorldGameplayTag::State_Staggered());
+						}
+
+						if (UCharacterMovementComponent* MC = Char->GetCharacterMovement())
+						{
+							MC->SetMovementMode(MOVE_Walking);
+						}
+					}, 1.0f, false);
+
+					// 공격자 기록 (킬 추적용)
+					HitCharacter->SetLastAttacker(Cast<AWjWorldCharacterPlay>(AvatarActor));
+
+					UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Player %s staggered for 1s"), *HitCharacter->GetName());
+				}
+			}
 		}
 	}
 }

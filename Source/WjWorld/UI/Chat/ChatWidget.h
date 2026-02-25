@@ -31,6 +31,9 @@ public:
 	/** 입력 포커스 설정 */
 	void FocusChatInput();
 
+	/** 채팅 입력 중인지 확인 */
+	bool IsChatInputFocused() const;
+
 protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UScrollBox> ChatScrollBox;

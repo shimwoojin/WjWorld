@@ -38,6 +38,7 @@ void AWjWorldGameStatePlay::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	DOREPLIFETIME(AWjWorldGameStatePlay, AllowedAbilityTags);
 	DOREPLIFETIME(AWjWorldGameStatePlay, StatNamespace);
 	DOREPLIFETIME(AWjWorldGameStatePlay, InitialPlayerCount);
+	DOREPLIFETIME(AWjWorldGameStatePlay, DefaultCameraMode);
 }
 
 bool AWjWorldGameStatePlay::HasMatchStarted() const
@@ -299,4 +300,10 @@ void AWjWorldGameStatePlay::SetInitialPlayerCount(int32 InCount)
 {
 	InitialPlayerCount = InCount;
 	UE_LOG(LogWjWorld, Log, TEXT("GameState: InitialPlayerCount set to %d"), InitialPlayerCount);
+}
+
+void AWjWorldGameStatePlay::SetDefaultCameraMode(ECharacterCameraMode InMode)
+{
+	DefaultCameraMode = InMode;
+	UE_LOG(LogWjWorld, Log, TEXT("GameState: DefaultCameraMode set to %d"), static_cast<int32>(DefaultCameraMode));
 }

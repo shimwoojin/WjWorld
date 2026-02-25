@@ -223,6 +223,37 @@ void ULobbyHUDWidget::OnPlacementContextSelected(EPlacementContext SelectedConte
 	}
 }
 
+bool ULobbyHUDWidget::TryCloseTopPopup()
+{
+	// 우선순위: Settings → Profile → Cosmetic → PlacementContextSelect
+
+	if (SettingsWidgetInstance && SettingsWidgetInstance->IsInViewport())
+	{
+		SettingsWidgetInstance->ClosePopup();
+		return true;
+	}
+
+	if (ProfileWidgetInstance && ProfileWidgetInstance->GetVisibility() == ESlateVisibility::Visible)
+	{
+		ProfileWidgetInstance->SetVisibility(ESlateVisibility::Collapsed);
+		return true;
+	}
+
+	if (CosmeticWindowInstance && CosmeticWindowInstance->IsInViewport())
+	{
+		CosmeticWindowInstance->ClosePopup();
+		return true;
+	}
+
+	if (PlacementContextSelectInstance && PlacementContextSelectInstance->IsInViewport())
+	{
+		PlacementContextSelectInstance->ClosePopup();
+		return true;
+	}
+
+	return false;
+}
+
 void ULobbyHUDWidget::OnCosmeticClicked()
 {
 	UE_LOG(LogWjWorld, Log, TEXT("LobbyHUDWidget: Cosmetic button clicked"));

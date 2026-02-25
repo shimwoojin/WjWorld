@@ -15,16 +15,9 @@ void AWjWorldPlayerControllerPlay::BeginPlay()
 	SetInputMode(FInputModeGameOnly());
 }
 
-void AWjWorldPlayerControllerPlay::SetupInputComponent()
-{
-	Super::SetupInputComponent();
-
-	// PlayerController InputComponent에 직접 바인딩 — Pawn 사망/제거 후에도 동작
-	InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AWjWorldPlayerControllerPlay::OnEscapePressed);
-}
-
 void AWjWorldPlayerControllerPlay::OnEscapePressed()
 {
+	// Play 모드에서는 LeaveDialog 토글이 우선
 	if (bIsLeaveDialogOpen)
 	{
 		CloseLeaveGameDialog();

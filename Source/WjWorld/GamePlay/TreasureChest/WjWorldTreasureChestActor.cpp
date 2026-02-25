@@ -297,9 +297,11 @@ bool AWjWorldTreasureChestActor::TryGrantReward()
 				ChestIndex, GeneratorDefId);
 			SteamInv->DestroyResult(ResultHandle);
 
-			// Steam 서버 반영 대기 후 인벤토리 갱신 (즉시 호출 시 이전 잔액 반환)
-			FTimerHandle TimerHandle;
-			GetWorldTimerManager().SetTimer(TimerHandle, [WeakThis = TWeakObjectPtr<AWjWorldTreasureChestActor>(this)]()
+			// 2.5초 후 인벤토리 갱신 + 5초 후 재시도
+			TWeakObjectPtr<AWjWorldTreasureChestActor> WeakThis(this);
+
+			FTimerHandle FirstTimerHandle;
+			GetWorldTimerManager().SetTimer(FirstTimerHandle, [WeakThis]()
 			{
 				if (AWjWorldTreasureChestActor* Self = WeakThis.Get())
 				{
@@ -310,18 +312,50 @@ bool AWjWorldTreasureChestActor::TryGrantReward()
 						if (CosmeticSub)
 						{
 							CosmeticSub->RequestInventoryRefresh();
+							UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest: 인벤토리 갱신 (2.5초 후)"));
 						}
 					}
 				}
-			}, 1.5f, false);
+			}, 2.5f, false);
+
+			FTimerHandle RetryTimerHandle;
+			GetWorldTimerManager().SetTimer(RetryTimerHandle, [WeakThis]()
+			{
+				if (AWjWorldTreasureChestActor* Self = WeakThis.Get())
+				{
+					UGameInstance* GI = Self->GetGameInstance();
+					if (GI)
+					{
+						UWjWorldCosmeticSubsystem* CosmeticSub = GI->GetSubsystem<UWjWorldCosmeticSubsystem>();
+						if (CosmeticSub)
+						{
+							CosmeticSub->RequestInventoryRefresh();
+							UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest: 인벤토리 갱신 재시도 (5초 후)"));
+						}
+					}
+				}
+			}, 5.0f, false);
 
 			return true;
 		}
 		else
 		{
-			UE_LOG(LogWjWorldCurrency, Warning, TEXT("TreasureChest[%d]: Steam TriggerItemDrop 호출 실패 (DefId: %d)"),
+			// TriggerItemDrop 실패 시 로컬 폴백
+			UE_LOG(LogWjWorldCurrency, Warning, TEXT("TreasureChest[%d]: Steam TriggerItemDrop 실패 (DefId: %d) — 로컬 폴백"),
 				ChestIndex, GeneratorDefId);
-			return false;
+
+			int32 FallbackReward = Settings->TreasureChestCoinReward;
+			UGameInstance* GI = GetGameInstance();
+			if (GI)
+			{
+				UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
+				if (CurrencySub)
+				{
+					CurrencySub->GrantCurrencyLocally(ECurrencyType::Coin, FallbackReward);
+					UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest: 로컬 폴백 보상 %d Coin 지급"), FallbackReward);
+				}
+			}
+			return true; // 폴백 지급 성공으로 처리
 		}
 	}
 #endif

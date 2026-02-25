@@ -19,11 +19,11 @@ class WJWORLD_API AWjWorldPlayerControllerPlay : public AWjWorldPlayerController
 
 protected:
 	virtual void BeginPlay() override;
-	virtual void SetupInputComponent() override;
+
+	/** ESC 키 핸들러: LeaveDialog 토글 (Base의 팝업 닫기보다 우선) */
+	virtual void OnEscapePressed() override;
 
 private:
-	/** ESC 키 핸들러: 다이얼로그 토글 */
-	void OnEscapePressed();
 
 	/** 퇴장 확인 다이얼로그 표시 */
 	void ShowLeaveGameDialog();

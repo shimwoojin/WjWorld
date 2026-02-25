@@ -22,8 +22,8 @@ void UPlacementHUDWidgetJumpMapEditor::ExecuteSave(const FString& SlotName)
 		FString ErrorMessage;
 		if (!PlacementComponent->ValidateJumpMapLayout(ErrorMessage))
 		{
-			UE_LOG(LogWjWorldPlacement, Warning, TEXT("JumpMapEditor: Layout validation failed - %s"), *ErrorMessage);
-			// 경고만 출력하고 저장은 진행 (작업 중 세이브 허용)
+			UE_LOG(LogWjWorldPlacement, Warning, TEXT("JumpMapEditor: Layout validation failed - %s. Save blocked."), *ErrorMessage);
+			return; // 검증 실패 시 저장 차단
 		}
 	}
 

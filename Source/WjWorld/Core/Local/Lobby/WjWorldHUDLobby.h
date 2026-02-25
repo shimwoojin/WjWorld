@@ -27,6 +27,7 @@ public:
 	AWjWorldHUDLobby();
 
 	virtual void BeginPlay() override;
+	virtual bool TryCloseTopPopup() override;
 
 	/** 로비 HUD 표시 */
 	void ShowLobbyHUD();

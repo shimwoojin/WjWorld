@@ -131,6 +131,10 @@ public:
 	UPROPERTY(config, EditAnywhere, Category = "Currency")
 	int32 MatchLossRewardDefId = 11;
 
+	/** 일일 최대 매치 보상 횟수 (0 = 무제한) */
+	UPROPERTY(config, EditAnywhere, Category = "Currency")
+	int32 MaxDailyMatchRewards = 10;
+
 	/** Gem 팩 정의 목록 (Steam 결제용) */
 	UPROPERTY(config, EditAnywhere, Category = "Currency")
 	TArray<FGemPackDefinition> GemPackDefinitions;

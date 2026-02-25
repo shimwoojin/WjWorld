@@ -21,6 +21,7 @@
 #include "WjTypes.h"
 
 // SpawnBrick Server RPC용
+#include "Core/Play/WjWorldGameStatePlay.h"
 #include "Core/Play/WjWorldGameModePlay.h"
 #include "Core/GameRule/WjWorldGameRuleApproachingWall.h"
 #include "GamePlay/Wall/WjWorldBrickSpawner.h"
@@ -190,6 +191,12 @@ void AWjWorldCharacterPlay::OnRep_PlayerState()
 	}
 
 	// 코스메틱은 Super::OnRep_PlayerState()에서 처리됨 (CharacterBase)
+
+	// 미니게임별 기본 카메라 모드 적용 (클라이언트)
+	if (AWjWorldGameStatePlay* GS = GetWorld()->GetGameState<AWjWorldGameStatePlay>())
+	{
+		SetCharacterViewMode(GS->GetDefaultCameraMode());
+	}
 }
 
 void AWjWorldCharacterPlay::PossessedBy(AController* NewController)
@@ -244,6 +251,12 @@ void AWjWorldCharacterPlay::PossessedBy(AController* NewController)
 				PS->OnPawnSet(nullptr, this);
 			}
 		}
+	}
+
+	// 미니게임별 기본 카메라 모드 적용 (서버)
+	if (AWjWorldGameStatePlay* GS = GetWorld()->GetGameState<AWjWorldGameStatePlay>())
+	{
+		SetCharacterViewMode(GS->GetDefaultCameraMode());
 	}
 }
 

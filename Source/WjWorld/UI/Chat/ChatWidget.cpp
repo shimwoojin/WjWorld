@@ -99,6 +99,11 @@ void UChatWidget::FocusChatInput()
 	}
 }
 
+bool UChatWidget::IsChatInputFocused() const
+{
+	return ChatInputBox && ChatInputBox->HasKeyboardFocus();
+}
+
 void UChatWidget::OnInputCommitted(const FText& Text, ETextCommit::Type CommitMethod)
 {
 	if (CommitMethod == ETextCommit::OnEnter)

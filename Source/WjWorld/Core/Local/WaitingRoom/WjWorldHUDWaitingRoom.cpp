@@ -20,6 +20,15 @@ void AWjWorldHUDWaitingRoom::BeginPlay()
 	UE_LOG(LogWjWorld, Log, TEXT("WjWorldHUDWaitingRoom: BeginPlay - WaitingRoom HUD initialized"));
 }
 
+bool AWjWorldHUDWaitingRoom::TryCloseTopPopup()
+{
+	if (WaitingRoomHUDWidgetInstance)
+	{
+		return WaitingRoomHUDWidgetInstance->TryCloseTopPopup();
+	}
+	return false;
+}
+
 void AWjWorldHUDWaitingRoom::ShowWaitingRoomHUD()
 {
 	if (!WaitingRoomHUDWidgetClass)

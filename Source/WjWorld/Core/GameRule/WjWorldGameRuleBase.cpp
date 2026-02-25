@@ -63,8 +63,9 @@ void UWjWorldGameRuleBase::OnGameReady()
 			{
 				GameState->SetAllowedAbilityTags(Def->AllowedAbilityTags);
 				GameState->SetStatNamespace(Def->StatNamespace);
-				UE_LOG(LogWjWorld, Log, TEXT("GameRuleBase: AllowedAbilityTags set (%d tags), StatNamespace='%s'"),
-					Def->AllowedAbilityTags.Num(), *Def->StatNamespace.ToString());
+				GameState->SetDefaultCameraMode(Def->DefaultCameraMode);
+				UE_LOG(LogWjWorld, Log, TEXT("GameRuleBase: AllowedAbilityTags set (%d tags), StatNamespace='%s', CameraMode=%d"),
+					Def->AllowedAbilityTags.Num(), *Def->StatNamespace.ToString(), static_cast<int32>(Def->DefaultCameraMode));
 			}
 		}
 	}

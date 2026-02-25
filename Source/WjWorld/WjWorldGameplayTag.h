@@ -38,6 +38,7 @@ public:
 	static FGameplayTag State_SpawnBrickPreview();
 	static FGameplayTag State_LiftBrickCarry();
 	static FGameplayTag State_Eliminated();
+	static FGameplayTag State_Staggered();
 
 	//Cooldown
 	static FGameplayTag Cooldown_NormalAttack();

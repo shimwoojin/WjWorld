@@ -11,6 +11,9 @@ UWjWorldGameplayAbilityBase::UWjWorldGameplayAbilityBase()
 {
 	// 제거 상태에서는 어빌리티 활성화 차단
 	ActivationBlockedTags.AddTag(WjWorldGameplayTag::State_Eliminated());
+
+	// 경직 상태에서는 어빌리티 활성화 차단
+	ActivationBlockedTags.AddTag(WjWorldGameplayTag::State_Staggered());
 }
 
 bool UWjWorldGameplayAbilityBase::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, OUT FGameplayTagContainer* OptionalRelevantTags) const

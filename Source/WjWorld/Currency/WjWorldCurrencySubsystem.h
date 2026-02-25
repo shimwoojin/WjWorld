@@ -51,6 +51,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Currency")
 	void TriggerMatchReward(bool bIsWinner);
 
+	/** 오늘 남은 일일 보상 횟수 반환 */
+	UFUNCTION(BlueprintCallable, Category = "Currency")
+	int32 GetRemainingDailyRewards() const;
+
 	// ---- 재화로 코스메틱 구매 ----
 
 	/** 재화를 소비하여 코스메틱 아이템 구매 */
@@ -172,4 +176,18 @@ private:
 
 	/** Gem 팩 구매 시작 시간 (타임아웃 판단용) */
 	float GemPurchaseStartTime = 0.0f;
+
+	// 일일 보상 제한 추적
+	int32 TodayMatchRewardCount = 0;
+	FDateTime LastRewardDate;
+
+	/** 일일 보상 카운트 로드/저장 */
+	void LoadDailyRewardData();
+	void SaveDailyRewardData();
+
+	/** 날짜 변경 시 카운트 리셋 */
+	void CheckDailyReset();
+
+	/** 인벤토리 갱신 지연 호출 (2.5초 + 5초 재시도) */
+	void ScheduleInventoryRefresh();
 };

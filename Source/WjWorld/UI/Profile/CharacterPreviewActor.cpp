@@ -45,22 +45,29 @@ ACharacterPreviewActor::ACharacterPreviewActor()
 	SceneCaptureComponent->CaptureSource = SCS_FinalToneCurveHDR;
 	SceneCaptureComponent->bCaptureEveryFrame = false;
 	SceneCaptureComponent->bCaptureOnMovement = false;
+	SceneCaptureComponent->bAlwaysPersistRenderingState = true;
 }
 
 void ACharacterPreviewActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// RenderTarget 동적 생성
+	// RenderTarget 동적 생성 (alpha 보존을 위해 FloatRGBA 포맷 사용)
 	RenderTarget = NewObject<UTextureRenderTarget2D>(this);
-	RenderTarget->InitAutoFormat(RenderTargetWidth, RenderTargetHeight);
+	RenderTarget->RenderTargetFormat = RTF_RGBA16f;
 	RenderTarget->ClearColor = FLinearColor::Transparent;
+	RenderTarget->InitCustomFormat(RenderTargetWidth, RenderTargetHeight, PF_FloatRGBA, false);
 	RenderTarget->UpdateResourceImmediate();
 
 	SceneCaptureComponent->TextureTarget = RenderTarget;
 
 	// ShowOnlyList에 프리뷰 메시 추가
 	SceneCaptureComponent->ShowOnlyComponents.Add(PreviewMeshComponent);
+
+	UE_LOG(LogWjWorldCosmetic, Log, TEXT("CharacterPreviewActor: BeginPlay - RenderTarget=%s, Format=RTF_RGBA16f, ShowOnlyComponents=%d, PreviewMesh=%s"),
+		RenderTarget ? TEXT("Valid") : TEXT("Null"),
+		SceneCaptureComponent->ShowOnlyComponents.Num(),
+		(PreviewMeshComponent && PreviewMeshComponent->GetSkeletalMeshAsset()) ? *PreviewMeshComponent->GetSkeletalMeshAsset()->GetName() : TEXT("None"));
 }
 
 void ACharacterPreviewActor::SetupFromPawn(APawn* SourcePawn)

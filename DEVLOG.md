@@ -40,6 +40,37 @@
 - **PlayerProfileWidget** — LAN/NULL 환경에서 UniqueId 미유효 시 "Stats unavailable" 표시
 - **메모 정리** — 12개 항목 검토, 완료 7건 / 추가 논의 6건 분류
 
+#### 채팅 시스템 구현
+- **RPC 파이프라인** — PC `SendChatMessage()` → Server RPC (`ServerSendChatMessage`) → GameState `MulticastReceiveChatMessage()` (NetMulticast) → `OnChatMessageReceived` 델리게이트 → ChatWidget UI
+- **GameStateBase** — `FOnChatMessageReceived` 동적 멀티캐스트 델리게이트 + `MulticastReceiveChatMessage` NetMulticast RPC 추가
+- **PlayerControllerBase** — `SendChatMessage()` (BlueprintCallable, 200자 제한) + `ServerSendChatMessage()` (Server, Reliable)
+- **ChatWidget 신규** — `UI/Chat/ChatWidget.h/.cpp` 생성
+  - `ChatScrollBox` (메시지 목록) + `ChatInputBox` (입력) BindWidget
+  - Enter키 전송 (`OnTextCommitted` ETextCommit::OnEnter)
+  - `AddChatMessage()`: TextBlock 동적 생성, ScrollBox 추가, 자동 스크롤, 50개 메시지 상한
+- **HUDBase 연동** — DeveloperSettings `ChatWidgetClass` TSoftClassPtr → BeginPlay에서 CreateWidget + AddToViewport
+
+#### Coin 획득 알림 UI
+- **CoinGainNotificationWidget 신규** — `UI/HUD/CoinGainNotificationWidget.h/.cpp` 생성
+  - `OnCurrencyBalanceChanged` 구독, 이전 잔액 캐싱 → 차액 계산
+  - "+X Coin" 골드 텍스트 토스트, 3초 자동 숨김
+- **HUDBase 연동** — DeveloperSettings `CoinGainNotificationWidgetClass` → BeginPlay에서 생성
+- **Steam Inventory async 수정** — CurrencySubsystem이 CosmeticSubsystem의 `AllItemQuantities`/`AllItemInstanceIds` 캐시에서 읽도록 변경 (중복 async GetAllItems 호출 제거)
+
+#### 게임 종료 시 호스트 조기 퇴장 → 클라 프리즈 수정
+- **문제** — 게임 종료 후 ServerTravel 중 호스트가 나가면 클라가 30초 호스트 마이그레이션 타임아웃에 걸림
+- **bGameEndTraveling 플래그** — `WjWorldGameInstance`에 추가
+  - 서버: `EndGame()`에서 set
+  - 클라: `OnRep_GamePhase(Finished)`에서 set
+  - `HandleNetworkFailure`/`HandleTravelFailure`에서 체크 → 마이그레이션 스킵 → 즉시 로비 복귀
+  - `CreateRoom()`/`MigrationFailed()`에서 reset
+
+#### 호스트 마이그레이션 수정 (WaitingRoom)
+- **NetworkMode 버그** — 클라의 `SessionManager.LastRoomSettings`가 JoinSession 시 미설정 → LAN 기본값 → 마이그레이션 검색 모드 오류
+  - **수정**: `BeginHostMigration()`에서 `MigrationContext.CachedRoomSettings`로 `UpdateLastRoomSettings()` 동기화
+- **PlayerList 버그** — `CachePlayerList()` 서버 전용 호출 → 모든 클라가 자신을 새 호스트로 판단
+  - **수정**: `BeginHostMigration()`에서 `PlayerArray` fallback 빌드 + `OnRep_RoomSettings()`에서 `BroadcastPlayerListChanged()` 호출
+
 ### 변경 파일
 - `Config/DefaultEngine.ini` — PropagateAlpha 추가
 - `UI/Profile/CharacterPreviewActor.cpp` — 회전 복사 + 실시간 캡처
@@ -50,8 +81,18 @@
 - `Core/Session/SessionManager.h/.cpp` — GetSessionPassword API
 - `AbilitySystem/Abilities/GA_Grapple.h/.cpp` — MaxPullDuration 타임아웃
 - `UI/WaitingRoom/WaitingRoomHUDWidget.h/.cpp` — StartGameStatusText
+- `Core/Base/WjWorldGameStateBase.h/.cpp` — 채팅 RPC + 델리게이트
+- `Core/Base/WjWorldPlayerControllerBase.h/.cpp` — SendChatMessage + ServerRPC
+- `Core/Base/WjWorldHUDBase.h/.cpp` — ChatWidget + CoinGainNotification 생성
+- `UI/Chat/ChatWidget.h/.cpp` (신규) — 채팅 위젯
+- `UI/HUD/CoinGainNotificationWidget.h/.cpp` (신규) — 코인 획득 알림
+- `Core/WjWorldGameInstance.h/.cpp` — bGameEndTraveling 플래그 + 마이그레이션 수정
+- `Core/Play/WjWorldGameStatePlay.cpp` — OnRep_GamePhase에서 MarkGameEndTraveling
+- `Core/Local/WaitingRoom/WjWorldGameStateWaitingRoom.cpp` — OnRep_RoomSettings PlayerList 동기화
+- `Setting/WjWorldDeveloperSettings.h` — ChatWidgetClass 추가
+- `Config/DefaultWjWorld.ini` — ChatWidgetClass 경로 추가
 - `Memo/260225.txt` — 완료/미완료 분류 정리
-- `CLAUDE.md` — 세션/설정/폴더 구조 문서 갱신
+- `CLAUDE.md` — 채팅/코인알림/폴더구조/패턴 문서 갱신
 
 ### 학습/메모
 - `FAudioDeviceHandle AudioDevice = GEngine->GetMainAudioDevice()` → `SetTransientPrimaryVolume()` 로 마스터 볼륨 제어 가능
@@ -61,6 +102,11 @@
 - `r.PostProcessing.PropagateAlpha=1` — post-processing 파이프라인에서 alpha 채널 보존, 셰이더 재컴파일 1회 발생
 - SceneCapture에서 `bCaptureEveryFrame`은 메시 설정 완료 후 활성화해야 불필요 캡처 방지
 - 위젯 부모 탐색: `GetParent()` 루프 + `GetTypedOuter<T>()` 조합으로 ScrollBox 내부 위젯에서 부모 UserWidget 탐색
+- **Chat RPC 패턴**: PC Server RPC → GameState NetMulticast RPC → 델리게이트 → 위젯. 채팅처럼 모든 플레이어에게 전파할 때 NetMulticast 사용
+- **HUDBase 공용 위젯 패턴**: DeveloperSettings TSoftClassPtr → HUDBase::BeginPlay LoadSynchronous + CreateWidget + AddToViewport. 여러 HUD 서브클래스에서 공통 위젯 공유
+- **APlayerState 전방선언 주의**: `GetPlayerName()` 호출 시 full include (`GameFramework/PlayerState.h`) 필수, forward declaration만으로는 C2027/C2039 에러
+- **게임 종료 시 마이그레이션 방지**: 게임 끝나고 ServerTravel 중 호스트 이탈은 마이그레이션 불필요 → 별도 플래그로 failure handler에서 분기
+- **호스트 마이그레이션 클라이언트 상태**: JoinSession은 LastRoomSettings를 설정하지 않음 → 마이그레이션 시 명시적 동기화 필요
 
 ---
 

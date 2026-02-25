@@ -21,6 +21,15 @@ void AWjWorldHUDLobby::BeginPlay()
 	UE_LOG(LogWjWorld, Log, TEXT("WjWorldHUDLobby: BeginPlay - Lobby HUD initialized"));
 }
 
+bool AWjWorldHUDLobby::TryCloseTopPopup()
+{
+	if (LobbyHUDWidgetInstance)
+	{
+		return LobbyHUDWidgetInstance->TryCloseTopPopup();
+	}
+	return false;
+}
+
 void AWjWorldHUDLobby::ShowLobbyHUD()
 {
 	if (!LobbyHUDWidgetClass)

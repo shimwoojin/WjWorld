@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "GameplayTagContainer.h"
+#include "GamePlay/Camera/WjCameraTypes.h"
 #include "Core/GameRule/WjWorldGameRuleBase.h"
 #include "WjWorldMinigameDataAsset.generated.h"
 
@@ -60,6 +61,10 @@ struct FWjWorldMinigameDefinition
 	/** 스탯 네임스페이스 (예: "AW", "Sumo") - 스탯 키 접두사로 사용 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minigame")
 	FName StatNamespace;
+
+	/** 기본 카메라 모드 (미니게임 시작 시 적용) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minigame")
+	ECharacterCameraMode DefaultCameraMode = ECharacterCameraMode::TopDown;
 
 	/** 최소 플레이어 수 (이 미만이면 게임 시작 불가, 기본 1) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minigame", meta = (ClampMin = "1"))

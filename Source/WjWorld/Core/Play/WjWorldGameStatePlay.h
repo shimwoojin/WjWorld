@@ -6,6 +6,7 @@
 #include "Core/Base/WjWorldGameStateBase.h"
 #include "Core/WjWorldCoreTypes.h"
 #include "GameplayTagContainer.h"
+#include "GamePlay/Camera/WjCameraTypes.h"
 #include "WjWorldGameStatePlay.generated.h"
 
 class UWjWorldGameDataComponent;
@@ -57,6 +58,10 @@ public:
 	// 초기 참여 인원 (1인 플레이 시 스탯/보상 제외용)
 	void SetInitialPlayerCount(int32 InCount);
 	int32 GetInitialPlayerCount() const { return InitialPlayerCount; }
+
+	// 미니게임별 기본 카메라 모드
+	void SetDefaultCameraMode(ECharacterCameraMode InMode);
+	ECharacterCameraMode GetDefaultCameraMode() const { return DefaultCameraMode; }
 
 public:
     // 게임별 데이터는 컴포넌트로
@@ -128,4 +133,8 @@ private:
     // 게임 시작 시점 참여 인원 (1인 플레이 스탯/보상 제외용)
     UPROPERTY(Replicated)
     int32 InitialPlayerCount = 0;
+
+    // 미니게임별 기본 카메라 모드
+    UPROPERTY(Replicated)
+    ECharacterCameraMode DefaultCameraMode = ECharacterCameraMode::TopDown;
 };

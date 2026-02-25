@@ -28,7 +28,10 @@ void UWjWorldCurrencySubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	// 로컬 잔액 로드 (비Steam 폴백)
 	LoadBalancesFromLocal();
 
-	UE_LOG(LogWjWorldCurrency, Log, TEXT("CurrencySubsystem 초기화 완료 (Coin: %d, Gem: %d)"), CoinBalance, GemBalance);
+	// 일일 보상 데이터 로드
+	LoadDailyRewardData();
+
+	UE_LOG(LogWjWorldCurrency, Log, TEXT("CurrencySubsystem 초기화 완료 (Coin: %d, Gem: %d, DailyRewards: %d)"), CoinBalance, GemBalance, TodayMatchRewardCount);
 }
 
 void UWjWorldCurrencySubsystem::Deinitialize()
@@ -87,6 +90,17 @@ TArray<FCurrencyBalance> UWjWorldCurrencySubsystem::GetAllBalances() const
 	return Balances;
 }
 
+int32 UWjWorldCurrencySubsystem::GetRemainingDailyRewards() const
+{
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	if (!Settings || Settings->MaxDailyMatchRewards <= 0)
+	{
+		return MAX_int32; // 무제한
+	}
+
+	return FMath::Max(0, Settings->MaxDailyMatchRewards - TodayMatchRewardCount);
+}
+
 void UWjWorldCurrencySubsystem::TriggerMatchReward(bool bIsWinner)
 {
 	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
@@ -95,10 +109,21 @@ void UWjWorldCurrencySubsystem::TriggerMatchReward(bool bIsWinner)
 		return;
 	}
 
-	int32 GeneratorDefId = bIsWinner ? Settings->MatchWinRewardDefId : Settings->MatchLossRewardDefId;
+	// 일일 제한 체크
+	CheckDailyReset();
+	if (Settings->MaxDailyMatchRewards > 0 && TodayMatchRewardCount >= Settings->MaxDailyMatchRewards)
+	{
+		UE_LOG(LogWjWorldCurrency, Log, TEXT("일일 보상 한도 도달 (%d/%d) — 보상 지급 생략"),
+			TodayMatchRewardCount, Settings->MaxDailyMatchRewards);
+		return;
+	}
 
-	UE_LOG(LogWjWorldCurrency, Log, TEXT("매치 보상 트리거: %s (GeneratorDefId: %d)"),
-		bIsWinner ? TEXT("승리") : TEXT("패배"), GeneratorDefId);
+	int32 GeneratorDefId = bIsWinner ? Settings->MatchWinRewardDefId : Settings->MatchLossRewardDefId;
+	int32 FallbackRewardAmount = bIsWinner ? 50 : 10;
+
+	UE_LOG(LogWjWorldCurrency, Log, TEXT("매치 보상 트리거: %s (GeneratorDefId: %d, DailyCount: %d/%d)"),
+		bIsWinner ? TEXT("승리") : TEXT("패배"), GeneratorDefId,
+		TodayMatchRewardCount, Settings->MaxDailyMatchRewards);
 
 #if WITH_STEAM
 	ISteamInventory* SteamInv = SteamInventory();
@@ -112,37 +137,31 @@ void UWjWorldCurrencySubsystem::TriggerMatchReward(bool bIsWinner)
 			UE_LOG(LogWjWorldCurrency, Log, TEXT("Steam TriggerItemDrop 요청 성공 (DefId: %d)"), GeneratorDefId);
 			SteamInv->DestroyResult(ResultHandle);
 
-			// Steam 서버 반영 대기 후 인벤토리 갱신 (즉시 호출 시 이전 잔액 반환)
-			UWorld* World = GetWorld();
-			if (World)
-			{
-				FTimerHandle TimerHandle;
-				World->GetTimerManager().SetTimer(TimerHandle, [WeakThis = TWeakObjectPtr<UWjWorldCurrencySubsystem>(this)]()
-				{
-					if (UWjWorldCurrencySubsystem* Self = WeakThis.Get())
-					{
-						UWjWorldCosmeticSubsystem* CosmeticSub = Self->GetGameInstance()->GetSubsystem<UWjWorldCosmeticSubsystem>();
-						if (CosmeticSub)
-						{
-							CosmeticSub->RequestInventoryRefresh();
-						}
-					}
-				}, 1.5f, false);
-			}
+			// 2.5초 후 인벤토리 갱신 + 5초 후 재시도
+			ScheduleInventoryRefresh();
 		}
 		else
 		{
-			UE_LOG(LogWjWorldCurrency, Warning, TEXT("Steam TriggerItemDrop 실패 (DefId: %d)"), GeneratorDefId);
+			// TriggerItemDrop 실패 시 로컬 폴백
+			UE_LOG(LogWjWorldCurrency, Warning, TEXT("Steam TriggerItemDrop 실패 (DefId: %d) — 로컬 폴백 지급: %d Coin"),
+				GeneratorDefId, FallbackRewardAmount);
+			GrantCurrencyLocally(ECurrencyType::Coin, FallbackRewardAmount);
 		}
 
+		// 일일 카운트 증가
+		TodayMatchRewardCount++;
+		SaveDailyRewardData();
 		return;
 	}
 #endif
 
 	// 비Steam 폴백: 로컬 잔액 직접 증가
-	int32 RewardAmount = bIsWinner ? 50 : 10;
-	GrantCurrencyLocally(ECurrencyType::Coin, RewardAmount);
-	UE_LOG(LogWjWorldCurrency, Log, TEXT("로컬 매치 보상 지급: %d Coin"), RewardAmount);
+	GrantCurrencyLocally(ECurrencyType::Coin, FallbackRewardAmount);
+	UE_LOG(LogWjWorldCurrency, Log, TEXT("로컬 매치 보상 지급: %d Coin"), FallbackRewardAmount);
+
+	// 일일 카운트 증가
+	TodayMatchRewardCount++;
+	SaveDailyRewardData();
 }
 
 bool UWjWorldCurrencySubsystem::PurchaseItemWithCurrency(FName CosmeticItemId, ECurrencyType CurrencyType)
@@ -879,4 +898,80 @@ void UWjWorldCurrencySubsystem::SetBalance(ECurrencyType Type, int32 NewAmount)
 		}
 		break;
 	}
+}
+
+void UWjWorldCurrencySubsystem::LoadDailyRewardData()
+{
+	FString DateStr;
+	GConfig->GetString(*CurrencyConfigSection, TEXT("LastRewardDate"), DateStr, GGameUserSettingsIni);
+	GConfig->GetInt(*CurrencyConfigSection, TEXT("TodayMatchRewardCount"), TodayMatchRewardCount, GGameUserSettingsIni);
+
+	if (!DateStr.IsEmpty())
+	{
+		FDateTime::Parse(DateStr, LastRewardDate);
+	}
+
+	CheckDailyReset();
+}
+
+void UWjWorldCurrencySubsystem::SaveDailyRewardData()
+{
+	GConfig->SetString(*CurrencyConfigSection, TEXT("LastRewardDate"), *LastRewardDate.ToString(), GGameUserSettingsIni);
+	GConfig->SetInt(*CurrencyConfigSection, TEXT("TodayMatchRewardCount"), TodayMatchRewardCount, GGameUserSettingsIni);
+	GConfig->Flush(false, GGameUserSettingsIni);
+}
+
+void UWjWorldCurrencySubsystem::CheckDailyReset()
+{
+	FDateTime Now = FDateTime::Now();
+	if (Now.GetDay() != LastRewardDate.GetDay()
+		|| Now.GetMonth() != LastRewardDate.GetMonth()
+		|| Now.GetYear() != LastRewardDate.GetYear())
+	{
+		TodayMatchRewardCount = 0;
+		LastRewardDate = Now;
+		SaveDailyRewardData();
+		UE_LOG(LogWjWorldCurrency, Log, TEXT("일일 보상 카운트 리셋 (새 날짜: %s)"), *Now.ToString());
+	}
+}
+
+void UWjWorldCurrencySubsystem::ScheduleInventoryRefresh()
+{
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	TWeakObjectPtr<UWjWorldCurrencySubsystem> WeakThis(this);
+
+	// 2.5초 후 첫 번째 갱신
+	FTimerHandle FirstTimerHandle;
+	World->GetTimerManager().SetTimer(FirstTimerHandle, [WeakThis]()
+	{
+		if (UWjWorldCurrencySubsystem* Self = WeakThis.Get())
+		{
+			UWjWorldCosmeticSubsystem* CosmeticSub = Self->GetGameInstance()->GetSubsystem<UWjWorldCosmeticSubsystem>();
+			if (CosmeticSub)
+			{
+				CosmeticSub->RequestInventoryRefresh();
+				UE_LOG(LogWjWorldCurrency, Log, TEXT("인벤토리 갱신 (2.5초 후)"));
+			}
+		}
+	}, 2.5f, false);
+
+	// 5초 후 재시도 갱신
+	FTimerHandle RetryTimerHandle;
+	World->GetTimerManager().SetTimer(RetryTimerHandle, [WeakThis]()
+	{
+		if (UWjWorldCurrencySubsystem* Self = WeakThis.Get())
+		{
+			UWjWorldCosmeticSubsystem* CosmeticSub = Self->GetGameInstance()->GetSubsystem<UWjWorldCosmeticSubsystem>();
+			if (CosmeticSub)
+			{
+				CosmeticSub->RequestInventoryRefresh();
+				UE_LOG(LogWjWorldCurrency, Log, TEXT("인벤토리 갱신 재시도 (5초 후)"));
+			}
+		}
+	}, 5.0f, false);
 }

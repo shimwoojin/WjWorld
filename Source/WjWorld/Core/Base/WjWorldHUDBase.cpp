@@ -49,3 +49,9 @@ void AWjWorldHUDBase::BeginPlay()
 		}
 	}
 }
+
+bool AWjWorldHUDBase::TryCloseTopPopup()
+{
+	// Base: 닫을 팝업 없음. 서브클래스에서 override하여 구현.
+	return false;
+}

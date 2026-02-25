@@ -24,6 +24,9 @@ public:
 	/** 채팅 위젯 접근 */
 	UChatWidget* GetChatWidget() const { return ChatWidget; }
 
+	/** 가장 위에 열린 팝업 닫기 (서브클래스에서 override) */
+	virtual bool TryCloseTopPopup();
+
 private:
 	UPROPERTY()
 	TObjectPtr<UCoinGainNotificationWidget> CoinGainNotificationWidget;

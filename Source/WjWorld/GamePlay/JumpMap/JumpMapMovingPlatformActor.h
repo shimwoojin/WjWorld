@@ -10,6 +10,7 @@
  * JumpMap 이동 플랫폼 액터
  * - 시작 위치와 목표 위치 사이를 왕복 이동
  * - 양 끝에서 잠시 정지
+ * - 서버 경과 시간 리플리케이션으로 클라이언트 동기화
  */
 UCLASS(Blueprintable)
 class WJWORLD_API AJumpMapMovingPlatformActor : public AJumpMapActorBase
@@ -21,6 +22,7 @@ public:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	virtual void GetSerializableProperties(TMap<FString, FString>& OutProperties) const override;
 	virtual void ApplySerializedProperties(const TMap<FString, FString>& Properties) override;
@@ -39,9 +41,19 @@ protected:
 	float PauseTime = 0.5f;
 
 private:
+	/** 시간 기반 위치 계산 (서버/클라이언트 동일 함수) */
+	FVector CalculatePositionFromTime(float Time) const;
+
 	FVector OriginalLocation;
 	FVector TargetLocation;
-	bool bMovingToTarget = true;
-	float PauseTimer = 0.f;
-	bool bIsPaused = false;
+
+	/** 서버 경과 시간 (리플리케이션) */
+	UPROPERTY(Replicated)
+	float ServerElapsedTime = 0.f;
+
+	/** 왕복 1주기 시간 (캐시) */
+	float CycleTime = 0.f;
+
+	/** 이동 1방향 소요 시간 (캐시) */
+	float TravelTime = 0.f;
 };

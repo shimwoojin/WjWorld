@@ -209,6 +209,25 @@ void UWaitingRoomHUDWidget::OnLeaveClicked()
 	}
 }
 
+bool UWaitingRoomHUDWidget::TryCloseTopPopup()
+{
+	// 우선순위: Settings → Profile
+
+	if (SettingsWidgetInstance && SettingsWidgetInstance->IsInViewport())
+	{
+		SettingsWidgetInstance->ClosePopup();
+		return true;
+	}
+
+	if (ProfileWidgetInstance && ProfileWidgetInstance->GetVisibility() == ESlateVisibility::Visible)
+	{
+		ProfileWidgetInstance->SetVisibility(ESlateVisibility::Collapsed);
+		return true;
+	}
+
+	return false;
+}
+
 void UWaitingRoomHUDWidget::OnSettingsClicked()
 {
 	UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Settings button clicked"));

@@ -24,8 +24,9 @@ class WJWORLD_API AWjWorldHUDWaitingRoom : public AWjWorldHUDBase
 	
 public:
 	AWjWorldHUDWaitingRoom();
-	
+
 	virtual void BeginPlay() override;
+	virtual bool TryCloseTopPopup() override;
 
 	/** 대기실 HUD 표시 */
 	void ShowWaitingRoomHUD();

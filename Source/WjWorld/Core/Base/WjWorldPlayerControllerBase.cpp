@@ -3,12 +3,14 @@
 #include "WjWorldPlayerControllerBase.h"
 #include "WjWorldCharacterBase.h"
 #include "WjWorldGameStateBase.h"
+#include "WjWorldHUDBase.h"
 #include "GameFramework/PlayerState.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "InputMappingContext.h"
 #include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "UI/Setting/SettingsWidget.h"
+#include "UI/Chat/ChatWidget.h"
 #include "Cosmetic/WjWorldCosmeticTypes.h"
 #include "Currency/WjWorldCurrencySubsystem.h"
 #include "GamePlay/TreasureChest/WjWorldTreasureChestActor.h"
@@ -35,6 +37,49 @@ void AWjWorldPlayerControllerBase::BeginPlay()
 
 	InitializeController();
 	InitializeUI();
+}
+
+void AWjWorldPlayerControllerBase::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+
+	// Enter 키: 채팅 입력 포커스
+	InputComponent->BindKey(EKeys::Enter, IE_Pressed, this, &AWjWorldPlayerControllerBase::OnEnterPressed);
+
+	// ESC 키: 팝업 닫기
+	InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AWjWorldPlayerControllerBase::OnEscapePressed);
+}
+
+void AWjWorldPlayerControllerBase::OnEnterPressed()
+{
+	AWjWorldHUDBase* HUD = Cast<AWjWorldHUDBase>(GetHUD());
+	if (!HUD)
+	{
+		return;
+	}
+
+	UChatWidget* Chat = HUD->GetChatWidget();
+	if (!Chat)
+	{
+		return;
+	}
+
+	// 이미 채팅 입력 중이면 무시 (Enter로 메시지 전송은 ChatWidget 내부에서 처리)
+	if (Chat->IsChatInputFocused())
+	{
+		return;
+	}
+
+	Chat->FocusChatInput();
+}
+
+void AWjWorldPlayerControllerBase::OnEscapePressed()
+{
+	AWjWorldHUDBase* HUD = Cast<AWjWorldHUDBase>(GetHUD());
+	if (HUD)
+	{
+		HUD->TryCloseTopPopup();
+	}
 }
 
 void AWjWorldPlayerControllerBase::InitializeController()

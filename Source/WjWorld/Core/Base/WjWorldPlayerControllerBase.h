@@ -26,6 +26,13 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void SetupInputComponent() override;
+
+	/** Enter 키 핸들러: 채팅 입력 포커스 */
+	virtual void OnEnterPressed();
+
+	/** ESC 키 핸들러: 팝업 닫기 */
+	virtual void OnEscapePressed();
 
 protected:
 	/**

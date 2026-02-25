@@ -22,6 +22,7 @@ public:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	virtual void GetSerializableProperties(TMap<FString, FString>& OutProperties) const override;
 	virtual void ApplySerializedProperties(const TMap<FString, FString>& Properties) override;
@@ -50,4 +51,11 @@ private:
 	UFUNCTION()
 	void OnHitOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	/** 서버 경과 시간 (리플리케이션) */
+	UPROPERTY(Replicated)
+	float ServerElapsedTime = 0.f;
+
+	/** BeginPlay 시점의 초기 회전 (캐시) */
+	FRotator InitialRotation;
 };

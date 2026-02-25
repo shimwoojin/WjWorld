@@ -66,6 +66,11 @@ FGameplayTag WjWorldGameplayTag::State_Eliminated()
 	return FGameplayTag::RequestGameplayTag(TEXT("State.Eliminated"));
 }
 
+FGameplayTag WjWorldGameplayTag::State_Staggered()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("State.Staggered"));
+}
+
 FGameplayTag WjWorldGameplayTag::Cooldown_NormalAttack()
 {
 	return FGameplayTag::RequestGameplayTag(TEXT("Cooldown.NormalAttack"));
