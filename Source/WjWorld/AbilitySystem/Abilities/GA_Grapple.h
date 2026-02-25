@@ -42,6 +42,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Grapple")
 	float ArrivalThreshold = 100.f;
 
+	/** 최대 당김 시간 (초) - 초과 시 강제 종료 */
+	UPROPERTY(EditDefaultsOnly, Category = "Grapple")
+	float MaxPullDuration = 2.f;
+
 private:
 	/** 도착 체크 (타이머 기반) */
 	void CheckArrival();
@@ -49,6 +53,7 @@ private:
 	bool bIsPulling = false;
 	FVector GrappleTargetLocation;
 	FTimerHandle ArrivalCheckTimerHandle;
+	float PullElapsedTime = 0.f;
 
 	// EndAbility 호출용 캐시
 	FGameplayAbilitySpecHandle CachedHandle;

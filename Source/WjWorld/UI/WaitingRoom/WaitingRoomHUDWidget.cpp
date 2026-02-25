@@ -566,9 +566,30 @@ void UWaitingRoomHUDWidget::UpdateStartGameButton()
 			}
 		}
 
-		bool bCanStart = bAllReady && (PlayerCount >= MinPlayers);
+		bool bEnoughPlayers = (PlayerCount >= MinPlayers);
+		bool bCanStart = bAllReady && bEnoughPlayers;
 
 		StartGameButton->SetIsEnabled(bCanStart);
+
+		// 시작 불가 사유 표시
+		if (StartGameStatusText)
+		{
+			if (!bEnoughPlayers)
+			{
+				StartGameStatusText->SetText(FText::FromString(
+					FString::Printf(TEXT("Need %d+ players (%d/%d)"), MinPlayers, PlayerCount, MinPlayers)));
+				StartGameStatusText->SetVisibility(ESlateVisibility::Visible);
+			}
+			else if (!bAllReady)
+			{
+				StartGameStatusText->SetText(FText::FromString(TEXT("Waiting for all players to ready")));
+				StartGameStatusText->SetVisibility(ESlateVisibility::Visible);
+			}
+			else
+			{
+				StartGameStatusText->SetVisibility(ESlateVisibility::Collapsed);
+			}
+		}
 
 		UE_LOG(LogWjWorld, Log, TEXT("WaitingRoomHUDWidget: Start button enabled = %d (AllReady=%d, Count=%d, MinPlayers=%d)"),
 			bCanStart, bAllReady, PlayerCount, MinPlayers);
@@ -577,6 +598,11 @@ void UWaitingRoomHUDWidget::UpdateStartGameButton()
 	{
 		// 호스트가 아니면 버튼 비활성화
 		StartGameButton->SetIsEnabled(false);
+
+		if (StartGameStatusText)
+		{
+			StartGameStatusText->SetVisibility(ESlateVisibility::Collapsed);
+		}
 	}
 }
 

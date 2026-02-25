@@ -108,6 +108,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Session")
 	void UpdateLastRoomSettings(const FRoomSettings& NewSettings) { LastRoomSettings = NewSettings; }
 
+	/**
+	 * 검색 결과에서 비밀번호 추출
+	 * @param SearchResultIndex 검색 결과 인덱스
+	 * @param OutPassword 추출된 비밀번호 (출력)
+	 * @return 비밀번호가 있으면 true
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Session")
+	bool GetSessionPassword(int32 SearchResultIndex, FString& OutPassword) const;
+
 public:
 	//~ 델리게이트 (UI에서 바인딩)
 	UPROPERTY(BlueprintAssignable, Category = "Session|Events")

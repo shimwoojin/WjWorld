@@ -92,6 +92,9 @@ void ACharacterPreviewActor::SetupFromPawn(APawn* SourcePawn)
 		UE_LOG(LogWjWorldCosmetic, Log, TEXT("CharacterPreviewActor: Copied SkeletalMesh %s"), *SkelMesh->GetName());
 	}
 
+	// 소스 메시의 회전값 복사 (ACharacter의 Yaw=-90° 보정 포함)
+	PreviewMeshComponent->SetRelativeRotation(SourceMesh->GetRelativeRotation());
+
 	// AnimBlueprint 복사
 	UClass* AnimClass = SourceMesh->GetAnimClass();
 	if (AnimClass)
@@ -103,6 +106,9 @@ void ACharacterPreviewActor::SetupFromPawn(APawn* SourcePawn)
 	// 애니메이션 재생을 위해 가시성 및 틱 활성화
 	PreviewMeshComponent->SetVisibility(true);
 	PreviewMeshComponent->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
+
+	// 메시 설정 완료 후 실시간 캡처 활성화 (Idle 모션 반영)
+	SceneCaptureComponent->bCaptureEveryFrame = true;
 
 	RefreshCapture();
 }

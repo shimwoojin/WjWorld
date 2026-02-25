@@ -9,6 +9,7 @@
 
 class UButton;
 class UTextBlock;
+class URoomListWindow;
 
 /**
  * 방 목록 엔트리 위젯

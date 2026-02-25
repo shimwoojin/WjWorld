@@ -87,6 +87,10 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> StartGameButton;
 
+	/** 게임 시작 불가 사유 텍스트 (호스트에게만 표시) */
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UTextBlock> StartGameStatusText;
+
 	/** 나가기 버튼 */
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> LeaveButton;

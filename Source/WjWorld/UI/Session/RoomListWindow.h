@@ -11,6 +11,7 @@ class UButton;
 class UScrollBox;
 class UComboBoxString;
 class URoomListEntryWidget;
+class UPasswordInputWidget;
 
 /**
  * 방 목록 UI
@@ -65,6 +66,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI")
 	TSubclassOf<URoomListEntryWidget> RoomListEntryWidgetClass;
 
+	/** 비밀번호 입력 위젯 클래스 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI")
+	TSubclassOf<UPasswordInputWidget> PasswordInputWidgetClass;
+
 protected:
 	//~ 버튼 이벤트
 
@@ -82,6 +87,13 @@ protected:
 	UFUNCTION()
 	void OnRoomsFound(bool bWasSuccessful, const TArray<FRoomInfo>& Rooms);
 
+public:
+	/**
+	 * 비밀번호 검증 후 방 입장 시도
+	 * RoomListEntryWidget에서 비공개 방 입장 시 호출
+	 */
+	void RequestJoinPrivateRoom(int32 RoomIndex);
+
 private:
 	/** 네트워크 모드 옵션 초기화 */
 	void InitializeNetworkModeOptions();
@@ -92,6 +104,22 @@ private:
 	/** 방 검색 시작 */
 	void StartSearching();
 
+	/** 비밀번호 검증 후 입장 진행 */
+	void JoinRoomWithPassword(int32 RoomIndex, const FString& Password);
+
+	UFUNCTION()
+	void OnPasswordSubmitted(const FString& Password);
+
+	UFUNCTION()
+	void OnPasswordCancelled();
+
 	/** 현재 네트워크 모드 */
 	ENetworkMode CurrentNetworkMode = ENetworkMode::LAN;
+
+	/** 비밀번호 입력 위젯 인스턴스 */
+	UPROPERTY()
+	TObjectPtr<UPasswordInputWidget> PasswordInputWidgetInstance;
+
+	/** 비밀번호 입력 대기 중인 방 인덱스 */
+	int32 PendingPasswordRoomIndex = -1;
 };

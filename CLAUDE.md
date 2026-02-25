@@ -46,7 +46,9 @@ Source/WjWorld/
 │   └── Wall/                          # BrickActor/Component/Movement/Spawner, BrickPreviewActor, TileActor, WallManager, WallDescriptionDA, WallLayoutConverter
 ├── Network/                           # PacketData, SessionTypes, WjWorldLanNetDriver
 └── UI/                                # UserWidgetBase, Intro, Login, Lobby, Placement, Session, WaitingRoom, Interact, Ability, Profile, Cosmetic, HUD
-    └── Common/                        # ConfirmDialogWidget (공용 확인/취소 팝업)
+    ├── Common/                        # ConfirmDialogWidget (공용 확인/취소 팝업)
+    ├── Session/                       # CreateRoomWindow, RoomListWindow, RoomListEntryWidget, PasswordInputWidget
+    └── Setting/                       # SettingsWidget (그래픽 품질 + 마스터 볼륨 팝업)
 
 Source/WjWorldEditor/                  # 에디터 전용 모듈
 └── JumpMap/                           # JumpMapLevelEditorSubsystem, SJumpMapLayoutPanel
@@ -64,7 +66,7 @@ GameRule: UWjWorldGameRuleBase → ApproachingWall, Sumo, JumpMap
 GameData: UWjWorldGameDataComponent → AW/Sumo/JumpMap Game/PlayerData
 Ability: UWjWorldGameplayAbilityBase → GA_NormalAttack, GA_SpawnBrick, GA_LiftBrick, GA_Push, GA_Jump(→GA_DoubleJump), GA_Dash, GA_Grapple
 PlacedObject: AWjWorldPlacedObjectActor → TreasureChestActor
-Widget: UWjWorldUserWidgetBase → PlacementHUDWidgetBase, PlacementSaveDialogWidget, PlacementLoadDialogWidget, ConfirmDialogWidget
+Widget: UWjWorldUserWidgetBase → PlacementHUDWidgetBase, PlacementSaveDialogWidget, PlacementLoadDialogWidget, ConfirmDialogWidget, SettingsWidget
 Subsystem: UGameInstanceSubsystem → CosmeticSubsystem, CurrencySubsystem, PurchaseSubsystem, StatsSubsystem
 ```
 
@@ -136,6 +138,10 @@ ItemId(FName) 기반. `ECosmeticSlot`(Head/Body/Back/Effect), 비동기 메시 �
 
 ### 세션 관리
 `USessionManager` — Steam OSS 우선 → NULL 폴백. LAN/Steam 모드 분기, 검색 큐, 호스트 마이그레이션.
+- **비밀번호 방**: `CreateSession()`에서 PASSWORD 커스텀 설정 저장, `GetSessionPassword()`로 검색 결과에서 추출
+- **비밀번호 검증 흐름**: RoomListEntryWidget → `bIsPrivate` 확인 → PasswordInputWidget 팝업 → RoomListWindow.JoinRoomWithPassword() → 클라이언트 사전 검증 → JoinSession
+- **PasswordInputWidget**: `UI/Session/` — ShowPopup/ClosePopup 패턴, Enter키 제출, 에러 메시지 표시
+- **[Private] 표시**: RoomListEntryWidget에서 비공개 방 이름 앞에 `[Private]` 접두사
 
 ### Steam 설정
 - **AppID**: 4399350, `WITH_STEAM` 매크로 (Win64), `Steam/itemdefs.json`
@@ -163,6 +169,15 @@ ItemId(FName) 기반. `ECosmeticSlot`(Head/Body/Back/Effect), 비동기 메시 �
 - **ActorClassOverride**: `FPlaceableObjectDefinition`에 스폰 클래스 분기 필드 → GameStateLobby에서 사용
 - **DeveloperSettings**: `TreasureChest` 카테고리 (CoinReward, CooldownSeconds, InteractAction, WidgetClass, GeneratorStartDefId)
 - **테스트**: `TreasureChest_ClearCooldowns` 콘솔 명령어
+
+### 설정 시스템
+`USettingsWidget` — 로비/대기실 설정 팝업. ShowPopup/ClosePopup 패턴.
+- **그래픽 품질**: `UGameUserSettings::SetOverallScalabilityLevel()` (Low/Medium/High/Epic), `SaveSettings()` 영속
+- **마스터 볼륨**: `GConfig` (`GGameUserSettingsIni`, `[WjWorldSettings]` 섹션, `MasterVolume` 키)
+- **볼륨 적용**: `FAudioDeviceHandle::SetTransientPrimaryVolume()` — static `ApplySavedMasterVolume()`
+- **즉시 적용**: Apply 버튼 없이 변경 시 바로 반영
+- **시작 시 복원**: `GameInstance::Init()` → `ApplySavedMasterVolume()`
+- **HUD 연동**: LobbyHUDWidget, WaitingRoomHUDWidget에서 `SettingsWidgetClass`/`SettingsWidgetInstance` 관리
 
 ### WjWorldDeveloperSettings
 Project Settings > Game > WjWorld. 맵 경로, GameMode 클래스, 캐릭터 기본값, 미니게임 에셋, 배치 카탈로그, 카메라 InputAction, 보물상자 설정.

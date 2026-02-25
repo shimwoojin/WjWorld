@@ -694,6 +694,22 @@ bool USessionManager::FindMigrationSession(const FString& MigrationTag)
 	return bSuccess;
 }
 
+bool USessionManager::GetSessionPassword(int32 SearchResultIndex, FString& OutPassword) const
+{
+	OutPassword.Empty();
+
+	if (!SessionSearch.IsValid() || !SessionSearch->SearchResults.IsValidIndex(SearchResultIndex))
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("SessionManager: GetSessionPassword - Invalid index %d"), SearchResultIndex);
+		return false;
+	}
+
+	const FOnlineSessionSearchResult& Result = SessionSearch->SearchResults[SearchResultIndex];
+	bool bFound = Result.Session.SessionSettings.Get(FName("PASSWORD"), OutPassword);
+
+	return bFound && !OutPassword.IsEmpty();
+}
+
 FRoomInfo USessionManager::ConvertSearchResultToRoomInfo(const FOnlineSessionSearchResult& SearchResult, int32 Index)
 {
 	FRoomInfo RoomInfo;

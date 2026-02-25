@@ -2,6 +2,7 @@
 
 #include "UI/Session/RoomListWindow.h"
 #include "UI/Session/RoomListEntryWidget.h"
+#include "UI/Session/PasswordInputWidget.h"
 #include "Components/Button.h"
 #include "Components/ScrollBox.h"
 #include "Components/ComboBoxString.h"
@@ -39,7 +40,11 @@ void URoomListWindow::NativeConstruct()
 
 void URoomListWindow::ShowPopup()
 {
+#if WITH_STEAM
+	ShowPopupWithNetworkMode(ENetworkMode::Steam);
+#else
 	ShowPopupWithNetworkMode(ENetworkMode::LAN);
+#endif
 }
 
 void URoomListWindow::ShowPopupWithNetworkMode(ENetworkMode InNetworkMode)
@@ -228,4 +233,80 @@ void URoomListWindow::StartSearching()
 	{
 		UE_LOG(LogWjWorld, Error, TEXT("RoomListWindow: GameInstance is null"));
 	}
+}
+
+void URoomListWindow::RequestJoinPrivateRoom(int32 RoomIndex)
+{
+	PendingPasswordRoomIndex = RoomIndex;
+
+	// 비밀번호 입력 위젯 생성
+	if (!PasswordInputWidgetInstance && PasswordInputWidgetClass)
+	{
+		PasswordInputWidgetInstance = CreateWidget<UPasswordInputWidget>(GetWorld(), PasswordInputWidgetClass);
+		if (PasswordInputWidgetInstance)
+		{
+			PasswordInputWidgetInstance->OnPasswordSubmitted.AddDynamic(this, &URoomListWindow::OnPasswordSubmitted);
+			PasswordInputWidgetInstance->OnPasswordCancelled.AddDynamic(this, &URoomListWindow::OnPasswordCancelled);
+		}
+	}
+
+	if (PasswordInputWidgetInstance)
+	{
+		PasswordInputWidgetInstance->SetMessage(FText::FromString(TEXT("Enter password to join room.")));
+		PasswordInputWidgetInstance->ShowPopup();
+		UE_LOG(LogWjWorld, Log, TEXT("RoomListWindow: Password input shown for room index %d"), RoomIndex);
+	}
+	else
+	{
+		UE_LOG(LogWjWorld, Error, TEXT("RoomListWindow: PasswordInputWidgetClass is not set"));
+	}
+}
+
+void URoomListWindow::OnPasswordSubmitted(const FString& Password)
+{
+	JoinRoomWithPassword(PendingPasswordRoomIndex, Password);
+}
+
+void URoomListWindow::OnPasswordCancelled()
+{
+	PendingPasswordRoomIndex = -1;
+	UE_LOG(LogWjWorld, Log, TEXT("RoomListWindow: Password input cancelled"));
+}
+
+void URoomListWindow::JoinRoomWithPassword(int32 RoomIndex, const FString& Password)
+{
+	UWjWorldGameInstance* GameInstance = Cast<UWjWorldGameInstance>(GetGameInstance());
+	if (!GameInstance || !GameInstance->GetSessionManager())
+	{
+		UE_LOG(LogWjWorld, Error, TEXT("RoomListWindow: GameInstance or SessionManager is null"));
+		return;
+	}
+
+	USessionManager* SessionManager = GameInstance->GetSessionManager();
+
+	// 세션에 저장된 비밀번호 추출
+	FString StoredPassword;
+	bool bHasPassword = SessionManager->GetSessionPassword(RoomIndex, StoredPassword);
+
+	if (bHasPassword && Password != StoredPassword)
+	{
+		// 비밀번호 불일치
+		UE_LOG(LogWjWorld, Warning, TEXT("RoomListWindow: Wrong password for room index %d"), RoomIndex);
+
+		if (PasswordInputWidgetInstance)
+		{
+			PasswordInputWidgetInstance->SetErrorMessage(FText::FromString(TEXT("Wrong password.")));
+		}
+		return;
+	}
+
+	// 비밀번호 일치 → 팝업 닫고 입장
+	if (PasswordInputWidgetInstance)
+	{
+		PasswordInputWidgetInstance->ClosePopup();
+	}
+	PendingPasswordRoomIndex = -1;
+
+	UE_LOG(LogWjWorld, Log, TEXT("RoomListWindow: Password verified, joining room index %d"), RoomIndex);
+	GameInstance->JoinRoom(RoomIndex);
 }

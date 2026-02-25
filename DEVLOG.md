@@ -1,5 +1,44 @@
 # WjWorld 개발 로그
 
+## 2026-02-25
+### 작업 내용
+
+#### 설정 UI 구현 (디스플레이 품질 + 마스터 볼륨)
+- **SettingsWidget 신규** — `UI/Setting/SettingsWidget.h/.cpp` 생성
+  - `UWjWorldUserWidgetBase` 상속, ShowPopup/ClosePopup 패턴
+  - `GraphicsQualityComboBox` (Low/Medium/High/Epic) → `UGameUserSettings::SetOverallScalabilityLevel()` + `SaveSettings()`
+  - `MasterVolumeSlider` (0.0~1.0) + `VolumePercentText` ("80%" 등)
+  - 즉시 적용 패턴 (Apply 버튼 없음) — 슬라이더/콤보박스 변경 시 바로 반영
+- **볼륨 영속** — `GConfig` (`GGameUserSettingsIni`, `[WjWorldSettings]` 섹션, `MasterVolume` 키)
+- **볼륨 적용** — `static ApplySavedMasterVolume()` → `FAudioDeviceHandle::SetTransientPrimaryVolume()`
+- **GameInstance::Init()** — 게임 시작 시 저장된 마스터 볼륨 자동 복원
+- **LobbyHUDWidget** — `SettingsWidgetClass`/`SettingsWidgetInstance` 추가, `OnSettingsClicked()` 기존 품질 사이클링 코드 제거 → 설정 팝업 연동
+- **WaitingRoomHUDWidget** — `SettingsButton` (BindWidgetOptional), `SettingsWidgetClass`/`SettingsWidgetInstance`, `OnSettingsClicked()` 추가
+- **BP 작업** — `WBP_SettingsWidget` 위젯 블루프린트 생성, LobbyHUD/WaitingRoomHUD에 SettingsWidgetClass 설정
+
+#### 코스메틱 구매 중복 방지 + Steam_GrantCoin 치트
+- **CosmeticMainWindow** — ExchangePending 중 구매 버튼 중복 클릭 방지
+- **CurrencySubsystem** — `IsExchangePending()` BlueprintCallable API 추가
+- **PlayerControllerBase** — `Steam_GrantCoin` 콘솔 명령어 (GenerateItems)
+
+### 변경 파일
+- `UI/Setting/SettingsWidget.h/.cpp` (신규)
+- `UI/Lobby/LobbyHUDWidget.h/.cpp`
+- `UI/WaitingRoom/WaitingRoomHUDWidget.h/.cpp`
+- `Core/WjWorldGameInstance.cpp`
+- `Content/UI/Blueprint/Setting/WBP_SettingsWidget.uasset` (신규)
+- `Content/UI/Blueprint/Lobby/WBP_LobbyHUDWidget.uasset`
+- `Content/UI/Blueprint/WaitingRoom/BP_WaitingRoomHUDWidget.uasset`
+- 기타 다수 (GA_Grapple, GameStatePlay, PlayerControllerPlay, GameRule 등)
+
+### 학습/메모
+- `FAudioDeviceHandle AudioDevice = GEngine->GetMainAudioDevice()` → `SetTransientPrimaryVolume()` 로 마스터 볼륨 제어 가능
+- `GConfig->SetFloat()` + `GConfig->Flush(false, GGameUserSettingsIni)` 로 즉시 영속 저장
+- 설정 UI처럼 단순한 경우 Subsystem 불필요 — 위젯에서 직접 UGameUserSettings/GConfig 접근이 간결
+- ShowPopup에서 `FInputModeGameAndUI` 사용 (UIOnly 대신) — Lobby/WaitingRoom은 이미 GameAndUI 모드
+
+---
+
 ## 2026-02-23 (5)
 ### 작업 내용
 

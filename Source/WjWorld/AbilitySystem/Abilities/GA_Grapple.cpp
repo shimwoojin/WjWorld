@@ -78,6 +78,7 @@ void UGA_Grapple::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const
 
 				GrappleTargetLocation = GrapplePoint->GetActorLocation();
 				bIsPulling = true;
+				PullElapsedTime = 0.f;
 
 				// 캐릭터를 타겟 방향으로 발사
 				FVector Direction = (GrappleTargetLocation - Character->GetActorLocation()).GetSafeNormal();
@@ -133,6 +134,16 @@ void UGA_Grapple::CheckArrival()
 	{
 		bIsPulling = false;
 		EndAbility(CachedHandle, CachedActorInfo, CachedActivationInfo, true, true);
+		return;
+	}
+
+	// 타임아웃 체크 (무한 풀 방지)
+	PullElapsedTime += GetWorld()->GetDeltaSeconds();
+	if (PullElapsedTime >= MaxPullDuration)
+	{
+		UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_Grapple: Pull timed out after %.1fs"), PullElapsedTime);
+		bIsPulling = false;
+		EndAbility(CachedHandle, CachedActorInfo, CachedActivationInfo, true, false);
 		return;
 	}
 

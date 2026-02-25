@@ -1,8 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "UI/Session/RoomListEntryWidget.h"
+#include "UI/Session/RoomListWindow.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
+#include "Components/ScrollBox.h"
 #include "Core/WjWorldGameInstance.h"
 #include "Core/Session/SessionManager.h"
 #include "WjWorldLogCategories.h"
@@ -37,9 +39,38 @@ void URoomListEntryWidget::SetRoomInfo(const FRoomInfo& InRoomInfo)
 
 void URoomListEntryWidget::OnJoinClicked()
 {
-	UE_LOG(LogWjWorld, Log, TEXT("RoomListEntryWidget: Join button clicked - Room: %s"), *CurrentRoomInfo.RoomName);
+	UE_LOG(LogWjWorld, Log, TEXT("RoomListEntryWidget: Join button clicked - Room: %s (Private: %d)"),
+		*CurrentRoomInfo.RoomName, CurrentRoomInfo.bIsPrivate);
 
-	// GameInstance를 통해 방 참가
+	// 비공개 방이면 비밀번호 입력 팝업을 부모 RoomListWindow에 요청
+	if (CurrentRoomInfo.bIsPrivate)
+	{
+		// ScrollBox → RoomListWindow 계층으로 부모 탐색
+		URoomListWindow* RoomListWindow = nullptr;
+		UWidget* Parent = GetParent();
+		while (Parent)
+		{
+			// ScrollBox의 Outer를 통해 RoomListWindow 찾기
+			RoomListWindow = Cast<URoomListWindow>(Parent->GetTypedOuter<URoomListWindow>());
+			if (RoomListWindow)
+			{
+				break;
+			}
+			Parent = Parent->GetParent();
+		}
+
+		if (RoomListWindow)
+		{
+			RoomListWindow->RequestJoinPrivateRoom(CurrentRoomInfo.SearchResultIndex);
+			return;
+		}
+		else
+		{
+			UE_LOG(LogWjWorld, Error, TEXT("RoomListEntryWidget: Could not find parent RoomListWindow"));
+		}
+	}
+
+	// 공개 방 → 바로 입장
 	UWjWorldGameInstance* GameInstance = Cast<UWjWorldGameInstance>(GetGameInstance());
 	if (GameInstance)
 	{
@@ -47,7 +78,7 @@ void URoomListEntryWidget::OnJoinClicked()
 		if (bSuccess)
 		{
 			UE_LOG(LogWjWorld, Log, TEXT("RoomListEntryWidget: Room join initiated"));
-			
+
 			// 버튼 비활성화 (중복 클릭 방지)
 			if (JoinButton)
 			{
@@ -88,10 +119,13 @@ void URoomListEntryWidget::OnRoomJoined(bool bWasSuccessful)
 
 void URoomListEntryWidget::UpdateUI()
 {
-	// 방 이름
+	// 방 이름 (비공개 방은 [Private] 접두사 추가)
 	if (RoomNameText)
 	{
-		RoomNameText->SetText(FText::FromString(CurrentRoomInfo.RoomName));
+		FString DisplayName = CurrentRoomInfo.bIsPrivate
+			? FString::Printf(TEXT("[Private] %s"), *CurrentRoomInfo.RoomName)
+			: CurrentRoomInfo.RoomName;
+		RoomNameText->SetText(FText::FromString(DisplayName));
 	}
 
 	// 게임 모드

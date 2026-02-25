@@ -1,0 +1,36 @@
+== 완료 ==
+1. 설정 UI (디스플레이 품질 + 마스터 볼륨) — SettingsWidget 구현 완료
+2. 스탯 Steam 저장 — StatsSubsystem Steam UserStats 연동 완료
+4. AW/Sumo 2인 이상 제한 + 1인 스탯 미기록 — GameStatePlay.InitialPlayerCount > 1 체크 완료
+8. Steam 빌드 방 생성/찾기 — WITH_STEAM 매크로 분기 완료
+9. 비밀번호 방 — 생성 시 저장 + 입장 시 검증 + PasswordInputWidget 완료
+11. 프로필/상점 SceneCapture Yaw 수정 + Skeletal Mesh 복사 — 회전값 복사 완료
+12. SceneCapture 투명 배경 + 실시간 Idle 모션 — PropagateAlpha + bCaptureEveryFrame 완료
+
+== 추가 논의 필요 ==
+2-1. [확인] 3자 프로필이 안 보이는 문제
+     — 코드 로직은 정상. BP_WaitingRoomHUDWidget에서 ProfileWidgetClass가 설정되어 있는지 에디터에서 확인 필요.
+
+3. [설계] AW 벽 이동 후 내부 공간 벌어짐
+   — 현재: 각 벽돌이 FloodFill 방향 후보 중 하나를 독립 선택 → 벽돌 간 간격 발생
+   — 제안: 목표 그리드 좌표를 벽돌에 1:1 할당하는 방식으로 알고리즘 전면 변경
+   — 관련 파일: WjWorldBrickMovement.cpp (GetMovementVector, GetNextDirections)
+
+5. [기획] 솔로 컨텐츠 부족
+   — 현재 솔로: 로비 배치/보물상자/상점, JumpMap(스탯 미기록)
+   — AW/Sumo는 1인 시 즉시 종료 → 실질 플레이 불가
+   — 봇 시스템, 솔로 모드, 또는 새로운 싱글 컨텐츠 기획 필요
+
+6. [기획] Skeletal mesh 코스메틱 확장 (캐릭터 외형)
+   — 코드 인프라 준비 완료 (FCosmeticItemDefinition.SkeletalMesh, ECosmeticSlot::Body)
+   — 에셋 제작 + itemdefs.json 등록만 하면 됨
+
+7. [테스트] JumpMap Grapple Point 동작 확인
+   — GA_Grapple: 라인트레이스(ECC_WorldStatic) → LaunchCharacter 1회 발사 방식
+   — 주의: GrapplePointActor의 SphereComponent가 NoCollision → MeshComponent의 콜리전으로 감지되는지 확인 필요
+   — 관련 파일: GA_Grapple.cpp, JumpMapGrapplePointActor.cpp
+
+10. [설계] 게임 진행 중 방 노출 + 중간 입장 처리
+    — 현재: bAllowJoinInProgress 옵션 존재, ConvertSearchResultToRoomInfo에 bInProgress 플래그 있음
+    — 미구현: RoomListEntryWidget에서 진행 중 방 시각적 구분 없음
+    — 결정 필요: 모드별 중간 입장 허용 여부 (AW: 관전?, Sumo: 다음 라운드?, JumpMap: 즉시 참여?)

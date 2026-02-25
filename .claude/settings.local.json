@@ -113,7 +113,9 @@
       "Bash(\"C:\\\\Program Files\\\\Epic Games\\\\UE_5.7\\\\Engine\\\\Build\\\\BatchFiles\\\\Build.bat\" WjWorldEditor Win64 DebugGame \"C:\\\\UEProjects\\\\WjWorld\\\\WjWorld.uproject\" -WaitMutex)",
       "WebFetch(domain:partner.steamgames.com)",
       "Bash(C:/UEProjects/WjWorld/Batch/RebuildProject.bat)",
-      "Bash(\"C:\\\\Program Files\\\\Epic Games\\\\UE_5.7\\\\Engine\\\\Build\\\\BatchFiles\\\\Build.bat\" WjWorldEditor Win64 DebugGame -project=\"C:\\\\UEProjects\\\\WjWorld\\\\WjWorld.uproject\" -waitmutex)"
+      "Bash(\"C:\\\\Program Files\\\\Epic Games\\\\UE_5.7\\\\Engine\\\\Build\\\\BatchFiles\\\\Build.bat\" WjWorldEditor Win64 DebugGame -project=\"C:\\\\UEProjects\\\\WjWorld\\\\WjWorld.uproject\" -waitmutex)",
+      "Bash(git rm:*)",
+      "Bash(\"C:\\\\UE\\\\UE_5.7\\\\Engine\\\\Build\\\\BatchFiles\\\\Build.bat\" WjWorldEditor Win64 Development -Project=\"C:\\\\UEProjects\\\\WjWorld\\\\WjWorld.uproject\" -WaitMutex -FromMsBuild)"
     ]
   },
   "teammateMode": "in-process"

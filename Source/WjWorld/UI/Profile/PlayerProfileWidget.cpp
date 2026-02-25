@@ -96,7 +96,18 @@ void UPlayerProfileWidget::ShowPlayerProfile(const FUniqueNetIdRepl& PlayerId,
 	}
 
 	FString PlayerIdStr = PlayerId.ToString();
-	if (StatsSub->IsUserStatsReadyByString(PlayerIdStr))
+	if (!PlayerId.IsValid() || PlayerIdStr.IsEmpty())
+	{
+		// UniqueId가 없는 경우 (LAN/NULL 서브시스템) — 스탯 표시 불가
+		if (StatsContainer)
+		{
+			StatsContainer->ClearChildren();
+			UTextBlock* UnavailableText = NewObject<UTextBlock>(this);
+			UnavailableText->SetText(NSLOCTEXT("WjWorldProfile", "StatsUnavailable", "Stats unavailable"));
+			StatsContainer->AddChild(UnavailableText);
+		}
+	}
+	else if (StatsSub->IsUserStatsReadyByString(PlayerIdStr))
 	{
 		PopulateUserStats(PlayerIdStr);
 	}
@@ -272,14 +283,17 @@ void UPlayerProfileWidget::CreatePreviewActor(const FCosmeticLoadout& Loadout)
 
 	if (PreviewActor)
 	{
+		// 기본 캐릭터 메시 설정 (모든 캐릭터가 같은 base mesh 사용)
+		APlayerController* PC = GetOwningPlayer();
+		if (PC && PC->GetPawn())
+		{
+			PreviewActor->SetupFromPawn(PC->GetPawn());
+		}
+
 		PreviewActor->SetupPreview(Loadout);
 
-		// 약간의 딜레이 후 렌더 타겟 적용 (에셋 로드 대기)
-		FTimerHandle TimerHandle;
-		World->GetTimerManager().SetTimer(TimerHandle, FTimerDelegate::CreateWeakLambda(this, [this]()
-		{
-			ApplyRenderTargetToImage();
-		}), 0.5f, false);
+		// 실시간 캡처이므로 즉시 렌더 타겟 적용 (코스메틱 로드되는 대로 자동 반영)
+		ApplyRenderTargetToImage();
 	}
 }
 
@@ -306,10 +320,7 @@ void UPlayerProfileWidget::ApplyRenderTargetToImage()
 	}
 
 	// RenderTarget을 브러시로 설정
-	FSlateBrush Brush;
-	Brush.SetResourceObject(RT);
-	Brush.ImageSize = FVector2D(RT->SizeX, RT->SizeY);
-	CharacterPreviewImage->SetBrush(Brush);
+	CharacterPreviewImage->SetBrushResourceObject(RT);
 
 	UE_LOG(LogWjWorld, Log, TEXT("PlayerProfileWidget: RenderTarget applied to image"));
 }
