@@ -27,6 +27,10 @@ public:
 	/** 가장 위에 열린 팝업 닫기 (서브클래스에서 override) */
 	virtual bool TryCloseTopPopup();
 
+protected:
+	/** 채팅 위젯 생성 여부 (Intro/Login 등 비멀티플레이어 컨텍스트에서 false) */
+	bool bCreateChatWidget = false;
+
 private:
 	UPROPERTY()
 	TObjectPtr<UCoinGainNotificationWidget> CoinGainNotificationWidget;

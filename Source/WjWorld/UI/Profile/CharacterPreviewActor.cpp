@@ -9,6 +9,8 @@
 #include "GameFramework/Character.h"
 #include "Cosmetic/WjWorldCosmeticSubsystem.h"
 #include "Cosmetic/WjWorldCosmeticDataAsset.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "Setting/WjWorldDeveloperSettings.h"
 #include "WjWorldLogCategories.h"
 
 ACharacterPreviewActor::ACharacterPreviewActor()
@@ -37,15 +39,25 @@ ACharacterPreviewActor::ACharacterPreviewActor()
 	// Scene Capture
 	SceneCaptureComponent = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCapture"));
 	SceneCaptureComponent->SetupAttachment(SceneRoot);
-	SceneCaptureComponent->SetRelativeLocation(FVector(200.f, 0.f, 90.f));
+	SceneCaptureComponent->SetRelativeLocation(FVector(50.f, 0.f, 90.f));
 	SceneCaptureComponent->SetRelativeRotation(FRotator(-10.f, 180.f, 0.f));
 	SceneCaptureComponent->PrimitiveRenderMode = ESceneCapturePrimitiveRenderMode::PRM_UseShowOnlyList;
-	// PropagateAlpha=1 환경에서 SCS_FinalColorLDR은 full post-processing을 거치며 alpha 손상 발생
-	// SCS_FinalToneCurveHDR은 tone curve만 적용하여 alpha를 보존하면서 HDR→LDR 매핑
-	SceneCaptureComponent->CaptureSource = SCS_FinalToneCurveHDR;
+	SceneCaptureComponent->ProjectionType = ECameraProjectionMode::Orthographic;
+	SceneCaptureComponent->OrthoWidth = 120.f;
+
+	// FinalColorHDR: tone curve 이전 최종 색상 캡처 + PropagateAlpha=1 → alpha 보존
+	SceneCaptureComponent->CaptureSource = SCS_FinalColorHDR;
 	SceneCaptureComponent->bCaptureEveryFrame = false;
 	SceneCaptureComponent->bCaptureOnMovement = false;
 	SceneCaptureComponent->bAlwaysPersistRenderingState = true;
+
+	// 글로벌 환경 렌더링만 비활성화 (Lighting 유지 필수 — alpha 보존)
+	// PRM_UseShowOnlyList가 컴포넌트 필터링 담당하므로 BSP/Decals 등은 불필요
+	SceneCaptureComponent->ShowFlags.SetAtmosphere(false);
+	SceneCaptureComponent->ShowFlags.SetFog(false);
+	SceneCaptureComponent->ShowFlags.SetVolumetricFog(false);
+	SceneCaptureComponent->ShowFlags.SetCloud(false);
+	SceneCaptureComponent->ShowFlags.SetLandscape(false);
 }
 
 void ACharacterPreviewActor::BeginPlay()
@@ -326,4 +338,35 @@ void ACharacterPreviewActor::RefreshCapture()
 
 		UE_LOG(LogWjWorld, Log, TEXT("CharacterPreviewActor: Scene captured"));
 	}
+}
+
+UMaterialInstanceDynamic* ACharacterPreviewActor::GetPreviewMaterial()
+{
+	if (PreviewMID)
+	{
+		return PreviewMID;
+	}
+
+	if (!PreviewMaterialBase)
+	{
+		const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+		if (Settings && !Settings->CharacterPreviewMaterial.IsNull())
+		{
+			PreviewMaterialBase = Settings->CharacterPreviewMaterial.LoadSynchronous();
+		}
+	}
+
+	if (!PreviewMaterialBase)
+	{
+		UE_LOG(LogWjWorldCosmetic, Warning, TEXT("CharacterPreviewActor: M_CharacterPreview not found"));
+		return nullptr;
+	}
+
+	PreviewMID = UMaterialInstanceDynamic::Create(PreviewMaterialBase, this);
+	if (PreviewMID && RenderTarget)
+	{
+		PreviewMID->SetTextureParameterValue(FName("PreviewTexture"), RenderTarget);
+	}
+
+	return PreviewMID;
 }

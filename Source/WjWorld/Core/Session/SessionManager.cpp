@@ -160,6 +160,8 @@ bool USessionManager::CreateSession(const FRoomSettings& Settings)
 	SessionSettings.Set(FName("MAP_NAME"), Settings.MapName, EOnlineDataAdvertisementType::ViaOnlineService);
 	SessionSettings.Set(FName("IS_PRIVATE"), Settings.bIsPrivate, EOnlineDataAdvertisementType::ViaOnlineService);
 
+	SessionSettings.Set(FName("IN_PROGRESS"), false, EOnlineDataAdvertisementType::ViaOnlineService);
+
 	if (Settings.bIsPrivate && !Settings.Password.IsEmpty())
 	{
 		SessionSettings.Set(FName("PASSWORD"), Settings.Password, EOnlineDataAdvertisementType::ViaOnlineService);
@@ -630,6 +632,8 @@ bool USessionManager::CreateMigrationSession(const FRoomSettings& Settings, cons
 	SessionSettings.Set(FName("MAP_NAME"), Settings.MapName, EOnlineDataAdvertisementType::ViaOnlineService);
 	SessionSettings.Set(FName("IS_PRIVATE"), Settings.bIsPrivate, EOnlineDataAdvertisementType::ViaOnlineService);
 
+	SessionSettings.Set(FName("IN_PROGRESS"), false, EOnlineDataAdvertisementType::ViaOnlineService);
+
 	// 마이그레이션 태그 추가
 	SessionSettings.Set(FName("MIGRATION_TAG"), MigrationTag, EOnlineDataAdvertisementType::ViaOnlineService);
 
@@ -749,8 +753,31 @@ FRoomInfo USessionManager::ConvertSearchResultToRoomInfo(const FOnlineSessionSea
 		RoomInfo.HostName = SearchResult.Session.OwningUserName;
 	}
 
-	// 진행 상태
-	RoomInfo.bInProgress = SearchResult.Session.SessionSettings.bAllowJoinInProgress && (RoomInfo.CurrentPlayers > 0);
+	// 진행 상태 — 세션 커스텀 설정에서 실제 값 읽기
+	SearchResult.Session.SessionSettings.Get(FName("IN_PROGRESS"), RoomInfo.bInProgress);
+	RoomInfo.bAllowJoinInProgress = SearchResult.Session.SessionSettings.bAllowJoinInProgress;
 
 	return RoomInfo;
+}
+
+bool USessionManager::UpdateSessionInProgress(bool bInProgress)
+{
+	if (!SessionInterface.IsValid())
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("SessionManager: UpdateSessionInProgress - SessionInterface invalid"));
+		return false;
+	}
+
+	FNamedOnlineSession* Session = SessionInterface->GetNamedSession(SESSION_NAME);
+	if (!Session)
+	{
+		UE_LOG(LogWjWorld, Warning, TEXT("SessionManager: UpdateSessionInProgress - No active session"));
+		return false;
+	}
+
+	Session->SessionSettings.Set(FName("IN_PROGRESS"), bInProgress, EOnlineDataAdvertisementType::ViaOnlineService);
+	SessionInterface->UpdateSession(SESSION_NAME, Session->SessionSettings);
+
+	UE_LOG(LogWjWorld, Log, TEXT("SessionManager: UpdateSessionInProgress(%s)"), bInProgress ? TEXT("true") : TEXT("false"));
+	return true;
 }

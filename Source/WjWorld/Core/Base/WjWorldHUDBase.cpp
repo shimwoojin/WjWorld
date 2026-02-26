@@ -35,8 +35,8 @@ void AWjWorldHUDBase::BeginPlay()
 		}
 	}
 
-	// 채팅 위젯 생성
-	if (!Settings->ChatWidgetClass.IsNull())
+	// 채팅 위젯 생성 (멀티플레이어 컨텍스트에서만)
+	if (bCreateChatWidget && !Settings->ChatWidgetClass.IsNull())
 	{
 		UClass* ChatClass = Settings->ChatWidgetClass.LoadSynchronous();
 		if (ChatClass)

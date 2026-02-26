@@ -59,6 +59,9 @@ private:
 	void ShrinkSafeZones(bool& bAnySafeZoneExist);
 	virtual bool PredictNextLevelIsLast() override;
 
+	/** 중앙 할당: 각 FloodFillPoint에 가장 가까운 벽돌을 배정 */
+	void AssignBrickTargets();
+
 	void UpdateGameData();
 
 protected:
@@ -86,6 +89,10 @@ protected:
 	// 플레이어 추적
 	UPROPERTY()
 	TArray<TWeakObjectPtr<AWjWorldPlayerStatePlay>> AlivePlayers;
+
+	/** 게임 참여자 (관전자 제외, OnPlayerLeft에서 참여자 판별용) */
+	UPROPERTY()
+	TArray<TWeakObjectPtr<AWjWorldPlayerStatePlay>> AllParticipants;
 
 	UPROPERTY()
 	TWeakObjectPtr<AWjWorldPlayerStatePlay> WinnerPlayer;

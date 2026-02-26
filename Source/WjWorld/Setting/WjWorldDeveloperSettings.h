@@ -22,6 +22,7 @@ class AJumpMapActorBase;
 class USkeletalMesh;
 class UStaticMesh;
 class UAnimInstance;
+class UMaterialInterface;
 
 /**
  * WjWorld 프로젝트 개발자 설정
@@ -170,6 +171,10 @@ public:
 	/** 채팅 위젯 클래스 (HUDBase에서 생성) */
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "UI")
 	TSoftClassPtr<UUserWidget> ChatWidgetClass;
+
+	/** 캐릭터 프리뷰 머티리얼 (alpha 반전, SceneCapture → UImage 표시용) */
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "UI")
+	TSoftObjectPtr<UMaterialInterface> CharacterPreviewMaterial;
 
 	// ========== JumpMap ==========
 

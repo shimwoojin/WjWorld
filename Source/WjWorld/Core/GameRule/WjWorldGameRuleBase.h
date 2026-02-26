@@ -51,6 +51,9 @@ public:
     AWjWorldGameModePlay* GetGameModePlay() const;
     AWjWorldGameStatePlay* GetGameStatePlay() const;
 
+    /** 게임이 Playing 또는 Finished 상태인지 (중간 입장자 판별용) */
+    bool IsGameInProgress() const;
+
     virtual bool PredictNextLevelIsLast() { return false; }
 
 protected:

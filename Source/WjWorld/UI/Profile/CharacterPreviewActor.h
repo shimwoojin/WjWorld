@@ -38,6 +38,9 @@ public:
 	/** 렌더 타겟 반환 */
 	UTextureRenderTarget2D* GetRenderTarget() const { return RenderTarget; }
 
+	/** alpha 반전 처리된 프리뷰 머티리얼 반환 (Image 브러시용) */
+	UMaterialInstanceDynamic* GetPreviewMaterial();
+
 	/** 기본 메시가 설정되어 있는지 확인 */
 	bool HasBaseMesh() const;
 
@@ -66,6 +69,13 @@ private:
 	UPROPERTY()
 	TObjectPtr<UTextureRenderTarget2D> RenderTarget;
 
+	/** alpha 반전 프리뷰 머티리얼 (M_CharacterPreview) */
+	UPROPERTY()
+	TObjectPtr<UMaterialInterface> PreviewMaterialBase;
+
+	UPROPERTY()
+	TObjectPtr<UMaterialInstanceDynamic> PreviewMID;
+
 	/** 슬롯별 코스메틱 메시 컴포넌트 (StaticMesh 또는 SkeletalMesh) */
 	UPROPERTY()
 	TMap<ECosmeticSlot, TObjectPtr<UMeshComponent>> SlotMeshComponents;
@@ -78,6 +88,6 @@ private:
 	TMap<ECosmeticSlot, TSharedPtr<FStreamableHandle>> ActiveStreamHandles;
 
 	/** 렌더 타겟 크기 */
-	static constexpr int32 RenderTargetWidth = 256;
-	static constexpr int32 RenderTargetHeight = 512;
+	static constexpr int32 RenderTargetWidth = 500;
+	static constexpr int32 RenderTargetHeight = 1000;
 };

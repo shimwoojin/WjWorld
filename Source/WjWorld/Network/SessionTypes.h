@@ -92,6 +92,10 @@ struct FRoomInfo
 	UPROPERTY(BlueprintReadOnly, Category = "Room")
 	bool bInProgress = false;
 
+	/** 게임 중 입장 허용 여부 */
+	UPROPERTY(BlueprintReadOnly, Category = "Room")
+	bool bAllowJoinInProgress = true;
+
 	/** 방장 이름 */
 	UPROPERTY(BlueprintReadOnly, Category = "Room")
 	FString HostName;

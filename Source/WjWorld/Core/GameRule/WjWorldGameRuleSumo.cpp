@@ -155,6 +155,13 @@ void UWjWorldGameRuleSumo::OnPlayerJoined(AWjWorldPlayerStatePlay* Player)
 
 	if (!HasAuthority() || !Player) return;
 
+	// 게임 진행 중 입장한 관전자는 참여자로 등록하지 않음
+	if (IsGameInProgress())
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Spectator joined mid-game: %s"), *Player->GetPlayerName());
+		return;
+	}
+
 	AlivePlayers.Add(Player);
 	AllPlayers.Add(Player);
 	AlivePlayerCount++;
@@ -172,7 +179,14 @@ void UWjWorldGameRuleSumo::OnPlayerLeft(AWjWorldPlayerStatePlay* Player)
 
 	if (!HasAuthority() || !Player) return;
 
-	// 罹먮┃???쒓굅 泥섎━
+	// 관전자(AllPlayers에 없는 플레이어)는 게임 카운터에 영향 없음
+	if (AllPlayers.Remove(Player) == 0)
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Spectator left: %s"), *Player->GetPlayerName());
+		return;
+	}
+
+	// 캐릭터 제거 처리
 	APawn* PlayerPawn = Player->GetPawn();
 	AWjWorldCharacterPlay* PlayerCharacter = Cast<AWjWorldCharacterPlay>(PlayerPawn);
 	if (PlayerCharacter && !PlayerCharacter->IsEliminated())
@@ -184,7 +198,6 @@ void UWjWorldGameRuleSumo::OnPlayerLeft(AWjWorldPlayerStatePlay* Player)
 	{
 		AlivePlayerCount--;
 	}
-	AllPlayers.Remove(Player);
 	TotalPlayerCount--;
 
 	UpdateGameData();
@@ -192,7 +205,7 @@ void UWjWorldGameRuleSumo::OnPlayerLeft(AWjWorldPlayerStatePlay* Player)
 	UE_LOG(LogWjWorld, Log, TEXT("GameRuleSumo: Player Left - %s, Alive: %d, Total: %d"),
 		*Player->GetPlayerName(), AlivePlayerCount, TotalPlayerCount);
 
-	// 紐⑤뱺 ?뚮젅?댁뼱 ?댄깉
+	// 모든 참여자 이탈
 	if (TotalPlayerCount <= 0)
 	{
 		bGameOverConditionMet = true;
@@ -201,7 +214,7 @@ void UWjWorldGameRuleSumo::OnPlayerLeft(AWjWorldPlayerStatePlay* Player)
 		return;
 	}
 
-	// ?쇱슫???밸━ 議곌굔 泥댄겕
+	// 승리 조건 체크
 	if (bIsGameStarted && bIsRoundActive && AlivePlayerCount <= 1)
 	{
 		OnRoundEnd();

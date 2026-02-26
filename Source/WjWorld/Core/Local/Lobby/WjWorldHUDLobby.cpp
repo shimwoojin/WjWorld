@@ -8,7 +8,7 @@
 
 AWjWorldHUDLobby::AWjWorldHUDLobby()
 {
-	// LobbyHUDWidgetClass와 PlacementHUDWidgetClass는 BP 서브클래스에서 설정
+	bCreateChatWidget = true;
 }
 
 void AWjWorldHUDLobby::BeginPlay()

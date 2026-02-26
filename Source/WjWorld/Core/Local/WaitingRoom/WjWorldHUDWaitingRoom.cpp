@@ -7,7 +7,7 @@
 
 AWjWorldHUDWaitingRoom::AWjWorldHUDWaitingRoom()
 {
-	// WaitingRoomHUDWidgetClass는 BP 서브클래스에서 설정
+	bCreateChatWidget = true;
 }
 
 void AWjWorldHUDWaitingRoom::BeginPlay()

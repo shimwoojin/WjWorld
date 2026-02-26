@@ -19,6 +19,8 @@ class WJWORLD_API AWjWorldHUDPlay : public AWjWorldHUDBase
 	GENERATED_BODY()
 	
 public:
+	AWjWorldHUDPlay();
+
 	void StartGameStartCountDown(float CountDown);
 	void ShowGameResultText(const FString& ResultText, float Duration = 3.0f);
 

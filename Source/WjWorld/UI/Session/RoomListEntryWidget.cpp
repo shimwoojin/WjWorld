@@ -119,12 +119,18 @@ void URoomListEntryWidget::OnRoomJoined(bool bWasSuccessful)
 
 void URoomListEntryWidget::UpdateUI()
 {
-	// 방 이름 (비공개 방은 [Private] 접두사 추가)
+	// 방 이름 (진행 중/비공개 접두사 추가)
 	if (RoomNameText)
 	{
-		FString DisplayName = CurrentRoomInfo.bIsPrivate
-			? FString::Printf(TEXT("[Private] %s"), *CurrentRoomInfo.RoomName)
-			: CurrentRoomInfo.RoomName;
+		FString DisplayName = CurrentRoomInfo.RoomName;
+		if (CurrentRoomInfo.bIsPrivate)
+		{
+			DisplayName = FString::Printf(TEXT("[Private] %s"), *DisplayName);
+		}
+		if (CurrentRoomInfo.bInProgress)
+		{
+			DisplayName = FString::Printf(TEXT("[Playing] %s"), *DisplayName);
+		}
 		RoomNameText->SetText(FText::FromString(DisplayName));
 	}
 
@@ -137,8 +143,8 @@ void URoomListEntryWidget::UpdateUI()
 	// 플레이어 수
 	if (PlayerCountText)
 	{
-		FString PlayerCount = FString::Printf(TEXT("%d / %d"), 
-			CurrentRoomInfo.CurrentPlayers, 
+		FString PlayerCount = FString::Printf(TEXT("%d / %d"),
+			CurrentRoomInfo.CurrentPlayers,
 			CurrentRoomInfo.MaxPlayers);
 		PlayerCountText->SetText(FText::FromString(PlayerCount));
 	}
@@ -150,10 +156,14 @@ void URoomListEntryWidget::UpdateUI()
 		PingText->SetText(FText::FromString(Ping));
 	}
 
-	// 방이 가득 찼으면 입장 버튼 비활성화
+	// 방이 가득 찼거나, 게임 중 입장 불허 시 버튼 비활성화
 	if (JoinButton)
 	{
 		bool bCanJoin = (CurrentRoomInfo.CurrentPlayers < CurrentRoomInfo.MaxPlayers);
+		if (CurrentRoomInfo.bInProgress && !CurrentRoomInfo.bAllowJoinInProgress)
+		{
+			bCanJoin = false;
+		}
 		JoinButton->SetIsEnabled(bCanJoin);
 	}
 }

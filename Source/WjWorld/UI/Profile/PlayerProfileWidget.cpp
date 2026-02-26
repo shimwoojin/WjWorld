@@ -278,7 +278,7 @@ void UPlayerProfileWidget::CreatePreviewActor(const FCosmeticLoadout& Loadout)
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	// 월드에서 보이지 않는 위치에 스폰
-	FVector SpawnLocation(0.f, 0.f, -10000.f);
+	FVector SpawnLocation(0.f, 0.f, 15000.f);
 	PreviewActor = World->SpawnActor<ACharacterPreviewActor>(ACharacterPreviewActor::StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnParams);
 
 	if (PreviewActor)
@@ -313,14 +313,18 @@ void UPlayerProfileWidget::ApplyRenderTargetToImage()
 		return;
 	}
 
-	UTextureRenderTarget2D* RT = PreviewActor->GetRenderTarget();
-	if (!RT)
+	UMaterialInstanceDynamic* MID = PreviewActor->GetPreviewMaterial();
+	if (MID)
 	{
-		return;
+		CharacterPreviewImage->SetBrushResourceObject(MID);
 	}
-
-	// RenderTarget을 브러시로 설정
-	CharacterPreviewImage->SetBrushResourceObject(RT);
-
-	UE_LOG(LogWjWorld, Log, TEXT("PlayerProfileWidget: RenderTarget applied to image"));
+	else
+	{
+		// 머티리얼 폴백: RenderTarget 직접 사용
+		UTextureRenderTarget2D* RT = PreviewActor->GetRenderTarget();
+		if (RT)
+		{
+			CharacterPreviewImage->SetBrushResourceObject(RT);
+		}
+	}
 }

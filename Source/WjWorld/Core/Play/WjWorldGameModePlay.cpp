@@ -142,6 +142,25 @@ void AWjWorldGameModePlay::PostLogin(APlayerController* NewPlayer)
 	UE_LOG(LogWjWorld, Log, TEXT("GameModePlay: PostLogin completed for %s"), *NewPlayer->GetName());
 }
 
+void AWjWorldGameModePlay::HandleStartingNewPlayer_Implementation(APlayerController* NewPlayer)
+{
+	// 게임 진행 중 또는 종료 후 입장한 플레이어는 관전자로 처리
+	AWjWorldGameStatePlay* PlayGameState = GetGameState<AWjWorldGameStatePlay>();
+	if (PlayGameState)
+	{
+		EGamePhase Phase = PlayGameState->GetGamePhase();
+		if (Phase == EGamePhase::Playing || Phase == EGamePhase::Finished)
+		{
+			NewPlayer->StartSpectatingOnly();
+			UE_LOG(LogWjWorld, Log, TEXT("GameModePlay: Mid-game join - %s set to spectator (Phase: %d)"),
+				*NewPlayer->GetName(), static_cast<int32>(Phase));
+			return;
+		}
+	}
+
+	Super::HandleStartingNewPlayer_Implementation(NewPlayer);
+}
+
 void AWjWorldGameModePlay::Logout(AController* Exiting)
 {
 	// GameRule에 플레이어 이탈 알림 (Super::Logout 전에 호출해야 PlayerState가 유효함)

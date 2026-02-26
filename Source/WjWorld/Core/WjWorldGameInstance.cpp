@@ -106,7 +106,12 @@ bool UWjWorldGameInstance::StartGame()
 {
 	if (SessionManager)
 	{
-		return SessionManager->StartSession();
+		bool bSuccess = SessionManager->StartSession();
+		if (bSuccess)
+		{
+			SessionManager->UpdateSessionInProgress(true);
+		}
+		return bSuccess;
 	}
 
 	UE_LOG(LogWjWorld, Error, TEXT("WjWorldGameInstance: SessionManager is null"));
@@ -131,6 +136,7 @@ bool UWjWorldGameInstance::EndGame()
 
 	if (SessionManager)
 	{
+		SessionManager->UpdateSessionInProgress(false);
 		return SessionManager->EndSession();
 	}
 

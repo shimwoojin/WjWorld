@@ -145,7 +145,7 @@ void UCosmeticPreviewPanel::CreatePreviewActor()
 	}
 
 	// 월드 밖 위치에 스폰 (화면에 보이지 않음)
-	FVector SpawnLocation(10000.f, 10000.f, 0.f);
+	FVector SpawnLocation(0.f, 0.f, 15000.f);
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
@@ -182,11 +182,18 @@ void UCosmeticPreviewPanel::ApplyRenderTargetToImage()
 		return;
 	}
 
-	UTextureRenderTarget2D* RenderTarget = PreviewActor->GetRenderTarget();
-	if (!RenderTarget)
+	UMaterialInstanceDynamic* MID = PreviewActor->GetPreviewMaterial();
+	if (MID)
 	{
-		return;
+		PreviewImage->SetBrushResourceObject(MID);
 	}
-
-	PreviewImage->SetBrushResourceObject(RenderTarget);
+	else
+	{
+		// 머티리얼 폴백: RenderTarget 직접 사용
+		UTextureRenderTarget2D* RenderTarget = PreviewActor->GetRenderTarget();
+		if (RenderTarget)
+		{
+			PreviewImage->SetBrushResourceObject(RenderTarget);
+		}
+	}
 }

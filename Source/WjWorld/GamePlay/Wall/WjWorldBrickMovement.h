@@ -42,7 +42,11 @@ public:
 	virtual FVector GetMovementVector(bool bIsNew = true);
 	virtual TArray<EWjWorldBrickMovementDirection> GetNextDirections();
 
+	/** 외부에서 이동 타겟 그리드 좌표 주입 (중앙 할당 알고리즘용) */
+	void SetAssignedTarget(const FIntPoint& TargetGridPos);
+
 	FVector GetLastMovementVector() const { return LastMovementVector; }
+	FIntPoint GetCurrentGridPosition() const { return CurrentGridPosition; }
 	bool IsMoving() const { return bIsMoving; }
 
 	// 연쇄 밀림 체크: 해당 방향으로 밀릴 수 있는지 확인 (재귀적으로 체크)
@@ -79,4 +83,7 @@ private:
 	float MoveElapsedTime = 0.0f;
 
 	bool bIsMoving = false;
+
+	FIntPoint AssignedTarget;
+	bool bHasAssignedTarget = false;
 };

@@ -216,6 +216,17 @@ AWjWorldGameStatePlay* UWjWorldGameRuleBase::GetGameStatePlay() const
 	return nullptr;
 }
 
+bool UWjWorldGameRuleBase::IsGameInProgress() const
+{
+	AWjWorldGameStatePlay* GS = GetGameStatePlay();
+	if (GS)
+	{
+		EGamePhase Phase = GS->GetGamePhase();
+		return Phase == EGamePhase::Playing || Phase == EGamePhase::Finished;
+	}
+	return false;
+}
+
 void UWjWorldGameRuleBase::GameLevelUp(int32 NewLevel)
 {
 	if (!HasAuthority()) return;

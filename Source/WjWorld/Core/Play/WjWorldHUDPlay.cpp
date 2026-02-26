@@ -6,6 +6,11 @@
 
 #include "UI/HUD/GameplayGlobalHUDWidget.h"
 
+AWjWorldHUDPlay::AWjWorldHUDPlay()
+{
+	bCreateChatWidget = true;
+}
+
 void AWjWorldHUDPlay::StartGameStartCountDown(float CountDown)
 {
     if(GlobalHUDWidget)

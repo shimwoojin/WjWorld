@@ -9,7 +9,12 @@
 #include "Core/GameData/ApproachingWallPlayerDataComponent.h"
 #include "Core/GameData/ApproachingWallGameDataComponent.h"
 #include "GamePlay/Wall/WjWorldBrickSpawner.h"
+#include "GamePlay/Wall/WjWorldBrickActor.h"
+#include "GamePlay/Wall/WjWorldBrickComponent.h"
+#include "GamePlay/Wall/WjWorldBrickMovement.h"
 #include "GamePlay/Wall/WjWorldWallManager.h"
+
+#include "EngineUtils.h"
 #include "Setting/WjWorldDeveloperSettings.h"
 #include "Stats/WjWorldStatsSubsystem.h"
 #include "Stats/WjWorldStatTypes.h"
@@ -146,8 +151,17 @@ void UWjWorldGameRuleApproachingWall::OnPlayerJoined(AWjWorldPlayerStatePlay* Pl
 
 	if (!HasAuthority() || !Player) return;
 
-	// 플레이어를 생존자 목록에 추가
+	// 게임 진행 중 입장한 관전자는 참여자로 등록하지 않음
+	if (IsGameInProgress())
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("UWjWorldGameRuleApproachingWall::OnPlayerJoined - Spectator joined mid-game: %s"),
+			*Player->GetPlayerName());
+		return;
+	}
+
+	// 플레이어를 생존자/참여자 목록에 추가
 	AlivePlayers.Add(Player);
+	AllParticipants.Add(Player);
 	AlivePlayerCount++;
 	TotalPlayerCount++;
 
@@ -162,6 +176,13 @@ void UWjWorldGameRuleApproachingWall::OnPlayerLeft(AWjWorldPlayerStatePlay* Play
 	Super::OnPlayerLeft(Player);
 
 	if (!HasAuthority() || !Player) return;
+
+	// 관전자(참여자 목록에 없는 플레이어)는 게임 카운터에 영향 없음
+	if (AllParticipants.Remove(Player) == 0)
+	{
+		UE_LOG(LogWjWorld, Log, TEXT("UWjWorldGameRuleApproachingWall::OnPlayerLeft - Spectator left: %s"), *Player->GetPlayerName());
+		return;
+	}
 
 	// 플레이어의 캐릭터 처리 (좀비 상태 방지)
 	APawn* PlayerPawn = Player->GetPawn();
@@ -328,6 +349,9 @@ void UWjWorldGameRuleApproachingWall::TickGameRule(float DeltaTime)
 
 		if (bAnySafeZoneExist)
 		{
+			// 중앙 할당: 이동 시작 전에 각 벽돌에 타겟 배정
+			AssignBrickTargets();
+
 			if (WallManager)
 			{
 				WallManager->WallMoveStart(UWjWorldWallManager::GetBrickMovementAllowedTime(BrickMoveSignalCount));
@@ -469,15 +493,12 @@ void UWjWorldGameRuleApproachingWall::ShrinkSafeZones(bool& bAnySafeZoneExist)
 	for (auto Iter = CurrentSafeZonePoints.CreateIterator(); Iter; ++Iter)
 	{
 		FIntPoint& SafeZonePoint = *Iter;
+		// 4방향만 체크 (대각선 제외)
 		TArray<FIntPoint> AdjacentPoints = {
 			FIntPoint(SafeZonePoint.X + 1, SafeZonePoint.Y),
 			FIntPoint(SafeZonePoint.X - 1, SafeZonePoint.Y),
 			FIntPoint(SafeZonePoint.X, SafeZonePoint.Y + 1),
-			FIntPoint(SafeZonePoint.X, SafeZonePoint.Y - 1),
-			FIntPoint(SafeZonePoint.X + 1, SafeZonePoint.Y + 1),
-			FIntPoint(SafeZonePoint.X - 1, SafeZonePoint.Y + 1),
-			FIntPoint(SafeZonePoint.X + 1, SafeZonePoint.Y - 1),
-			FIntPoint(SafeZonePoint.X - 1, SafeZonePoint.Y - 1)
+			FIntPoint(SafeZonePoint.X, SafeZonePoint.Y - 1)
 		};
 
 		for (const FIntPoint& AdjacentPoint : AdjacentPoints)
@@ -506,15 +527,12 @@ bool UWjWorldGameRuleApproachingWall::PredictNextLevelIsLast()
 	for (auto Iter = SimulatedSafeZones.CreateIterator(); Iter; ++Iter)
 	{
 		FIntPoint& SafeZonePoint = *Iter;
+		// 4방향만 체크 (대각선 제외)
 		TArray<FIntPoint> AdjacentPoints = {
 			FIntPoint(SafeZonePoint.X + 1, SafeZonePoint.Y),
 			FIntPoint(SafeZonePoint.X - 1, SafeZonePoint.Y),
 			FIntPoint(SafeZonePoint.X, SafeZonePoint.Y + 1),
-			FIntPoint(SafeZonePoint.X, SafeZonePoint.Y - 1),
-			FIntPoint(SafeZonePoint.X + 1, SafeZonePoint.Y + 1),
-			FIntPoint(SafeZonePoint.X - 1, SafeZonePoint.Y + 1),
-			FIntPoint(SafeZonePoint.X + 1, SafeZonePoint.Y - 1),
-			FIntPoint(SafeZonePoint.X - 1, SafeZonePoint.Y - 1)
+			FIntPoint(SafeZonePoint.X, SafeZonePoint.Y - 1)
 		};
 
 		for (const FIntPoint& AdjacentPoint : AdjacentPoints)
@@ -533,6 +551,76 @@ bool UWjWorldGameRuleApproachingWall::PredictNextLevelIsLast()
 	}
 
 	return SimulatedSafeZones.Num() <= 1;
+}
+
+void UWjWorldGameRuleApproachingWall::AssignBrickTargets()
+{
+	if (FloodFillPoints.Num() == 0) return;
+
+	UWorld* World = GetWorld();
+	if (!World) return;
+
+	// Standard 타입 벽돌 수집 (현재 그리드 좌표와 함께)
+	struct FBrickCandidate
+	{
+		UWjWorldBrickMovement* Movement;
+		FIntPoint GridPos;
+	};
+
+	TArray<FBrickCandidate> AvailableBricks;
+
+	for (TActorIterator<AWjWorldBrickActor> It(World); It; ++It)
+	{
+		AWjWorldBrickActor* BrickActor = *It;
+		if (!BrickActor) continue;
+
+		UWjWorldBrickComponent* BrickComp = BrickActor->GetBrickComponent();
+		if (!BrickComp) continue;
+		if (BrickComp->GetBrickProperties().BrickType != EWjWorldBrickType::Standard) continue;
+
+		UWjWorldBrickMovement* Movement = BrickComp->GetBrickMovement();
+		if (!Movement) continue;
+		if (Movement->IsMoving()) continue;
+
+		AvailableBricks.Add({ Movement, Movement->GetCurrentGridPosition() });
+	}
+
+	// Greedy 할당: 각 FloodFillPoint에 가장 가까운 미할당 벽돌 배정
+	TSet<int32> AssignedBrickIndices;
+
+	for (const FIntPoint& Target : FloodFillPoints)
+	{
+		int32 BestIndex = -1;
+		int32 BestDistance = INT_MAX;
+
+		for (int32 i = 0; i < AvailableBricks.Num(); i++)
+		{
+			if (AssignedBrickIndices.Contains(i)) continue;
+
+			// 맨해튼 거리
+			int32 Distance = FMath::Abs(AvailableBricks[i].GridPos.X - Target.X)
+				+ FMath::Abs(AvailableBricks[i].GridPos.Y - Target.Y);
+
+			if (Distance < BestDistance)
+			{
+				BestDistance = Distance;
+				BestIndex = i;
+			}
+		}
+
+		if (BestIndex >= 0)
+		{
+			AvailableBricks[BestIndex].Movement->SetAssignedTarget(Target);
+			AssignedBrickIndices.Add(BestIndex);
+		}
+		else
+		{
+			UE_LOG(LogWjWorld, Warning, TEXT("AssignBrickTargets: No available brick for target (%d, %d)"), Target.X, Target.Y);
+		}
+	}
+
+	UE_LOG(LogWjWorld, Log, TEXT("AssignBrickTargets: %d targets, %d bricks available, %d assigned"),
+		FloodFillPoints.Num(), AvailableBricks.Num(), AssignedBrickIndices.Num());
 }
 
 void UWjWorldGameRuleApproachingWall::RecordKillStat(AWjWorldPlayerStatePlay* KillerPlayerState)

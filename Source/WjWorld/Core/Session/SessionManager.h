@@ -117,6 +117,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Session")
 	bool GetSessionPassword(int32 SearchResultIndex, FString& OutPassword) const;
 
+	/**
+	 * 세션의 IN_PROGRESS 커스텀 설정 업데이트
+	 * 게임 시작/종료 시 호출하여 방 목록에서 진행 상태 표시
+	 * @param bInProgress 게임 진행 중 여부
+	 * @return 성공 여부
+	 */
+	bool UpdateSessionInProgress(bool bInProgress);
+
 public:
 	//~ 델리게이트 (UI에서 바인딩)
 	UPROPERTY(BlueprintAssignable, Category = "Session|Events")
