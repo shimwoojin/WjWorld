@@ -22,6 +22,25 @@ AJumpMapKillZoneActor::AJumpMapKillZoneActor()
 	MeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
+void AJumpMapKillZoneActor::GetSerializableProperties(TMap<FString, FString>& OutProperties) const
+{
+	const FVector Extent = KillTrigger->GetUnscaledBoxExtent();
+	OutProperties.Add(TEXT("BoxExtent"), FString::Printf(TEXT("%.2f;%.2f;%.2f"), Extent.X, Extent.Y, Extent.Z));
+}
+
+void AJumpMapKillZoneActor::ApplySerializedProperties(const TMap<FString, FString>& Properties)
+{
+	if (const FString* Value = Properties.Find(TEXT("BoxExtent")))
+	{
+		TArray<FString> Components;
+		Value->ParseIntoArray(Components, TEXT(";"), true);
+		if (Components.Num() >= 3)
+		{
+			KillTrigger->SetBoxExtent(FVector(FCString::Atof(*Components[0]), FCString::Atof(*Components[1]), FCString::Atof(*Components[2])));
+		}
+	}
+}
+
 void AJumpMapKillZoneActor::BeginPlay()
 {
 	Super::BeginPlay();

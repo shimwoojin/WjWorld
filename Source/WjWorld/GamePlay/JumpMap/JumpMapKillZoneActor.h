@@ -21,6 +21,9 @@ class WJWORLD_API AJumpMapKillZoneActor : public AJumpMapActorBase
 public:
 	AJumpMapKillZoneActor();
 
+	virtual void GetSerializableProperties(TMap<FString, FString>& OutProperties) const override;
+	virtual void ApplySerializedProperties(const TMap<FString, FString>& Properties) override;
+
 protected:
 	virtual void BeginPlay() override;
 

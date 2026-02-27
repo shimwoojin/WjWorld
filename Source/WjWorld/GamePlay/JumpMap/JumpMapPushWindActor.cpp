@@ -21,6 +21,8 @@ AJumpMapPushWindActor::AJumpMapPushWindActor()
 void AJumpMapPushWindActor::GetSerializableProperties(TMap<FString, FString>& OutProperties) const
 {
 	OutProperties.Add(TEXT("WindForce"), FString::SanitizeFloat(WindForce));
+	const FVector Extent = WindZone->GetUnscaledBoxExtent();
+	OutProperties.Add(TEXT("BoxExtent"), FString::Printf(TEXT("%.2f;%.2f;%.2f"), Extent.X, Extent.Y, Extent.Z));
 }
 
 void AJumpMapPushWindActor::ApplySerializedProperties(const TMap<FString, FString>& Properties)
@@ -28,6 +30,15 @@ void AJumpMapPushWindActor::ApplySerializedProperties(const TMap<FString, FStrin
 	if (const FString* Value = Properties.Find(TEXT("WindForce")))
 	{
 		WindForce = FCString::Atof(**Value);
+	}
+	if (const FString* Value = Properties.Find(TEXT("BoxExtent")))
+	{
+		TArray<FString> Components;
+		Value->ParseIntoArray(Components, TEXT(";"), true);
+		if (Components.Num() >= 3)
+		{
+			WindZone->SetBoxExtent(FVector(FCString::Atof(*Components[0]), FCString::Atof(*Components[1]), FCString::Atof(*Components[2])));
+		}
 	}
 }
 

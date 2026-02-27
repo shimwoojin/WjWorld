@@ -22,6 +22,8 @@ void AJumpMapCheckpointActor::GetSerializableProperties(TMap<FString, FString>& 
 {
 	OutProperties.Add(TEXT("CheckpointOrder"), FString::FromInt(CheckpointOrder));
 	OutProperties.Add(TEXT("RespawnOffset"), FString::Printf(TEXT("%.2f;%.2f;%.2f"), RespawnOffset.X, RespawnOffset.Y, RespawnOffset.Z));
+	const FVector Extent = CheckpointTrigger->GetUnscaledBoxExtent();
+	OutProperties.Add(TEXT("BoxExtent"), FString::Printf(TEXT("%.2f;%.2f;%.2f"), Extent.X, Extent.Y, Extent.Z));
 }
 
 void AJumpMapCheckpointActor::ApplySerializedProperties(const TMap<FString, FString>& Properties)
@@ -37,6 +39,15 @@ void AJumpMapCheckpointActor::ApplySerializedProperties(const TMap<FString, FStr
 		if (Components.Num() >= 3)
 		{
 			RespawnOffset = FVector(FCString::Atof(*Components[0]), FCString::Atof(*Components[1]), FCString::Atof(*Components[2]));
+		}
+	}
+	if (const FString* Value = Properties.Find(TEXT("BoxExtent")))
+	{
+		TArray<FString> Components;
+		Value->ParseIntoArray(Components, TEXT(";"), true);
+		if (Components.Num() >= 3)
+		{
+			CheckpointTrigger->SetBoxExtent(FVector(FCString::Atof(*Components[0]), FCString::Atof(*Components[1]), FCString::Atof(*Components[2])));
 		}
 	}
 }
