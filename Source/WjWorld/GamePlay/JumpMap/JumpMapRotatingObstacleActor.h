@@ -29,19 +29,19 @@ public:
 
 protected:
 	/** 회전 속도 (도/초) */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "JumpMap|RotatingObstacle")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "JumpMap|RotatingObstacle")
 	float RotationSpeed = 90.f;
 
 	/** 회전축 (정규화됨) */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "JumpMap|RotatingObstacle")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "JumpMap|RotatingObstacle")
 	FRotator RotationAxis = FRotator(0.f, 1.f, 0.f);
 
 	/** true면 킬, false면 넉백 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "JumpMap|RotatingObstacle")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "JumpMap|RotatingObstacle")
 	bool bKillOnHit = false;
 
 	/** 넉백 힘 (bKillOnHit=false일 때) */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "JumpMap|RotatingObstacle")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "JumpMap|RotatingObstacle")
 	float KnockbackForce = 800.f;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")

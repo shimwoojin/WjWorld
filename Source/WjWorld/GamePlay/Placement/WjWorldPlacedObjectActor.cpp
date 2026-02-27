@@ -15,6 +15,10 @@ AWjWorldPlacedObjectActor::AWjWorldPlacedObjectActor()
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	RootComponent = MeshComponent;
 
+	// Stationary 모빌리티 설정 — CharacterMovementComponent가 MovementBase로 추적하지 않음
+	// (비리플리케이션 액터에서 Base 추적 시 클라이언트 보정 실패 방지)
+	MeshComponent->SetMobility(EComponentMobility::Stationary);
+
 	// 물리/충돌 활성화
 	MeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	MeshComponent->SetCollisionResponseToAllChannels(ECR_Block);
@@ -40,13 +44,36 @@ void AWjWorldPlacedObjectActor::InitializeFromSaveData(FName InObjectId, const F
 		*CachedScale.ToString(),
 		*Definition.Mesh.ToString());
 
-	LoadMesh(Definition);
+	// 동기 로드: 스폰 즉시 콜리전 활성화 (클라이언트 CharacterMovement 불일치 방지)
+	LoadMesh(Definition, /*bSynchronous=*/ true);
 }
 
-void AWjWorldPlacedObjectActor::LoadMesh(const FPlaceableObjectDefinition& Definition)
+void AWjWorldPlacedObjectActor::LoadMesh(const FPlaceableObjectDefinition& Definition, bool bSynchronous)
 {
-	if (!Definition.Mesh.IsNull())
+	if (Definition.Mesh.IsNull())
 	{
+		UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlacedObjectActor: Mesh is null for ObjectId=%s"), *ObjectId.ToString());
+		return;
+	}
+
+	if (bSynchronous)
+	{
+		// 동기 로드: 즉시 콜리전 확보 (SaveGame 복원용)
+		UStaticMesh* LoadedMesh = Definition.Mesh.LoadSynchronous();
+		if (LoadedMesh)
+		{
+			UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacedObjectActor::LoadMesh - Sync loaded for ObjectId=%s"), *ObjectId.ToString());
+			ApplyLoadedMesh(LoadedMesh);
+		}
+		else
+		{
+			UE_LOG(LogWjWorldPlacement, Error, TEXT("PlacedObjectActor::LoadMesh - Sync load failed for ObjectId=%s, Path=%s"),
+				*ObjectId.ToString(), *Definition.Mesh.ToString());
+		}
+	}
+	else
+	{
+		// 비동기 로드: 배치 모드 등 실시간 상호작용용
 		FSoftObjectPath MeshPath = Definition.Mesh.ToSoftObjectPath();
 		UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacedObjectActor::LoadMesh - Starting async load for ObjectId=%s, Path=%s"),
 			*ObjectId.ToString(), *MeshPath.ToString());
@@ -60,10 +87,6 @@ void AWjWorldPlacedObjectActor::LoadMesh(const FPlaceableObjectDefinition& Defin
 		{
 			UE_LOG(LogWjWorldPlacement, Error, TEXT("PlacedObjectActor::LoadMesh - RequestAsyncLoad returned invalid handle for ObjectId=%s"), *ObjectId.ToString());
 		}
-	}
-	else
-	{
-		UE_LOG(LogWjWorldPlacement, Warning, TEXT("PlacedObjectActor: Mesh is null for ObjectId=%s"), *ObjectId.ToString());
 	}
 }
 
@@ -90,9 +113,14 @@ void AWjWorldPlacedObjectActor::OnMeshLoaded()
 		return;
 	}
 
+	ApplyLoadedMesh(LoadedMesh);
+}
+
+void AWjWorldPlacedObjectActor::ApplyLoadedMesh(UStaticMesh* LoadedMesh)
+{
 	if (!MeshComponent)
 	{
-		UE_LOG(LogWjWorldPlacement, Error, TEXT("PlacedObjectActor::OnMeshLoaded - MeshComponent is null for ObjectId=%s"), *ObjectId.ToString());
+		UE_LOG(LogWjWorldPlacement, Error, TEXT("PlacedObjectActor::ApplyLoadedMesh - MeshComponent is null for ObjectId=%s"), *ObjectId.ToString());
 		return;
 	}
 
@@ -114,7 +142,7 @@ void AWjWorldPlacedObjectActor::OnMeshLoaded()
 
 	// 추가 디버깅: 가시성 및 바운드 확인
 	FBoxSphereBounds Bounds = MeshComponent->Bounds;
-	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacedObjectActor::OnMeshLoaded - SUCCESS for ObjectId=%s, MeshName=%s, Scale=%s, BoundsExtent=%s, Visible=%d, HiddenInGame=%d, %s"),
+	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacedObjectActor::ApplyLoadedMesh - SUCCESS for ObjectId=%s, MeshName=%s, Scale=%s, BoundsExtent=%s, Visible=%d, HiddenInGame=%d, %s"),
 		*ObjectId.ToString(),
 		*LoadedMesh->GetName(),
 		*CachedScale.ToString(),

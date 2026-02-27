@@ -44,6 +44,9 @@ void AJumpMapMovingPlatformActor::GetLifetimeReplicatedProps(TArray<FLifetimePro
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AJumpMapMovingPlatformActor, ServerElapsedTime);
+	DOREPLIFETIME_CONDITION(AJumpMapMovingPlatformActor, MoveOffset, COND_InitialOnly);
+	DOREPLIFETIME_CONDITION(AJumpMapMovingPlatformActor, MoveSpeed, COND_InitialOnly);
+	DOREPLIFETIME_CONDITION(AJumpMapMovingPlatformActor, PauseTime, COND_InitialOnly);
 }
 
 void AJumpMapMovingPlatformActor::BeginPlay()
@@ -51,9 +54,25 @@ void AJumpMapMovingPlatformActor::BeginPlay()
 	Super::BeginPlay();
 
 	OriginalLocation = GetActorLocation();
+
+	if (HasAuthority())
+	{
+		// 서버: 프로퍼티가 이미 설정된 상태 (ApplySerializedProperties 완료)
+		RecalculateTimingCache();
+	}
+	else
+	{
+		// 클라이언트: 리플리케이션 프로퍼티가 아직 도착하지 않았을 수 있음
+		// Tick에서 재계산 트리거
+		bNeedsTimingRecalc = true;
+		RecalculateTimingCache();
+	}
+}
+
+void AJumpMapMovingPlatformActor::RecalculateTimingCache()
+{
 	TargetLocation = OriginalLocation + MoveOffset;
 
-	// 이동 시간 및 주기 캐시
 	float Distance = MoveOffset.Size();
 	TravelTime = (MoveSpeed > 0.f) ? (Distance / MoveSpeed) : 0.f;
 	CycleTime = TravelTime * 2.f + PauseTime * 2.f;
@@ -67,6 +86,12 @@ void AJumpMapMovingPlatformActor::Tick(float DeltaTime)
 	{
 		// 서버: 경과 시간 누적
 		ServerElapsedTime += DeltaTime;
+	}
+	else if (bNeedsTimingRecalc)
+	{
+		// 클라이언트: 리플리케이션된 프로퍼티 수신 후 재계산
+		RecalculateTimingCache();
+		bNeedsTimingRecalc = false;
 	}
 
 	// 서버/클라이언트 모두 동일한 시간 기반 위치 계산

@@ -41,8 +41,9 @@ protected:
 	TObjectPtr<UStaticMeshComponent> MeshComponent;
 
 private:
-	void LoadMesh(const FPlaceableObjectDefinition& Definition);
+	void LoadMesh(const FPlaceableObjectDefinition& Definition, bool bSynchronous = false);
 	void OnMeshLoaded();
+	void ApplyLoadedMesh(UStaticMesh* LoadedMesh);
 
 	void ApplyPlacementTint();
 	void RemovePlacementTint();

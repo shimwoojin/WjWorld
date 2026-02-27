@@ -61,6 +61,10 @@ void AJumpMapRotatingObstacleActor::GetLifetimeReplicatedProps(TArray<FLifetimeP
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AJumpMapRotatingObstacleActor, ServerElapsedTime);
+	DOREPLIFETIME_CONDITION(AJumpMapRotatingObstacleActor, RotationSpeed, COND_InitialOnly);
+	DOREPLIFETIME_CONDITION(AJumpMapRotatingObstacleActor, RotationAxis, COND_InitialOnly);
+	DOREPLIFETIME_CONDITION(AJumpMapRotatingObstacleActor, bKillOnHit, COND_InitialOnly);
+	DOREPLIFETIME_CONDITION(AJumpMapRotatingObstacleActor, KnockbackForce, COND_InitialOnly);
 }
 
 void AJumpMapRotatingObstacleActor::BeginPlay()

@@ -29,20 +29,23 @@ public:
 
 protected:
 	/** 시작 위치로부터의 이동 오프셋 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "JumpMap|MovingPlatform")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "JumpMap|MovingPlatform")
 	FVector MoveOffset = FVector(0.f, 0.f, 300.f);
 
 	/** 이동 속도 (cm/s) */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "JumpMap|MovingPlatform")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "JumpMap|MovingPlatform")
 	float MoveSpeed = 200.f;
 
 	/** 양 끝에서 정지 시간 (초) */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "JumpMap|MovingPlatform")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "JumpMap|MovingPlatform")
 	float PauseTime = 0.5f;
 
 private:
 	/** 시간 기반 위치 계산 (서버/클라이언트 동일 함수) */
 	FVector CalculatePositionFromTime(float Time) const;
+
+	/** 리플리케이션된 프로퍼티로 타이밍 캐시 재계산 */
+	void RecalculateTimingCache();
 
 	FVector OriginalLocation;
 	FVector TargetLocation;
@@ -56,4 +59,7 @@ private:
 
 	/** 이동 1방향 소요 시간 (캐시) */
 	float TravelTime = 0.f;
+
+	/** 리플리케이션 프로퍼티 수신 후 재계산 필요 플래그 */
+	bool bNeedsTimingRecalc = false;
 };
