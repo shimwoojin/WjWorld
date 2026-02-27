@@ -9,6 +9,11 @@ AJumpMapMovingPlatformActor::AJumpMapMovingPlatformActor()
 	JumpMapObjectId = TEXT("MovingPlatform");
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
+
+	// 커스텀 동기화 (ServerElapsedTime + CalculatePositionFromTime) 사용
+	// bReplicateMovement = true (기본값) 이면 서버의 현재 위치가 ReplicatedMovement로
+	// 클라에 전달되어 OriginalLocation이 스폰 위치가 아닌 현재 위치로 캡처됨
+	SetReplicateMovement(false);
 }
 
 void AJumpMapMovingPlatformActor::GetSerializableProperties(TMap<FString, FString>& OutProperties) const

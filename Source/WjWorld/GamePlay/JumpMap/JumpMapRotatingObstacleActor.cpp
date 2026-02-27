@@ -15,6 +15,7 @@ AJumpMapRotatingObstacleActor::AJumpMapRotatingObstacleActor()
 	JumpMapObjectId = TEXT("RotatingObstacle");
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
+	SetReplicateMovement(false);
 
 	HitTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("HitTrigger"));
 	HitTrigger->SetupAttachment(RootComp);
