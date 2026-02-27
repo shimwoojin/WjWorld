@@ -115,11 +115,11 @@ Lobby / ApproachingWall / JumpMap 3개 컨텍스트 지원.
 
 ### JumpMap 미니게임
 장애물 코스 타임어택. 시간 제한 120초, 체크포인트 리스폰, 완주 순서 추적.
-- **장애물**: KillZone, MovingPlatform(서버 시간 동기화), RotatingObstacle(서버 시간 동기화), PushWind, Checkpoint, End, GrapplePoint
+- **장애물**: KillZone, MovingPlatform(서버 시간 동기화 + OriginalLocation 리플리케이션), RotatingObstacle(서버 시간 동기화), PushWind, Checkpoint, End, GrapplePoint. Checkpoint/KillZone/PushWind는 커스텀 프로퍼티에서 BoxExtent 직렬화
 - **장애물 동기화**: `ServerElapsedTime` Replicated + `CalculatePositionFromTime()`/`CalculateRotationFromTime()` 순수 함수 → 클라/서버 동일 위치
 - **어빌리티**: GA_Dash(Shift), GA_Grapple(E), GA_DoubleJump
 - **CSV 레이아웃**: `JumpMapLayoutDataAsset` 내장+유저 로드, `#META:MapName:` 헤더, CustomProperties 11번째 컬럼
-- **액터 직렬화**: JumpMapActorBase의 JumpMapObjectId + Get/ApplySerializableProperties, 7개 서브클래스 구현
+- **액터 직렬화**: JumpMapActorBase의 JumpMapObjectId + Get/ApplySerializableProperties. KillZone, MovingPlatform, RotatingObstacle, PushWind, Checkpoint, End, GrapplePoint 7개 서브클래스 모두 구현 완료
 - **에디터**: WjWorldEditor 모듈 — JumpMapLevelEditorSubsystem + SJumpMapLayoutPanel
 
 ### Gameplay Ability System
@@ -183,11 +183,12 @@ ItemId(FName) 기반. `ECosmeticSlot`(Head/Body/Back/Effect), 비동기 메시 �
 `ACharacterPreviewActor` — 프로필/상점 UI용 3D 캐릭터 프리뷰. `UPlayerProfileWidget`, `UCosmeticPreviewPanel`에서 사용.
 - **메시 복사**: `SetupFromPawn()` — SkeletalMesh + AnimBlueprint + RelativeRotation 복사 (Yaw=-90 보정 포함)
 - **코스메틱 프리뷰**: `SetupPreview()` — 비동기 메시 로드 + Socket 부착 + ShowOnlyList
-- **SceneCapture**: `PRM_UseShowOnlyList` + `SCS_FinalToneCurveHDR` + `ClearColor::Transparent` + `bAlwaysPersistRenderingState = true`
+- **SceneCapture**: `PRM_UseShowOnlyList` + `SCS_FinalColorHDR` + `ClearColor::Transparent` + `bAlwaysPersistRenderingState = true`
 - **실시간 캡처**: `bCaptureEveryFrame = true` (SetupFromPawn 완료 후 활성화, Idle 모션 반영)
-- **투명 배경**: `r.PostProcessing.PropagateAlpha=1` (DefaultEngine.ini) — post-processing alpha 보존
-- **RenderTarget**: `RTF_RGBA16f` + `InitCustomFormat(W, H, PF_FloatRGBA, false)` — alpha 완전 보존
-- **RenderTarget 적용**: `UImage::SetBrushResourceObject(RT)` 패턴
+- **투명 배경**: UI Material(`M_CharacterPreview`)에서 OneMinus로 alpha 반전 → `MaterialInstanceDynamic` → `Image::SetBrushResourceObject(MID)`
+- **DeveloperSettings**: `CharacterPreviewMaterial` (UI 카테고리) — Material 경로 관리
+- **RenderTarget**: `RTF_RGBA16f` + `InitCustomFormat(500, 1000, PF_FloatRGBA, false)`
+- **스폰 위치**: `(0, 0, 15000)` — 월드와 겹치지 않는 상공
 
 ### 설정 시스템
 `USettingsWidget` — 로비/대기실 설정 팝업. ShowPopup/ClosePopup 패턴.
@@ -199,12 +200,12 @@ ItemId(FName) 기반. `ECosmeticSlot`(Head/Body/Back/Effect), 비동기 메시 �
 - **HUD 연동**: LobbyHUDWidget, WaitingRoomHUDWidget에서 `SettingsWidgetClass`/`SettingsWidgetInstance` 관리
 
 ### 채팅 시스템
-`UChatWidget` — 멀티플레이어 채팅. HUDBase에서 생성, 모든 컨텍스트(Lobby, WaitingRoom, Play) 공용.
+`UChatWidget` — 멀티플레이어 채팅. HUDBase에서 `bCreateChatWidget=true`인 경우만 생성 (Lobby/WaitingRoom/Play). Intro/Login은 미생성.
 - **RPC 흐름**: PlayerControllerBase.SendChatMessage() → Server RPC → GameStateBase.MulticastReceiveChatMessage() → OnChatMessageReceived 델리게이트
 - **위젯**: ScrollBox(메시지 목록) + EditableTextBox(입력), Enter 키 전송, `IsChatInputFocused()` API
 - **글로벌 Enter 키**: PlayerControllerBase에서 Enter → `ChatWidget.FocusChatInput()` (이미 포커스 중이면 스킵)
 - **DeveloperSettings**: `ChatWidgetClass` (UI 카테고리)
-- **UMG Blueprint 필요**: `WBP_ChatWidget` 생성 필요 (ChatScrollBox, ChatInputBox BindWidget)
+- **UMG Blueprint**: `WBP_ChatWidget` (ChatScrollBox, ChatInputBox BindWidget)
 
 ### 글로벌 입력 시스템
 `PlayerControllerBase::SetupInputComponent()` — Enter/ESC 키 바인딩. 모든 컨텍스트 공용.
@@ -220,10 +221,10 @@ ItemId(FName) 기반. `ECosmeticSlot`(Head/Body/Back/Effect), 비동기 메시 �
 - **구독**: OnCurrencyBalanceChanged 델리게이트 (CurrencySubsystem)
 - **표시**: 이전 잔액 캐시 → 델타 계산 → 양수면 금색 텍스트 3초 표시
 - **DeveloperSettings**: `CoinGainNotificationWidgetClass` (UI 카테고리)
-- **UMG Blueprint 필요**: `WBP_CoinGainNotification` 생성 필요 (NotificationText BindWidget)
+- **UMG Blueprint**: `WBP_CoinGainNotification` (NotificationText BindWidget)
 
 ### WjWorldDeveloperSettings
-Project Settings > Game > WjWorld. 맵 경로, GameMode 클래스, 캐릭터 기본값, 미니게임 에셋, 배치 카탈로그, 카메라 InputAction, 보물상자 설정, MaxDailyMatchRewards.
+Project Settings > Game > WjWorld. 맵 경로, GameMode 클래스, 캐릭터 기본값, 미니게임 에셋, 배치 카탈로그, 카메라 InputAction, 보물상자 설정, MaxDailyMatchRewards, CharacterPreviewMaterial.
 **설정 우선순위**: BP 서브클래스 UPROPERTY 값 우선 → DeveloperSettings 폴백
 
 ### 패키징 주의사항
@@ -247,7 +248,6 @@ Project Settings > Game > WjWorld. 맵 경로, GameMode 클래스, 캐릭터 기
 - Sumo FloorRing 디자인 변경 검토 — 개별 타일 랜덤 파괴 전환 시 리플리케이션 비용
 - 에셋 커밋 전략 수립 — LFS 정책, 브랜치 전략, 에셋 전용 커밋 분리
 - BP_WaitingRoomHUDWidget에서 ProfileWidgetClass 설정 확인 — 3자 프로필이 안 보이는 문제 (코드 로직 정상)
-- JumpMap GrapplePoint 콜리전 확인 — SphereComponent가 NoCollision, MeshComponent 콜리전으로 라인트레이스 감지되는지 테스트 필요
 
 ## 코딩 컨벤션
 - 언리얼 엔진 코딩 표준 준수

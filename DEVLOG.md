@@ -1,5 +1,85 @@
 # WjWorld 개발 로그
 
+## 2026-02-27
+### 작업 내용
+
+#### 버그 수정: JumpMap MovingPlatform 클라이언트 높이 불일치
+- **증상**: 호스트에서 Z 0~300 왕복하는 발판이 클라이언트에서 300~600으로 관측됨
+- **원인**: 클라이언트가 BeginPlay 시 `GetActorLocation()`으로 이미 이동 중인 위치를 `OriginalLocation`으로 캡처 → MoveOffset만큼 높은 곳에서 왕복
+- **수정 과정** (3단계):
+  1. MoveOffset/MoveSpeed/PauseTime Replicated 추가 → 미해결
+  2. `SetReplicateMovement(false)` 추가 (ReplicatedMovement가 이동 중 위치 전달 차단) → 미해결
+  3. `OriginalLocation`을 `ReplicatedUsing = OnRep_OriginalLocation`으로 변경 → **해결**
+- 서버만 BeginPlay에서 정확한 스폰 위치 저장, 클라이언트는 OnRep에서 수신 후 타이밍 캐시 재계산
+
+#### 버그 수정: 로비 배치오브젝트 클라이언트 추락 (45도 회전)
+- **증상**: SaveGame으로 배치한 오브젝트 위에서 클라이언트만 추락 (90도는 정상, 45도에서 발생)
+- **원인**: PlacedObjectActor의 MeshComponent가 Movable → CMC가 MovementBase로 추적 시도 → 비리플리케이션 액터라 클라에서 base 해석 실패
+- **수정**: MeshComponent 모빌리티를 `Stationary`로 변경 + `InitializeFromSaveData`에서 동기 메시 로딩 (콜리전 즉시 생성)
+
+#### JumpMap Checkpoint/KillZone/PushWind BoxExtent 직렬화 추가
+- CSV 레이아웃에서 콜리전 박스 크기를 인스턴스별 저장/복원 가능
+- Checkpoint: CheckpointTrigger BoxExtent 추가 (기존 CheckpointOrder, RespawnOffset에 병행)
+- KillZone: GetSerializableProperties/ApplySerializedProperties 신규 오버라이드 + BoxExtent
+- PushWind: WindZone BoxExtent 추가 (기존 WindForce에 병행)
+- GrapplePoint: SphereComponent → 기존 GrappleRadius로 이미 직렬화됨
+
+#### JumpMap BP EndPoint 메시 위치 분석
+- **문제**: 유저가 배치한 EndPoint 메시가 ~90 단위 아래로 스폰됨
+- **원인**: PreviewActor는 메시=루트(오프셋 없음), 실제 BP는 MeshComponent RelativeLocation Z=-90
+- **해결 방안**: BP에서 MeshComponent RelativeLocation을 (0,0,0)으로 통일, 필요시 GroundOffset 활용 (BP 에디터 작업)
+
+### 학습/메모
+- **UE 리플리케이션 초기 번들**: Actor channel 생성 시 현재 트랜스폼이 전달됨. `bReplicateMovement=true`면 ReplicatedMovement에 현재 위치가 포함되어 클라의 초기 위치가 스폰 위치와 다를 수 있음
+- **ReplicatedUsing 활용**: 서버에서만 설정하는 값을 클라에 정확히 전달할 때 `UPROPERTY(ReplicatedUsing=OnRep_X)`가 `GetActorLocation()` 의존보다 안전
+- **CMC MovementBase**: 비리플리케이션 Movable 액터는 클라에서 base 추적 실패 → Stationary로 변경하면 CMC가 base로 인식하지 않아 해결
+
+### 이슈/해결
+- **MovingPlatform 3단계 디버깅**: 프로퍼티 리플리케이션만으로는 부족, ReplicateMovement 비활성화도 부족, OriginalLocation 직접 리플리케이션이 최종 해결
+- **하위 호환성**: BoxExtent 직렬화 추가 시 기존 CSV에는 해당 프로퍼티 없음 → `Find()` nullptr → 생성자 기본값 유지
+
+---
+
+## 2026-02-26
+### 작업 내용
+
+#### AW 벽 이동 알고리즘 재설계 (중앙 할당 방식)
+- **AssignBrickTargets()** — `ShrinkSafeZones()` 후 FloodFillPoints에 맨해튼 거리 기준 Greedy로 가장 가까운 Standard 벽돌 배정
+- **BrickMovement.SetAssignedTarget()** — 외부 타겟 주입, 기존 자체 방향 결정 로직 대체
+- **4방향 제한** — 대각선 이동 제거, ShrinkSafeZones/PredictNextLevelIsLast도 4방향 인접으로 변경
+- **2칸 이동** — 목표까지 거리 2 이상이면 한 번에 2칸 이동
+
+#### 게임 중 방 노출 + 중간 입장 관전자 시스템
+- **세션 IN_PROGRESS 상태** — `UpdateSessionInProgress()` 메서드 추가, GameInstance의 StartGame/EndGame에서 호출
+- **방 목록 [Playing] 표시** — RoomListEntryWidget에 `[Playing]` 접두사, `bInProgress && !bAllowJoinInProgress` 시 Join 버튼 비활성화
+- **중간 입장자 관전자** — `GameModePlay::HandleStartingNewPlayer()` override, GamePhase가 Playing/Finished면 `StartSpectatingOnly()`
+- **GameRule 가드** — AW/Sumo/JumpMap 각 `OnPlayerJoined()`에 `IsGameInProgress()` 가드, `OnPlayerLeft()`에서 관전자 카운터 제외
+
+#### 캐릭터 프리뷰 투명 배경 (Alpha 반전 머티리얼)
+- **문제**: SceneCapture의 모든 CaptureSource 옵션에서 alpha 반전 발생 (메시=투명, 배경=불투명)
+- **해결**: UI Material(`M_CharacterPreview`)에서 OneMinus로 alpha 반전 → MaterialInstanceDynamic으로 RenderTarget 전달
+- **DeveloperSettings 연동** — `CharacterPreviewMaterial` TSoftObjectPtr 추가, 하드코딩 경로 제거
+- **위젯 적용** — PlayerProfileWidget, CosmeticPreviewPanel 모두 MID 방식으로 변경 (폴백: 직접 RT)
+- **스폰 위치** — `(0, 0, 15000)` 으로 통일 (기존 10000,10000,0 / 0,0,-10000)
+- **RenderTarget 크기** — 500x1000으로 변경
+
+#### HUDBase 채팅 위젯 필터링
+- **bCreateChatWidget** — protected bool 플래그 추가 (기본 false)
+- Lobby/WaitingRoom/Play HUD 생성자에서 `true` 설정 → Intro/Login에선 채팅 미생성
+
+### 학습/메모
+- **SceneCapture CaptureSource별 alpha 동작**:
+  - `SCS_FinalToneCurveHDR` / `SCS_FinalColorHDR`: alpha 반전 (ShowFlags 조합과 무관)
+  - `SCS_SceneColorHDR`: 메시 렌더링 불완전
+  - `SCS_SceneColorSceneDepth`: alpha=depth → 배경 항상 불투명
+  - 결론: UI Material에서 OneMinus로 alpha 반전이 가장 안정적
+- **AW Greedy 할당**: TActorIterator로 Standard 벽돌 수집 → FloodFillPoint마다 최근접 미배정 벽돌 매칭
+
+### 이슈/해결
+- **alpha 반전**: 3가지 CaptureSource 시도 후 Material 기반 해결
+
+---
+
 ## 2026-02-25
 ### 작업 내용
 
