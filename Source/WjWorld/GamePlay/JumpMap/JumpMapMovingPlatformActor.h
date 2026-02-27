@@ -44,10 +44,16 @@ private:
 	/** 시간 기반 위치 계산 (서버/클라이언트 동일 함수) */
 	FVector CalculatePositionFromTime(float Time) const;
 
-	/** 리플리케이션된 프로퍼티로 타이밍 캐시 재계산 */
+	/** 타이밍 캐시 재계산 */
 	void RecalculateTimingCache();
 
+	/** 원래 스폰 위치 (서버에서 설정, 클라에 리플리케이션) */
+	UPROPERTY(ReplicatedUsing = OnRep_OriginalLocation)
 	FVector OriginalLocation;
+
+	UFUNCTION()
+	void OnRep_OriginalLocation();
+
 	FVector TargetLocation;
 
 	/** 서버 경과 시간 (리플리케이션) */
@@ -59,7 +65,4 @@ private:
 
 	/** 이동 1방향 소요 시간 (캐시) */
 	float TravelTime = 0.f;
-
-	/** 리플리케이션 프로퍼티 수신 후 재계산 필요 플래그 */
-	bool bNeedsTimingRecalc = false;
 };

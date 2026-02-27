@@ -9,10 +9,6 @@ AJumpMapMovingPlatformActor::AJumpMapMovingPlatformActor()
 	JumpMapObjectId = TEXT("MovingPlatform");
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
-
-	// 커스텀 동기화 (ServerElapsedTime + CalculatePositionFromTime) 사용
-	// bReplicateMovement = true (기본값) 이면 서버의 현재 위치가 ReplicatedMovement로
-	// 클라에 전달되어 OriginalLocation이 스폰 위치가 아닌 현재 위치로 캡처됨
 	SetReplicateMovement(false);
 }
 
@@ -49,6 +45,7 @@ void AJumpMapMovingPlatformActor::GetLifetimeReplicatedProps(TArray<FLifetimePro
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AJumpMapMovingPlatformActor, ServerElapsedTime);
+	DOREPLIFETIME_CONDITION(AJumpMapMovingPlatformActor, OriginalLocation, COND_InitialOnly);
 	DOREPLIFETIME_CONDITION(AJumpMapMovingPlatformActor, MoveOffset, COND_InitialOnly);
 	DOREPLIFETIME_CONDITION(AJumpMapMovingPlatformActor, MoveSpeed, COND_InitialOnly);
 	DOREPLIFETIME_CONDITION(AJumpMapMovingPlatformActor, PauseTime, COND_InitialOnly);
@@ -58,20 +55,18 @@ void AJumpMapMovingPlatformActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	OriginalLocation = GetActorLocation();
-
 	if (HasAuthority())
 	{
-		// 서버: 프로퍼티가 이미 설정된 상태 (ApplySerializedProperties 완료)
+		// 서버: 스폰 직후이므로 GetActorLocation()이 원래 스폰 위치
+		OriginalLocation = GetActorLocation();
 		RecalculateTimingCache();
 	}
-	else
-	{
-		// 클라이언트: 리플리케이션 프로퍼티가 아직 도착하지 않았을 수 있음
-		// Tick에서 재계산 트리거
-		bNeedsTimingRecalc = true;
-		RecalculateTimingCache();
-	}
+	// 클라이언트: OriginalLocation은 리플리케이션으로 수신 → OnRep_OriginalLocation에서 처리
+}
+
+void AJumpMapMovingPlatformActor::OnRep_OriginalLocation()
+{
+	RecalculateTimingCache();
 }
 
 void AJumpMapMovingPlatformActor::RecalculateTimingCache()
@@ -91,12 +86,6 @@ void AJumpMapMovingPlatformActor::Tick(float DeltaTime)
 	{
 		// 서버: 경과 시간 누적
 		ServerElapsedTime += DeltaTime;
-	}
-	else if (bNeedsTimingRecalc)
-	{
-		// 클라이언트: 리플리케이션된 프로퍼티 수신 후 재계산
-		RecalculateTimingCache();
-		bNeedsTimingRecalc = false;
 	}
 
 	// 서버/클라이언트 모두 동일한 시간 기반 위치 계산
