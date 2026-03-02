@@ -28,7 +28,7 @@ public:
 protected:
 	/** 그래플 감지 범위 */
 	UPROPERTY(EditDefaultsOnly, Category = "Grapple")
-	float GrappleRange = 2000.f;
+	float GrappleRange = 3000.f;
 
 	/** 당김 속도 */
 	UPROPERTY(EditDefaultsOnly, Category = "Grapple")
