@@ -6,6 +6,7 @@
 #include "Components/ScrollBox.h"
 #include "Components/EditableTextBox.h"
 #include "Components/TextBlock.h"
+#include "Framework/Application/SlateApplication.h"
 #include "WjWorldLogCategories.h"
 
 void UChatWidget::NativeConstruct()
@@ -127,6 +128,7 @@ void UChatWidget::SendCurrentMessage()
 	FString Message = ChatInputBox->GetText().ToString().TrimStartAndEnd();
 	if (Message.IsEmpty())
 	{
+		RestoreGameFocus();
 		return;
 	}
 
@@ -139,6 +141,15 @@ void UChatWidget::SendCurrentMessage()
 		}
 	}
 
-	// 입력 필드 초기화
+	// 입력 필드 초기화 + 포커스를 게임으로 복원
 	ChatInputBox->SetText(FText::GetEmpty());
+	RestoreGameFocus();
+}
+
+void UChatWidget::RestoreGameFocus()
+{
+	if (FSlateApplication::IsInitialized())
+	{
+		FSlateApplication::Get().SetUserFocusToGameViewport(0);
+	}
 }

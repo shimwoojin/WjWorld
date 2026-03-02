@@ -49,6 +49,7 @@ private:
 	void OnChatMessageReceived(const FString& SenderName, const FString& Message);
 
 	void SendCurrentMessage();
+	void RestoreGameFocus();
 
 	static constexpr int32 MaxChatMessages = 50;
 };
