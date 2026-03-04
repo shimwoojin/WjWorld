@@ -34,6 +34,10 @@ void UCurrencyBalanceWidget::NativeConstruct()
 	{
 		GemIcon->SetToolTipText(FText::FromString(TEXT("Gem")));
 	}
+	if (GemAreaButton)
+	{
+		GemAreaButton->SetToolTipText(FText::FromString(TEXT("Gem")));
+	}
 
 	UpdateDisplay();
 }

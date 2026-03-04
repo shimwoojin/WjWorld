@@ -36,11 +36,11 @@ void UMatchRewardCounterWidget::NativeConstruct()
 	{
 		if (WinRewardText)
 		{
-			WinRewardText->SetText(FText::FromString(FString::Printf(TEXT("%d Coin"), Settings->WinRewardCoinAmount)));
+			WinRewardText->SetText(FText::FromString(FString::Printf(TEXT("승리 보상(%d Coin)"), Settings->WinRewardCoinAmount)));
 		}
 		if (LossRewardText)
 		{
-			LossRewardText->SetText(FText::FromString(FString::Printf(TEXT("%d Coin"), Settings->LossRewardCoinAmount)));
+			LossRewardText->SetText(FText::FromString(FString::Printf(TEXT("패배 보상(%d Coin)"), Settings->LossRewardCoinAmount)));
 		}
 	}
 }

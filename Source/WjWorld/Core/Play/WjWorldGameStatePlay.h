@@ -85,6 +85,9 @@ public:
     UFUNCTION()
     void OnRep_GameRuleClass();
 
+    UFUNCTION()
+    void OnRep_DefaultCameraMode();
+
 private:
     UPROPERTY()
     TObjectPtr<UWjWorldGameDataComponent> GameDataComponent;
@@ -135,6 +138,6 @@ private:
     int32 InitialPlayerCount = 0;
 
     // 미니게임별 기본 카메라 모드
-    UPROPERTY(Replicated)
+    UPROPERTY(ReplicatedUsing = OnRep_DefaultCameraMode)
     ECharacterCameraMode DefaultCameraMode = ECharacterCameraMode::TopDown;
 };

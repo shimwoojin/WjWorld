@@ -1,5 +1,27 @@
 # WjWorld 개발 로그
 
+## 2026-03-04
+### 작업 내용
+
+#### 매치 보상 카운터 위젯 (MatchRewardCounterWidget)
+- **목적**: 승리/패배 일일 보상 잔여 횟수를 Lobby/WaitingRoom HUD에 상시 표시
+- **DeveloperSettings 확장**: `MaxWinRewardsPerDay(5)`, `MaxLossRewardsPerDay(10)`, `WinRewardCoinAmount(50)`, `LossRewardCoinAmount(10)` — Steam `drop_max_per_window` 미러링 상수
+- **CurrencySubsystem 분리 추적**: `TodayWinRewardCount`/`TodayLossRewardCount` 멤버 + `FOnMatchRewardCountChanged` 델리게이트 추가
+  - `TriggerMatchReward()`: bIsWinner에 따라 승리/패배 카운트 각각 증가, Steam TriggerItemDrop 실패 시 해당 카운트를 max로 보정
+  - `LoadDailyRewardData()`/`SaveDailyRewardData()`/`CheckDailyReset()`: 분리 카운트 포함
+- **MatchRewardCounterWidget**: `WinCountText`/`LossCountText` (BindWidget) + `WinRewardText`/`LossRewardText` (BindWidgetOptional)
+  - NativeConstruct에서 초기 카운트 + 델리게이트 구독, 상한 도달 시 회색 처리
+- **HUDBase**: `bCreateMatchRewardCounter` 플래그 — Lobby/WaitingRoom 생성자에서만 true 설정
+
+### 학습/메모
+- **HUDBase 공통 위젯 패턴**: `bCreate*` protected bool 플래그 + 서브클래스 생성자에서 true 설정 → BeginPlay에서 조건부 생성. ChatWidget, MatchRewardCounterWidget 모두 동일 패턴
+- **Steam drop_max_per_window 보정**: TriggerItemDrop 실패 = Steam 서버 한도 초과로 판단 → 로컬 카운트를 max로 보정하여 UI 즉시 반영
+
+### 이슈/해결
+- (없음)
+
+---
+
 ## 2026-03-02
 ### 작업 내용
 

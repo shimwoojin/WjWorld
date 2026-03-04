@@ -5,6 +5,7 @@
 #include "Core/WjWorldGameInstance.h"
 #include "Core/GameData/WjWorldGameDataComponent.h"
 #include "Core/Play/WjWorldHUDPlay.h"
+#include "Core/Base/WjWorldCharacterBase.h"
 #include "Stats/WjWorldStatsSubsystem.h"
 #include "Stats/WjWorldStatTypes.h"
 #include "Currency/WjWorldCurrencySubsystem.h"
@@ -305,5 +306,27 @@ void AWjWorldGameStatePlay::SetInitialPlayerCount(int32 InCount)
 void AWjWorldGameStatePlay::SetDefaultCameraMode(ECharacterCameraMode InMode)
 {
 	DefaultCameraMode = InMode;
+
+	// 서버에서도 즉시 적용
+	if (HasAuthority())
+	{
+		OnRep_DefaultCameraMode();
+	}
+
 	UE_LOG(LogWjWorld, Log, TEXT("GameState: DefaultCameraMode set to %d"), static_cast<int32>(DefaultCameraMode));
+}
+
+void AWjWorldGameStatePlay::OnRep_DefaultCameraMode()
+{
+	UWorld* World = GetWorld();
+	if (!World) return;
+
+	APlayerController* PC = World->GetFirstPlayerController();
+	if (!PC) return;
+
+	AWjWorldCharacterBase* Character = Cast<AWjWorldCharacterBase>(PC->GetPawn());
+	if (Character)
+	{
+		Character->SetCharacterViewMode(DefaultCameraMode);
+	}
 }

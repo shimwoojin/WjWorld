@@ -49,12 +49,12 @@ void UPlacementCatalogItemWidget::SetPlacementCount(int32 PlacedCount, int32 Max
 		if (MaxCount > 0)
 		{
 			PlacementCountText->SetText(FText::FromString(FString::Printf(TEXT("%d/%d"), PlacedCount, MaxCount)));
-			PlacementCountText->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 		}
 		else
 		{
-			PlacementCountText->SetVisibility(ESlateVisibility::Collapsed);
+			PlacementCountText->SetText(FText::FromString(FString::Printf(TEXT("%d/\u221E"), PlacedCount)));
 		}
+		PlacementCountText->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	}
 }
 

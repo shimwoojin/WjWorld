@@ -6,6 +6,7 @@
 #include "WjWorldGameplayTag.h"
 #include "WjWorldLogCategories.h"
 
+#include "EngineUtils.h"
 #include "GameFramework/Character.h"
 #include "GamePlay/JumpMap/JumpMapGrapplePointActor.h"
 
@@ -55,46 +56,60 @@ void UGA_Grapple::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const
 			return;
 		}
 
-		// 카메라 방향으로 라인 트레이스
+		// 카메라 방향 정보
 		FVector CamLoc;
 		FRotator CamRot;
 		PC->GetPlayerViewPoint(CamLoc, CamRot);
+		FVector CamDir = CamRot.Vector();
 
-		FVector TraceEnd = CamLoc + CamRot.Vector() * GrappleRange;
-		FHitResult HitResult;
-		FCollisionQueryParams Params;
-		Params.AddIgnoredActor(Character);
+		// 범위 내 + 카메라 방향에 가장 가까운 GrapplePoint 탐색
+		AJumpMapGrapplePointActor* BestTarget = nullptr;
+		float BestDot = 0.3f; // ~72도 원뿔 최소치
+		FVector CharLoc = Character->GetActorLocation();
 
-		if (GetWorld()->LineTraceSingleByChannel(HitResult, CamLoc, TraceEnd, ECC_WorldStatic, Params))
+		for (TActorIterator<AJumpMapGrapplePointActor> It(GetWorld()); It; ++It)
 		{
-			AJumpMapGrapplePointActor* GrapplePoint = Cast<AJumpMapGrapplePointActor>(HitResult.GetActor());
-			if (GrapplePoint)
+			AJumpMapGrapplePointActor* GP = *It;
+			if (!GP->IsInRange(CharLoc))
 			{
-				if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
-				{
-					EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
-					return;
-				}
+				continue;
+			}
 
-				GrappleTargetLocation = GrapplePoint->GetActorLocation();
-				bIsPulling = true;
-				PullElapsedTime = 0.f;
+			FVector ToTarget = (GP->GetGrappleTargetLocation() - CamLoc).GetSafeNormal();
+			float Dot = FVector::DotProduct(CamDir, ToTarget);
+			if (Dot > BestDot)
+			{
+				BestDot = Dot;
+				BestTarget = GP;
+			}
+		}
 
-				// 캐릭터를 타겟 방향으로 발사
-				FVector Direction = (GrappleTargetLocation - Character->GetActorLocation()).GetSafeNormal();
-				Character->LaunchCharacter(Direction * GrapplePullSpeed, true, true);
-
-				UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_Grapple: Pulling %s toward %s"),
-					*Character->GetName(), *GrappleTargetLocation.ToString());
-
-				// 도착 체크 타이머 (매 틱)
-				if (UWorld* World = GetWorld())
-				{
-					ArrivalCheckTimerHandle = World->GetTimerManager().SetTimerForNextTick(
-						FTimerDelegate::CreateUObject(this, &UGA_Grapple::CheckArrival));
-				}
+		if (BestTarget)
+		{
+			if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
+			{
+				EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 				return;
 			}
+
+			GrappleTargetLocation = BestTarget->GetGrappleTargetLocation();
+			bIsPulling = true;
+			PullElapsedTime = 0.f;
+
+			// 캐릭터를 타겟 방향으로 발사
+			FVector Direction = (GrappleTargetLocation - Character->GetActorLocation()).GetSafeNormal();
+			Character->LaunchCharacter(Direction * GrapplePullSpeed, true, true);
+
+			UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_Grapple: Pulling %s toward %s (dot=%.2f)"),
+				*Character->GetName(), *GrappleTargetLocation.ToString(), BestDot);
+
+			// 도착 체크 타이머 (매 틱)
+			if (UWorld* World = GetWorld())
+			{
+				ArrivalCheckTimerHandle = World->GetTimerManager().SetTimerForNextTick(
+					FTimerDelegate::CreateUObject(this, &UGA_Grapple::CheckArrival));
+			}
+			return;
 		}
 
 		// 미스 → 쿨다운 없이 종료
