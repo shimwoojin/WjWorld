@@ -134,11 +134,31 @@ public:
 
 	/** 일일 최대 매치 보상 횟수 (0 = 무제한) */
 	UPROPERTY(config, EditAnywhere, Category = "Currency")
-	int32 MaxDailyMatchRewards = 10;
+	int32 MaxDailyMatchRewards = 0;
+
+	/** 일일 최대 승리 보상 횟수 (Steam drop_max_per_window 미러링) */
+	UPROPERTY(config, EditAnywhere, Category = "Currency")
+	int32 MaxWinRewardsPerDay = 5;
+
+	/** 일일 최대 패배 보상 횟수 (Steam drop_max_per_window 미러링) */
+	UPROPERTY(config, EditAnywhere, Category = "Currency")
+	int32 MaxLossRewardsPerDay = 10;
+
+	/** 승리 보상 Coin 수량 (UI 표시용) */
+	UPROPERTY(config, EditAnywhere, Category = "Currency")
+	int32 WinRewardCoinAmount = 50;
+
+	/** 패배 보상 Coin 수량 (UI 표시용) */
+	UPROPERTY(config, EditAnywhere, Category = "Currency")
+	int32 LossRewardCoinAmount = 10;
 
 	/** Gem 팩 정의 목록 (Steam 결제용) */
 	UPROPERTY(config, EditAnywhere, Category = "Currency")
 	TArray<FGemPackDefinition> GemPackDefinitions;
+
+	/** Gem → Coin 교환 팩 정의 목록 */
+	UPROPERTY(config, EditAnywhere, Category = "Currency")
+	TArray<FGemCoinExchangeDefinition> GemCoinExchangeDefinitions;
 
 	// ========== TreasureChest ==========
 
@@ -171,6 +191,10 @@ public:
 	/** 채팅 위젯 클래스 (HUDBase에서 생성) */
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "UI")
 	TSoftClassPtr<UUserWidget> ChatWidgetClass;
+
+	/** 매치 보상 카운터 위젯 클래스 (HUDBase에서 생성) */
+	UPROPERTY(config, EditAnywhere, NoClear, Category = "UI")
+	TSoftClassPtr<UUserWidget> MatchRewardCounterWidgetClass;
 
 	/** 캐릭터 프리뷰 머티리얼 (alpha 반전, SceneCapture → UImage 표시용) */
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "UI")

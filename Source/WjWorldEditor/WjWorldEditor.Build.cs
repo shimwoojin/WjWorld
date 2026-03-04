@@ -21,6 +21,7 @@ public class WjWorldEditor : ModuleRules
 			"Slate",
 			"SlateCore",
 			"InputCore",
+			"AssetRegistry",
 		});
 
 		PublicIncludePaths.AddRange(new string[] {

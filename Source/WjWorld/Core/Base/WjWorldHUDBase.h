@@ -8,6 +8,7 @@
 
 class UCoinGainNotificationWidget;
 class UChatWidget;
+class UMatchRewardCounterWidget;
 
 /**
  * HUD 베이스 클래스
@@ -31,10 +32,16 @@ protected:
 	/** 채팅 위젯 생성 여부 (Intro/Login 등 비멀티플레이어 컨텍스트에서 false) */
 	bool bCreateChatWidget = false;
 
+	/** 매치 보상 카운터 위젯 생성 여부 (Lobby/WaitingRoom에서만 true) */
+	bool bCreateMatchRewardCounter = false;
+
 private:
 	UPROPERTY()
 	TObjectPtr<UCoinGainNotificationWidget> CoinGainNotificationWidget;
 
 	UPROPERTY()
 	TObjectPtr<UChatWidget> ChatWidget;
+
+	UPROPERTY()
+	TObjectPtr<UMatchRewardCounterWidget> MatchRewardCounterWidget;
 };

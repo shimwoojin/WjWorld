@@ -26,6 +26,15 @@ void UCurrencyBalanceWidget::NativeConstruct()
 		GemAreaButton->OnClicked.AddDynamic(this, &UCurrencyBalanceWidget::OnGemAreaButtonClicked);
 	}
 
+	if (CoinIcon)
+	{
+		CoinIcon->SetToolTipText(FText::FromString(TEXT("Coin")));
+	}
+	if (GemIcon)
+	{
+		GemIcon->SetToolTipText(FText::FromString(TEXT("Gem")));
+	}
+
 	UpdateDisplay();
 }
 

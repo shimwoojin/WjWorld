@@ -13,6 +13,7 @@ class UWjWorldCosmeticSubsystem;
 class UWjWorldCurrencySubsystem;
 class UPlacementSaveDialogWidget;
 class UPlacementLoadDialogWidget;
+class UPlacementCatalogItemWidget;
 class UConfirmDialogWidget;
 class UScrollBox;
 class UButton;
@@ -88,6 +89,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Placement")
 	TSubclassOf<UConfirmDialogWidget> ConfirmDialogClass;
 
+	/** 카탈로그 아이템 위젯 클래스 (BP에서 설정) */
+	UPROPERTY(EditDefaultsOnly, Category = "Placement")
+	TSubclassOf<UPlacementCatalogItemWidget> CatalogItemWidgetClass;
+
 	/** 전체 삭제 버튼 (선택적 — AW/JumpMap 에디터에는 없어도 됨) */
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UButton> ClearButton;
@@ -136,16 +141,13 @@ protected:
 	/** 현재 로드된 슬롯 이름 반환 (저장 시 기본값으로 사용) */
 	FString GetCurrentLoadedSlotName() const;
 
-	/** 카탈로그 버튼 클릭 공통 핸들러 */
+	/** 카탈로그 아이템 선택 핸들러 */
 	UFUNCTION()
-	void OnCatalogButtonClicked();
+	void HandleCatalogItemSelected(FName ObjectId);
 
-	/** 구매 버튼 클릭 핸들러 */
+	/** 카탈로그 아이템 구매 핸들러 */
 	UFUNCTION()
-	void OnBuyButtonClicked();
-
-	/** 카탈로그 항목 클릭 시 호출 — 소유 아이템만 선택 */
-	virtual void OnCatalogItemClicked(FName ObjectId);
+	void HandleCatalogItemBuyClicked(FName ObjectId);
 
 	/** 전체 배치 수 텍스트 갱신 */
 	void UpdateTotalPlacementCountText();
@@ -168,16 +170,33 @@ protected:
 	/** 조작 안내 텍스트 설정 */
 	void SetControlsHintText(const FText& Hint);
 
+	/** 공중모드 상태 변경 핸들러 */
+	UFUNCTION()
+	void OnAirModeChanged(bool bIsAirMode);
+
+	/** 스냅 각도 변경 핸들러 */
+	UFUNCTION()
+	void OnSnapDegreesChanged(float NewSnapDegrees);
+
+	/** 오브젝트 선택/해제 핸들러 */
+	UFUNCTION()
+	void OnObjectSelected(FName ObjectId);
+
+	/** 현재 상태에 맞는 조작 안내 텍스트 갱신 */
+	void UpdateControlsHint();
+
+	/** 현재 공중모드 상태 캐시 */
+	bool bCachedAirMode = false;
+
+	/** 현재 스냅 각도 캐시 */
+	float CachedSnapDegrees = 90.f;
+
 	UPROPERTY()
 	TObjectPtr<UWjWorldPlacementComponent> PlacementComponent;
 
-	/** 아이템 버튼 → ObjectId 매핑 */
+	/** 카탈로그 아이템 위젯 인스턴스 목록 */
 	UPROPERTY()
-	TMap<TObjectPtr<UButton>, FName> ButtonToObjectIdMap;
-
-	/** 구매 버튼 → ObjectId 매핑 */
-	UPROPERTY()
-	TMap<TObjectPtr<UButton>, FName> BuyButtonToObjectIdMap;
+	TArray<TObjectPtr<UPlacementCatalogItemWidget>> CatalogItemWidgets;
 
 	/** 저장 다이얼로그 인스턴스 */
 	UPROPERTY()

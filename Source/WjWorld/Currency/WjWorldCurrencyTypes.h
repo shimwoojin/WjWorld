@@ -63,3 +63,28 @@ struct WJWORLD_API FGemPackDefinition
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText PriceText;
 };
+
+/**
+ * Gem → Coin 교환 팩 정의
+ */
+USTRUCT(BlueprintType)
+struct WJWORLD_API FGemCoinExchangeDefinition
+{
+	GENERATED_BODY()
+
+	/** Steam ItemDef ID (예: 60, 61, 62) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 SteamItemDefId = 0;
+
+	/** 표시 이름 (예: "100 Coins") */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText DisplayName;
+
+	/** 소비할 Gem 수량 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 GemCost = 0;
+
+	/** 획득할 Coin 수량 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 CoinAmount = 0;
+};

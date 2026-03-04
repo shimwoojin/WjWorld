@@ -80,6 +80,10 @@ private:
 	UPROPERTY()
 	TMap<ECosmeticSlot, TObjectPtr<UMeshComponent>> SlotMeshComponents;
 
+	/** 원본 메시/애니메이션 백업 (Body 프리뷰 교체 후 복원용) */
+	TSoftObjectPtr<USkeletalMesh> OriginalMesh;
+	TSubclassOf<UAnimInstance> OriginalAnimClass;
+
 	/** 슬롯별 기본 부착 소켓 이름 반환 */
 	static FName GetDefaultSocketName(ECosmeticSlot Slot);
 

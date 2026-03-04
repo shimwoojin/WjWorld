@@ -238,7 +238,7 @@ Project Settings > Game > WjWorld. 맵 경로, GameMode 클래스, 캐릭터 기
 - Skeletal mesh 코스메틱 확장: 코드 인프라 준비 완료, 에셋 제작 + itemdefs.json 등록 필요
 
 ## 출시 전 체크리스트
-- `Steam/itemdefs.json`: 보물상자(Treasure Chest #0~#9) `drop_max_per_window`를 `100` → `1`로 되돌리기 (현재 테스트용 100)
+- (현재 없음)
 
 ## 잔존 버그
 - (현재 없음)

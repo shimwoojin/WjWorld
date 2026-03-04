@@ -16,7 +16,7 @@ void UPlacementHUDWidgetAWEditor::NativeConstruct()
 
 	// AW 에디터 타이틀 설정
 	SetTitleText(FText::FromString(TEXT("Approaching Wall 에디터")));
-	SetControlsHintText(FText::FromString(TEXT("LMB: 배치 | R: 회전 | DEL: 삭제 | ESC: 로비로 돌아가기")));
+	SetControlsHintText(FText::FromString(TEXT("LMB: 배치 | DEL: 삭제 | ESC: 로비로 돌아가기")));
 }
 
 void UPlacementHUDWidgetAWEditor::OnExitClicked()

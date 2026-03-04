@@ -11,6 +11,7 @@ class UButton;
 class UTextBlock;
 class UCurrencyBalanceWidget;
 class UGemPackEntryWidget;
+class UGemCoinExchangeEntryWidget;
 
 /**
  * Gem 팩 상점 팝업 위젯
@@ -50,6 +51,18 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UGemPackEntryWidget> PackEntryWidgetClass;
 
+	// ---- Gem → Coin 교환 섹션 ----
+
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UVerticalBox> ExchangeListBox;
+
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UTextBlock> ExchangeSectionText;
+
+	/** 교환 엔트리 위젯 클래스 */
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UGemCoinExchangeEntryWidget> ExchangeEntryWidgetClass;
+
 private:
 	UFUNCTION()
 	void OnCloseClicked();
@@ -57,12 +70,30 @@ private:
 	UFUNCTION()
 	void OnPackPurchaseClicked(int32 PackDefId);
 
+	UFUNCTION()
+	void OnExchangeClicked(int32 ExchangeDefId);
+
+	UFUNCTION()
+	void OnGemBalanceChanged(ECurrencyType CurrencyType, int32 NewBalance);
+
 	/** 팩 목록 생성 */
 	void PopulatePackList();
 
 	/** 팩 목록 클리어 */
 	void ClearPackList();
 
+	/** 교환 목록 생성 */
+	void PopulateExchangeList();
+
+	/** 교환 목록 클리어 */
+	void ClearExchangeList();
+
+	/** 교환 엔트리 버튼 상태 갱신 */
+	void UpdateExchangeButtonStates();
+
 	UPROPERTY()
 	TArray<TObjectPtr<UGemPackEntryWidget>> PackEntryWidgets;
+
+	UPROPERTY()
+	TArray<TObjectPtr<UGemCoinExchangeEntryWidget>> ExchangeEntryWidgets;
 };

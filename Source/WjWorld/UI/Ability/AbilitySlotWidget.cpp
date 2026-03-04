@@ -8,9 +8,48 @@
 #include "Core/Base/WjWorldCharacterBase.h"
 
 #include "Components/Image.h"
+#include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 #include "InputMappingContext.h"
 #include "EnhancedInputSubsystems.h"
+
+namespace
+{
+	FText ShortenKeyName(const FText& FullName)
+	{
+		static const TMap<FString, FString> ShortNames = {
+			{ TEXT("Left Mouse Button"), TEXT("LMB") },
+			{ TEXT("Right Mouse Button"), TEXT("RMB") },
+			{ TEXT("Middle Mouse Button"), TEXT("MMB") },
+			{ TEXT("Left Shift"), TEXT("Shift") },
+			{ TEXT("Right Shift"), TEXT("Shift") },
+			{ TEXT("Left Control"), TEXT("Ctrl") },
+			{ TEXT("Right Control"), TEXT("Ctrl") },
+			{ TEXT("Left Alt"), TEXT("Alt") },
+			{ TEXT("Right Alt"), TEXT("Alt") },
+			{ TEXT("Space Bar"), TEXT("Space") },
+			{ TEXT("Caps Lock"), TEXT("Caps") },
+			{ TEXT("Escape"), TEXT("ESC") },
+			{ TEXT("Enter"), TEXT("Enter") },
+			{ TEXT("Backspace"), TEXT("Back") },
+			{ TEXT("Tab"), TEXT("Tab") },
+		};
+
+		const FString FullStr = FullName.ToString();
+		if (const FString* Short = ShortNames.Find(FullStr))
+		{
+			return FText::FromString(*Short);
+		}
+
+		// Gamepad 등 "Gamepad ..." 접두사 축약
+		if (FullStr.StartsWith(TEXT("Gamepad ")))
+		{
+			return FText::FromString(FullStr.Mid(8));
+		}
+
+		return FullName;
+	}
+}
 
 void UAbilitySlotWidget::NativeConstruct()
 {
@@ -194,7 +233,7 @@ FText UAbilitySlotWidget::ResolveKeyBindText() const
 
 		if (Mapping.Action.GetName() == TargetActionName)
 		{
-			return Mapping.Key.GetDisplayName();
+			return ShortenKeyName(Mapping.Key.GetDisplayName(false));
 		}
 	}
 
@@ -209,60 +248,33 @@ void UAbilitySlotWidget::UpdateCooldownDisplay(float DeltaTime)
 		return;
 	}
 
-	// 충전 기반 어빌리티는 충전이 0일 때 리필 타임을 쿨다운 오버레이로 표시
+	// 충전 기반 어빌리티: 충전이 남아있으면 쿨다운 미표시
 	if (AbilityInstance->IsChargeBased())
 	{
-		int32 CurrentCharges = AbilityInstance->GetCurrentCharges();
-		if (CurrentCharges <= 0)
+		if (AbilityInstance->GetCurrentCharges() > 0)
 		{
-			float RefillRemaining = AbilityInstance->GetChargeRefillTimeRemaining();
-			if (RefillRemaining > 0.f)
+			if (CooldownOverlay)
 			{
-				if (CooldownOverlay)
-				{
-					CooldownOverlay->SetVisibility(ESlateVisibility::HitTestInvisible);
-				}
-				if (CooldownText)
-				{
-					CooldownText->SetVisibility(ESlateVisibility::HitTestInvisible);
-					CooldownText->SetText(FText::AsNumber(FMath::CeilToInt32(RefillRemaining)));
-				}
-				return;
+				CooldownOverlay->SetVisibility(ESlateVisibility::Collapsed);
 			}
+			if (CooldownText)
+			{
+				CooldownText->SetVisibility(ESlateVisibility::Collapsed);
+			}
+			return;
 		}
-
-		// 충전이 남아있으면 쿨다운 오버레이 숨김
-		if (CooldownOverlay)
-		{
-			CooldownOverlay->SetVisibility(ESlateVisibility::Collapsed);
-		}
-		if (CooldownText)
-		{
-			CooldownText->SetVisibility(ESlateVisibility::Collapsed);
-		}
-		return;
 	}
 
-	// 일반 쿨다운 기반 어빌리티
+	// ASC 가져오기
 	APawn* OwningPawn = GetOwningPlayerPawn();
-	if (!OwningPawn)
-	{
-		return;
-	}
-
-	AWjWorldCharacterPlay* CharacterPlay = Cast<AWjWorldCharacterPlay>(OwningPawn);
-	if (!CharacterPlay)
-	{
-		return;
-	}
-
-	UAbilitySystemComponent* ASC = CharacterPlay->GetAbilitySystemComponent();
+	AWjWorldCharacterPlay* CharacterPlay = OwningPawn ? Cast<AWjWorldCharacterPlay>(OwningPawn) : nullptr;
+	UAbilitySystemComponent* ASC = CharacterPlay ? CharacterPlay->GetAbilitySystemComponent() : nullptr;
 	if (!ASC)
 	{
 		return;
 	}
 
-	// 쿨다운 태그로 잔여 시간 조회
+	// 쿨다운 태그로 잔여/전체 시간 조회
 	const FGameplayTagContainer* CooldownTags = AbilityInstance->GetCooldownTags();
 	if (!CooldownTags || CooldownTags->Num() == 0)
 	{
@@ -277,28 +289,41 @@ void UAbilitySlotWidget::UpdateCooldownDisplay(float DeltaTime)
 		return;
 	}
 
-	float Remaining = 0.f;
 	FGameplayEffectQuery Query = FGameplayEffectQuery::MakeQuery_MatchAnyOwningTags(*CooldownTags);
-	TArray<float> Durations = ASC->GetActiveEffectsTimeRemaining(Query);
+	TArray<float> Remainings = ASC->GetActiveEffectsTimeRemaining(Query);
+	TArray<float> FullDurations = ASC->GetActiveEffectsDuration(Query);
 
-	for (float Time : Durations)
+	float MaxRemaining = 0.f;
+	float CorrespondingDuration = 0.f;
+	for (int32 i = 0; i < Remainings.Num(); ++i)
 	{
-		if (Time > Remaining)
+		if (Remainings[i] > MaxRemaining)
 		{
-			Remaining = Time;
+			MaxRemaining = Remainings[i];
+			CorrespondingDuration = (i < FullDurations.Num()) ? FullDurations[i] : 0.f;
 		}
 	}
 
-	if (Remaining > 0.f)
+	if (MaxRemaining > 0.f)
 	{
+		float Percent = (CorrespondingDuration > 0.f) ? (MaxRemaining / CorrespondingDuration) : 1.f;
+
 		if (CooldownOverlay)
 		{
 			CooldownOverlay->SetVisibility(ESlateVisibility::HitTestInvisible);
+			CooldownOverlay->SetPercent(Percent);
 		}
 		if (CooldownText)
 		{
 			CooldownText->SetVisibility(ESlateVisibility::HitTestInvisible);
-			CooldownText->SetText(FText::FromString(FString::Printf(TEXT("%.1f"), Remaining)));
+			if (AbilityInstance->IsChargeBased())
+			{
+				CooldownText->SetText(FText::AsNumber(FMath::CeilToInt32(MaxRemaining)));
+			}
+			else
+			{
+				CooldownText->SetText(FText::FromString(FString::Printf(TEXT("%.1f"), MaxRemaining)));
+			}
 		}
 	}
 	else
@@ -338,14 +363,27 @@ void UAbilitySlotWidget::UpdateChargeDisplay()
 
 void UAbilitySlotWidget::InitializeIcon()
 {
-	if (!AbilityIconImage || !AbilityClass)
+	if (!AbilityClass)
 	{
 		return;
 	}
 
 	const UWjWorldGameplayAbilityBase* CDO = AbilityClass.GetDefaultObject();
-	if (CDO && CDO->AbilityIcon)
+	if (!CDO || !CDO->AbilityIcon)
+	{
+		return;
+	}
+
+	if (AbilityIconImage)
 	{
 		AbilityIconImage->SetBrushFromTexture(CDO->AbilityIcon);
+	}
+
+	// ProgressBar FillImage에도 같은 아이콘 설정
+	if (CooldownOverlay)
+	{
+		FProgressBarStyle Style = CooldownOverlay->GetWidgetStyle();
+		Style.FillImage.SetResourceObject(CDO->AbilityIcon);
+		CooldownOverlay->SetWidgetStyle(Style);
 	}
 }

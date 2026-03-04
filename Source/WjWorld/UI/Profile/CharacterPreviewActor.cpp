@@ -128,6 +128,10 @@ void ACharacterPreviewActor::SetupFromPawn(APawn* SourcePawn)
 	PreviewMeshComponent->SetVisibility(true);
 	PreviewMeshComponent->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 
+	// 원본 메시/애니메이션 백업 (Body 프리뷰 교체 후 복원용)
+	OriginalMesh = SkelMesh;
+	OriginalAnimClass = AnimClass;
+
 	// 메시 설정 완료 후 실시간 캡처 활성화 (Idle 모션 반영)
 	SceneCaptureComponent->bCaptureEveryFrame = true;
 
@@ -151,6 +155,16 @@ void ACharacterPreviewActor::SetupPreview(const FCosmeticLoadout& Loadout)
 	}
 	SlotMeshComponents.Empty();
 	ActiveStreamHandles.Empty();
+
+	// Body 슬롯 프리뷰 메시/애님을 원본으로 복원
+	if (OriginalMesh.IsValid())
+	{
+		PreviewMeshComponent->SetSkeletalMesh(OriginalMesh.Get());
+	}
+	if (OriginalAnimClass)
+	{
+		PreviewMeshComponent->SetAnimInstanceClass(OriginalAnimClass);
+	}
 
 	// 카탈로그 가져오기
 	UGameInstance* GI = GetGameInstance();
@@ -241,6 +255,41 @@ void ACharacterPreviewActor::OnCosmeticAssetLoaded(ECosmeticSlot Slot, FName Ite
 	const FCosmeticItemDefinition* ItemDef = CosmeticSub->GetCatalog()->FindByItemId(ItemId);
 	if (!ItemDef)
 	{
+		return;
+	}
+
+	// Body 슬롯: PreviewMeshComponent 메시 직접 교체
+	if (Slot == ECosmeticSlot::Body)
+	{
+		if (!ItemDef->SkeletalMesh.IsNull())
+		{
+			USkeletalMesh* SkelMesh = Cast<USkeletalMesh>(ItemDef->SkeletalMesh.ToSoftObjectPath().ResolveObject());
+			if (SkelMesh)
+			{
+				PreviewMeshComponent->SetSkeletalMesh(SkelMesh);
+
+				if (!ItemDef->AnimBlueprintOverride.IsNull())
+				{
+					UClass* AnimClass = ItemDef->AnimBlueprintOverride.LoadSynchronous();
+					if (AnimClass)
+					{
+						PreviewMeshComponent->SetAnimInstanceClass(AnimClass);
+					}
+				}
+				else if (OriginalAnimClass)
+				{
+					PreviewMeshComponent->SetAnimInstanceClass(OriginalAnimClass);
+				}
+
+				UE_LOG(LogWjWorldCosmetic, Log, TEXT("CharacterPreviewActor: Body 프리뷰 메시 교체: %s"), *ItemId.ToString());
+			}
+		}
+
+		ActiveStreamHandles.Remove(Slot);
+		if (ActiveStreamHandles.Num() == 0)
+		{
+			RefreshCapture();
+		}
 		return;
 	}
 

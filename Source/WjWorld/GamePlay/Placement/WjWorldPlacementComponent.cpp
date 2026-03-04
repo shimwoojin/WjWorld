@@ -82,6 +82,7 @@ void UWjWorldPlacementComponent::ExitPlacementMode()
 
 	RefreshPlacementModeVisuals();
 
+	OnObjectSelected.Broadcast(NAME_None);
 	OnPlacementModeChanged.Broadcast(CurrentMode);
 	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Exited placement mode"));
 }
@@ -109,6 +110,7 @@ void UWjWorldPlacementComponent::ToggleDeleteMode()
 		// 배치 모드 → 삭제 모드
 		DestroyPreview();
 		CurrentMode = EPlacementMode::Deleting;
+		OnObjectSelected.Broadcast(NAME_None);
 		UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Switched to delete mode"));
 	}
 
@@ -174,6 +176,8 @@ void UWjWorldPlacementComponent::SelectObject(FName ObjectId)
 			UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Preview created for ObjectId=%s"), *ObjectId.ToString());
 		}
 	}
+
+	OnObjectSelected.Broadcast(ObjectId);
 }
 
 void UWjWorldPlacementComponent::RotatePreview()
@@ -195,8 +199,16 @@ void UWjWorldPlacementComponent::CycleRotationAxis()
 void UWjWorldPlacementComponent::CycleSnapDegrees()
 {
 	CurrentSnapPresetIndex = (CurrentSnapPresetIndex + 1) % NumSnapPresets;
-	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Snap degrees changed to %.0f"),
-		SnapDegreePresets[CurrentSnapPresetIndex]);
+	float NewSnap = SnapDegreePresets[CurrentSnapPresetIndex];
+
+	OnSnapDegreesChanged.Broadcast(NewSnap);
+
+	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementComponent: Snap degrees changed to %.0f"), NewSnap);
+}
+
+float UWjWorldPlacementComponent::GetCurrentSnapDegrees() const
+{
+	return SnapDegreePresets[CurrentSnapPresetIndex];
 }
 
 float UWjWorldPlacementComponent::GetEffectiveSnapDegrees() const
@@ -1236,6 +1248,7 @@ void UWjWorldPlacementComponent::BindInputActions()
 	// Started = 키 1회 입력, Triggered = 매 프레임 (스크롤 등 연속 입력용)
 	if (UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(PC->InputComponent))
 	{
+		// 공통: 배치, 취소, 삭제
 		if (ConfirmAction)
 		{
 			EIC->BindAction(ConfirmAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnConfirmAction);
@@ -1244,29 +1257,34 @@ void UWjWorldPlacementComponent::BindInputActions()
 		{
 			EIC->BindAction(CancelAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnCancelAction);
 		}
-		if (RotateAction)
-		{
-			EIC->BindAction(RotateAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnRotateAction);
-		}
 		if (DeleteAction)
 		{
 			EIC->BindAction(DeleteAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnDeleteAction);
 		}
-		if (ScrollAction)
+
+		// AW 에디터: 회전/축/각도/스크롤/공중모드 불필요 (그리드 배치만 사용)
+		if (CurrentContext != EPlacementContext::ApproachingWall)
 		{
-			EIC->BindAction(ScrollAction, ETriggerEvent::Triggered, this, &UWjWorldPlacementComponent::OnScrollAction);
-		}
-		if (ToggleAirModeAction)
-		{
-			EIC->BindAction(ToggleAirModeAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnToggleAirModeAction);
-		}
-		if (CycleAxisAction)
-		{
-			EIC->BindAction(CycleAxisAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnCycleAxisAction);
-		}
-		if (CycleSnapAction)
-		{
-			EIC->BindAction(CycleSnapAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnCycleSnapAction);
+			if (RotateAction)
+			{
+				EIC->BindAction(RotateAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnRotateAction);
+			}
+			if (ScrollAction)
+			{
+				EIC->BindAction(ScrollAction, ETriggerEvent::Triggered, this, &UWjWorldPlacementComponent::OnScrollAction);
+			}
+			if (ToggleAirModeAction)
+			{
+				EIC->BindAction(ToggleAirModeAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnToggleAirModeAction);
+			}
+			if (CycleAxisAction)
+			{
+				EIC->BindAction(CycleAxisAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnCycleAxisAction);
+			}
+			if (CycleSnapAction)
+			{
+				EIC->BindAction(CycleSnapAction, ETriggerEvent::Started, this, &UWjWorldPlacementComponent::OnCycleSnapAction);
+			}
 		}
 	}
 }

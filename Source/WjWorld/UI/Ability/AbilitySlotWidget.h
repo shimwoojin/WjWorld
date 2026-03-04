@@ -7,6 +7,7 @@
 #include "AbilitySlotWidget.generated.h"
 
 class UImage;
+class UProgressBar;
 class UTextBlock;
 class UWjWorldGameplayAbilityBase;
 class UAbilitySystemComponent;
@@ -56,7 +57,7 @@ protected:
 	TObjectPtr<UTextBlock> KeyBindText;
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UImage> CooldownOverlay;
+	TObjectPtr<UProgressBar> CooldownOverlay;
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> CooldownText;

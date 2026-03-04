@@ -114,6 +114,8 @@ void UWjWorldGameRuleBase::OnGameEndPredict(float Seconds)
 void UWjWorldGameRuleBase::OnGameEnd()
 {
 	if (!HasAuthority()) return;
+	if (bGameEnded) return;
+	bGameEnded = true;
 
 	UWorld* World = GetWorld();
 	if (World)

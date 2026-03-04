@@ -64,6 +64,10 @@ struct WJWORLD_API FCosmeticItemDefinition
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Price")
 	int32 GemPrice = 0;
 
+	/** Body 슬롯 전용: 캐릭터 모델 변경 시 AnimBlueprint 오버라이드 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Body")
+	TSoftClassPtr<UAnimInstance> AnimBlueprintOverride;
+
 	/** 부착 소켓 이름 (비어있으면 슬롯 기본값 사용) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attachment")
 	FName AttachSocketName;

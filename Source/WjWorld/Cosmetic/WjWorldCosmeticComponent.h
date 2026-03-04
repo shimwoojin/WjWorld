@@ -83,6 +83,10 @@ private:
 	UPROPERTY()
 	TMap<ECosmeticSlot, TSoftObjectPtr<USkeletalMesh>> DefaultMeshes;
 
+	/** 기본 AnimBlueprint 백업 (Body 슬롯 복원용) */
+	UPROPERTY()
+	TSubclassOf<UAnimInstance> DefaultAnimClass;
+
 	/** 비동기 로드 핸들 */
 	FStreamableManager StreamableManager;
 	TMap<ECosmeticSlot, TSharedPtr<FStreamableHandle>> ActiveStreamHandles;

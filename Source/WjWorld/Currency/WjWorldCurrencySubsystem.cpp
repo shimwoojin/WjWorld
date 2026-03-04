@@ -31,7 +31,8 @@ void UWjWorldCurrencySubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	// 일일 보상 데이터 로드
 	LoadDailyRewardData();
 
-	UE_LOG(LogWjWorldCurrency, Log, TEXT("CurrencySubsystem 초기화 완료 (Coin: %d, Gem: %d, DailyRewards: %d)"), CoinBalance, GemBalance, TodayMatchRewardCount);
+	UE_LOG(LogWjWorldCurrency, Log, TEXT("CurrencySubsystem 초기화 완료 (Coin: %d, Gem: %d, DailyRewards: %d, Win: %d, Loss: %d)"),
+		CoinBalance, GemBalance, TodayMatchRewardCount, TodayWinRewardCount, TodayLossRewardCount);
 }
 
 void UWjWorldCurrencySubsystem::Deinitialize()
@@ -119,11 +120,13 @@ void UWjWorldCurrencySubsystem::TriggerMatchReward(bool bIsWinner)
 	}
 
 	int32 GeneratorDefId = bIsWinner ? Settings->MatchWinRewardDefId : Settings->MatchLossRewardDefId;
-	int32 FallbackRewardAmount = bIsWinner ? 50 : 10;
+	int32 FallbackRewardAmount = bIsWinner ? Settings->WinRewardCoinAmount : Settings->LossRewardCoinAmount;
 
-	UE_LOG(LogWjWorldCurrency, Log, TEXT("매치 보상 트리거: %s (GeneratorDefId: %d, DailyCount: %d/%d)"),
+	UE_LOG(LogWjWorldCurrency, Log, TEXT("매치 보상 트리거: %s (GeneratorDefId: %d, DailyCount: %d/%d, Win: %d/%d, Loss: %d/%d)"),
 		bIsWinner ? TEXT("승리") : TEXT("패배"), GeneratorDefId,
-		TodayMatchRewardCount, Settings->MaxDailyMatchRewards);
+		TodayMatchRewardCount, Settings->MaxDailyMatchRewards,
+		TodayWinRewardCount, Settings->MaxWinRewardsPerDay,
+		TodayLossRewardCount, Settings->MaxLossRewardsPerDay);
 
 #if WITH_STEAM
 	ISteamInventory* SteamInv = SteamInventory();
@@ -142,15 +145,41 @@ void UWjWorldCurrencySubsystem::TriggerMatchReward(bool bIsWinner)
 		}
 		else
 		{
-			// TriggerItemDrop 실패 시 로컬 폴백
-			UE_LOG(LogWjWorldCurrency, Warning, TEXT("Steam TriggerItemDrop 실패 (DefId: %d) — 로컬 폴백 지급: %d Coin"),
-				GeneratorDefId, FallbackRewardAmount);
-			GrantCurrencyLocally(ECurrencyType::Coin, FallbackRewardAmount);
+			// TriggerItemDrop 실패 시: Steam 한도 초과로 판단하여 카운트를 max로 보정
+			UE_LOG(LogWjWorldCurrency, Warning, TEXT("Steam TriggerItemDrop 실패 (DefId: %d) — Steam 한도 초과로 판단"),
+				GeneratorDefId);
+
+			if (bIsWinner)
+			{
+				TodayWinRewardCount = Settings->MaxWinRewardsPerDay;
+			}
+			else
+			{
+				TodayLossRewardCount = Settings->MaxLossRewardsPerDay;
+			}
+
+			TodayMatchRewardCount++;
+			SaveDailyRewardData();
+			OnMatchRewardCountChanged.Broadcast(TodayWinRewardCount, Settings->MaxWinRewardsPerDay,
+				TodayLossRewardCount, Settings->MaxLossRewardsPerDay);
+
+			// 로컬 폴백 지급은 하지 않음 (Steam 한도 초과)
+			return;
 		}
 
 		// 일일 카운트 증가
 		TodayMatchRewardCount++;
+		if (bIsWinner)
+		{
+			TodayWinRewardCount++;
+		}
+		else
+		{
+			TodayLossRewardCount++;
+		}
 		SaveDailyRewardData();
+		OnMatchRewardCountChanged.Broadcast(TodayWinRewardCount, Settings->MaxWinRewardsPerDay,
+			TodayLossRewardCount, Settings->MaxLossRewardsPerDay);
 		return;
 	}
 #endif
@@ -161,7 +190,17 @@ void UWjWorldCurrencySubsystem::TriggerMatchReward(bool bIsWinner)
 
 	// 일일 카운트 증가
 	TodayMatchRewardCount++;
+	if (bIsWinner)
+	{
+		TodayWinRewardCount++;
+	}
+	else
+	{
+		TodayLossRewardCount++;
+	}
 	SaveDailyRewardData();
+	OnMatchRewardCountChanged.Broadcast(TodayWinRewardCount, Settings->MaxWinRewardsPerDay,
+		TodayLossRewardCount, Settings->MaxLossRewardsPerDay);
 }
 
 bool UWjWorldCurrencySubsystem::PurchaseItemWithCurrency(FName CosmeticItemId, ECurrencyType CurrencyType)
@@ -423,6 +462,115 @@ bool UWjWorldCurrencySubsystem::PurchasePlacementObject(FName ObjectId)
 
 	UE_LOG(LogWjWorldCurrency, Log, TEXT("로컬 배치 오브젝트 구매 완료: %s (%d Coin 차감)"),
 		*ObjectId.ToString(), Def->CoinPrice);
+
+	return true;
+}
+
+bool UWjWorldCurrencySubsystem::ExchangeGemsForCoins(int32 ExchangeDefId)
+{
+	if (bExchangePending)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("이미 교환이 진행 중입니다."));
+		return false;
+	}
+
+	// DeveloperSettings에서 교환 정의 조회
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	if (!Settings)
+	{
+		return false;
+	}
+
+	const FGemCoinExchangeDefinition* ExchangeDef = nullptr;
+	for (const FGemCoinExchangeDefinition& Def : Settings->GemCoinExchangeDefinitions)
+	{
+		if (Def.SteamItemDefId == ExchangeDefId)
+		{
+			ExchangeDef = &Def;
+			break;
+		}
+	}
+
+	if (!ExchangeDef)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("교환 정의를 찾을 수 없음 (DefId: %d)"), ExchangeDefId);
+		return false;
+	}
+
+	if (ExchangeDef->GemCost <= 0 || ExchangeDef->CoinAmount <= 0)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("유효하지 않은 교환 정의 (GemCost: %d, CoinAmount: %d)"),
+			ExchangeDef->GemCost, ExchangeDef->CoinAmount);
+		return false;
+	}
+
+	// Gem 잔액 확인
+	if (GemBalance < ExchangeDef->GemCost)
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("Gem 잔액 부족: %d < %d"), GemBalance, ExchangeDef->GemCost);
+		return false;
+	}
+
+	UE_LOG(LogWjWorldCurrency, Log, TEXT("Gem→Coin 교환 요청: DefId=%d (%d Gem → %d Coin)"),
+		ExchangeDefId, ExchangeDef->GemCost, ExchangeDef->CoinAmount);
+
+#if WITH_STEAM
+	ISteamInventory* SteamInv = SteamInventory();
+	if (SteamInv)
+	{
+		if (CachedGemInstanceId == k_SteamItemInstanceIDInvalid)
+		{
+			UE_LOG(LogWjWorldCurrency, Warning, TEXT("Gem 인스턴스 ID가 캐싱되지 않음 — 인벤토리 갱신 필요"));
+			return false;
+		}
+
+		// 기존 핸들 정리
+		if (ExchangeResultHandle != k_SteamInventoryResultInvalid)
+		{
+			SteamInv->DestroyResult(ExchangeResultHandle);
+			ExchangeResultHandle = k_SteamInventoryResultInvalid;
+		}
+
+		// ExchangeItems: Gem 소비 → bundle(DefId 60~62) 획득 → 자동으로 Coin 지급
+		SteamItemDef_t OutputItemDef = static_cast<SteamItemDef_t>(ExchangeDefId);
+		uint32 OutputQuantity = 1;
+		uint32 InputQuantity = static_cast<uint32>(ExchangeDef->GemCost);
+
+		bool bExchangeResult = SteamInv->ExchangeItems(
+			&ExchangeResultHandle,
+			&OutputItemDef, &OutputQuantity, 1,
+			&CachedGemInstanceId, &InputQuantity, 1
+		);
+
+		if (bExchangeResult)
+		{
+			bExchangePending = true;
+			bPendingIsPlacement = false;
+			PendingExchangeItemId = FName(*FString::Printf(TEXT("GemCoinExchange_%d"), ExchangeDefId));
+			StartExchangePolling();
+
+			UE_LOG(LogWjWorldCurrency, Log, TEXT("Steam ExchangeItems 요청 성공 (Gem→Coin): DefId=%d (GemInstanceId=%llu, GemCost=%d)"),
+				ExchangeDefId, CachedGemInstanceId, ExchangeDef->GemCost);
+			return true;
+		}
+		else
+		{
+			UE_LOG(LogWjWorldCurrency, Warning, TEXT("Steam ExchangeItems 호출 실패 (Gem→Coin): DefId=%d"), ExchangeDefId);
+			ExchangeResultHandle = k_SteamInventoryResultInvalid;
+			return false;
+		}
+	}
+#endif
+
+	// 비Steam 폴백: Gem 차감 + Coin 부여
+	SetBalance(ECurrencyType::Gem, GemBalance - ExchangeDef->GemCost);
+	SetBalance(ECurrencyType::Coin, CoinBalance + ExchangeDef->CoinAmount);
+
+	OnCurrencyPurchaseComplete.Broadcast(
+		FName(*FString::Printf(TEXT("GemCoinExchange_%d"), ExchangeDefId)), true);
+
+	UE_LOG(LogWjWorldCurrency, Log, TEXT("로컬 Gem→Coin 교환 완료: %d Gem → %d Coin"),
+		ExchangeDef->GemCost, ExchangeDef->CoinAmount);
 
 	return true;
 }
@@ -905,6 +1053,8 @@ void UWjWorldCurrencySubsystem::LoadDailyRewardData()
 	FString DateStr;
 	GConfig->GetString(*CurrencyConfigSection, TEXT("LastRewardDate"), DateStr, GGameUserSettingsIni);
 	GConfig->GetInt(*CurrencyConfigSection, TEXT("TodayMatchRewardCount"), TodayMatchRewardCount, GGameUserSettingsIni);
+	GConfig->GetInt(*CurrencyConfigSection, TEXT("TodayWinRewardCount"), TodayWinRewardCount, GGameUserSettingsIni);
+	GConfig->GetInt(*CurrencyConfigSection, TEXT("TodayLossRewardCount"), TodayLossRewardCount, GGameUserSettingsIni);
 
 	if (!DateStr.IsEmpty())
 	{
@@ -918,6 +1068,8 @@ void UWjWorldCurrencySubsystem::SaveDailyRewardData()
 {
 	GConfig->SetString(*CurrencyConfigSection, TEXT("LastRewardDate"), *LastRewardDate.ToString(), GGameUserSettingsIni);
 	GConfig->SetInt(*CurrencyConfigSection, TEXT("TodayMatchRewardCount"), TodayMatchRewardCount, GGameUserSettingsIni);
+	GConfig->SetInt(*CurrencyConfigSection, TEXT("TodayWinRewardCount"), TodayWinRewardCount, GGameUserSettingsIni);
+	GConfig->SetInt(*CurrencyConfigSection, TEXT("TodayLossRewardCount"), TodayLossRewardCount, GGameUserSettingsIni);
 	GConfig->Flush(false, GGameUserSettingsIni);
 }
 
@@ -929,6 +1081,8 @@ void UWjWorldCurrencySubsystem::CheckDailyReset()
 		|| Now.GetYear() != LastRewardDate.GetYear())
 	{
 		TodayMatchRewardCount = 0;
+		TodayWinRewardCount = 0;
+		TodayLossRewardCount = 0;
 		LastRewardDate = Now;
 		SaveDailyRewardData();
 		UE_LOG(LogWjWorldCurrency, Log, TEXT("일일 보상 카운트 리셋 (새 날짜: %s)"), *Now.ToString());

@@ -17,6 +17,7 @@ class UWjWorldPlaceableObjectDataAsset;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCurrencyBalanceChanged, ECurrencyType, CurrencyType, int32, NewBalance);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCurrencyPurchaseComplete, FName, ItemId, bool, bSuccess);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlacementPurchaseComplete, FName, ObjectId, bool, bSuccess);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnMatchRewardCountChanged, int32, WinCount, int32, MaxWin, int32, LossCount, int32, MaxLoss);
 
 /**
  * 재화 관리 서브시스템
@@ -55,6 +56,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Currency")
 	int32 GetRemainingDailyRewards() const;
 
+	/** 오늘 승리 보상 카운트 */
+	UFUNCTION(BlueprintCallable, Category = "Currency")
+	int32 GetTodayWinRewardCount() const { return TodayWinRewardCount; }
+
+	/** 오늘 패배 보상 카운트 */
+	UFUNCTION(BlueprintCallable, Category = "Currency")
+	int32 GetTodayLossRewardCount() const { return TodayLossRewardCount; }
+
 	// ---- 재화로 코스메틱 구매 ----
 
 	/** 재화를 소비하여 코스메틱 아이템 구매 */
@@ -66,6 +75,12 @@ public:
 	/** 코인을 소비하여 배치 오브젝트 구매 */
 	UFUNCTION(BlueprintCallable, Category = "Currency")
 	bool PurchasePlacementObject(FName ObjectId);
+
+	// ---- Gem → Coin 교환 ----
+
+	/** Gem을 소비하여 Coin으로 교환 (Steam ExchangeItems 기반) */
+	UFUNCTION(BlueprintCallable, Category = "Currency")
+	bool ExchangeGemsForCoins(int32 ExchangeDefId);
 
 	// ---- 유료 재화 팩 구매 ----
 
@@ -115,6 +130,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Currency")
 	FOnPlacementPurchaseComplete OnPlacementPurchaseComplete;
+
+	UPROPERTY(BlueprintAssignable, Category = "Currency")
+	FOnMatchRewardCountChanged OnMatchRewardCountChanged;
 
 private:
 	/** 인벤토리 갱신 콜백 (CosmeticSubsystem.OnInventoryUpdated 구독) */
@@ -179,6 +197,8 @@ private:
 
 	// 일일 보상 제한 추적
 	int32 TodayMatchRewardCount = 0;
+	int32 TodayWinRewardCount = 0;
+	int32 TodayLossRewardCount = 0;
 	FDateTime LastRewardDate;
 
 	/** 일일 보상 카운트 로드/저장 */

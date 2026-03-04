@@ -115,7 +115,9 @@
       "Bash(C:/UEProjects/WjWorld/Batch/RebuildProject.bat)",
       "Bash(\"C:\\\\Program Files\\\\Epic Games\\\\UE_5.7\\\\Engine\\\\Build\\\\BatchFiles\\\\Build.bat\" WjWorldEditor Win64 DebugGame -project=\"C:\\\\UEProjects\\\\WjWorld\\\\WjWorld.uproject\" -waitmutex)",
       "Bash(git rm:*)",
-      "Bash(\"C:\\\\UE\\\\UE_5.7\\\\Engine\\\\Build\\\\BatchFiles\\\\Build.bat\" WjWorldEditor Win64 Development -Project=\"C:\\\\UEProjects\\\\WjWorld\\\\WjWorld.uproject\" -WaitMutex -FromMsBuild)"
+      "Bash(\"C:\\\\UE\\\\UE_5.7\\\\Engine\\\\Build\\\\BatchFiles\\\\Build.bat\" WjWorldEditor Win64 Development -Project=\"C:\\\\UEProjects\\\\WjWorld\\\\WjWorld.uproject\" -WaitMutex -FromMsBuild)",
+      "Bash(python3:*)",
+      "Bash(xxd:*)"
     ]
   },
   "teammateMode": "in-process"

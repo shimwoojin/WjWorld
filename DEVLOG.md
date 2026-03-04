@@ -1,5 +1,32 @@
 # WjWorld 개발 로그
 
+## 2026-03-02
+### 작업 내용
+
+#### 버그 수정: 채팅 전송 후 키보드 조작 불능
+- **증상**: Enter로 채팅 전송 후 WASD 등 키보드 조작이 안 됨 — 화면 클릭해야 복원
+- **원인**: `SendCurrentMessage()`에서 텍스트만 클리어하고 포커스를 ChatInputBox에 남겨둠 → 키보드 입력이 계속 채팅 위젯으로 전달
+- **수정**: `RestoreGameFocus()` 함수 추가 — `FSlateApplication::SetUserFocusToGameViewport(0)` 호출
+  - 메시지 전송 후 + 빈 메시지 Enter 시 모두 포커스 복원
+
+#### JumpMap 에셋 갱신 + GA_Grapple 감지 범위 확대
+- GrappleRange 2000 → 3000 (감지 범위 확대)
+- JumpMap BP 에셋 4개 (CheckPoint, End, GrapplePoint, RotatingObstacle) 갱신
+- DA_JumpMapLayouts, DA_JumpMapPlaceableCatalog, DA_MinigameCatalog 갱신
+
+#### UI 위젯 블루프린트 갱신 + 리소스 추가
+- 위젯 블루프린트 16개 수정 (Chat, Cosmetic, Currency, Placement, Lobby, Profile, Session, Setting, WaitingRoom)
+- 버튼 이미지 9개, 배경/아이콘 4개 (T_BG_1/2, T_Gem, T_Simple_BG_1), 머티리얼 1개 (M_InvAlpha) 신규 추가
+
+### 학습/메모
+- **UMG 포커스 관리**: `EditableTextBox::SetKeyboardFocus()` 호출 시 Slate가 UI 입력 모드로 전환됨. 전송 후 `FSlateApplication::SetUserFocusToGameViewport(0)`로 명시적 복원 필요
+- **SetInputMode vs SetUserFocusToGameViewport**: `SetInputMode(FInputModeGameAndUI())`는 컨텍스트별 분기 필요하지만, `SetUserFocusToGameViewport`는 현재 InputMode를 유지하면서 포커스만 이동시켜 더 범용적
+
+### 이슈/해결
+- **채팅 포커스 복원**: `SetInputMode` 대신 `SetUserFocusToGameViewport` 사용 — Lobby(GameAndUI), Play(GameOnly), WaitingRoom(GameAndUI) 각각 다른 InputMode를 건드리지 않고 포커스만 게임으로 복원
+
+---
+
 ## 2026-02-27
 ### 작업 내용
 

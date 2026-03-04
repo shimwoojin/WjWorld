@@ -238,6 +238,21 @@ void UWjWorldCosmeticComponent::OnAssetLoaded(ECosmeticSlot Slot, FName ItemId)
 				if (MeshComp)
 				{
 					MeshComp->SetSkeletalMesh(LoadedMesh);
+
+					// AnimBlueprint 오버라이드 적용 (없으면 기본값 복원)
+					if (!Def->AnimBlueprintOverride.IsNull())
+					{
+						UClass* AnimClass = Def->AnimBlueprintOverride.LoadSynchronous();
+						if (AnimClass)
+						{
+							MeshComp->SetAnimInstanceClass(AnimClass);
+						}
+					}
+					else if (DefaultAnimClass)
+					{
+						MeshComp->SetAnimInstanceClass(DefaultAnimClass);
+					}
+
 					UE_LOG(LogWjWorldCosmetic, Log, TEXT("Body 메시 적용: %s"), *LoadedMesh->GetName());
 				}
 			}
@@ -323,6 +338,7 @@ void UWjWorldCosmeticComponent::BackupDefaultMeshes()
 	if (MeshComp && MeshComp->GetSkeletalMeshAsset())
 	{
 		DefaultMeshes.Add(ECosmeticSlot::Body, MeshComp->GetSkeletalMeshAsset());
+		DefaultAnimClass = MeshComp->GetAnimClass();
 	}
 
 	bDefaultMeshesBackedUp = true;
@@ -350,6 +366,13 @@ void UWjWorldCosmeticComponent::RestoreDefaultMesh(ECosmeticSlot Slot)
 			if (MeshComp)
 			{
 				MeshComp->SetSkeletalMesh(DefaultMesh->Get());
+
+				// AnimBlueprint도 기본값으로 복원
+				if (DefaultAnimClass)
+				{
+					MeshComp->SetAnimInstanceClass(DefaultAnimClass);
+				}
+
 				UE_LOG(LogWjWorldCosmetic, Log, TEXT("기본 메시 복원: 슬롯 %d"), static_cast<int32>(Slot));
 			}
 		}

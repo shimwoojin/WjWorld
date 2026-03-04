@@ -33,6 +33,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlacementModeChanged, EPlacementM
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnObjectPlaced);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnObjectDeleted);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAirModeChanged, bool, bIsAirMode);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSnapDegreesChanged, float, NewSnapDegrees);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObjectSelected, FName, ObjectId);
 
 /**
  * 로비 오브젝트 배치 핵심 컴포넌트
@@ -67,6 +69,7 @@ public:
 	void RotatePreview();
 	void CycleRotationAxis();
 	void CycleSnapDegrees();
+	float GetCurrentSnapDegrees() const;
 	void ConfirmPlacement();
 	void DeleteHoveredObject();
 
@@ -143,6 +146,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Placement")
 	FOnAirModeChanged OnAirModeChanged;
+
+	UPROPERTY(BlueprintAssignable, Category = "Placement")
+	FOnSnapDegreesChanged OnSnapDegreesChanged;
+
+	UPROPERTY(BlueprintAssignable, Category = "Placement")
+	FOnObjectSelected OnObjectSelected;
 
 	//~ 입력 에셋 (에디터에서 설정)
 	UPROPERTY(EditDefaultsOnly, Category = "Input")

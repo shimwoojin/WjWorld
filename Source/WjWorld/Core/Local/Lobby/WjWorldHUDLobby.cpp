@@ -9,6 +9,7 @@
 AWjWorldHUDLobby::AWjWorldHUDLobby()
 {
 	bCreateChatWidget = true;
+	bCreateMatchRewardCounter = true;
 }
 
 void AWjWorldHUDLobby::BeginPlay()

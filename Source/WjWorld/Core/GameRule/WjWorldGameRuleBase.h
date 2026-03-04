@@ -75,6 +75,9 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = "GameRule")
 	float StartDelay = 2.0f;
 
+    /** OnGameEnd 중복 호출 방지 */
+    bool bGameEnded = false;
+
     FTimerHandle DelayStartHandle;
     FTimerHandle GotoWaitingRoomHandle;
 

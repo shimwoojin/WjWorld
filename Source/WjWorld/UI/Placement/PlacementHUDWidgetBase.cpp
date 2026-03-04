@@ -3,6 +3,7 @@
 #include "UI/Placement/PlacementHUDWidgetBase.h"
 #include "UI/Placement/PlacementSaveDialogWidget.h"
 #include "UI/Placement/PlacementLoadDialogWidget.h"
+#include "UI/Placement/PlacementCatalogItemWidget.h"
 #include "UI/Common/ConfirmDialogWidget.h"
 #include "GamePlay/Placement/WjWorldPlacementComponent.h"
 #include "GamePlay/Placement/IWjWorldPlacementDataProvider.h"
@@ -13,8 +14,6 @@
 #include "Components/ScrollBox.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
-#include "Components/HorizontalBox.h"
-#include "Components/HorizontalBoxSlot.h"
 #include "WjWorldLogCategories.h"
 
 void UPlacementHUDWidgetBase::NativeConstruct()
@@ -47,7 +46,7 @@ void UPlacementHUDWidgetBase::NativeConstruct()
 	}
 
 	// 기본 조작 안내
-	SetControlsHintText(FText::FromString(TEXT("LMB: 배치 | R: 회전 | T: 축 전환 | G: 각도 전환 | DEL: 삭제 | F: 공중모드 | ESC: 나가기")));
+	UpdateControlsHint();
 }
 
 void UPlacementHUDWidgetBase::SetPlacementComponent(UWjWorldPlacementComponent* InComponent)
@@ -61,6 +60,16 @@ void UPlacementHUDWidgetBase::SetPlacementComponent(UWjWorldPlacementComponent* 
 		// 배치/삭제 시 카탈로그 리프레시 (배치 수 갱신)
 		PlacementComponent->OnObjectPlaced.AddDynamic(this, &UPlacementHUDWidgetBase::RefreshCatalogUI);
 		PlacementComponent->OnObjectDeleted.AddDynamic(this, &UPlacementHUDWidgetBase::RefreshCatalogUI);
+
+		// 상태 변경 구독
+		PlacementComponent->OnAirModeChanged.AddDynamic(this, &UPlacementHUDWidgetBase::OnAirModeChanged);
+		PlacementComponent->OnSnapDegreesChanged.AddDynamic(this, &UPlacementHUDWidgetBase::OnSnapDegreesChanged);
+		PlacementComponent->OnObjectSelected.AddDynamic(this, &UPlacementHUDWidgetBase::OnObjectSelected);
+
+		// 현재 상태 반영 (위젯이 늦게 생성된 경우 대비)
+		bCachedAirMode = PlacementComponent->IsAirPlacementMode();
+		CachedSnapDegrees = PlacementComponent->GetCurrentSnapDegrees();
+		UpdateControlsHint();
 
 		// 로비 컨텍스트: 구매/인벤토리 델리게이트 구독
 		if (GetCurrentContext() == EPlacementContext::Lobby)
@@ -101,8 +110,7 @@ void UPlacementHUDWidgetBase::PopulateCatalog(UWjWorldPlaceableObjectDataAsset* 
 	}
 
 	CatalogScrollBox->ClearChildren();
-	ButtonToObjectIdMap.Empty();
-	BuyButtonToObjectIdMap.Empty();
+	CatalogItemWidgets.Empty();
 
 	// 로비 컨텍스트일 때만 소유권/가격 정보 표시
 	const bool bIsLobby = (GetCurrentContext() == EPlacementContext::Lobby);
@@ -148,14 +156,30 @@ void UPlacementHUDWidgetBase::PopulateCatalog(UWjWorldPlaceableObjectDataAsset* 
 		int32 OwnedQty = (bIsPaidItem && CosmeticSub) ? CosmeticSub->GetItemQuantityByDefId(Def.SteamItemDefId) : 0;
 		const bool bOwned = (!bIsPaidItem || OwnedQty > 0);
 
-		// ---- 행 컨테이너 (HorizontalBox) ----
-		UHorizontalBox* Row = NewObject<UHorizontalBox>(this);
+		// 아이템 위젯 생성
+		UPlacementCatalogItemWidget* ItemWidget = nullptr;
+		if (CatalogItemWidgetClass)
+		{
+			ItemWidget = CreateWidget<UPlacementCatalogItemWidget>(GetOwningPlayer(), CatalogItemWidgetClass);
+		}
 
-		// ---- 아이템 선택 버튼 ----
-		UButton* ItemButton = NewObject<UButton>(this);
-		UTextBlock* ItemText = NewObject<UTextBlock>(this);
+		if (!ItemWidget)
+		{
+			continue;
+		}
 
-		FString DisplayStr = Def.DisplayName.IsEmpty() ? Def.ObjectId.ToString() : Def.DisplayName.ToString();
+		// 아이콘 로드 (동기 — 카탈로그 UI 생성 시점이므로 허용)
+		UTexture2D* IconTexture = nullptr;
+		if (!Def.Icon.IsNull())
+		{
+			IconTexture = Def.Icon.LoadSynchronous();
+		}
+
+		// 기본 데이터 설정
+		FText DisplayName = Def.DisplayName.IsEmpty()
+			? FText::FromName(Def.ObjectId)
+			: Def.DisplayName;
+		ItemWidget->SetItemData(Def.ObjectId, DisplayName, IconTexture);
 
 		// 배치 수량 표시
 		if (bIsLobby && PlacementComponent)
@@ -163,69 +187,29 @@ void UPlacementHUDWidgetBase::PopulateCatalog(UWjWorldPlaceableObjectDataAsset* 
 			int32 PlacedCount = PlacementComponent->CountPlacedObjectsByType(Def.ObjectId);
 			if (bIsPaidItem && Def.MaxPlacementCount > 0)
 			{
-				// 유료 아이템: 구매 수량(OwnedQty)이 설치 상한
-				DisplayStr += FString::Printf(TEXT("  [%d/%d]"), PlacedCount, OwnedQty);
+				ItemWidget->SetPlacementCount(PlacedCount, OwnedQty);
 			}
 			else if (Def.MaxPlacementCount > 0)
 			{
-				// 무료 아이템: MaxPlacementCount가 상한
-				DisplayStr += FString::Printf(TEXT("  [%d/%d]"), PlacedCount, Def.MaxPlacementCount);
+				ItemWidget->SetPlacementCount(PlacedCount, Def.MaxPlacementCount);
 			}
 		}
 
-		ItemText->SetText(FText::FromString(DisplayStr));
+		// 소유 상태
+		ItemWidget->SetOwned(bOwned);
 
-		FSlateFontInfo FontInfo = ItemText->GetFont();
-		FontInfo.Size = 14;
-		ItemText->SetFont(FontInfo);
-
-		// 미소유 아이템: 회색 처리
-		if (bIsPaidItem && !bOwned)
-		{
-			ItemText->SetColorAndOpacity(FSlateColor(FLinearColor(0.5f, 0.5f, 0.5f)));
-		}
-
-		ItemButton->AddChild(ItemText);
-		Row->AddChild(ItemButton);
-
-		// 아이템 버튼 Fill (나머지 공간 차지)
-		if (UHorizontalBoxSlot* ItemSlot = Cast<UHorizontalBoxSlot>(ItemButton->Slot))
-		{
-			ItemSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
-		}
-
-		ButtonToObjectIdMap.Add(ItemButton, Def.ObjectId);
-		ItemButton->OnClicked.AddDynamic(this, &UPlacementHUDWidgetBase::OnCatalogButtonClicked);
-
-		// ---- 구매 버튼 (추가 구매 가능한 유료 아이템) ----
-		// 유료 + 상한: 소유 수 < 상한이면 추가 구매 가능
-		// 유료 + 무상한(0): 미소유일 때만 1회 구매 (기존 호환)
+		// 구매 버튼
 		const bool bCanBuyMore = bIsPaidItem
 			&& (Def.MaxPlacementCount > 0 ? OwnedQty < Def.MaxPlacementCount : !bOwned);
-		if (bCanBuyMore)
-		{
-			UButton* BuyButton = NewObject<UButton>(this);
-			UTextBlock* BuyText = NewObject<UTextBlock>(this);
+		bool bCanBuy = bCanBuyMore && (CoinBalance >= Def.CoinPrice) && !bTotalLimitReached;
+		ItemWidget->SetBuyInfo(bCanBuyMore, Def.CoinPrice, bCanBuy);
 
-			BuyText->SetText(FText::FromString(FString::Printf(TEXT("%d Coin"), Def.CoinPrice)));
+		// 이벤트 바인딩
+		ItemWidget->OnItemSelected.AddDynamic(this, &UPlacementHUDWidgetBase::HandleCatalogItemSelected);
+		ItemWidget->OnBuyClicked.AddDynamic(this, &UPlacementHUDWidgetBase::HandleCatalogItemBuyClicked);
 
-			FSlateFontInfo BuyFont = BuyText->GetFont();
-			BuyFont.Size = 12;
-			BuyText->SetFont(BuyFont);
-
-			BuyButton->AddChild(BuyText);
-			Row->AddChild(BuyButton);
-
-			// 구매 가능 여부: 재화 충분 + 전체 상한 미달
-			bool bCanBuy = (CoinBalance >= Def.CoinPrice) && !bTotalLimitReached;
-
-			BuyButton->SetIsEnabled(bCanBuy);
-
-			BuyButtonToObjectIdMap.Add(BuyButton, Def.ObjectId);
-			BuyButton->OnClicked.AddDynamic(this, &UPlacementHUDWidgetBase::OnBuyButtonClicked);
-		}
-
-		CatalogScrollBox->AddChild(Row);
+		CatalogScrollBox->AddChild(ItemWidget);
+		CatalogItemWidgets.Add(ItemWidget);
 	}
 
 	UpdateTotalPlacementCountText();
@@ -304,20 +288,7 @@ void UPlacementHUDWidgetBase::ExecuteSave(const FString& SlotName)
 	}
 }
 
-void UPlacementHUDWidgetBase::OnCatalogButtonClicked()
-{
-	// 호버 상태인 버튼을 찾아 ObjectId 매핑 조회
-	for (const auto& Pair : ButtonToObjectIdMap)
-	{
-		if (Pair.Key && Pair.Key->IsHovered())
-		{
-			OnCatalogItemClicked(Pair.Value);
-			return;
-		}
-	}
-}
-
-void UPlacementHUDWidgetBase::OnCatalogItemClicked(FName ObjectId)
+void UPlacementHUDWidgetBase::HandleCatalogItemSelected(FName ObjectId)
 {
 	if (!PlacementComponent)
 	{
@@ -329,21 +300,14 @@ void UPlacementHUDWidgetBase::OnCatalogItemClicked(FName ObjectId)
 	UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementHUDWidgetBase: Selected object %s"), *ObjectId.ToString());
 }
 
-void UPlacementHUDWidgetBase::OnBuyButtonClicked()
+void UPlacementHUDWidgetBase::HandleCatalogItemBuyClicked(FName ObjectId)
 {
-	for (const auto& Pair : BuyButtonToObjectIdMap)
+	UGameInstance* GI = GetGameInstance();
+	UWjWorldCurrencySubsystem* CurrencySub = GI ? GI->GetSubsystem<UWjWorldCurrencySubsystem>() : nullptr;
+	if (CurrencySub)
 	{
-		if (Pair.Key && Pair.Key->IsHovered())
-		{
-			UGameInstance* GI = GetGameInstance();
-			UWjWorldCurrencySubsystem* CurrencySub = GI ? GI->GetSubsystem<UWjWorldCurrencySubsystem>() : nullptr;
-			if (CurrencySub)
-			{
-				CurrencySub->PurchasePlacementObject(Pair.Value);
-				UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementHUDWidgetBase: 구매 시도 %s"), *Pair.Value.ToString());
-			}
-			return;
-		}
+		CurrencySub->PurchasePlacementObject(ObjectId);
+		UE_LOG(LogWjWorldPlacement, Log, TEXT("PlacementHUDWidgetBase: 구매 시도 %s"), *ObjectId.ToString());
 	}
 }
 
@@ -543,4 +507,52 @@ FString UPlacementHUDWidgetBase::GetCurrentLoadedSlotName() const
 		return PlacementComponent->GetLoadedSlotName();
 	}
 	return FString();
+}
+
+void UPlacementHUDWidgetBase::OnAirModeChanged(bool bIsAirMode)
+{
+	bCachedAirMode = bIsAirMode;
+	UpdateControlsHint();
+}
+
+void UPlacementHUDWidgetBase::OnSnapDegreesChanged(float NewSnapDegrees)
+{
+	CachedSnapDegrees = NewSnapDegrees;
+	UpdateControlsHint();
+}
+
+void UPlacementHUDWidgetBase::UpdateControlsHint()
+{
+	// 스냅 각도 표시 (정수면 소수점 생략)
+	FString SnapStr = (FMath::Fmod(CachedSnapDegrees, 1.f) == 0.f)
+		? FString::Printf(TEXT("%.0f"), CachedSnapDegrees)
+		: FString::Printf(TEXT("%.1f"), CachedSnapDegrees);
+
+	if (bCachedAirMode)
+	{
+		SetControlsHintText(FText::FromString(FString::Printf(
+			TEXT("LMB: 배치 | R: 회전 | T: 축 전환 | G: 각도(%s°) | DEL: 삭제 | Wheel: 높이 조절 | F: 공중모드 OFF | ESC: 나가기"),
+			*SnapStr)));
+	}
+	else
+	{
+		SetControlsHintText(FText::FromString(FString::Printf(
+			TEXT("LMB: 배치 | R: 회전 | T: 축 전환 | G: 각도(%s°) | DEL: 삭제 | F: 공중모드 | ESC: 나가기"),
+			*SnapStr)));
+	}
+}
+
+void UPlacementHUDWidgetBase::OnObjectSelected(FName ObjectId)
+{
+	if (CatalogScrollBox)
+	{
+		if (ObjectId.IsNone())
+		{
+			CatalogScrollBox->SetVisibility(ESlateVisibility::Visible);
+		}
+		else
+		{
+			CatalogScrollBox->SetVisibility(ESlateVisibility::Collapsed);
+		}
+	}
 }

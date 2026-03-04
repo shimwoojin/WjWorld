@@ -8,6 +8,7 @@
 AWjWorldHUDWaitingRoom::AWjWorldHUDWaitingRoom()
 {
 	bCreateChatWidget = true;
+	bCreateMatchRewardCounter = true;
 }
 
 void AWjWorldHUDWaitingRoom::BeginPlay()

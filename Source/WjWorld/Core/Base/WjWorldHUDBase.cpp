@@ -2,6 +2,7 @@
 
 #include "Core/Base/WjWorldHUDBase.h"
 #include "UI/HUD/CoinGainNotificationWidget.h"
+#include "UI/HUD/MatchRewardCounterWidget.h"
 #include "UI/Chat/ChatWidget.h"
 #include "Setting/WjWorldDeveloperSettings.h"
 
@@ -31,6 +32,20 @@ void AWjWorldHUDBase::BeginPlay()
 			if (CoinGainNotificationWidget)
 			{
 				CoinGainNotificationWidget->AddToViewport(100);
+			}
+		}
+	}
+
+	// 매치 보상 카운터 위젯 생성 (Lobby/WaitingRoom에서만)
+	if (bCreateMatchRewardCounter && !Settings->MatchRewardCounterWidgetClass.IsNull())
+	{
+		UClass* RewardCounterClass = Settings->MatchRewardCounterWidgetClass.LoadSynchronous();
+		if (RewardCounterClass)
+		{
+			MatchRewardCounterWidget = CreateWidget<UMatchRewardCounterWidget>(PC, RewardCounterClass);
+			if (MatchRewardCounterWidget)
+			{
+				MatchRewardCounterWidget->AddToViewport(75);
 			}
 		}
 	}
