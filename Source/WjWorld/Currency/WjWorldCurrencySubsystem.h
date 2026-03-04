@@ -157,6 +157,11 @@ private:
 	/** GemPack 폴링 중지 */
 	void StopGemPurchasePolling();
 
+	/** TriggerItemDrop 결과 폴링 (매치 보상) */
+	void PollMatchRewardResult();
+	void StartMatchRewardPolling();
+	void StopMatchRewardPolling();
+
 	/** 로컬 잔액 저장 (비Steam 폴백) */
 	void SaveBalancesToLocal();
 
@@ -180,6 +185,7 @@ private:
 #if WITH_STEAM
 	SteamInventoryResult_t ExchangeResultHandle = k_SteamInventoryResultInvalid;
 	SteamInventoryResult_t GemPurchaseResultHandle = k_SteamInventoryResultInvalid;
+	SteamInventoryResult_t MatchRewardResultHandle = k_SteamInventoryResultInvalid;
 
 	// 재화 인스턴스 ID 캐시 (ExchangeItems 호출에 필요)
 	SteamItemInstanceID_t CachedCoinInstanceId = k_SteamItemInstanceIDInvalid;
@@ -188,9 +194,12 @@ private:
 
 	FTimerHandle ExchangePollTimerHandle;
 	FTimerHandle GemPurchasePollTimerHandle;
+	FTimerHandle MatchRewardPollTimerHandle;
 
 	bool bExchangePending = false;
 	bool bGemPurchasePending = false;
+	bool bMatchRewardPending = false;
+	bool bPendingRewardIsWinner = false;
 
 	/** Gem 팩 구매 시작 시간 (타임아웃 판단용) */
 	float GemPurchaseStartTime = 0.0f;

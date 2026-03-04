@@ -39,6 +39,7 @@ void UWjWorldCurrencySubsystem::Deinitialize()
 {
 	StopExchangePolling();
 	StopGemPurchasePolling();
+	StopMatchRewardPolling();
 
 	// 로컬 잔액 저장
 	SaveBalancesToLocal();
@@ -63,6 +64,11 @@ void UWjWorldCurrencySubsystem::Deinitialize()
 		{
 			SteamInv->DestroyResult(GemPurchaseResultHandle);
 			GemPurchaseResultHandle = k_SteamInventoryResultInvalid;
+		}
+		if (MatchRewardResultHandle != k_SteamInventoryResultInvalid)
+		{
+			SteamInv->DestroyResult(MatchRewardResultHandle);
+			MatchRewardResultHandle = k_SteamInventoryResultInvalid;
 		}
 	}
 
@@ -132,20 +138,33 @@ void UWjWorldCurrencySubsystem::TriggerMatchReward(bool bIsWinner)
 	ISteamInventory* SteamInv = SteamInventory();
 	if (SteamInv)
 	{
+		// 이전 보상이 아직 폴링 중이면 생략
+		if (bMatchRewardPending)
+		{
+			UE_LOG(LogWjWorldCurrency, Warning, TEXT("이전 매치 보상이 아직 처리 중 — 새 보상 생략"));
+			return;
+		}
+
 		SteamInventoryResult_t ResultHandle = k_SteamInventoryResultInvalid;
 		SteamItemDef_t DropDef = static_cast<SteamItemDef_t>(GeneratorDefId);
 
 		if (SteamInv->TriggerItemDrop(&ResultHandle, DropDef))
 		{
-			UE_LOG(LogWjWorldCurrency, Log, TEXT("Steam TriggerItemDrop 요청 성공 (DefId: %d)"), GeneratorDefId);
-			SteamInv->DestroyResult(ResultHandle);
+			UE_LOG(LogWjWorldCurrency, Log, TEXT("Steam TriggerItemDrop 요청 성공 (DefId: %d) — 결과 폴링 시작"), GeneratorDefId);
 
-			// 2.5초 후 인벤토리 갱신 + 5초 후 재시도
-			ScheduleInventoryRefresh();
+			// 결과 핸들 보관 + 폴링 시작 (실제 아이템 지급 확인)
+			if (MatchRewardResultHandle != k_SteamInventoryResultInvalid)
+			{
+				SteamInv->DestroyResult(MatchRewardResultHandle);
+			}
+			MatchRewardResultHandle = ResultHandle;
+			bMatchRewardPending = true;
+			bPendingRewardIsWinner = bIsWinner;
+			StartMatchRewardPolling();
 		}
 		else
 		{
-			// TriggerItemDrop 실패 시: Steam 한도 초과로 판단하여 카운트를 max로 보정
+			// TriggerItemDrop API 호출 자체 실패
 			UE_LOG(LogWjWorldCurrency, Warning, TEXT("Steam TriggerItemDrop 실패 (DefId: %d) — Steam 한도 초과로 판단"),
 				GeneratorDefId);
 
@@ -162,24 +181,8 @@ void UWjWorldCurrencySubsystem::TriggerMatchReward(bool bIsWinner)
 			SaveDailyRewardData();
 			OnMatchRewardCountChanged.Broadcast(TodayWinRewardCount, Settings->MaxWinRewardsPerDay,
 				TodayLossRewardCount, Settings->MaxLossRewardsPerDay);
-
-			// 로컬 폴백 지급은 하지 않음 (Steam 한도 초과)
-			return;
 		}
 
-		// 일일 카운트 증가
-		TodayMatchRewardCount++;
-		if (bIsWinner)
-		{
-			TodayWinRewardCount++;
-		}
-		else
-		{
-			TodayLossRewardCount++;
-		}
-		SaveDailyRewardData();
-		OnMatchRewardCountChanged.Broadcast(TodayWinRewardCount, Settings->MaxWinRewardsPerDay,
-			TodayLossRewardCount, Settings->MaxLossRewardsPerDay);
 		return;
 	}
 #endif
@@ -999,6 +1002,127 @@ void UWjWorldCurrencySubsystem::StopGemPurchasePolling()
 	if (World)
 	{
 		World->GetTimerManager().ClearTimer(GemPurchasePollTimerHandle);
+	}
+}
+
+void UWjWorldCurrencySubsystem::PollMatchRewardResult()
+{
+#if WITH_STEAM
+	if (!bMatchRewardPending || MatchRewardResultHandle == k_SteamInventoryResultInvalid)
+	{
+		StopMatchRewardPolling();
+		return;
+	}
+
+	ISteamInventory* SteamInv = SteamInventory();
+	if (!SteamInv)
+	{
+		bMatchRewardPending = false;
+		StopMatchRewardPolling();
+		return;
+	}
+
+	EResult Status = SteamInv->GetResultStatus(MatchRewardResultHandle);
+	if (Status == k_EResultPending)
+	{
+		return; // 아직 대기 중
+	}
+
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+
+	bool bItemsGranted = false;
+	if (Status == k_EResultOK)
+	{
+		// 실제 지급된 아이템 수 확인
+		uint32 ItemCount = 0;
+		SteamInv->GetResultItems(MatchRewardResultHandle, nullptr, &ItemCount);
+
+		if (ItemCount > 0)
+		{
+			bItemsGranted = true;
+			UE_LOG(LogWjWorldCurrency, Log, TEXT("매치 보상 확정: 아이템 %d개 지급 (%s)"),
+				ItemCount, bPendingRewardIsWinner ? TEXT("승리") : TEXT("패배"));
+
+			// 인벤토리 갱신
+			ScheduleInventoryRefresh();
+		}
+		else
+		{
+			UE_LOG(LogWjWorldCurrency, Log, TEXT("매치 보상 거부: Steam drop 한도 도달 (%s)"),
+				bPendingRewardIsWinner ? TEXT("승리") : TEXT("패배"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("매치 보상 결과 오류 (Status: %d)"), static_cast<int32>(Status));
+	}
+
+	// 일일 카운트 갱신
+	TodayMatchRewardCount++;
+	if (bItemsGranted)
+	{
+		if (bPendingRewardIsWinner)
+		{
+			TodayWinRewardCount++;
+		}
+		else
+		{
+			TodayLossRewardCount++;
+		}
+	}
+	else if (Status == k_EResultOK && Settings)
+	{
+		// 아이템 0개 = Steam 한도 초과 → 해당 카테고리 max
+		if (bPendingRewardIsWinner)
+		{
+			TodayWinRewardCount = Settings->MaxWinRewardsPerDay;
+		}
+		else
+		{
+			TodayLossRewardCount = Settings->MaxLossRewardsPerDay;
+		}
+	}
+
+	if (Settings)
+	{
+		SaveDailyRewardData();
+		OnMatchRewardCountChanged.Broadcast(TodayWinRewardCount, Settings->MaxWinRewardsPerDay,
+			TodayLossRewardCount, Settings->MaxLossRewardsPerDay);
+	}
+
+	// 정리
+	SteamInv->DestroyResult(MatchRewardResultHandle);
+	MatchRewardResultHandle = k_SteamInventoryResultInvalid;
+	bMatchRewardPending = false;
+	StopMatchRewardPolling();
+#else
+	StopMatchRewardPolling();
+#endif
+}
+
+void UWjWorldCurrencySubsystem::StartMatchRewardPolling()
+{
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	World->GetTimerManager().SetTimer(
+		MatchRewardPollTimerHandle,
+		this,
+		&UWjWorldCurrencySubsystem::PollMatchRewardResult,
+		0.5f,
+		true
+	);
+}
+
+void UWjWorldCurrencySubsystem::StopMatchRewardPolling()
+{
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		World->GetTimerManager().ClearTimer(MatchRewardPollTimerHandle);
 	}
 }
 

@@ -13,12 +13,77 @@
   - NativeConstruct에서 초기 카운트 + 델리게이트 구독, 상한 도달 시 회색 처리
 - **HUDBase**: `bCreateMatchRewardCounter` 플래그 — Lobby/WaitingRoom 생성자에서만 true 설정
 
+#### GA_Grapple 감지 방식 변경 + GrapplePoint 범위 하이라이트
+- **문제**: 기존 라인 트레이스(`ECC_WorldStatic`)가 0.3 스케일 MeshComponent를 정확히 조준해야 히트 — 사실상 불가능
+- **GA_Grapple 감지 변경**: 라인 트레이스 → `TActorIterator<AJumpMapGrapplePointActor>` + `IsInRange(CharLoc)` + 카메라 방향 dot product 선택
+  - 범위 내(1500cm) GrapplePoint 중 카메라 방향과 가장 잘 맞는 것 자동 선택 (72도 원뿔, dot > 0.3)
+- **GrapplePointActor 시각적 피드백**:
+  - SphereComponent: `NoCollision` → `QueryOnly` (Pawn 오버랩만)
+  - BeginPlay에서 OnComponentBeginOverlap/EndOverlap 바인딩
+  - 로컬 플레이어 범위 진입: `SetRenderCustomDepth(true)` + 메시 스케일 0.3→0.5 확대
+  - 범위 이탈: 원상 복원
+
+#### JumpMap 카메라 모드 타이밍 수정
+- **문제**: MinigameCatalog에서 DefaultCameraMode=ThirdPerson 설정되어 있지만 실제 3인칭 미적용
+- **원인**: `DefaultCameraMode`가 `Replicated`이지만 `OnRep` 없음 → `OnGameReady()`에서 값 설정 후 클라이언트 도착 시 캐릭터에 재적용 안됨. 호스트도 `PossessedBy()` 시점이 `OnGameReady()` 이전이라 기본값(TopDown) 읽음
+- **수정** (`WjWorldGameStatePlay`):
+  - `UPROPERTY(Replicated)` → `UPROPERTY(ReplicatedUsing = OnRep_DefaultCameraMode)`
+  - `OnRep_DefaultCameraMode()`: 로컬 플레이어 캐릭터의 `SetCharacterViewMode()` 호출
+  - `SetDefaultCameraMode()`: 서버에서도 즉시 OnRep 호출 (호스트용)
+
+#### CosmeticThumbnailGenerator 에디터 도구
+- PlacementThumbnailGenerator 패턴을 코스메틱 카탈로그에 적용
+- 콘솔 명령 `Cosmetic_GenerateIcons` — CosmeticCatalog 순회 → StaticMesh/SkeletalMesh 썸네일 → UTexture2D 에셋 일괄 생성
+- 저장 경로: `/Game/UI/Textures/Cosmetic/T_Cosmetic_{ItemId}`
+
+#### Approaching Wall 미니게임 폴리싱 (진행 중)
+- **GA_LiftBrick 버그 수정**: 실제 Brick 없이도 PreviewActor가 표시되던 문제 — 클라이언트 사전 오버랩 검증 추가 (Moving/Destructible 벽돌 존재 확인 후 PreviewActor 생성)
+- **GA_SpawnBrick 벽돌 타입 토글**: 어빌리티 키 재입력 시 Moving ↔ Destructible 토글 기능 추가
+  - `InputPressed()` 오버라이드, 시작 타입은 랜덤
+  - BrickPreviewActor에 `SetBrickTypeColor()` 추가 — 타입별 색상 시각 피드백
+  - Server RPC에 `BrickType` 파라미터 추가 (클라이언트 선택 → 서버 검증)
+- **MatchRewardCounterWidget 2배 기록 버그**: `OnRep_GameResult`가 3개 `ReplicatedUsing` 프로퍼티에 의해 중복 호출 → `bGameResultHandled` 플래그로 1회만 실행되도록 수정
+
+#### Steam TriggerItemDrop 결과 확인 개선
+- **문제**: `TriggerItemDrop` 반환값 `true`는 "API 요청 접수"일 뿐, 실제 아이템 지급 여부 불확인. ResultHandle을 즉시 파괴하여 지급 실패를 감지 못함
+- **CurrencySubsystem (매치 보상)**: ResultHandle 보관 + 0.5초 폴링 → `GetResultStatus` + `GetResultItems` 확인
+  - items > 0: 지급 확정, 일일 카운트 증가 + 인벤토리 갱신
+  - items == 0: Steam drop 한도 도달, 해당 카테고리 카운트를 max로 설정
+  - `bMatchRewardPending` 중복 방지 플래그
+- **TreasureChestActor (보물상자)**: 동일 폴링 패턴 적용
+  - 성공: 인벤토리 갱신 (즉시 + 2초 재시도)
+  - 실패: 로컬 폴백 Coin 지급
+  - EndPlay에서 ResultHandle 정리
+
+#### Steam itemdefs.json 수정
+- Match Win/Loss Reward `drop_interval`: 15 → 1 (최소값)
+
+#### 기타
+- **PlacementCatalogItemWidget**: MaxCount=0 시 `Collapsed` → `"X/∞"` (Unicode `\u221E`) 표시로 변경
+- **Application.ico RC 빌드 에러 수정**: 1.6MB 파손 ICO 파일 → 엔진 기본 아이콘으로 교체
+
 ### 학습/메모
 - **HUDBase 공통 위젯 패턴**: `bCreate*` protected bool 플래그 + 서브클래스 생성자에서 true 설정 → BeginPlay에서 조건부 생성. ChatWidget, MatchRewardCounterWidget 모두 동일 패턴
 - **Steam drop_max_per_window 보정**: TriggerItemDrop 실패 = Steam 서버 한도 초과로 판단 → 로컬 카운트를 max로 보정하여 UI 즉시 반영
+- **Replicated 프로퍼티 타이밍**: ServerTravel 후 초기화 순서에서 `PossessedBy()`가 `StartPlay()`/`OnGameReady()` 이전에 호출될 수 있음 → 중요한 값은 `ReplicatedUsing=OnRep_*`로 설정하여 도착 시 재적용 필요
+- **라인 트레이스 vs 거리 기반 감지**: 작은 오브젝트를 정확히 조준하기 어려운 경우 `TActorIterator` + `IsInRange()` + dot product 방향 선택이 훨씬 실용적
+- **Steam TriggerItemDrop 결과 확인**: `TriggerItemDrop(true)` ≠ 아이템 지급. ResultHandle을 `GetResultStatus` + `GetResultItems`로 폴링해야 실제 지급 여부 확인 가능. `k_EResultOK` + items == 0 → drop_window 한도 도달
+- **ReplicatedUsing 다중 프로퍼티 주의**: 같은 `OnRep` 콜백을 공유하는 프로퍼티가 여러 개이면 네트워크 상황에 따라 콜백이 복수 호출됨 → 중복 실행 방지 플래그 필수
 
 ### 이슈/해결
-- (없음)
+- **RC 빌드 에러 (`Default.rc2`)**: `Application.ico is not in 3.00 format` — 1.6MB 파손 아이콘 파일이 원인. 엔진 기본 Default.ico로 교체하여 해결. 에디터 Project Settings > Windows에서 커스텀 아이콘 재설정 가능
+- **MatchRewardCounter 2배 기록**: `OnRep_GameResult`가 `WinnerPlayerName`, `bGameHasWinner`, `bGameResultReady` 3개 프로퍼티에 의해 2~3회 호출 → `bGameResultHandled` 가드로 해결. 스탯/보상 모두 중복 지급 방지
+
+### 출시 로드맵
+1. **Approaching Wall 폴리싱** — 벽돌 머티리얼 시각 강화, Destructible 파괴 연출 적용 (코드 있으나 에셋 미적용), Explosive Brick 적극 활용 (현재 미사용), Moving Brick이 플레이어를 밀 수 있도록 대대적 변경 (현재 너무 정적)
+2. **Sumo 폴리싱**
+3. **JumpMap 폴리싱**
+4. **캐릭터 스킨 추가** — Cosmetic Body Slot 에셋 제작
+5. **판매 가능 Cosmetic 추가** — itemdefs.json 등록, 카탈로그 확장
+6. **결제 및 Gem→Coin 구매 검증** — Steam 결제 플로우 E2E 테스트
+7. **UI 폴리싱** — 전반적 UX 개선
+8. **MiniGame Level 추가 및 폴리싱** — 맵 변형/추가
+9. **Steam 출시 준비** — 스토어 페이지, 빌드 업로드, 최종 QA
 
 ---
 

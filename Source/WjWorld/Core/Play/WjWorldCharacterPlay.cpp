@@ -427,9 +427,9 @@ void AWjWorldCharacterPlay::UpdateLiftedBrickVisual()
 	}
 }
 
-void AWjWorldCharacterPlay::ServerSpawnBrickAtGridIndex_Implementation(int32 GridX, int32 GridY)
+void AWjWorldCharacterPlay::ServerSpawnBrickAtGridIndex_Implementation(int32 GridX, int32 GridY, uint8 BrickType)
 {
-	UE_LOG(LogWjWorld, Log, TEXT("AWjWorldCharacterPlay::ServerSpawnBrickAtGridIndex - GridIndex: (%d, %d)"), GridX, GridY);
+	UE_LOG(LogWjWorld, Log, TEXT("AWjWorldCharacterPlay::ServerSpawnBrickAtGridIndex - GridIndex: (%d, %d), BrickType: %d"), GridX, GridY, BrickType);
 
 	UWorld* World = GetWorld();
 	if (!World)
@@ -488,7 +488,13 @@ void AWjWorldCharacterPlay::ServerSpawnBrickAtGridIndex_Implementation(int32 Gri
 	);
 
 	FWjWorldBrickProperties BrickProperties;
-	BrickProperties.BrickType = FMath::RandBool() ? EWjWorldBrickType::Moving : EWjWorldBrickType::Destructible;
+	// 클라이언트가 선택한 벽돌 타입 사용 (Moving 또는 Destructible만 허용)
+	EWjWorldBrickType RequestedType = static_cast<EWjWorldBrickType>(BrickType);
+	if (RequestedType != EWjWorldBrickType::Moving && RequestedType != EWjWorldBrickType::Destructible)
+	{
+		RequestedType = EWjWorldBrickType::Moving;
+	}
+	BrickProperties.BrickType = RequestedType;
 	BrickProperties.BrickMoveType = EWjWorldBrickMoveType::Standard;
 	BrickProperties.Size = ServerWallDesc.BrickSize;
 	BrickProperties.Color = BrickProperties.GetColorWithBrickType();

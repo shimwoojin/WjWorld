@@ -146,6 +146,44 @@ void UGA_LiftBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 			CachedWallDesc.BrickSize
 		);
 
+		// 클라이언트 사전 검증: 집을 수 있는 벽돌이 있는지 확인
+		bool bFoundLiftableBrick = false;
+		if (World)
+		{
+			FVector CheckLocation = UWjWorldBrickSpawner::CalculateBrickPosition(
+				PickupGridIndex.X, PickupGridIndex.Y,
+				CachedWallDesc.ColumnNum, CachedWallDesc.RowNum,
+				CachedWallDesc.CenterOffset, CachedWallDesc.BrickSize
+			);
+			FVector HalfSize = CachedWallDesc.BrickSize * 0.3f;
+			TArray<FOverlapResult> Overlaps;
+			FCollisionShape CollisionShape = FCollisionShape::MakeBox(HalfSize);
+
+			if (World->OverlapMultiByObjectType(Overlaps, CheckLocation, FQuat::Identity, FCollisionObjectQueryParams::AllObjects, CollisionShape))
+			{
+				for (const FOverlapResult& Overlap : Overlaps)
+				{
+					AWjWorldBrickActor* BrickActor = Cast<AWjWorldBrickActor>(Overlap.GetActor());
+					if (!BrickActor) continue;
+					UWjWorldBrickComponent* BrickComp = BrickActor->GetBrickComponent();
+					if (!BrickComp) continue;
+					EWjWorldBrickType BrickType = BrickComp->GetBrickProperties().BrickType;
+					if (BrickType == EWjWorldBrickType::Moving || BrickType == EWjWorldBrickType::Destructible)
+					{
+						bFoundLiftableBrick = true;
+						break;
+					}
+				}
+			}
+		}
+
+		if (!bFoundLiftableBrick)
+		{
+			// 집을 벽돌이 없으면 즉시 취소
+			EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+			return;
+		}
+
 		AWjWorldCharacterPlay* CharacterPlay = Cast<AWjWorldCharacterPlay>(GetAvatarActorFromActorInfo());
 		if (CharacterPlay)
 		{

@@ -4,6 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GamePlay/Placement/WjWorldPlacedObjectActor.h"
+
+#if WITH_STEAM
+#include "steam/steam_api.h"
+#endif
+
 #include "WjWorldTreasureChestActor.generated.h"
 
 class UBoxComponent;
@@ -132,4 +137,12 @@ private:
 
 	/** 쿨타임 인메모리 캐시 (GConfig read-back 불안정 해결) */
 	FDateTime CachedLastOpenedTime;
+
+	// === TriggerItemDrop 결과 폴링 ===
+
+#if WITH_STEAM
+	SteamInventoryResult_t ChestRewardResultHandle = k_SteamInventoryResultInvalid;
+#endif
+	FTimerHandle RewardPollTimerHandle;
+	void PollChestRewardResult();
 };

@@ -201,6 +201,11 @@ void AWjWorldGameStatePlay::OnRep_GameResult()
 {
 	if (!bGameResultReady) return;
 
+	// 3개 프로퍼티(WinnerPlayerName, bGameHasWinner, bGameResultReady)가 같은 OnRep 사용
+	// → 중복 호출 방지
+	if (bGameResultHandled) return;
+	bGameResultHandled = true;
+
 	UWorld* World = GetWorld();
 	if (!World) return;
 

@@ -140,4 +140,7 @@ private:
     // 미니게임별 기본 카메라 모드
     UPROPERTY(ReplicatedUsing = OnRep_DefaultCameraMode)
     ECharacterCameraMode DefaultCameraMode = ECharacterCameraMode::TopDown;
+
+    // OnRep_GameResult 중복 실행 방지 (3개 프로퍼티가 같은 OnRep 사용)
+    bool bGameResultHandled = false;
 };

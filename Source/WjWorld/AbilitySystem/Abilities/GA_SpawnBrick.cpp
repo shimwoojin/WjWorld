@@ -198,10 +198,14 @@ void UGA_SpawnBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 		}
 	}
 
+	// 초기 벽돌 타입 랜덤 선택
+	SelectedBrickType = FMath::RandBool() ? EWjWorldBrickType::Moving : EWjWorldBrickType::Destructible;
+
 	// Preview는 로컬 클라이언트에서만 표시
 	if (ActorInfo->IsLocallyControlled())
 	{
 		SpawnPreviewActor();
+		ApplyBrickTypeColorToPreview();
 
 		// Preview 위치 업데이트 타이머 시작
 		if (World)
@@ -257,6 +261,48 @@ void UGA_SpawnBrick::EndAbility(const FGameplayAbilitySpecHandle Handle, const F
 	}
 
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+}
+
+void UGA_SpawnBrick::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
+{
+	// 프리뷰 중 어빌리티 키 재입력 → 벽돌 타입 토글
+	if (ActorInfo && ActorInfo->IsLocallyControlled())
+	{
+		ToggleSelectedBrickType();
+
+		// 프롬프트 텍스트 갱신
+		if (AWjWorldCharacterPlay* CharacterPlay = Cast<AWjWorldCharacterPlay>(GetAvatarActorFromActorInfo()))
+		{
+			CharacterPlay->ShowAbilityPrompt(
+				NSLOCTEXT("AbilityPrompt", "ConfirmKey", "좌클릭"),
+				NSLOCTEXT("AbilityPrompt", "CancelKey", "우클릭"),
+				GetPromptDescription()
+			);
+		}
+	}
+}
+
+void UGA_SpawnBrick::ToggleSelectedBrickType()
+{
+	SelectedBrickType = (SelectedBrickType == EWjWorldBrickType::Moving)
+		? EWjWorldBrickType::Destructible
+		: EWjWorldBrickType::Moving;
+
+	ApplyBrickTypeColorToPreview();
+
+	UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_SpawnBrick: Toggled brick type to %s"),
+		SelectedBrickType == EWjWorldBrickType::Moving ? TEXT("Moving") : TEXT("Destructible"));
+}
+
+void UGA_SpawnBrick::ApplyBrickTypeColorToPreview()
+{
+	if (PreviewActor)
+	{
+		FWjWorldBrickProperties TempProps;
+		TempProps.BrickType = SelectedBrickType;
+		FColor TypeColor = TempProps.GetColorWithBrickType();
+		PreviewActor->SetBrickTypeColor(FLinearColor(TypeColor));
+	}
 }
 
 void UGA_SpawnBrick::SpawnPreviewActor()
@@ -410,18 +456,20 @@ void UGA_SpawnBrick::OnConfirmCallback()
 		AWjWorldCharacterPlay* CharacterPlay = Cast<AWjWorldCharacterPlay>(GetAvatarActorFromActorInfo());
 		if (CharacterPlay)
 		{
+			uint8 BrickTypeValue = static_cast<uint8>(SelectedBrickType);
+
 			// 서버에서 직접 실행되는 경우 (Listen Server 호스트)
 			if (HasAuthority(&CurrentActivationInfo))
 			{
 				ApplyChargeCost();
-				CharacterPlay->ServerSpawnBrickAtGridIndex(CachedPreviewGridIndex.X, CachedPreviewGridIndex.Y);
+				CharacterPlay->ServerSpawnBrickAtGridIndex(CachedPreviewGridIndex.X, CachedPreviewGridIndex.Y, BrickTypeValue);
 				StartChargeRefill();
 			}
 			// 클라이언트에서 서버로 RPC 호출
 			else if (CurrentActorInfo && CurrentActorInfo->IsLocallyControlled())
 			{
 				// 클라이언트에서는 충전 소모/리필이 서버에서 처리됨
-				CharacterPlay->ServerSpawnBrickAtGridIndex(CachedPreviewGridIndex.X, CachedPreviewGridIndex.Y);
+				CharacterPlay->ServerSpawnBrickAtGridIndex(CachedPreviewGridIndex.X, CachedPreviewGridIndex.Y, BrickTypeValue);
 			}
 		}
 	}
@@ -640,5 +688,8 @@ float UGA_SpawnBrick::GetChargeRefillTimeRemaining() const
 
 FText UGA_SpawnBrick::GetPromptDescription() const
 {
-	return NSLOCTEXT("AbilityPrompt", "SpawnBrickDesc", "벽돌을 배치할 위치를 선택하세요");
+	FText TypeText = (SelectedBrickType == EWjWorldBrickType::Moving)
+		? NSLOCTEXT("AbilityPrompt", "BrickTypeMoving", "이동 벽돌")
+		: NSLOCTEXT("AbilityPrompt", "BrickTypeDestructible", "파괴 벽돌");
+	return FText::Format(NSLOCTEXT("AbilityPrompt", "SpawnBrickDesc", "{0} - 어빌리티 키로 타입 변경"), TypeText);
 }

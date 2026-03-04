@@ -22,6 +22,7 @@ public:
 	void InitializePreview(const FVector& InSize);
 	void UpdatePreviewLocation(const FVector& InLocation);
 	void SetPreviewValid(bool bIsValid);
+	void SetBrickTypeColor(const FLinearColor& InColor);
 
 	bool IsPreviewValid() const { return bIsValid; }
 
@@ -44,4 +45,6 @@ protected:
 
 private:
 	bool bIsValid = true;
+	bool bHasBrickTypeColor = false;
+	FLinearColor BrickTypeColor;
 };

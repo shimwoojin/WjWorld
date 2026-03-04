@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystem/Abilities/WjWorldGameplayAbilityBase.h"
 #include "GamePlay/Wall/WjWorldWallDescriptionDataAsset.h"
+#include "GamePlay/Wall/WjWorldBrickComponent.h"
 #include "ActiveGameplayEffectHandle.h"
 #include "GA_SpawnBrick.generated.h"
 
@@ -37,6 +38,7 @@ public:
 	virtual void OnRemoveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
 	virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags = nullptr, const FGameplayTagContainer* TargetTags = nullptr, OUT FGameplayTagContainer* OptionalRelevantTags = nullptr) const override;
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+	virtual void InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) override;
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
 private:
@@ -45,6 +47,12 @@ private:
 	void DestroyPreviewActor();
 	FVector CalculatePreviewLocation() const;
 	bool CheckPreviewValid() const;
+
+	/** 프리뷰에 현재 선택된 벽돌 타입 색상 적용 */
+	void ApplyBrickTypeColorToPreview();
+
+	/** 벽돌 타입을 토글 (Moving ↔ Destructible) */
+	void ToggleSelectedBrickType();
 
 	// Confirm/Cancel 콜백
 	UFUNCTION()
@@ -82,6 +90,9 @@ private:
 
 	// 캐시된 프리뷰 GridIndex (클라이언트에서 Confirm 시 서버로 전달)
 	FIntPoint CachedPreviewGridIndex = FIntPoint(-1, -1);
+
+	// 선택된 벽돌 타입 (클라이언트에서 토글, Confirm 시 서버로 전달)
+	EWjWorldBrickType SelectedBrickType = EWjWorldBrickType::Moving;
 
 	// Tick으로 Preview 위치 업데이트용 타이머
 	FTimerHandle PreviewUpdateTimerHandle;

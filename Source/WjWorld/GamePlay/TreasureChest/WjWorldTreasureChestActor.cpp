@@ -118,6 +118,20 @@ void AWjWorldTreasureChestActor::EndPlay(const EEndPlayReason::Type EndPlayReaso
 	// 쿨타임 UI 타이머 정리
 	GetWorldTimerManager().ClearTimer(CooldownUITimerHandle);
 
+	// 보상 폴링 정리
+	GetWorldTimerManager().ClearTimer(RewardPollTimerHandle);
+#if WITH_STEAM
+	if (ChestRewardResultHandle != k_SteamInventoryResultInvalid)
+	{
+		ISteamInventory* SteamInv = SteamInventory();
+		if (SteamInv)
+		{
+			SteamInv->DestroyResult(ChestRewardResultHandle);
+		}
+		ChestRewardResultHandle = k_SteamInventoryResultInvalid;
+	}
+#endif
+
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -293,48 +307,18 @@ bool AWjWorldTreasureChestActor::TryGrantReward()
 
 		if (SteamInv->TriggerItemDrop(&ResultHandle, DropDef))
 		{
-			UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest[%d]: Steam TriggerItemDrop 요청 성공 (DefId: %d)"),
+			UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest[%d]: Steam TriggerItemDrop 요청 성공 (DefId: %d) — 결과 폴링 시작"),
 				ChestIndex, GeneratorDefId);
-			SteamInv->DestroyResult(ResultHandle);
 
-			// 2.5초 후 인벤토리 갱신 + 5초 후 재시도
-			TWeakObjectPtr<AWjWorldTreasureChestActor> WeakThis(this);
-
-			FTimerHandle FirstTimerHandle;
-			GetWorldTimerManager().SetTimer(FirstTimerHandle, [WeakThis]()
+			// 결과 핸들 보관 + 폴링 시작 (실제 아이템 지급 확인)
+			if (ChestRewardResultHandle != k_SteamInventoryResultInvalid)
 			{
-				if (AWjWorldTreasureChestActor* Self = WeakThis.Get())
-				{
-					UGameInstance* GI = Self->GetGameInstance();
-					if (GI)
-					{
-						UWjWorldCosmeticSubsystem* CosmeticSub = GI->GetSubsystem<UWjWorldCosmeticSubsystem>();
-						if (CosmeticSub)
-						{
-							CosmeticSub->RequestInventoryRefresh();
-							UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest: 인벤토리 갱신 (2.5초 후)"));
-						}
-					}
-				}
-			}, 2.5f, false);
+				SteamInv->DestroyResult(ChestRewardResultHandle);
+			}
+			ChestRewardResultHandle = ResultHandle;
 
-			FTimerHandle RetryTimerHandle;
-			GetWorldTimerManager().SetTimer(RetryTimerHandle, [WeakThis]()
-			{
-				if (AWjWorldTreasureChestActor* Self = WeakThis.Get())
-				{
-					UGameInstance* GI = Self->GetGameInstance();
-					if (GI)
-					{
-						UWjWorldCosmeticSubsystem* CosmeticSub = GI->GetSubsystem<UWjWorldCosmeticSubsystem>();
-						if (CosmeticSub)
-						{
-							CosmeticSub->RequestInventoryRefresh();
-							UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest: 인벤토리 갱신 재시도 (5초 후)"));
-						}
-					}
-				}
-			}, 5.0f, false);
+			GetWorldTimerManager().SetTimer(RewardPollTimerHandle, this,
+				&AWjWorldTreasureChestActor::PollChestRewardResult, 0.5f, true);
 
 			return true;
 		}
@@ -580,4 +564,111 @@ void AWjWorldTreasureChestActor::RemoveCooldownVisual()
 			MeshComponent->SetMaterial(i, CurrentMesh->GetMaterial(i));
 		}
 	}
+}
+
+// === TriggerItemDrop 결과 폴링 ===
+
+void AWjWorldTreasureChestActor::PollChestRewardResult()
+{
+#if WITH_STEAM
+	if (ChestRewardResultHandle == k_SteamInventoryResultInvalid)
+	{
+		GetWorldTimerManager().ClearTimer(RewardPollTimerHandle);
+		return;
+	}
+
+	ISteamInventory* SteamInv = SteamInventory();
+	if (!SteamInv)
+	{
+		ChestRewardResultHandle = k_SteamInventoryResultInvalid;
+		GetWorldTimerManager().ClearTimer(RewardPollTimerHandle);
+		return;
+	}
+
+	EResult Status = SteamInv->GetResultStatus(ChestRewardResultHandle);
+	if (Status == k_EResultPending)
+	{
+		return; // 아직 대기 중
+	}
+
+	bool bItemsGranted = false;
+	if (Status == k_EResultOK)
+	{
+		// 실제 지급된 아이템 수 확인
+		uint32 ItemCount = 0;
+		SteamInv->GetResultItems(ChestRewardResultHandle, nullptr, &ItemCount);
+
+		if (ItemCount > 0)
+		{
+			bItemsGranted = true;
+			UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest[%d]: 보상 확정 — 아이템 %d개 지급됨"),
+				ChestIndex, ItemCount);
+
+			// 인벤토리 갱신 + 2초 후 재시도
+			UGameInstance* GI = GetGameInstance();
+			if (GI)
+			{
+				UWjWorldCosmeticSubsystem* CosmeticSub = GI->GetSubsystem<UWjWorldCosmeticSubsystem>();
+				if (CosmeticSub)
+				{
+					CosmeticSub->RequestInventoryRefresh();
+				}
+			}
+
+			TWeakObjectPtr<AWjWorldTreasureChestActor> WeakThis(this);
+			FTimerHandle RetryTimerHandle;
+			GetWorldTimerManager().SetTimer(RetryTimerHandle, [WeakThis]()
+			{
+				if (AWjWorldTreasureChestActor* Self = WeakThis.Get())
+				{
+					UGameInstance* GI2 = Self->GetGameInstance();
+					if (GI2)
+					{
+						UWjWorldCosmeticSubsystem* CosmeticSub2 = GI2->GetSubsystem<UWjWorldCosmeticSubsystem>();
+						if (CosmeticSub2)
+						{
+							CosmeticSub2->RequestInventoryRefresh();
+						}
+					}
+				}
+			}, 2.0f, false);
+		}
+		else
+		{
+			UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest[%d]: Steam drop 한도 도달 — 아이템 0개"),
+				ChestIndex);
+		}
+	}
+	else
+	{
+		UE_LOG(LogWjWorldCurrency, Warning, TEXT("TreasureChest[%d]: 보상 결과 오류 (Status: %d)"),
+			ChestIndex, static_cast<int32>(Status));
+	}
+
+	// 실패 시 로컬 폴백 지급
+	if (!bItemsGranted)
+	{
+		const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+		int32 FallbackReward = Settings ? Settings->TreasureChestCoinReward : 50;
+
+		UGameInstance* GI = GetGameInstance();
+		if (GI)
+		{
+			UWjWorldCurrencySubsystem* CurrencySub = GI->GetSubsystem<UWjWorldCurrencySubsystem>();
+			if (CurrencySub)
+			{
+				CurrencySub->GrantCurrencyLocally(ECurrencyType::Coin, FallbackReward);
+				UE_LOG(LogWjWorldCurrency, Log, TEXT("TreasureChest[%d]: 로컬 폴백 보상 %d Coin 지급"),
+					ChestIndex, FallbackReward);
+			}
+		}
+	}
+
+	// 정리
+	SteamInv->DestroyResult(ChestRewardResultHandle);
+	ChestRewardResultHandle = k_SteamInventoryResultInvalid;
+	GetWorldTimerManager().ClearTimer(RewardPollTimerHandle);
+#else
+	GetWorldTimerManager().ClearTimer(RewardPollTimerHandle);
+#endif
 }

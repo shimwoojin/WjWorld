@@ -68,9 +68,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "LiftBrick")
 	bool IsCarryingBrick() const { return bIsCarryingBrick; }
 
-	// GA_SpawnBrick에서 호출 - 서버에서 벽돌 스폰
+	// GA_SpawnBrick에서 호출 - 서버에서 벽돌 스폰 (BrickType: 클라이언트가 선택한 벽돌 타입)
 	UFUNCTION(Server, Reliable)
-	void ServerSpawnBrickAtGridIndex(int32 GridX, int32 GridY);
+	void ServerSpawnBrickAtGridIndex(int32 GridX, int32 GridY, uint8 BrickType);
 
 	// GA_LiftBrick에서 호출 - 서버에서 벽돌 집기 (클라이언트가 계산한 그리드 인덱스 사용)
 	UFUNCTION(Server, Reliable)

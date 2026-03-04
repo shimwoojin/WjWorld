@@ -384,6 +384,7 @@ void UAbilitySlotWidget::InitializeIcon()
 	{
 		FProgressBarStyle Style = CooldownOverlay->GetWidgetStyle();
 		Style.FillImage.SetResourceObject(CDO->AbilityIcon);
+		Style.BackgroundImage.SetResourceObject(CDO->AbilityIcon);
 		CooldownOverlay->SetWidgetStyle(Style);
 	}
 }

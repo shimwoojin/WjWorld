@@ -7,7 +7,7 @@
             "name": "Match Win Reward",
             "name_english": "Match Win Reward",
             "bundle": "50x1",
-            "drop_interval": "15",
+            "drop_interval": "1",
             "use_drop_window": "true",
             "drop_window": "1440",
             "drop_max_per_window": "5"
@@ -18,7 +18,7 @@
             "name": "Match Loss Reward",
             "name_english": "Match Loss Reward",
             "bundle": "51x1",
-            "drop_interval": "15",
+            "drop_interval": "1",
             "use_drop_window": "true",
             "drop_window": "1440",
             "drop_max_per_window": "10"

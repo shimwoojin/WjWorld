@@ -60,7 +60,15 @@ void AWjWorldBrickPreviewActor::SetPreviewValid(bool bInIsValid)
 
 	if (DynamicMaterial)
 	{
-		FLinearColor Color = bIsValid ? ValidColor : InvalidColor;
+		FLinearColor Color = bIsValid ? (bHasBrickTypeColor ? BrickTypeColor : ValidColor) : InvalidColor;
 		DynamicMaterial->SetVectorParameterValue(TEXT("BaseColor"), Color);
 	}
+}
+
+void AWjWorldBrickPreviewActor::SetBrickTypeColor(const FLinearColor& InColor)
+{
+	bHasBrickTypeColor = true;
+	BrickTypeColor = FLinearColor(InColor.R, InColor.G, InColor.B, PreviewOpacity);
+	// 현재 유효 상태에 맞게 즉시 반영
+	SetPreviewValid(bIsValid);
 }
