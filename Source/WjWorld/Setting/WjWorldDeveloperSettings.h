@@ -90,6 +90,14 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Approaching Wall|Brick|Destructible", meta = (ClampMin = "0.1"))
 	float DestructibleBrickFractureLifetime = 3.0f;
 
+	/** Destructible 벽돌 단계별 손상 메시 (index 0 = 1회 타격 후, 1 = 2회 타격 후, ...) */
+	UPROPERTY(config, EditAnywhere, Category = "Approaching Wall|Brick|Destructible")
+	TArray<TSoftObjectPtr<UStaticMesh>> DestructibleBrickDamageStageMeshes;
+
+	/** 벽돌 타격 시 파편 파티클 (매 히트마다 스폰) */
+	UPROPERTY(EditAnywhere, Category = "Approaching Wall|Brick|Destructible")
+	TSoftObjectPtr<UNiagaraSystem> BrickDamageHitEffect;
+
 	/** 벽돌 메시 */
 	UPROPERTY(config, EditAnywhere, Category = "Approaching Wall|Mesh")
 	TSoftObjectPtr<UStaticMesh> BrickMesh;
@@ -97,6 +105,24 @@ public:
 	/** 타일 메시 */
 	UPROPERTY(config, EditAnywhere, Category = "Approaching Wall|Mesh")
 	TSoftObjectPtr<UStaticMesh> TileMesh;
+
+	// ========== Approaching Wall | Brick Material ==========
+
+	/** Standard 벽돌 머티리얼 */
+	UPROPERTY(config, EditAnywhere, Category = "Approaching Wall|Brick|Material")
+	TSoftObjectPtr<UMaterialInterface> BrickMaterialStandard;
+
+	/** Explosive 벽돌 머티리얼 */
+	UPROPERTY(config, EditAnywhere, Category = "Approaching Wall|Brick|Material")
+	TSoftObjectPtr<UMaterialInterface> BrickMaterialExplosive;
+
+	/** Moving 벽돌 머티리얼 */
+	UPROPERTY(config, EditAnywhere, Category = "Approaching Wall|Brick|Material")
+	TSoftObjectPtr<UMaterialInterface> BrickMaterialMoving;
+
+	/** Destructible 벽돌 머티리얼 */
+	UPROPERTY(config, EditAnywhere, Category = "Approaching Wall|Brick|Material")
+	TSoftObjectPtr<UMaterialInterface> BrickMaterialDestructible;
 
 	/** 벽 레이아웃 데이터 에셋 */
 	UPROPERTY(config, EditAnywhere, NoClear, Category = "Approaching Wall")

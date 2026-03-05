@@ -81,6 +81,27 @@ void AWjWorldBrickActor::MulticastSpawnExplosionEffect_Implementation()
 	}
 }
 
+void AWjWorldBrickActor::MulticastSpawnDamageHitEffect_Implementation()
+{
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	if (Settings->BrickDamageHitEffect.IsNull()) return;
+
+	UNiagaraSystem* Effect = Settings->BrickDamageHitEffect.LoadSynchronous();
+	if (Effect)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+			GetWorld(),
+			Effect,
+			GetActorLocation(),
+			FRotator::ZeroRotator,
+			FVector::OneVector,
+			true,
+			true,
+			ENCPoolMethod::None
+		);
+	}
+}
+
 void AWjWorldBrickActor::MulticastSpawnDestructionFracture_Implementation()
 {
 	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();

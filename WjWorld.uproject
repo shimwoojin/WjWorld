@@ -44,6 +44,10 @@
 		{
 			"Name": "SocketSubsystemSteamIP",
 			"Enabled": true
+		},
+		{
+			"Name": "StaticMeshEditorModeling",
+			"Enabled": true
 		}
 	]
 }

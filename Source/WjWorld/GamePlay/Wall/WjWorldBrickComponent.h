@@ -88,6 +88,9 @@ class WJWORLD_API UWjWorldBrickComponent : public UWjWorldGameplaySceneComponent
 public:
 	/** DeveloperSettings에서 벽돌 메시 로드 */
 	static UStaticMesh* GetBrickMesh();
+
+	/** DeveloperSettings에서 BrickType별 머티리얼 로드 (미설정 시 nullptr) */
+	static UMaterialInterface* GetBrickMaterial(EWjWorldBrickType BrickType);
 	constexpr static float HitBoxSize = 5.0f;
 
 public:	

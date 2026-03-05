@@ -29,6 +29,9 @@ public:
 	UFUNCTION(NetMulticast, Unreliable)
 	void MulticastSpawnDestructionFracture();
 
+	UFUNCTION(NetMulticast, Unreliable)
+	void MulticastSpawnDamageHitEffect();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

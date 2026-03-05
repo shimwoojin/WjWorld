@@ -26,6 +26,27 @@ UStaticMesh* UWjWorldBrickComponent::GetBrickMesh()
 	return nullptr;
 }
 
+UMaterialInterface* UWjWorldBrickComponent::GetBrickMaterial(EWjWorldBrickType BrickType)
+{
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	if (!Settings) return nullptr;
+
+	const TSoftObjectPtr<UMaterialInterface>* MaterialPtr = nullptr;
+	switch (BrickType)
+	{
+	case EWjWorldBrickType::Standard:     MaterialPtr = &Settings->BrickMaterialStandard; break;
+	case EWjWorldBrickType::Explosive:    MaterialPtr = &Settings->BrickMaterialExplosive; break;
+	case EWjWorldBrickType::Moving:       MaterialPtr = &Settings->BrickMaterialMoving; break;
+	case EWjWorldBrickType::Destructible: MaterialPtr = &Settings->BrickMaterialDestructible; break;
+	}
+
+	if (MaterialPtr && !MaterialPtr->IsNull())
+	{
+		return MaterialPtr->LoadSynchronous();
+	}
+	return nullptr;
+}
+
 UWjWorldBrickComponent::UWjWorldBrickComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -93,10 +114,21 @@ void UWjWorldBrickComponent::BeginPlay()
 			BrickMeshComponent->SetStaticMesh(BrickMesh);
 		}
 
+		// 타입별 머티리얼 적용 (DeveloperSettings에 설정된 경우)
+		UMaterialInterface* TypeMaterial = GetBrickMaterial(BrickProperties.BrickType);
+		if (TypeMaterial)
+		{
+			BrickMeshComponent->SetMaterial(0, TypeMaterial);
+		}
+
 		UMaterialInstanceDynamic* DynamicMaterial = BrickMeshComponent->CreateAndSetMaterialInstanceDynamic(0);
 		if (DynamicMaterial)
 		{
-			DynamicMaterial->SetVectorParameterValue(FName("BaseColor"), FLinearColor(BrickProperties.GetColorWithBrickType()));
+			// 타입별 머티리얼이 없으면 기존 색상 폴백
+			if (!TypeMaterial)
+			{
+				DynamicMaterial->SetVectorParameterValue(FName("BaseColor"), FLinearColor(BrickProperties.GetColorWithBrickType()));
+			}
 			DynamicMaterial->SetScalarParameterValue(FName("CrackIntensity"), 0.0f);
 		}
 	}
@@ -296,6 +328,12 @@ void UWjWorldBrickComponent::ApplyDamage(int32 DamageAmount)
 	}
 	else
 	{
+		// 히트 파편 이펙트
+		if (AWjWorldBrickActor* BrickActor = Cast<AWjWorldBrickActor>(GetOwner()))
+		{
+			BrickActor->MulticastSpawnDamageHitEffect();
+		}
+
 		// 서버에서도 비주얼 업데이트 (클라이언트는 OnRep에서 호출)
 		UpdateDamageVisuals();
 	}
@@ -310,11 +348,31 @@ void UWjWorldBrickComponent::UpdateDamageVisuals()
 {
 	if (!BrickMeshComponent) return;
 
-	UMaterialInstanceDynamic* DynamicMaterial = Cast<UMaterialInstanceDynamic>(BrickMeshComponent->GetMaterial(0));
-	if (!DynamicMaterial) return;
-
 	const int32 MaxHP = BrickProperties.MaxHP;
 	if (MaxHP <= 0) return;
+
+	// 단계별 손상 메시 교체
+	const UWjWorldDeveloperSettings* Settings = GetDefault<UWjWorldDeveloperSettings>();
+	const TArray<TSoftObjectPtr<UStaticMesh>>& StageMeshes = Settings->DestructibleBrickDamageStageMeshes;
+	const int32 DamageTaken = MaxHP - CurrentHP;
+
+	if (DamageTaken > 0 && StageMeshes.Num() > 0)
+	{
+		const int32 StageIndex = DamageTaken - 1;
+		if (StageMeshes.IsValidIndex(StageIndex) && !StageMeshes[StageIndex].IsNull())
+		{
+			UStaticMesh* StageMesh = StageMeshes[StageIndex].LoadSynchronous();
+			if (StageMesh)
+			{
+				BrickMeshComponent->SetStaticMesh(StageMesh);
+				// 메시 교체 후 MID 재생성
+				BrickMeshComponent->CreateAndSetMaterialInstanceDynamic(0);
+			}
+		}
+	}
+
+	UMaterialInstanceDynamic* DynamicMaterial = Cast<UMaterialInstanceDynamic>(BrickMeshComponent->GetMaterial(0));
+	if (!DynamicMaterial) return;
 
 	// HP 비율: 1.0(풀HP) → 0.0(체력 없음)
 	const float HPRatio = static_cast<float>(CurrentHP) / static_cast<float>(MaxHP);
