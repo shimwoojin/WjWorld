@@ -51,7 +51,7 @@ private:
 	/** 프리뷰에 현재 선택된 벽돌 타입 색상 적용 */
 	void ApplyBrickTypeColorToPreview();
 
-	/** 벽돌 타입을 토글 (Moving ↔ Destructible) */
+	/** 벽돌 타입을 순환 토글 (Moving → Destructible → Explosive) */
 	void ToggleSelectedBrickType();
 
 	// Confirm/Cancel 콜백

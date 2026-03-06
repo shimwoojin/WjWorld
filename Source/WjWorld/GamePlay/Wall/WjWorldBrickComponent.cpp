@@ -258,7 +258,7 @@ void UWjWorldBrickComponent::Explode()
 		BrickActor->MulticastSpawnExplosionEffect();
 	}
 
-	// 상하좌우 데미지 처리
+	// 상하좌우 데미지 처리 (캐릭터 + 인접 벽돌)
 	const FVector& BrickSize = BrickProperties.Size;
 	const FVector CurrentLocation = GetComponentLocation();
 
@@ -273,25 +273,35 @@ void UWjWorldBrickComponent::Explode()
 	{
 		FVector CheckLocation = CurrentLocation + Dir;
 
-		// 해당 위치의 캐릭터나 다른 오브젝트에 데미지
 		TArray<FOverlapResult> Overlaps;
 		FCollisionShape CollisionShape = FCollisionShape::MakeBox(BrickSize * 0.4f);
 
-		if (GetWorld()->OverlapMultiByChannel(
+		if (GetWorld()->OverlapMultiByObjectType(
 			Overlaps,
 			CheckLocation,
 			FQuat::Identity,
-			ECC_Pawn,
+			FCollisionObjectQueryParams::AllObjects,
 			CollisionShape))
 		{
 			for (const FOverlapResult& Overlap : Overlaps)
 			{
+				// 캐릭터 처치
 				if (AWjWorldCharacterPlay* Character = Cast<AWjWorldCharacterPlay>(Overlap.GetActor()))
 				{
-					// 캐릭터에 데미지 또는 제거 처리
 					if (UWjWorldGameRuleApproachingWall* GameRule = Cast<UWjWorldGameRuleApproachingWall>(GetGameModePlay()->GetCurrentGameRule()))
 					{
 						GameRule->OnPlayerEliminated(Character);
+					}
+				}
+
+				// 인접 벽돌 파괴 (자기 자신 제외)
+				AWjWorldBrickActor* OtherBrickActor = Cast<AWjWorldBrickActor>(Overlap.GetActor());
+				if (OtherBrickActor && OtherBrickActor != GetOwner())
+				{
+					UWjWorldBrickComponent* OtherBrick = OtherBrickActor->GetBrickComponent();
+					if (OtherBrick)
+					{
+						OtherBrick->HandleWallCollision(Dir);
 					}
 				}
 			}

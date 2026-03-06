@@ -198,8 +198,16 @@ void UGA_SpawnBrick::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 		}
 	}
 
-	// 초기 벽돌 타입 랜덤 선택
-	SelectedBrickType = FMath::RandBool() ? EWjWorldBrickType::Moving : EWjWorldBrickType::Destructible;
+	// 초기 벽돌 타입 3종 랜덤 선택
+	{
+		int32 RandIndex = FMath::RandRange(0, 2);
+		switch (RandIndex)
+		{
+		case 0: SelectedBrickType = EWjWorldBrickType::Moving; break;
+		case 1: SelectedBrickType = EWjWorldBrickType::Destructible; break;
+		default: SelectedBrickType = EWjWorldBrickType::Explosive; break;
+		}
+	}
 
 	// Preview는 로컬 클라이언트에서만 표시
 	if (ActorInfo->IsLocallyControlled())
@@ -284,14 +292,25 @@ void UGA_SpawnBrick::InputPressed(const FGameplayAbilitySpecHandle Handle, const
 
 void UGA_SpawnBrick::ToggleSelectedBrickType()
 {
-	SelectedBrickType = (SelectedBrickType == EWjWorldBrickType::Moving)
-		? EWjWorldBrickType::Destructible
-		: EWjWorldBrickType::Moving;
+	switch (SelectedBrickType)
+	{
+	case EWjWorldBrickType::Moving:
+		SelectedBrickType = EWjWorldBrickType::Destructible;
+		break;
+	case EWjWorldBrickType::Destructible:
+		SelectedBrickType = EWjWorldBrickType::Explosive;
+		break;
+	default:
+		SelectedBrickType = EWjWorldBrickType::Moving;
+		break;
+	}
 
 	ApplyBrickTypeColorToPreview();
 
-	UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_SpawnBrick: Toggled brick type to %s"),
-		SelectedBrickType == EWjWorldBrickType::Moving ? TEXT("Moving") : TEXT("Destructible"));
+	const TCHAR* TypeName = TEXT("Moving");
+	if (SelectedBrickType == EWjWorldBrickType::Destructible) TypeName = TEXT("Destructible");
+	else if (SelectedBrickType == EWjWorldBrickType::Explosive) TypeName = TEXT("Explosive");
+	UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_SpawnBrick: Toggled brick type to %s"), TypeName);
 }
 
 void UGA_SpawnBrick::ApplyBrickTypeColorToPreview()
@@ -688,8 +707,12 @@ float UGA_SpawnBrick::GetChargeRefillTimeRemaining() const
 
 FText UGA_SpawnBrick::GetPromptDescription() const
 {
-	FText TypeText = (SelectedBrickType == EWjWorldBrickType::Moving)
-		? NSLOCTEXT("AbilityPrompt", "BrickTypeMoving", "이동 벽돌")
-		: NSLOCTEXT("AbilityPrompt", "BrickTypeDestructible", "파괴 벽돌");
+	FText TypeText;
+	if (SelectedBrickType == EWjWorldBrickType::Moving)
+		TypeText = NSLOCTEXT("AbilityPrompt", "BrickTypeMoving", "이동 벽돌");
+	else if (SelectedBrickType == EWjWorldBrickType::Destructible)
+		TypeText = NSLOCTEXT("AbilityPrompt", "BrickTypeDestructible", "파괴 벽돌");
+	else
+		TypeText = NSLOCTEXT("AbilityPrompt", "BrickTypeExplosive", "폭발 벽돌");
 	return FText::Format(NSLOCTEXT("AbilityPrompt", "SpawnBrickDesc", "{0} - 어빌리티 키로 타입 변경"), TypeText);
 }
