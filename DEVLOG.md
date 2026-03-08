@@ -1,5 +1,60 @@
 # WjWorld 개발 로그
 
+## 2026-03-06
+### 작업 내용
+
+#### Explosive 벽돌 폭발 시 인접 벽돌 파괴
+- **BrickComponent Explode() 확장**: `OverlapMultiByChannel(ECC_Pawn)` → `OverlapMultiByObjectType(AllObjects)`로 변경하여 벽돌 액터도 감지
+- **인접 벽돌에 HandleWallCollision(Dir) 호출** → 타입별 반응:
+  - Explosive → 연쇄 폭발 (HandleWallCollision → Explode → DestroyBrick)
+  - Destructible → 즉시 파쇄 파괴
+  - Moving → 밀림 (PushInDirection)
+  - Standard → 무반응 (벽 자체)
+- 자기 자신(`GetOwner()`) 제외 처리
+
+#### SpawnBrick 어빌리티 3종 토글
+- **초기 타입**: `RandBool()` 2종 → `RandRange(0,2)` 3종(Moving/Destructible/Explosive) 랜덤
+- **ToggleSelectedBrickType()**: 2종 토글 → Moving → Destructible → Explosive → Moving 순환
+- **GetPromptDescription()**: "폭발 벽돌" 텍스트 추가 (3종 분기)
+
+### 학습/메모
+- `OverlapMultiByChannel` vs `OverlapMultiByObjectType`: 전자는 특정 채널(ECC_Pawn 등)만 감지, 후자는 ObjectType 필터로 모든 오브젝트 감지 가능. 벽돌처럼 WorldStatic인 액터도 감지하려면 `AllObjects` 사용
+
+### 이슈/해결
+- (없음)
+
+---
+
+## 2026-03-05
+### 작업 내용
+
+#### Destructible 벽돌 단계별 파괴 연출
+- **DeveloperSettings 확장**: `DestructibleBrickDamageStageMeshes` (단계별 손상 메시 배열) + `BrickDamageHitEffect` (타격 파편 Niagara)
+- **BrickActor**: `MulticastSpawnDamageHitEffect()` NetMulticast RPC 추가 — 기존 DestroyEffect 패턴 동일
+- **BrickComponent ApplyDamage()**: HP > 0 시 `MulticastSpawnDamageHitEffect()` 호출 추가
+- **BrickComponent UpdateDamageVisuals()**: 머티리얼 업데이트 전 `DamageStageMeshes[DamageTaken-1]` 메시 교체 + MID 재생성
+- **하위 호환**: 배열 비어있거나 이펙트 미설정 시 기존 동작 유지
+
+#### 벽돌 타입별 머티리얼 시스템
+- **DeveloperSettings**: `BrickMaterialStandard/Explosive/Moving/Destructible` 4개 머티리얼 프로퍼티 추가
+- **BrickComponent**: `GetBrickMaterial()` static 함수 + BeginPlay에서 타입별 머티리얼 적용 (미설정 시 기존 색상 폴백)
+
+#### 에셋 정리
+- 미사용 에셋 삭제: BP_GameModeApproachingWall, Megascans Brick_Wall, 구 PlaceableObjectCatalog, M_Brick
+- 새 에셋 추가: M_Brick_Default, MI_Brick_Destructible/Explosive/Movable, Cube_Damaged 1~3, Paving_Bricks 텍스처/머티리얼
+- StaticMeshEditorModeling 플러그인 활성화 + EditMesh 맵 추가
+
+### 학습/메모
+- **UE Modeling Mode**: 에디터 상단 Select Mode 드롭다운 → Modeling 항목, 또는 Tools > Modeling Mode
+  - 플러그인 비활성화 시 Edit > Plugins > "Modeling Tools Editor Mode" 체크 필요
+  - MeshBoolean/DisplaceMesh/PolyEdit로 간단한 손상 메시 제작 가능 — 외부 툴 불필요
+- 1인 개발 시 Fab보다 Modeling Mode가 규격 맞는 변형 메시 제작에 더 효율적
+
+### 이슈/해결
+- (없음)
+
+---
+
 ## 2026-03-04
 ### 작업 내용
 

@@ -109,6 +109,11 @@ Lobby / ApproachingWall / JumpMap 3개 컨텍스트 지원.
 ### Approaching Wall 미니게임
 벽이 다가오며 안전 구역으로 이동하는 PvP. BrickSpawner(비동기 8개/틱) → WallManager(레벨별 속도). 12초마다 레벨업, Flood Fill 안전 구역 축소(4방향 인접), TileActor 폭탄 신호.
 - **벽 이동 알고리즘**: 중앙 할당 방식 — `AssignBrickTargets()`가 `ShrinkSafeZones()` 후 각 FloodFillPoint에 맨해튼 거리 기준 Greedy로 가장 가까운 Standard 벽돌 배정 → `BrickMovement.SetAssignedTarget()` 주입 → 4방향 제한 이동 (2칸 이상 거리 시 2칸 이동)
+- **벽돌 타입별 머티리얼**: DeveloperSettings `BrickMaterialStandard/Explosive/Moving/Destructible` — `GetBrickMaterial()` 로드, 미설정 시 기존 색상 폴백
+- **Destructible 단계별 파괴 연출**: `DestructibleBrickDamageStageMeshes` 배열 (타격마다 메시 교체) + `BrickDamageHitEffect` (타격 시 파편 Niagara)
+  - `ApplyDamage()` → HP > 0: `MulticastSpawnDamageHitEffect()` + `UpdateDamageVisuals()` (메시 교체 + MID 재생성 + CrackIntensity)
+  - HP = 0: 기존 GeometryCollection 파쇄 + DestroyBrick (변경 없음)
+  - 배열 비어있으면 메시 교체 스킵, 이펙트 미설정이면 스폰 스킵 (하위 호환)
 
 ### Sumo Knockoff 미니게임
 원형 플랫폼 PvP 서바이벌. Z 낙하 감지 Eliminate, GA_Push(넉백+킬 추적), 3라운드 시스템, FloorRing(외곽→파괴), PowerUp(Speed/SuperPush/Shield), MapOption(Default/Bridge/Obstacle).

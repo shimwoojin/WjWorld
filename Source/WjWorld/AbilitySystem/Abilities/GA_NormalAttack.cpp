@@ -12,6 +12,7 @@
 
 #include "GamePlay/Wall/WjWorldBrickSpawner.h"
 #include "GamePlay/Wall/WjWorldBrickComponent.h"
+#include "GamePlay/Wall/WjWorldBrickMovement.h"
 #include "GamePlay/Wall/WjWorldBrickActor.h"
 
 #include "AbilitySystemComponent.h"
@@ -154,7 +155,21 @@ void UGA_NormalAttack::ExecuteAttack(const FGameplayAbilityActivationInfo& Activ
 					break;
 
 				case EWjWorldBrickType::Moving:
+				{
+					UWjWorldBrickMovement* Movement = BrickComp->GetBrickMovement();
+					if (Movement && !Movement->IsMoving())
+					{
+						FVector PushDirection = TargetLocation - AvatarActor->GetActorLocation();
+
+						TArray<UWjWorldBrickComponent*> BricksToMove;
+						if (Movement->CanPushInDirection(PushDirection, BricksToMove))
+						{
+							BrickComp->PushInDirection(PushDirection, 0.25f);
+							UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Moving brick pushed"));
+						}
+					}
 					break;
+				}
 
 				case EWjWorldBrickType::Destructible:
 					UE_LOG(LogWjWorldAbilities, Log, TEXT("GA_NormalAttack: Destructible brick - applying damage"));
